@@ -6,14 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace AddictingGames
 {
-    [System.Serializable]
-    public struct User 
-    {
-        public string ID;
-        public string MemberName;
-    }
-
-    class BypassCertificate : CertificateHandler
+    class BypassCertificateHandler : CertificateHandler
     {
         protected override bool ValidateCertificate(byte[] certificateData)
         {
@@ -23,6 +16,13 @@ namespace AddictingGames
 
     public class SWAG : MonoBehaviour
     {
+        /* #region Singleton */
+        
+        public Achievements Achievements = new Achievements();
+        public Metrics Metrics = new Metrics();
+        public Scores Scores = new Scores();
+        public User User = new User();
+
         public static SWAG Instance { get; private set; }
         
         private void Awake()
@@ -36,7 +36,17 @@ namespace AddictingGames
             
         }
 
-        string UserToken;
+        /* #endregion */
+
+
+
+        /* #region General Properties */
+
+        public string UserToken;
+
+        /* #endregion */
+
+
 
         /* #region General Utilities */
 
@@ -67,11 +77,13 @@ namespace AddictingGames
 
         /* #endregion */
 
+
+
         /* #region API Call Utilities */
 
         void SetupWebRequest(UnityWebRequest webRequest, bool useToken)
         {
-            webRequest.certificateHandler = new BypassCertificate();
+            webRequest.certificateHandler = new BypassCertificateHandler();
 
             if (useToken) {
                 var tokenBytes = System.Convert.FromBase64String(this.UserToken);
@@ -161,6 +173,8 @@ namespace AddictingGames
 
         /* #endregion */
 
+
+
         /* #region Authentication */
 
         void GetAPIKeyFromKeyword(
@@ -188,7 +202,7 @@ namespace AddictingGames
         }
 
         public void LoginAsGuest(
-            System.Action<User> successCallback, 
+            System.Action successCallback, 
             System.Action<string> errorCallback
         ) 
         {
@@ -204,20 +218,20 @@ namespace AddictingGames
                 (string response) => {
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
-                    var userData = data.user;
-                    User user = new User()
-                    {
-                        ID = userData._id,
-                        MemberName = userData.memberName,
-                    };
-
+                    // var userData = data.user;
+                    // User user = new User()
+                    // {
+                    //     ID = userData._id,
+                    //     MemberName = userData.memberName,
+                    // };
                     // this.User = user;
+
                     this.UserToken = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                successCallback(user);
+                                successCallback();
                             },
                             (string error) => {
                                 this.Reset();
@@ -225,7 +239,7 @@ namespace AddictingGames
                             }
                         );
                     } else {
-                        successCallback(user);
+                        successCallback();
                     }
                 },
                 (string error) => {
@@ -238,7 +252,7 @@ namespace AddictingGames
         public void LoginAsUser(
             string username, 
             string password, 
-            System.Action<User> successCallback, 
+            System.Action successCallback, 
             System.Action<string> errorCallback
         ) 
         {
@@ -256,20 +270,20 @@ namespace AddictingGames
                 (string response) => {
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
-                    var userData = data.user;
-                    User user = new User()
-                    {
-                        ID = userData._id,
-                        MemberName = userData.memberName,
-                    };
-
+                    // var userData = data.user;
+                    // User user = new User()
+                    // {
+                    //     ID = userData._id,
+                    //     MemberName = userData.memberName,
+                    // };
                     // this.User = user;
+
                     this.UserToken = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                successCallback(user);
+                                successCallback();
                             },
                             (string error) => {
                                 this.Reset();
@@ -277,7 +291,7 @@ namespace AddictingGames
                             }
                         );
                     } else {
-                        successCallback(user);
+                        successCallback();
                     }
                 },
                 (string error) => {
@@ -291,7 +305,7 @@ namespace AddictingGames
         static extern string WebInterface_GetToken();
 
         public void LoginFromWeb(
-            System.Action<User> successCallback, 
+            System.Action successCallback, 
             System.Action<string> errorCallback
         ) 
         {
@@ -299,21 +313,21 @@ namespace AddictingGames
 
             var url = SWAGConstants.SWAGServicesURL + "/user";
             
-            StartCoroutine(this.GetRequest<User>(
+            StartCoroutine(this.GetRequest<UserWebResponseUser>(
                 url,
                 true,
                 (string response) => {
-                    var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
-                    User user = new User()
-                    {
-                        ID = userData._id,
-                        MemberName = userData.memberName,
-                    };
+                    // var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
+                    // User user = new User()
+                    // {
+                    //     ID = userData._id,
+                    //     MemberName = userData.memberName,
+                    // };
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                successCallback(user);
+                                successCallback();
                             },
                             (string error) => {
                                 this.Reset();
@@ -321,7 +335,7 @@ namespace AddictingGames
                             }
                         );
                     } else {
-                        successCallback(user);
+                        successCallback();
                     }
                 },
                 (string error) => {
@@ -329,6 +343,27 @@ namespace AddictingGames
                     errorCallback(error);
                 }
             ));
+        }
+
+        /* #endregion */
+    
+    
+
+        /* #region Branding & Advertising */
+
+        public void ShowBranding ()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ShowBrandingAnimation ()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ShowAd ()
+        {
+            throw new System.NotImplementedException();
         }
 
         /* #endregion */

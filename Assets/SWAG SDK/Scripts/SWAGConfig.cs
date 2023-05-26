@@ -39,6 +39,15 @@ namespace AddictingGames
         [SerializeField]
         public Provider Provider = Provider.AddictingGames;
 
+        [SerializeField]
+        public string DefaultValueFormatter = "";
+
+        [SerializeField]
+        public List<string> AllowedDomains = new List<string>();
+
+        [SerializeField]
+        public bool RestrictToAllowedDomains  = false;
+
 
 
         [Header ("Addicting Games")]
@@ -47,7 +56,7 @@ namespace AddictingGames
         public string GameName;
         
         [SerializeField]
-        public string APIKey = "5c6c3c056917a692f96f9651";
+        public string APIKey = "5c6c3c056917a692f96f9651"; 
 
 
 
