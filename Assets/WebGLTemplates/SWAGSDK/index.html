@@ -4,25 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.ico">
     <title>{{{ PRODUCT_NAME }}}</title>
   </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+  <body>
     <canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"></canvas>
+    <div id="swag-ad-container"></div>
+    <script src="TemplateData/index.js"></script>
     <script src="Build/{{{ LOADER_FILENAME }}}"></script>
     <script>
-      // Fill the whole browser client area with the game canvas:
-      var meta = document.createElement('meta');
-      meta.name = 'viewport';
-      meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-      document.getElementsByTagName('head')[0].appendChild(meta);
-
-      var canvas = document.querySelector("#unity-canvas");
-      canvas.style.width = "100%";
-      canvas.style.height = "100%";
-      canvas.style.position = "fixed";
-
-      document.body.style.textAlign = "left";
-
       createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/{{{ DATA_FILENAME }}}",
         frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
@@ -39,7 +30,7 @@
         companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
         productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
         productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
-      });
+      }).then((unityInstance) => window.SWAGSDK.UnityInstance = unityInstance);
     </script>
   </body>
 </html>

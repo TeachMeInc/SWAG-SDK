@@ -25,7 +25,7 @@ namespace AddictingGames
 
         public static SWAG Instance { get; private set; }
         
-        private void Awake()
+        private void Awake ()
         {
             if (Instance != null && Instance != this)
             {
@@ -33,7 +33,6 @@ namespace AddictingGames
                 return;
             }
             Instance = this;
-            
         }
 
         /* #endregion */
@@ -354,7 +353,21 @@ namespace AddictingGames
 
         public void ShowAd ()
         {
+            #if UNITY_WEBGL
+                SWAG.WebInterface_ShowAd();
+            #else
+                Debug.Log("SWAG.ShowAd() is not implemented for this platform.");
+            #endif
+        }
+
+        public void OnAdComplete ()
+        {
             throw new System.NotImplementedException();
+        }
+
+        public void OnAdError (string error)
+        {
+            throw new System.Exception(error);
         }
 
         /* #endregion */
