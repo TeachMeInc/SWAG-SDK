@@ -1,0 +1,22 @@
+{
+  "name": "swag-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch-webgl-template": "node BuildTools/WatchWebGLTemplate.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeachMeInc/SWAG-SDK.git"
+  },
+  "author": "Addicting Games",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/TeachMeInc/SWAG-SDK/issues"
+  },
+  "homepage": "https://github.com/TeachMeInc/SWAG-SDK#readme",
+  "devDependencies": {
+    "chokidar": "^3.5.3"
+  }
+}

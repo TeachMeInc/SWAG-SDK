@@ -12,7 +12,7 @@ namespace AddictingGames
         {
             return true;
         }
-    } 
+    }
 
     public class SWAG : MonoBehaviour
     {
@@ -42,6 +42,7 @@ namespace AddictingGames
 
         /* #region General Properties */
 
+        [HideInInspector]
         public string UserToken;
 
         /* #endregion */
@@ -218,13 +219,8 @@ namespace AddictingGames
                 (string response) => {
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
-                    // var userData = data.user;
-                    // User user = new User()
-                    // {
-                    //     ID = userData._id,
-                    //     MemberName = userData.memberName,
-                    // };
-                    // this.User = user;
+                    var userData = data.user;
+                    this.User.ID = userData._id;
 
                     this.UserToken = data.token;
 
@@ -270,13 +266,8 @@ namespace AddictingGames
                 (string response) => {
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
-                    // var userData = data.user;
-                    // User user = new User()
-                    // {
-                    //     ID = userData._id,
-                    //     MemberName = userData.memberName,
-                    // };
-                    // this.User = user;
+                    var userData = data.user;
+                    this.User.ID = userData._id;
 
                     this.UserToken = data.token;
 
@@ -317,12 +308,9 @@ namespace AddictingGames
                 url,
                 true,
                 (string response) => {
-                    // var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
-                    // User user = new User()
-                    // {
-                    //     ID = userData._id,
-                    //     MemberName = userData.memberName,
-                    // };
+                    var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
+                    this.User.ID = userData._id;
+                    this.User.MemberName = userData.memberName;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
@@ -360,6 +348,9 @@ namespace AddictingGames
         {
             throw new System.NotImplementedException();
         }
+
+        [DllImport("__Internal")]
+        static extern string WebInterface_ShowAd();
 
         public void ShowAd ()
         {
