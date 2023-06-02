@@ -1,6 +1,6 @@
 /* #region Constants */
 
-const AD_DISPLAY_DURATION = 1000;
+const AD_DISPLAY_DURATION = 5000;
 
 /* #endregion */
 
@@ -37,16 +37,25 @@ class SWAGSDK
       adEl.classList.add('SWAGAd');
       adEl.innerHTML = 'ADVERTISEMENT'; // TODO: inject ad
 
-      const containerEl = document.getElementById('#swag-ad-container');
+      const containerEl = document.getElementById('swag-ad-container');
       containerEl.innerHTML = '';
       containerEl.appendChild(adEl);
-      containerEl.style.display = 'block';
+      containerEl.style.display = 'flex';
 
-      setTimeout(() => {
+      const done = () => {
         this.IsAdCurrentlyShowing = false;
-        containerEl.style.display = 'hidden';
+        containerEl.style.display = 'none';
         resolve();
+      };
+
+      const timeout = setTimeout(() => {
+        done();
       }, AD_DISPLAY_DURATION);
+
+      adEl.addEventListener('click', () => {
+        clearTimeout(timeout);
+        done();
+      });
     })
   }
 
@@ -56,20 +65,36 @@ class SWAGSDK
 
   /* #region Banner */
 
-  async ShowBanner (id, x, y, bannerSize)
+  GetBannerID (id)
+  {
+    return `swag-banner-${id}`;
+  }
+
+  GetBannerElement (id)
+  {
+    return document.getElementById(this.GetBannerID(id));
+  }
+
+  SetBannerPosition (el, x, y)
+  {
+    el.style.left = x + 'px';
+    el.style.bottom = y + 'px';
+  }
+
+  async ShowBanner (id, x, y, pivot, bannerSize)
   {
     return new Promise((resolve, reject) => {
-      if (document.getElementById(id)) return reject('Banner with that ID already exists.');
+      if (this.GetBannerElement(id)) return reject('Banner with that ID already exists.');
 
       const bannerEl = document.createElement('div');
-      bannerEl.setAttribute('id', id);
+      bannerEl.setAttribute('id', this.GetBannerID(id));
       bannerEl.classList.add('SWAGBanner');
       bannerEl.classList.add(`--size-${bannerSize}`);
-      bannerEl.style.left = x;
-      bannerEl.style.top = y;
-      bannerEl.innerHTML = 'BANNER'; // TODO: inject banner
+      bannerEl.classList.add(`--pivot-${pivot}`);
+      this.SetBannerPosition(bannerEl, x, y);
+      bannerEl.innerHTML = ""; // TODO: inject banner
 
-      const containerEl = document.getElementById('#swag-banner-container');
+      const containerEl = document.getElementById('swag-banner-container');
       containerEl.appendChild(bannerEl);
 
       resolve();
@@ -79,11 +104,10 @@ class SWAGSDK
   async PositionBanner (id, x, y)
   {
     return new Promise((resolve, reject) => {
-      if (!document.getElementById(id)) return reject('Banner with that ID does not exist.');
+      if (!this.GetBannerElement(id)) return reject('Banner with that ID does not exist.');
 
-      const bannerEl = document.getElementById(id);
-      bannerEl.style.left = x;
-      bannerEl.style.top = y;
+      const bannerEl = this.GetBannerElement(id);
+      this.SetBannerPosition(bannerEl, x, y);
 
       resolve();
     });
@@ -92,9 +116,9 @@ class SWAGSDK
   async HideBanner (id)
   {
     return new Promise((resolve, reject) => {
-      if (document.getElementById(id)) return reject('Banner with that ID does not exist.');
+      if (!this.GetBannerElement(id)) return reject('Banner with that ID does not exist.');
 
-      const bannerEl = document.getElementById(id);
+      const bannerEl = this.GetBannerElement(id);
       bannerEl.remove();
 
       resolve();

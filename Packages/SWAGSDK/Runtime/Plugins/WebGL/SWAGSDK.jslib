@@ -21,9 +21,9 @@ mergeInto(
 
 			try {
 				await SWAG.ShowAd();
-				SWAG.UnityInstance.SendMessage('SWAG', 'OnAdCompleted');
+				SWAG.UnityInstance.SendMessage('SWAG', 'OnAdComplete');
 			} catch (err) {
-				SWAG.UnityInstance.SendMessage('SWAG', 'OnAdError', err.message);
+				SWAG.UnityInstance.SendMessage('SWAG', 'OnAdError', err);
 			}
 		},
 
@@ -33,15 +33,15 @@ mergeInto(
 
 		/* #region Banners */
 
-		WebInterface_ShowBanner: async function (id, x, y, bannerSize) 
+		WebInterface_ShowBanner: async function (id, x, y, pivot, bannerSize) 
 		{
 			const SWAG = window.SWAGSDK;
 
 			try {
-				await SWAG.ShowBanner(id, x, y, bannerSize);
+				await SWAG.ShowBanner(UTF8ToString(id), x, y, UTF8ToString(pivot), UTF8ToString(bannerSize));
 				return true;
 			} catch (err) {
-				SWAG.UnityInstance.SendMessage('SWAG', 'OnBannerError', err.message);
+				SWAG.UnityInstance.SendMessage('SWAG', 'OnBannerError', err);
 				return false;
 			}
 		},
@@ -51,10 +51,10 @@ mergeInto(
 			const SWAG = window.SWAGSDK;
 
 			try {
-				await SWAG.PositionBanner(id, x, y);
+				await SWAG.PositionBanner(UTF8ToString(id), x, y);
 				return true;
 			} catch (err) {
-				SWAG.UnityInstance.SendMessage('SWAG', 'OnBannerError', err.message);
+				SWAG.UnityInstance.SendMessage('SWAG', 'OnBannerError', err);
 				return false;
 			}
 		},
@@ -64,10 +64,10 @@ mergeInto(
 			const SWAG = window.SWAGSDK;
 
 			try {
-				await SWAG.HideBanner(id);
+				await SWAG.HideBanner(UTF8ToString(id));
 				return true;
 			} catch (err) {
-				SWAG.UnityInstance.SendMessage('SWAG', 'OnBannerError', err.message);
+				SWAG.UnityInstance.SendMessage('SWAG', 'OnBannerError', err);
 				return false;
 			}
 		},

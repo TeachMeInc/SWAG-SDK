@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
     <title>{{{ PRODUCT_NAME }}}</title>
   </head>
   <body>
@@ -14,7 +14,7 @@
       width={{{ WIDTH }}} 
       height={{{ HEIGHT }}} 
       class="SWAGContainer --topLevel"
-      style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"
+      style="background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"
     ></canvas>
     <div id="swag-container" class="SWAGContainer --topLevel">
       <div id="swag-ad-container" class="SWAGContainer"></div>

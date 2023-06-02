@@ -51,15 +51,6 @@ namespace AddictingGames
         }
     }
 
-    public enum BannerSize
-    {
-        Leaderboard,
-        Medium,
-        Mobile,
-        Main,
-        LargeMobile
-    }
-
     public class SWAG : MonoBehaviour
     {
         /* #region Singleton */
@@ -96,7 +87,7 @@ namespace AddictingGames
 
         /* #region General Utilities */
 
-        protected string ProviderValue() 
+        string ProviderValue() 
         {
             switch (SWAGConfig.Instance.Provider) 
             {
@@ -382,6 +373,24 @@ namespace AddictingGames
     
 
 
+        /* #region Website Interop */
+
+        //[DllImport("__Internal")]
+        //static extern void WebInterface_SendEvent(string eventName, string message);
+
+        //public void SetFullscreen (bool fullscreen)
+        //{
+        //    #if UNITY_WEBGL && !UNITY_EDITOR
+        //        SWAG.WebInterface_SendEvent("setFullscreen", fullscreen ? "true" : "false");
+        //    #else
+        //        Debug.Log("SWAG.SetFullscreen() is not implemented for this platform.");
+        //    #endif
+        //}
+
+        /* #endregion */
+
+
+
         /* #region Branding */
 
         public void ShowBrandingAnimation (System.Action onSuccess)
@@ -432,7 +441,7 @@ namespace AddictingGames
         /* #region Banners */
 
         [DllImport("__Internal")]
-        static extern bool WebInterface_ShowBanner (string id, float x, float y, string bannerSize);
+        static extern bool WebInterface_ShowBanner (string id, float x, float y, string pivot, string bannerSize);
 
         [DllImport("__Internal")]
         static extern bool WebInterface_PositionBanner (string id, float x, float y);
@@ -440,43 +449,42 @@ namespace AddictingGames
         [DllImport("__Internal")]
         static extern bool WebInterface_HideBanner (string id);
 
-        public bool ShowBanner (string id, float x, float y, BannerSize bannerSize)
+        public bool ShowBanner (string id, Vector3 position, string pivot, BannerSize bannerSize)
         {
-            var bannerSizeString = "";
-
-            switch (bannerSize)
-            {
-                case BannerSize.Leaderboard:
-                    bannerSizeString = "728x90";
-                    break;
-                case BannerSize.Medium:
-                    bannerSizeString = "300x250";
-                    break;
-                case BannerSize.Mobile:
-                    bannerSizeString = "320x50";
-                    break;  
-                case BannerSize.Main:
-                    bannerSizeString = "468x60";
-                    break;
-                case BannerSize.LargeMobile:
-                    bannerSizeString = "320x100";
-                    break;
-            }
-
             #if UNITY_WEBGL && !UNITY_EDITOR
-                return SWAG.WebInterface_ShowBanner(id, x, y, bannerSizeString);
+                var bannerSizeString = "";
+
+                switch (bannerSize)
+                {
+                    case BannerSize.Leaderboard:
+                        bannerSizeString = "728x90";
+                        break;
+                    case BannerSize.Medium:
+                        bannerSizeString = "300x250";
+                        break;
+                    case BannerSize.Mobile:
+                        bannerSizeString = "320x50";
+                        break;  
+                    case BannerSize.Main:
+                        bannerSizeString = "468x60";
+                        break;
+                    case BannerSize.LargeMobile:
+                        bannerSizeString = "320x100";
+                        break;
+                }
+                
+                return SWAG.WebInterface_ShowBanner(id, position.x, position.y, pivot, bannerSizeString);
             #else
                 Debug.Log("SWAG.ShowBanner() is not implemented for this platform.");
                 return true;
             #endif
         }
 
-        public bool PositionBanner (string id, float x, float y)
+        public bool PositionBanner (string id, Vector3 position)
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
-                return SWAG.WebInterface_PositionBanner(id, x, y);
+                return SWAG.WebInterface_PositionBanner(id, position.x, position.y);
             #else
-                Debug.Log("SWAG.PositionBanner() is not implemented for this platform.");
                 return true;
             #endif
         }
