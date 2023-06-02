@@ -5,14 +5,15 @@ using AddictingGames;
 
 public class SampleScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    void Start ()
     {
-        SWAG.Instance.ShowAd();
+        SWAG.Instance.ShowAd(
+            () => { Debug.Log("Ad complete."); },
+            (string error) => { Debug.Log(error); }
+        );
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update ()
     {
         
     }

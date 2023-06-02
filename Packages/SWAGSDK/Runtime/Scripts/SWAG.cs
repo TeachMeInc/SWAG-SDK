@@ -14,6 +14,52 @@ namespace AddictingGames
         }
     }
 
+    class ExternAsyncHandler <T>
+    {
+        System.Action<T> onSuccess;
+        System.Action<string> onError;
+
+        public ExternAsyncHandler (
+            System.Action<T> onSuccess,
+            System.Action<string> onError
+        )
+        {
+            this.onSuccess = onSuccess;
+            this.onError = onError;
+        }
+
+        void Reset ()
+        {
+            this.onSuccess = null;
+            this.onError = null;
+        }
+
+        public void Resolve (T result)
+        {
+            if (this.onSuccess == null) throw new System.Exception("onSuccess is null.");
+
+            this.onSuccess(result);
+            this.Reset();
+        }
+
+        public void Reject (string error)
+        {
+            if (this.onError == null) throw new System.Exception("onError is null.");
+
+            this.onError(error);
+            this.Reset();
+        }
+    }
+
+    public enum BannerSize
+    {
+        Leaderboard,
+        Medium,
+        Mobile,
+        Main,
+        LargeMobile
+    }
+
     public class SWAG : MonoBehaviour
     {
         /* #region Singleton */
@@ -94,8 +140,8 @@ namespace AddictingGames
 
         void HandleResponse(
             UnityWebRequest webRequest,
-            System.Action<string> successCallback,
-            System.Action<string> errorCallback
+            System.Action<string> onSuccess,
+            System.Action<string> onError
         )
         {
             var pages = webRequest.url.Split('/');
@@ -106,15 +152,15 @@ namespace AddictingGames
                 case UnityWebRequest.Result.ConnectionError:
                 case UnityWebRequest.Result.DataProcessingError:
                     Debug.LogError(pages[page] + ": Error: " + webRequest.error);
-                    errorCallback(webRequest.error);
+                    onError(webRequest.error);
                     break;
                 case UnityWebRequest.Result.ProtocolError:
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
-                    errorCallback(webRequest.error);
+                    onError(webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
                     Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
-                    successCallback(webRequest.downloadHandler.text);
+                    onSuccess(webRequest.downloadHandler.text);
                     break;
             }
         }
@@ -122,8 +168,8 @@ namespace AddictingGames
         IEnumerator GetRequest<Success>(
             string path, 
             bool useToken, 
-            System.Action<string> successCallback, 
-            System.Action<string> errorCallback
+            System.Action<string> onSuccess, 
+            System.Action<string> onError
         ) 
         {
             var url = SWAGConstants.SWAGServicesURL + path;
@@ -139,8 +185,8 @@ namespace AddictingGames
 
                 this.HandleResponse(
                     webRequest, 
-                    successCallback, 
-                    errorCallback
+                    onSuccess, 
+                    onError
                 );
             }
         }
@@ -148,8 +194,8 @@ namespace AddictingGames
             string path, 
             string postData,
             bool useToken, 
-            System.Action<string> successCallback, 
-            System.Action<string> errorCallback
+            System.Action<string> onSuccess, 
+            System.Action<string> onError
         ) 
         {
             var url = SWAGConstants.SWAGServicesURL + path;
@@ -165,8 +211,8 @@ namespace AddictingGames
 
                 this.HandleResponse(
                     webRequest, 
-                    successCallback, 
-                    errorCallback
+                    onSuccess, 
+                    onError
                 );
             }
         }
@@ -178,8 +224,8 @@ namespace AddictingGames
         /* #region Authentication */
 
         void GetAPIKeyFromKeyword(
-            System.Action successCallback, 
-            System.Action<string> errorCallback
+            System.Action onSuccess, 
+            System.Action<string> onError
         )
         {
             var url = SWAGConstants.SWAGServicesURL + "/game"
@@ -193,17 +239,17 @@ namespace AddictingGames
                     var data = JsonUtility.FromJson<GameWebResponse>(response);
                     SWAGConfig.Instance.APIKey = data.game;
                     SWAGConfig.Instance.GameName = data.name;
-                    successCallback();
+                    onSuccess();
                 },
                 (string error) => {
-                    errorCallback(error);
+                    onError(error);
                 }
             ));
         }
 
         public void LoginAsGuest(
-            System.Action successCallback, 
-            System.Action<string> errorCallback
+            System.Action onSuccess, 
+            System.Action<string> onError
         ) 
         {
             var baseUrl = SWAGConfig.Instance.Provider == Provider.AddictingGames 
@@ -226,20 +272,20 @@ namespace AddictingGames
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                successCallback();
+                                onSuccess();
                             },
                             (string error) => {
                                 this.Reset();
-                                errorCallback(error);
+                                onError(error);
                             }
                         );
                     } else {
-                        successCallback();
+                        onSuccess();
                     }
                 },
                 (string error) => {
                     this.Reset();
-                    errorCallback(error);
+                    onError(error);
                 }
             ));
         }
@@ -247,8 +293,8 @@ namespace AddictingGames
         public void LoginAsUser(
             string username, 
             string password, 
-            System.Action successCallback, 
-            System.Action<string> errorCallback
+            System.Action onSuccess, 
+            System.Action<string> onError
         ) 
         {
             var baseUrl = SWAGConfig.Instance.Provider == Provider.AddictingGames 
@@ -273,20 +319,20 @@ namespace AddictingGames
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                successCallback();
+                                onSuccess();
                             },
                             (string error) => {
                                 this.Reset();
-                                errorCallback(error);
+                                onError(error);
                             }
                         );
                     } else {
-                        successCallback();
+                        onSuccess();
                     }
                 },
                 (string error) => {
                     this.Reset();
-                    errorCallback(error);
+                    onError(error);
                 }
             ));
         }
@@ -295,8 +341,8 @@ namespace AddictingGames
         static extern string WebInterface_GetToken();
 
         public void LoginFromWeb(
-            System.Action successCallback, 
-            System.Action<string> errorCallback
+            System.Action onSuccess, 
+            System.Action<string> onError
         ) 
         {
             this.UserToken = SWAG.WebInterface_GetToken();
@@ -314,60 +360,140 @@ namespace AddictingGames
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                successCallback();
+                                onSuccess();
                             },
                             (string error) => {
                                 this.Reset();
-                                errorCallback(error);
+                                onError(error);
                             }
                         );
                     } else {
-                        successCallback();
+                        onSuccess();
                     }
                 },
                 (string error) => {
                     this.Reset();
-                    errorCallback(error);
+                    onError(error);
                 }
             ));
         }
 
         /* #endregion */
     
+
+
+        /* #region Branding */
+
+        public void ShowBrandingAnimation (System.Action onSuccess)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /* #endregion */
+
     
 
-        /* #region Branding & Advertising */
+        /* #region Ads */
 
-        public void ShowBranding ()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void ShowBrandingAnimation ()
-        {
-            throw new System.NotImplementedException();
-        }
+        ExternAsyncHandler<object> ShowAdAsyncHandler;
 
         [DllImport("__Internal")]
-        static extern string WebInterface_ShowAd();
+        static extern void WebInterface_ShowAd();
 
-        public void ShowAd ()
+        public void ShowAd (System.Action onSuccess, System.Action<string> onError)
         {
-            #if UNITY_WEBGL
+            this.ShowAdAsyncHandler = new ExternAsyncHandler<object>(
+                (object result) => { onSuccess(); },
+                (string error) => { onError(error); }
+            );
+
+            #if UNITY_WEBGL && !UNITY_EDITOR
                 SWAG.WebInterface_ShowAd();
             #else
                 Debug.Log("SWAG.ShowAd() is not implemented for this platform.");
+                this.OnAdComplete();
             #endif
         }
 
         public void OnAdComplete ()
         {
-            throw new System.NotImplementedException();
+            this.ShowAdAsyncHandler.Resolve(null);
         }
 
         public void OnAdError (string error)
         {
-            throw new System.Exception(error);
+            this.ShowAdAsyncHandler.Reject(error);
+        }
+
+        /* #endregion */
+
+
+
+        /* #region Banners */
+
+        [DllImport("__Internal")]
+        static extern bool WebInterface_ShowBanner (string id, float x, float y, string bannerSize);
+
+        [DllImport("__Internal")]
+        static extern bool WebInterface_PositionBanner (string id, float x, float y);
+
+        [DllImport("__Internal")]
+        static extern bool WebInterface_HideBanner (string id);
+
+        public bool ShowBanner (string id, float x, float y, BannerSize bannerSize)
+        {
+            var bannerSizeString = "";
+
+            switch (bannerSize)
+            {
+                case BannerSize.Leaderboard:
+                    bannerSizeString = "728x90";
+                    break;
+                case BannerSize.Medium:
+                    bannerSizeString = "300x250";
+                    break;
+                case BannerSize.Mobile:
+                    bannerSizeString = "320x50";
+                    break;  
+                case BannerSize.Main:
+                    bannerSizeString = "468x60";
+                    break;
+                case BannerSize.LargeMobile:
+                    bannerSizeString = "320x100";
+                    break;
+            }
+
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                return SWAG.WebInterface_ShowBanner(id, x, y, bannerSizeString);
+            #else
+                Debug.Log("SWAG.ShowBanner() is not implemented for this platform.");
+                return true;
+            #endif
+        }
+
+        public bool PositionBanner (string id, float x, float y)
+        {
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                return SWAG.WebInterface_PositionBanner(id, x, y);
+            #else
+                Debug.Log("SWAG.PositionBanner() is not implemented for this platform.");
+                return true;
+            #endif
+        }
+
+        public bool HideBanner (string id)
+        {
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                return SWAG.WebInterface_HideBanner(id);
+            #else
+                Debug.Log("SWAG.HideBanner() is not implemented for this platform.");
+                return true;
+            #endif
+        }
+
+        public void OnBannerError (string error)
+        {
+            Debug.Log(error);
         }
 
         /* #endregion */
