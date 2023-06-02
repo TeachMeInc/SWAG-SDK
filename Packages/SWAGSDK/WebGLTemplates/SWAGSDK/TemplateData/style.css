@@ -11,12 +11,15 @@ body {
   min-height: 100vh;
 }
 
-#unity-canvas,
-#swag-ad-container {
+.SWAGContainer {
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  position: absolute;
+}
+
+.SWAGContainer.--topLevel {
   position: fixed;
 }
 
@@ -24,11 +27,71 @@ body {
   z-index: 1;
 }
 
-#swag-ad-container {
+#swag-container {
   z-index: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  pointer-events: none;
+}
+
+/* 
+  Ads 
+*/
+
+#swag-ad-container {
+  z-index: 1;
   background-color: rgba(0,0,0,0.5);
   display: none;
+}
+
+#swag-ad-container.--show {
+  display: flex;
+  pointer-events: all;
+}
+
+.SWAGAd {
+  margin: auto;
+  border: solid 1px rgba(0,0,0,0.4);
+}
+
+/* 
+  Banners
+*/
+
+#swag-banner-container {
+  z-index: 2;
+}
+
+.SWAGBanner {
+  position: absolute;
+  pointer-events: all;
+  border: solid 1px rgba(0,0,0,0.4);
+}
+
+/* Leaderboard */
+.SWAGBanner.--size-728x90 {
+  width: 320px;
+  height: 50px;
+}
+
+/* Medium */
+.SWAGBanner.--size-300x250 {
+  width: 300px;
+  height: 250px;
+}
+
+/* Mobile */
+.SWAGBanner.--size-320x50 {
+  width: 320px;
+  height: 50px;
+}
+
+/* Main */
+.SWAGBanner.--size-468x60 {
+  width: 468px;
+  height: 60px;
+}
+
+/* Large Mobile */
+.SWAGBanner.--size-320x100 {
+  width: 320px;
+  height: 100px;
 }
