@@ -79,7 +79,7 @@ class SWAGSDK
   {
     el.style.left = x + 'px';
     el.style.bottom = y + 'px';
-  }
+  } 
 
   async ShowBanner (id, x, y, pivot, bannerSize)
   {
@@ -104,7 +104,7 @@ class SWAGSDK
   async PositionBanner (id, x, y)
   {
     return new Promise((resolve, reject) => {
-      if (!this.GetBannerElement(id)) return reject('Banner with that ID does not exist.');
+      if (!this.GetBannerElement(id)) return reject(`Banner with ID '${id}' does not exist.`);
 
       const bannerEl = this.GetBannerElement(id);
       this.SetBannerPosition(bannerEl, x, y);
@@ -116,7 +116,7 @@ class SWAGSDK
   async HideBanner (id)
   {
     return new Promise((resolve, reject) => {
-      if (!this.GetBannerElement(id)) return reject('Banner with that ID does not exist.');
+      if (!this.GetBannerElement(id)) return reject(`Banner with ID '${id}' does not exist.`);
 
       const bannerEl = this.GetBannerElement(id);
       bannerEl.remove();

@@ -6,8 +6,8 @@ namespace AddictingGames
 {
     public class User
     {
-        public string ID;
-        public string MemberName;
+        public string id;
+        public string memberName;
 
         public User () 
         {}

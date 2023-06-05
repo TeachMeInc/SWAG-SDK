@@ -27,7 +27,7 @@ namespace AddictingGames
 
     public class Scores
     {
-        public ScoresCurrentUser CurrentUser = new ScoresCurrentUser();
+        public ScoresCurrentUser currentUser = new ScoresCurrentUser();
 
         public Scores () 
         {}

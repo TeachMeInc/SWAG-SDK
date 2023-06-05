@@ -79,7 +79,7 @@ namespace AddictingGames
         /* #region General Properties */
 
         [HideInInspector]
-        public string UserToken;
+        public string userToken;
 
         /* #endregion */
 
@@ -87,7 +87,7 @@ namespace AddictingGames
 
         /* #region General Utilities */
 
-        string ProviderValue() 
+        string ProviderValue () 
         {
             switch (SWAGConfig.Instance.Provider) 
             {
@@ -100,10 +100,10 @@ namespace AddictingGames
             }
         }
 
-        void Reset()
+        void Reset ()
         {
             // this.User = null;
-            this.UserToken = "";
+            this.userToken = "";
 
             if (SWAGConfig.Instance.Provider == Provider.Shockwave) 
             {
@@ -118,18 +118,18 @@ namespace AddictingGames
 
         /* #region API Call Utilities */
 
-        void SetupWebRequest(UnityWebRequest webRequest, bool useToken)
+        void SetupWebRequest (UnityWebRequest webRequest, bool useToken)
         {
             webRequest.certificateHandler = new BypassCertificateHandler();
 
             if (useToken) {
-                var tokenBytes = System.Convert.FromBase64String(this.UserToken);
+                var tokenBytes = System.Convert.FromBase64String(this.userToken);
                 var cookie = System.Text.Encoding.UTF8.GetString(tokenBytes);
                 webRequest.SetRequestHeader("Cookie", cookie);
             }
         }
 
-        void HandleResponse(
+        void HandleResponse (
             UnityWebRequest webRequest,
             System.Action<string> onSuccess,
             System.Action<string> onError
@@ -156,7 +156,7 @@ namespace AddictingGames
             }
         }
 
-        IEnumerator GetRequest<Success>(
+        IEnumerator GetRequest<Success> (
             string path, 
             bool useToken, 
             System.Action<string> onSuccess, 
@@ -181,7 +181,7 @@ namespace AddictingGames
                 );
             }
         }
-        IEnumerator PostRequest<Success>(
+        IEnumerator PostRequest<Success> (
             string path, 
             string postData,
             bool useToken, 
@@ -214,7 +214,7 @@ namespace AddictingGames
 
         /* #region Authentication */
 
-        void GetAPIKeyFromKeyword(
+        void GetAPIKeyFromKeyword (
             System.Action onSuccess, 
             System.Action<string> onError
         )
@@ -238,7 +238,7 @@ namespace AddictingGames
             ));
         }
 
-        public void LoginAsGuest(
+        public void LoginAsGuest (
             System.Action onSuccess, 
             System.Action<string> onError
         ) 
@@ -256,9 +256,9 @@ namespace AddictingGames
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
                     var userData = data.user;
-                    this.User.ID = userData._id;
+                    this.User.id = userData._id;
 
-                    this.UserToken = data.token;
+                    this.userToken = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
@@ -281,7 +281,7 @@ namespace AddictingGames
             ));
         }
 
-        public void LoginAsUser(
+        public void LoginAsUser (
             string username, 
             string password, 
             System.Action onSuccess, 
@@ -303,9 +303,9 @@ namespace AddictingGames
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
                     var userData = data.user;
-                    this.User.ID = userData._id;
+                    this.User.id = userData._id;
 
-                    this.UserToken = data.token;
+                    this.userToken = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
@@ -329,14 +329,14 @@ namespace AddictingGames
         }
 
         [DllImport("__Internal")]
-        static extern string WebInterface_GetToken();
+        static extern string WebInterface_GetToken ();
 
-        public void LoginFromWeb(
+        public void LoginFromWeb (
             System.Action onSuccess, 
             System.Action<string> onError
         ) 
         {
-            this.UserToken = SWAG.WebInterface_GetToken();
+            this.userToken = SWAG.WebInterface_GetToken();
 
             var url = SWAGConstants.SWAGServicesURL + "/user";
             
@@ -345,8 +345,8 @@ namespace AddictingGames
                 true,
                 (string response) => {
                     var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
-                    this.User.ID = userData._id;
-                    this.User.MemberName = userData.memberName;
+                    this.User.id = userData._id;
+                    this.User.memberName = userData.memberName;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
@@ -376,7 +376,7 @@ namespace AddictingGames
         /* #region Website Interop */
 
         //[DllImport("__Internal")]
-        //static extern void WebInterface_SendEvent(string eventName, string message);
+        //static extern void WebInterface_SendEvent (string eventName, string message);
 
         //public void SetFullscreen (bool fullscreen)
         //{
@@ -404,14 +404,14 @@ namespace AddictingGames
 
         /* #region Ads */
 
-        ExternAsyncHandler<object> ShowAdAsyncHandler;
+        ExternAsyncHandler<object> showAdAsyncHandler;
 
         [DllImport("__Internal")]
-        static extern void WebInterface_ShowAd();
+        static extern void WebInterface_ShowAd ();
 
         public void ShowAd (System.Action onSuccess, System.Action<string> onError)
         {
-            this.ShowAdAsyncHandler = new ExternAsyncHandler<object>(
+            this.showAdAsyncHandler = new ExternAsyncHandler<object>(
                 (object result) => { onSuccess(); },
                 (string error) => { onError(error); }
             );
@@ -426,12 +426,12 @@ namespace AddictingGames
 
         public void OnAdComplete ()
         {
-            this.ShowAdAsyncHandler.Resolve(null);
+            this.showAdAsyncHandler.Resolve(null);
         }
 
         public void OnAdError (string error)
         {
-            this.ShowAdAsyncHandler.Reject(error);
+            this.showAdAsyncHandler.Reject(error);
         }
 
         /* #endregion */

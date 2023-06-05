@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// using UnityEngine.UI;
+using UnityEngine.UI;
 
 namespace AddictingGames
 {
@@ -30,11 +30,13 @@ namespace AddictingGames
 
         void Start ()
         {
-            
+            this.ToggleVisible();
         }
 
         void OnEnable ()
         {
+            this.ToggleVisible();
+
             if (SWAG.Instance) {
                 if (this.id == null) this.id = System.Guid.NewGuid().ToString();
 
@@ -49,7 +51,7 @@ namespace AddictingGames
 
         void OnDisable()
         {
-            if (SWAG.Instance) {
+            if (this.id != null && SWAG.Instance) {
                 SWAG.Instance.HideBanner(this.id);
             }
         }
@@ -58,12 +60,21 @@ namespace AddictingGames
         {
             this.GetComponent<RectTransform>().sizeDelta = this.GetDimensions();
 
-            if (SWAG.Instance) {
+            if (this.id != null && SWAG.Instance) {
                 SWAG.Instance.PositionBanner(
                     this.id,
                     this.GetPosition()
                 );
             }
+        }
+
+        void ToggleVisible ()
+        {
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                this.GetComponent<Image>().enabled = false;
+            #else
+                this.GetComponent<Image>().enabled = true;
+            #endif
         }
 
         public Vector2 GetDimensions ()

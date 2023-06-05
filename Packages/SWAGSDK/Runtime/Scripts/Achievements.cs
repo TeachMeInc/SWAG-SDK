@@ -17,7 +17,7 @@ namespace AddictingGames
 
     public class Achievements
     {
-        public AchievementsCurrentUser CurrentUser = new AchievementsCurrentUser();
+        public AchievementsCurrentUser currentUser = new AchievementsCurrentUser();
 
         public Achievements () 
         {}
