@@ -8,7 +8,25 @@ const AD_DISPLAY_DURATION = 5000;
 
 class SWAGSDK 
 {
-  UnityInstance = null;
+  unityInstance = null;
+
+  constructor ()
+  {
+    window.addEventListener('message', (event) => {
+      if (
+        event.origin.startsWith('http://localhost') ||
+        event.origin.startsWith('https://localhost') ||
+        event.origin.startsWith('https://local.addictinggames.com') ||
+        event.origin.startsWith('https://new.addictinggames.com') ||
+        event.origin.startsWith('https://www.addictinggames.com') ||
+        event.origin.startsWith('https://local.shockwave.com') || 
+        event.origin.startsWith('https://new.shockwave.com') || 
+        event.origin.startsWith('https://www.shockwave.com') 
+      ) {
+        this.ReceiveMessage(event.data);
+      };
+    });
+  }
 
 
 
@@ -21,16 +39,49 @@ class SWAGSDK
 
   /* #endregion */
 
+
+
+  /* #region Website Interop */
+
+  OpenURL (url)
+  {
+    document.onmouseup = () => {
+      window.open(url);
+      document.onmouseup = null;
+    };
+  }
+
+  SendMessage (eventName, message)
+  {
+    window.parent.postMessage(JSON.stringify({ eventName, message }), '*');
+  }
+
+  ReceiveMessage (payload) 
+  {
+    const { eventName, message } = JSON.parse(payload);
+
+    switch (eventName) {
+      // case 'XXX': {
+      //   this.unityInstance.SendMessage('SWAG', 'OnXXX', message);
+      //   return;
+      // }
+    }
+
+    throw new Error('Unknown event name: ' + eventName);
+  }
+
+  /* #endregion */
+
   
 
   /* #region Ads */
 
-  IsAdCurrentlyShowing = false;
+  isAdCurrentlyShowing = false;
 
   async ShowAd () 
   {
     return new Promise((resolve, reject) => {
-      if (this.IsAdCurrentlyShowing) return reject('Ad is already being displayed.');
+      if (this.isAdCurrentlyShowing) return reject('Ad is already being displayed.');
       this.IsAdCurrentlyShowing = true;
 
       const adEl = document.createElement('div');
@@ -63,7 +114,7 @@ class SWAGSDK
 
 
 
-  /* #region Banner */
+  /* #region Banners */
 
   GetBannerID (id)
   {

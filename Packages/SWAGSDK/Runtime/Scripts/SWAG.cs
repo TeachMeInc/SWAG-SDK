@@ -370,22 +370,34 @@ namespace AddictingGames
         }
 
         /* #endregion */
-    
+
 
 
         /* #region Website Interop */
 
-        //[DllImport("__Internal")]
-        //static extern void WebInterface_SendEvent (string eventName, string message);
+        [DllImport("__Internal")]
+        static extern void WebInterface_OpenURL (string url);
 
-        //public void SetFullscreen (bool fullscreen)
-        //{
-        //    #if UNITY_WEBGL && !UNITY_EDITOR
-        //        SWAG.WebInterface_SendEvent("setFullscreen", fullscreen ? "true" : "false");
-        //    #else
-        //        Debug.Log("SWAG.SetFullscreen() is not implemented for this platform.");
-        //    #endif
-        //}
+        public void OpenURL (string url)
+        {
+           #if UNITY_WEBGL && !UNITY_EDITOR
+               SWAG.WebInterface_OpenURL(url);
+           #else
+               Debug.Log("SWAG.OpenURL() is not implemented for this platform.");
+           #endif
+        }
+
+        [DllImport("__Internal")]
+        static extern void WebInterface_SendMessage (string eventName, string message);
+
+        public void SetFullscreen (bool fullscreen)
+        {
+           #if UNITY_WEBGL && !UNITY_EDITOR
+               SWAG.WebInterface_SendMessage("setFullscreen", fullscreen ? "true" : "false");
+           #else
+               Debug.Log("SWAG.SetFullscreen() is not implemented for this platform.");
+           #endif
+        }
 
         /* #endregion */
 
