@@ -11,8 +11,6 @@
   <body>
     <canvas 
       id="unity-canvas" 
-      width={{{ WIDTH }}} 
-      height={{{ HEIGHT }}} 
       class="SWAGContainer --topLevel"
       style="background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"
     ></canvas>
@@ -39,6 +37,8 @@
         companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
         productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
         productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+        matchWebGLToCanvasSize: true,
+        devicePixelRatio: 1.0
       }).then((unityInstance) => window.SWAGSDK.UnityInstance = unityInstance);
     </script>
   </body>
