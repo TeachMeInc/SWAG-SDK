@@ -424,12 +424,12 @@ namespace AddictingGames
         [DllImport("__Internal")]
         static extern void WebInterface_SendMessage (string eventName, string message);
 
-        public void SetFullscreen (bool fullscreen)
+        public void ToggleFullscreen (bool fullscreen)
         {
            #if UNITY_WEBGL && !UNITY_EDITOR
-               SWAG.WebInterface_SendMessage("setFullscreen", fullscreen ? "true" : "false");
+               SWAG.WebInterface_SendMessage("toggleFullscreen", "");
            #else
-               Debug.Log("SWAG.SetFullscreen() is not implemented for this platform.");
+               Debug.Log("SWAG.ToggleFullscreen() is not implemented for this platform.");
            #endif
         }
 
