@@ -51,6 +51,43 @@ namespace AddictingGames
         }
     }
 
+    public static class JsonListHelper
+    {
+        public static List<T> FromJson<T>(string json)
+        {
+            Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>("{\"Items\":" + json + "}");
+            return new List<T>(wrapper.Items);
+        }
+
+        // public static string ToJson<T>(T[] array)
+        // {
+        //     Wrapper<T> wrapper = new Wrapper<T>();
+        //     wrapper.Items = array;
+        //     return JsonUtility.ToJson(wrapper);
+        // }
+
+        // public static string ToJson<T>(T[] array, bool prettyPrint)
+        // {
+        //     Wrapper<T> wrapper = new Wrapper<T>();
+        //     wrapper.Items = array;
+        //     return JsonUtility.ToJson(wrapper, prettyPrint);
+        // }
+
+        [System.Serializable]
+        private class Wrapper<T>
+        {
+            public T[] Items;
+        }
+    }
+
+    public enum NotificationType
+    {
+        None,
+        Success,
+        Error,
+        Warning,
+    }
+
     public class SWAG : MonoBehaviour
     {
         /* #region Singleton */
@@ -156,15 +193,13 @@ namespace AddictingGames
             }
         }
 
-        IEnumerator GetRequest<Success> (
-            string path, 
+        public IEnumerator GetRequest (
+            string url, 
             bool useToken, 
             System.Action<string> onSuccess, 
             System.Action<string> onError
         ) 
         {
-            var url = SWAGConstants.SWAGServicesURL + path;
-
             using (var webRequest = UnityWebRequest.Get(url))
             { 
                 this.SetupWebRequest(
@@ -181,16 +216,15 @@ namespace AddictingGames
                 );
             }
         }
-        IEnumerator PostRequest<Success> (
-            string path, 
+        
+        public IEnumerator PostRequest (
+            string url, 
             string postData,
             bool useToken, 
             System.Action<string> onSuccess, 
             System.Action<string> onError
         ) 
         {
-            var url = SWAGConstants.SWAGServicesURL + path;
-
             using (var webRequest = UnityWebRequest.Post(url, postData))
             { 
                 this.SetupWebRequest(
@@ -223,7 +257,7 @@ namespace AddictingGames
                 + "?keyword=" + SWAGConfig.Instance.ShockwaveKeyword 
                 + "&keywordtype=shockwave";
 
-            StartCoroutine(this.GetRequest<UserWebResponse>(
+            StartCoroutine(this.GetRequest(
                 url,
                 false,
                 (string response) => {
@@ -249,7 +283,7 @@ namespace AddictingGames
 
             var url = baseUrl + "/login/guest";
             
-            StartCoroutine(this.GetRequest<UserWebResponse>(
+            StartCoroutine(this.GetRequest(
                 url,
                 false,
                 (string response) => {
@@ -296,7 +330,7 @@ namespace AddictingGames
                 + "?username=" + username 
                 + "&password=" + password;
             
-            StartCoroutine(this.GetRequest<UserWebResponse>(
+            StartCoroutine(this.GetRequest(
                 url,
                 false,
                 (string response) => {
@@ -340,7 +374,7 @@ namespace AddictingGames
 
             var url = SWAGConstants.SWAGServicesURL + "/user";
             
-            StartCoroutine(this.GetRequest<UserWebResponseUser>(
+            StartCoroutine(this.GetRequest(
                 url,
                 true,
                 (string response) => {
@@ -397,6 +431,24 @@ namespace AddictingGames
            #else
                Debug.Log("SWAG.SetFullscreen() is not implemented for this platform.");
            #endif
+        }
+
+        public void ShowShareDialog ()
+        {
+           #if UNITY_WEBGL && !UNITY_EDITOR
+               SWAG.WebInterface_SendMessage("showShareDialog", "");
+           #else
+               Debug.Log("SWAG.ShowShareDialog() is not implemented for this platform.");
+           #endif
+        }
+
+        public void ShowLoginDialog ()
+        {
+              #if UNITY_WEBGL && !UNITY_EDITOR
+                SWAG.WebInterface_SendMessage("showLoginDialog", "");
+              #else
+                Debug.Log("SWAG.ShowLoginDialog() is not implemented for this platform.");
+              #endif
         }
 
         /* #endregion */

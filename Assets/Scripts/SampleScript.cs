@@ -11,6 +11,15 @@ public class SampleScript : MonoBehaviour
             () => { Debug.Log("Ad complete."); },
             (string error) => { Debug.Log(error); }
         );
+
+        SWAG.Instance.Achievements.GetAll(
+            (List<Achievement> achievements) => {
+                Debug.Log("Achievements: " + achievements.Count);
+            },
+            (string error) => {
+                Debug.Log(error);
+            }
+        );
     }
 
     void Update ()
