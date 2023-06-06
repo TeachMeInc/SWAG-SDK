@@ -19,11 +19,43 @@ namespace AddictingGames
         public AchievementsCurrentUser () 
         {}
 
+        public void RecordAchievement (
+            string key,
+            System.Action onSuccess, 
+            System.Action<string> onError
+        ) 
+        {
+            if (SWAG.Instance.userToken == "") {
+                throw new System.Exception("User is not logged in.");
+            }
+
+            var postData = JsonUtility.ToJson(new RecordAchievementWebRequest {
+                game = SWAGConfig.Instance.APIKey,
+                achievement_key = key
+            });
+            
+            SWAG.Instance.StartCoroutine(SWAG.Instance.PostRequest(
+                SWAGConstants.SWAGServicesURL + "/achievement",
+                postData,
+                true,
+                (string response) => {
+                    onSuccess();
+                },
+                (string error) => {
+                    onError(error);
+                }
+            ));
+        }
+
         public void GetAchievements (
             System.Action<List<Achievement>> onSuccess, 
             System.Action<string> onError
         ) 
         {
+            if (SWAG.Instance.userToken == "") {
+                throw new System.Exception("User is not logged in.");
+            }
+            
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
                 SWAGConstants.SWAGServicesURL + "/achievement/user?game=" + SWAGConfig.Instance.APIKey,
                 true,
@@ -59,30 +91,6 @@ namespace AddictingGames
             throw new System.NotImplementedException();
         }
 
-        public void RecordAchievement (
-            string key,
-            System.Action onSuccess, 
-            System.Action<string> onError
-        ) 
-        {
-            var postData = JsonUtility.ToJson(new RecordAchievementWebRequest {
-                game = SWAGConfig.Instance.APIKey,
-                achievement_key = key
-            });
-            
-            SWAG.Instance.StartCoroutine(SWAG.Instance.PostRequest(
-                SWAGConstants.SWAGServicesURL + "/achievement",
-                postData,
-                true,
-                (string response) => {
-                    onSuccess();
-                },
-                (string error) => {
-                    onError(error);
-                }
-            ));
-        }
-
         public void GetAll (
             System.Action<List<Achievement>> onSuccess, 
             System.Action<string> onError
@@ -92,17 +100,17 @@ namespace AddictingGames
                 SWAGConstants.SWAGServicesURL + "/achievement/categories?game=" + SWAGConfig.Instance.APIKey,
                 true,
                 (string response) => {
-                    var data = JsonListHelper.FromJson<Achievement>(response);
-                    // var achievements = data.ConvertAll<Achievement>((AchievementWebResponse item) => {
-                    //     return new Achievement {
-                    //         id = item._id,
-                    //         name = item.name,
-                    //         achievementKey = item.achievement_key,
-                    //         description = item.description,
-                    //         userAchieved = null
-                    //     };
-                    // });
-                    onSuccess(data);
+                    var data = JsonListHelper.FromJson<AchievementWebResponse>(response);
+                    var achievements = data.ConvertAll<Achievement>((AchievementWebResponse item) => {
+                        return new Achievement {
+                            id = item._id,
+                            name = item.name,
+                            achievementKey = item.achievement_key,
+                            description = item.description,
+                            userAchieved = null
+                        };
+                    });
+                    onSuccess(achievements);
                 },
                 (string error) => {
                     onError(error);

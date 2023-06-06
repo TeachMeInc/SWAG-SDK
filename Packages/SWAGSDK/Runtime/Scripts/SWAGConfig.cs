@@ -13,6 +13,14 @@ namespace AddictingGames
         Shockwave,
     }
 
+    [System.Serializable]
+    public enum ViewMode
+    {
+        Responsive,
+        ForceMobile,
+        ForceDesktop,
+    }
+
     public class SWAGConfig : MonoBehaviour
     {
         /* #region Singleton */
@@ -47,6 +55,9 @@ namespace AddictingGames
 
         [SerializeField]
         public bool RestrictToAllowedDomains  = false;
+
+        [SerializeField]
+        public ViewMode ViewMode = ViewMode.Responsive;
 
 
 

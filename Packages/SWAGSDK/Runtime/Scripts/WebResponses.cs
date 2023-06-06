@@ -42,6 +42,23 @@ namespace AddictingGames {
         public bool? user_achieved;
     }
 
+    [System.Serializable]
+    public struct UserDataWebResponse
+    {
+        public string _id;
+        public string key;
+        public string value;
+        public string entity;
+        public string source;
+        public string date_created;
+    }
+
+    [System.Serializable]
+    public struct UserIsSubscriberWebResponse
+    {
+        public bool subscriber;
+    }
+
     /* #endregion */
 
 
@@ -55,5 +72,14 @@ namespace AddictingGames {
         public string achievement_key;
     }
 
+
+    [System.Serializable]
+    public struct SetUserDataWebRequest
+    {
+        public string game;
+        public string key;
+        public string value;
+    }
+    
     /* #endregion */
 }

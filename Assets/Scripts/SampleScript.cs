@@ -7,7 +7,7 @@ public class SampleScript : MonoBehaviour
 {
     void Start ()
     {
-        SWAG.Instance.LoginAsGuest(
+        SWAG.Instance.User.LoginAsGuest(
             () => {
                 Debug.Log("LoginAsGuest: Success");
 

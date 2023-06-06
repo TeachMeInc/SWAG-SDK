@@ -9,18 +9,63 @@ namespace AddictingGames
         public ScoresCurrentUser () 
         {}
 
-        public void HasDailyScore () 
+        public void HasDailyGameScore (int day, string gameMode) 
         {
+            if (SWAG.Instance.userToken == "")
+            {
+                throw new System.Exception("User is not logged in.");
+            }
+
+            if (SWAGConfig.Instance.Provider != Provider.Shockwave)
+            {
+                throw new System.Exception("User.RecordDailyGameScore() is not implemented for this provider.");
+            }
+
             throw new System.NotImplementedException();
         }
 
-        public void GetTopScores () 
+        public void RecordDailyGameScore (int day, string gameMode, float score) 
         {
+            if (SWAG.Instance.userToken == "")
+            {
+                throw new System.Exception("User is not logged in.");
+            }
+
+            if (SWAGConfig.Instance.Provider != Provider.Shockwave)
+            {
+                throw new System.Exception("User.RecordDailyGameScore() is not implemented for this provider.");
+            }
+
             throw new System.NotImplementedException();
         }
 
-        public void GetWeeklyScores () 
+        public void RecordScore (string gameMode, float score) 
         {
+            if (SWAG.Instance.userToken == "")
+            {
+                throw new System.Exception("User is not logged in.");
+            }
+            
+            throw new System.NotImplementedException();
+        }
+
+        public void GetBestScores (string gameMode, string period) 
+        {
+            if (SWAG.Instance.userToken == "")
+            {
+                throw new System.Exception("User is not logged in.");
+            }
+
+            throw new System.NotImplementedException();
+        }
+
+        public void GetScores (string gameMode, string period) 
+        {
+            if (SWAG.Instance.userToken == "")
+            {
+                throw new System.Exception("User is not logged in.");
+            }
+
             throw new System.NotImplementedException();
         }
     }
@@ -32,47 +77,22 @@ namespace AddictingGames
         public Scores () 
         {}
 
-        public void GetCurrentDay () 
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void ShowDialog () 
         {
             throw new System.NotImplementedException();
         }
 
-        public void RecordScore (string level, int score) 
+        public void GetCurrentDay () 
         {
             throw new System.NotImplementedException();
         }
 
-        public void RecordDailyScore (int day, string level, int score) 
+        public void GetGameModes () 
         {
             throw new System.NotImplementedException();
         }
 
-        public void GetDailyScores (string level) 
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void GetWeeklyScores (string level) 
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void GetMonthlyScores (string level) 
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void GetAllTimeScores (string level) 
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void GetCategories () 
+        public void GetScores (string gameMode, string period) 
         {
             throw new System.NotImplementedException();
         }

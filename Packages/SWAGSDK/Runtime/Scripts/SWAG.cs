@@ -88,6 +88,12 @@ namespace AddictingGames
         Warning,
     }
 
+    public enum CurrentView
+    {
+        Desktop,
+        Mobile,
+    }
+
     public class SWAG : MonoBehaviour
     {
         /* #region Singleton */
@@ -118,6 +124,9 @@ namespace AddictingGames
         [HideInInspector]
         public string userToken;
 
+        [HideInInspector]
+        public CurrentView currentView = CurrentView.Desktop;
+
         /* #endregion */
 
 
@@ -134,18 +143,6 @@ namespace AddictingGames
                     return "shockwave";
                 default:
                     return "";
-            }
-        }
-
-        void Reset ()
-        {
-            // this.User = null;
-            this.userToken = "";
-
-            if (SWAGConfig.Instance.Provider == Provider.Shockwave) 
-            {
-                SWAGConfig.Instance.GameName = "";
-                SWAGConfig.Instance.APIKey = "";
             }
         }
 
@@ -246,167 +243,6 @@ namespace AddictingGames
 
 
 
-        /* #region Authentication */
-
-        void GetAPIKeyFromKeyword (
-            System.Action onSuccess, 
-            System.Action<string> onError
-        )
-        {
-            var url = SWAGConstants.SWAGServicesURL + "/game"
-                + "?keyword=" + SWAGConfig.Instance.ShockwaveKeyword 
-                + "&keywordtype=shockwave";
-
-            StartCoroutine(this.GetRequest(
-                url,
-                false,
-                (string response) => {
-                    var data = JsonUtility.FromJson<GameWebResponse>(response);
-                    SWAGConfig.Instance.APIKey = data.game;
-                    SWAGConfig.Instance.GameName = data.name;
-                    onSuccess();
-                },
-                (string error) => {
-                    onError(error);
-                }
-            ));
-        }
-
-        public void LoginAsGuest (
-            System.Action onSuccess, 
-            System.Action<string> onError
-        ) 
-        {
-            var baseUrl = SWAGConfig.Instance.Provider == Provider.AddictingGames 
-                ? SWAGConstants.AddictingGamesAuthURL
-                : SWAGConstants.ShockwaveAuthURL;
-
-            var url = baseUrl + "/login/guest";
-            
-            StartCoroutine(this.GetRequest(
-                url,
-                false,
-                (string response) => {
-                    var data = JsonUtility.FromJson<UserWebResponse>(response);
-
-                    var userData = data.user;
-                    this.User.id = userData._id;
-
-                    this.userToken = data.token;
-
-                    if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                        this.GetAPIKeyFromKeyword(
-                            () => { 
-                                onSuccess();
-                            },
-                            (string error) => {
-                                this.Reset();
-                                onError(error);
-                            }
-                        );
-                    } else {
-                        onSuccess();
-                    }
-                },
-                (string error) => {
-                    this.Reset();
-                    onError(error);
-                }
-            ));
-        }
-
-        public void LoginAsUser (
-            string username, 
-            string password, 
-            System.Action onSuccess, 
-            System.Action<string> onError
-        ) 
-        {
-            var baseUrl = SWAGConfig.Instance.Provider == Provider.AddictingGames 
-                ? SWAGConstants.AddictingGamesAuthURL
-                : SWAGConstants.ShockwaveAuthURL;
-
-            var url = baseUrl + "/login" 
-                + "?username=" + username 
-                + "&password=" + password;
-            
-            StartCoroutine(this.GetRequest(
-                url,
-                false,
-                (string response) => {
-                    var data = JsonUtility.FromJson<UserWebResponse>(response);
-
-                    var userData = data.user;
-                    this.User.id = userData._id;
-
-                    this.userToken = data.token;
-
-                    if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                        this.GetAPIKeyFromKeyword(
-                            () => { 
-                                onSuccess();
-                            },
-                            (string error) => {
-                                this.Reset();
-                                onError(error);
-                            }
-                        );
-                    } else {
-                        onSuccess();
-                    }
-                },
-                (string error) => {
-                    this.Reset();
-                    onError(error);
-                }
-            ));
-        }
-
-        [DllImport("__Internal")]
-        static extern string WebInterface_GetToken ();
-
-        public void LoginFromWeb (
-            System.Action onSuccess, 
-            System.Action<string> onError
-        ) 
-        {
-            this.userToken = SWAG.WebInterface_GetToken();
-
-            var url = SWAGConstants.SWAGServicesURL + "/user";
-            
-            StartCoroutine(this.GetRequest(
-                url,
-                true,
-                (string response) => {
-                    var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
-                    this.User.id = userData._id;
-                    this.User.memberName = userData.memberName;
-
-                    if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                        this.GetAPIKeyFromKeyword(
-                            () => { 
-                                onSuccess();
-                            },
-                            (string error) => {
-                                this.Reset();
-                                onError(error);
-                            }
-                        );
-                    } else {
-                        onSuccess();
-                    }
-                },
-                (string error) => {
-                    this.Reset();
-                    onError(error);
-                }
-            ));
-        }
-
-        /* #endregion */
-
-
-
         /* #region Website Interop */
 
         [DllImport("__Internal")]
@@ -449,6 +285,29 @@ namespace AddictingGames
               #else
                 Debug.Log("SWAG.ShowLoginDialog() is not implemented for this platform.");
               #endif
+        }
+
+        public void OnCurrentViewChanged (string currentView)
+        {
+            switch (SWAGConfig.Instance.ViewMode)
+            {
+                case ViewMode.ForceDesktop:
+                    this.currentView = CurrentView.Desktop;
+                    return;
+                case ViewMode.ForceMobile:
+                    this.currentView = CurrentView.Mobile;
+                    return;
+            }
+
+            switch (currentView)
+            {
+                case "desktop":
+                    this.currentView = CurrentView.Desktop;
+                    break;
+                case "mobile":
+                    this.currentView = CurrentView.Mobile;
+                    break;
+            }
         }
 
         /* #endregion */
