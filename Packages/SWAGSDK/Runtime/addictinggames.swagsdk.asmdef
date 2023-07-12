@@ -1,0 +1,8 @@
+{
+	"name": "addictinggames.swagsdk",
+    "references": [
+        "UnityEngine",
+        "UnityEngine.Networking",
+        "UnityEngine.UI"
+    ]
+}

@@ -27,7 +27,7 @@ namespace AddictingGames
 
         public static SWAGConfig Instance { get; private set; }
         
-        private void Awake()
+        private void Awake ()
         {
             if (Instance != null && Instance != this)
             {
