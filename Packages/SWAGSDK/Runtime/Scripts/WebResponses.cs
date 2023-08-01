@@ -59,6 +59,44 @@ namespace AddictingGames {
         public bool subscriber;
     }
 
+    [System.Serializable]
+    public struct ScoresWebResponse
+    {
+        public string level_key;
+        public float value;
+        public string date_created;
+        public string screen_name;
+        public string avatarUrl;
+        public int position;
+    }
+
+    [System.Serializable]
+    public struct LevelKeysWebResponse
+    {
+        public string game;
+        public string name;
+        public string level_key;
+        public string value_name;
+        public string value_type;
+        public int order;
+        public bool reverse;
+        public string mode;
+    }
+
+    [System.Serializable]
+    public struct DailyBestWebResponse
+    {
+        public DailyBestWebResponseValue dailyBest;
+        public DailyBestWebResponseValue scorePosition;
+        public DailyBestWebResponseValue totalScores;
+    }
+
+    [System.Serializable]
+    public struct DailyBestWebResponseValue
+    {
+        public string value;
+    }
+
     /* #endregion */
 
 
@@ -79,6 +117,14 @@ namespace AddictingGames {
         public string game;
         public string key;
         public string value;
+    }
+
+    [System.Serializable]
+    public struct RecordScoreWebRequest
+    {
+        public string game;
+        public string level_key;
+        public float value;
     }
     
     /* #endregion */
