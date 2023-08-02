@@ -30,8 +30,7 @@ namespace AddictingGames
         {
             SWAG.Instance.userToken = "";
 
-            if (SWAGConfig.Instance.Provider == Provider.Shockwave) 
-            {
+            if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                 SWAGConfig.Instance.GameName = "";
                 SWAGConfig.Instance.APIKey = "";
             }

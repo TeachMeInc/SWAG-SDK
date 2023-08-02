@@ -48,8 +48,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            if (SWAG.Instance.userToken == "")
-            {
+            if (SWAG.Instance.userToken == "") {
                 throw new System.Exception("User is not logged in.");
             }
             
@@ -90,8 +89,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            if (SWAG.Instance.userToken == "")
-            {
+            if (SWAG.Instance.userToken == "") {
                 throw new System.Exception("User is not logged in.");
             }
 
@@ -145,8 +143,7 @@ namespace AddictingGames
             System.Action<string> onError
         )
         {
-            if (SWAG.Instance.userToken == "")
-            {
+            if (SWAG.Instance.userToken == "") {
                 throw new System.Exception("User is not logged in.");
             }
 
@@ -214,8 +211,7 @@ namespace AddictingGames
             System.Action<string> onError
         )
         {
-            if (this.levelKeys != null)
-            {
+            if (this.levelKeys != null) {
                 onSuccess(this.levelKeys);
                 return;
             }

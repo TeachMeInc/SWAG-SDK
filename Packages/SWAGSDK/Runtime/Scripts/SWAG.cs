@@ -36,7 +36,9 @@ namespace AddictingGames
 
         public void Resolve (T result)
         {
-            if (this.onSuccess == null) throw new System.Exception("onSuccess is null.");
+            if (this.onSuccess == null) {
+                throw new System.Exception("onSuccess is null.");
+            }
 
             this.onSuccess(result);
             this.Reset();
@@ -44,7 +46,9 @@ namespace AddictingGames
 
         public void Reject (string error)
         {
-            if (this.onError == null) throw new System.Exception("onError is null.");
+            if (this.onError == null) {
+                throw new System.Exception("onError is null.");
+            }
 
             this.onError(error);
             this.Reset();
@@ -121,8 +125,7 @@ namespace AddictingGames
 
         string ProviderValue () 
         {
-            switch (SWAGConfig.Instance.Provider) 
-            {
+            switch (SWAGConfig.Instance.Provider) {
                 case Provider.AddictingGames:
                     return "default";
                 case Provider.Shockwave:
@@ -158,8 +161,7 @@ namespace AddictingGames
             var pages = webRequest.url.Split('/');
             var page = pages.Length - 1;
 
-            switch (webRequest.result)
-            {
+            switch (webRequest.result) {
                 case UnityWebRequest.Result.ConnectionError:
                 case UnityWebRequest.Result.DataProcessingError:
                     Debug.LogError(pages[page] + ": Error: " + webRequest.error);
@@ -183,8 +185,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            using (var webRequest = UnityWebRequest.Get(url))
-            { 
+            using (var webRequest = UnityWebRequest.Get(url)) { 
                 this.SetupWebRequest(
                     webRequest, 
                     useToken
@@ -208,8 +209,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            using (var webRequest = UnityWebRequest.Post(url, postData))
-            { 
+            using (var webRequest = UnityWebRequest.Post(url, postData)) { 
                 this.SetupWebRequest(
                     webRequest, 
                     useToken
@@ -275,8 +275,7 @@ namespace AddictingGames
 
         public void OnCurrentViewChanged (string currentView)
         {
-            switch (SWAGConfig.Instance.ViewMode)
-            {
+            switch (SWAGConfig.Instance.ViewMode) {
                 case ViewMode.ForceDesktop:
                     this.currentView = CurrentView.Desktop;
                     return;
@@ -285,8 +284,7 @@ namespace AddictingGames
                     return;
             }
 
-            switch (currentView)
-            {
+            switch (currentView) {
                 case "desktop":
                     this.currentView = CurrentView.Desktop;
                     break;
@@ -363,8 +361,7 @@ namespace AddictingGames
             #if UNITY_WEBGL && !UNITY_EDITOR
                 var bannerSizeString = "";
 
-                switch (bannerSize)
-                {
+                switch (bannerSize) {
                     case BannerSize.Leaderboard:
                         bannerSizeString = "728x90";
                         break;
