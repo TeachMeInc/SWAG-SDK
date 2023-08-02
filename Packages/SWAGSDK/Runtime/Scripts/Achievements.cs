@@ -25,7 +25,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            if (SWAG.Instance.userToken == "") {
+            if (!SWAG.Instance.User.IsLoggedIn()) {
                 throw new System.Exception("User is not logged in.");
             }
 
@@ -52,7 +52,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            if (SWAG.Instance.userToken == "") {
+            if (!SWAG.Instance.User.IsLoggedIn()) {
                 throw new System.Exception("User is not logged in.");
             }
             

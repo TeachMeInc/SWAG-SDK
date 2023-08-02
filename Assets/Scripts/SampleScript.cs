@@ -7,39 +7,41 @@ public class SampleScript : MonoBehaviour
 {
     void Start ()
     {
-        SWAG.Instance.User.LoginAsGuest(
-            () => {
-                Debug.Log("LoginAsGuest: Success");
+        var swag = SWAG.Instance;
 
-                SWAG.Instance.ShowAd(
+        swag.OnReady(
+            () => {
+                Debug.Log("Login: Success");
+
+                swag.ShowAd(
                     () => { 
                         Debug.Log("ShowAd: Success");
                     },
                     (string error) => { 
-                        Debug.Log("ShowAd Error: " + error);
+                        Debug.LogError("ShowAd Error: " + error);
                     }
                 );
 
-                SWAG.Instance.Achievements.GetAll(
+                swag.Achievements.GetAll(
                     (List<Achievement> achievements) => {
                         Debug.Log("GetAll: " + achievements.Count);
                     },
                     (string error) => {
-                        Debug.Log("GetAll Error: " + error);
+                        Debug.LogError("GetAll Error: " + error);
                     }
                 );
 
-                SWAG.Instance.Achievements.currentUser.GetAchievements(
+                swag.Achievements.currentUser.GetAchievements(
                     (List<Achievement> achievements) => {
                         Debug.Log("GetAchievements: " + achievements.Count);
                     },
                     (string error) => {
-                        Debug.Log("GetAchievements Error: " + error);
+                        Debug.LogError("GetAchievements Error: " + error);
                     }
                 );
             },
             (string error) => {
-                Debug.Log("LoginAsGuest Error: " + error);
+                Debug.LogError("Login Error: " + error);
             }
         );
     }

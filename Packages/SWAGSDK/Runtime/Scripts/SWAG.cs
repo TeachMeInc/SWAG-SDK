@@ -14,12 +14,12 @@ namespace AddictingGames
         }
     }
 
-    class ExternAsyncHandler <T>
+    public class AsyncHandler <T>
     {
         System.Action<T> onSuccess;
         System.Action<string> onError;
 
-        public ExternAsyncHandler (
+        public AsyncHandler (
             System.Action<T> onSuccess,
             System.Action<string> onError
         )
@@ -92,6 +92,7 @@ namespace AddictingGames
         public Metrics Metrics = new Metrics();
         public Scores Scores = new Scores();
         public User User = new User();
+        public bool isReady = false;
 
         public static SWAG Instance { get; private set; }
         
@@ -105,14 +106,55 @@ namespace AddictingGames
             Instance = this;
         }
 
+        private void Start ()
+        {
+            this.User.Login(
+                () => {
+                    this.isReady = true;
+                    if (this.readyAsyncHandler != null) {
+                        this.readyAsyncHandler.Resolve(null);
+                    }
+                },
+                (string error) => {
+                    if (this.readyAsyncHandler != null) {
+                        this.readyAsyncHandler.Reject(error);
+                    }
+                }
+            );
+        }
+
+        AsyncHandler<object> readyAsyncHandler;
+
+        public void OnReady (
+            System.Action onSuccess
+        )
+        {
+            this.OnReady(
+                onSuccess, 
+                (string error) => {}
+            );
+        }
+
+        public void OnReady (
+            System.Action onSuccess, 
+            System.Action<string> onError
+        )
+        {
+            if (this.isReady) {
+                onSuccess();
+            } else {
+                readyAsyncHandler = new AsyncHandler<object>(
+                    (object result) => { onSuccess(); },
+                    (string error) => { onError(error); }
+                );
+            }
+        }
+
         /* #endregion */
 
 
 
         /* #region General Properties */
-
-        [HideInInspector]
-        public string userToken;
 
         [HideInInspector]
         public CurrentView currentView = CurrentView.Desktop;
@@ -146,7 +188,7 @@ namespace AddictingGames
             webRequest.certificateHandler = new BypassCertificateHandler();
 
             if (useToken) {
-                var tokenBytes = System.Convert.FromBase64String(this.userToken);
+                var tokenBytes = System.Convert.FromBase64String(this.User.token);
                 var cookie = System.Text.Encoding.UTF8.GetString(tokenBytes);
                 webRequest.SetRequestHeader("Cookie", cookie);
             }
@@ -248,29 +290,30 @@ namespace AddictingGames
 
         public void ToggleFullscreen (bool fullscreen)
         {
-           #if UNITY_WEBGL && !UNITY_EDITOR
-               SWAG.WebInterface_SendMessage("toggleFullscreen", "");
-           #else
-               Debug.Log("SWAG.ToggleFullscreen() is not implemented for this platform.");
-           #endif
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                SWAG.WebInterface_SendMessage("toggleFullscreen", "");
+            #else
+                Debug.Log("SWAG.ToggleFullscreen() is not implemented for this platform.");
+            #endif
         }
 
         public void ShowShareDialog ()
         {
-           #if UNITY_WEBGL && !UNITY_EDITOR
-               SWAG.WebInterface_SendMessage("showShareDialog", "");
-           #else
-               Debug.Log("SWAG.ShowShareDialog() is not implemented for this platform.");
-           #endif
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                SWAG.WebInterface_SendMessage("showShareDialog", "");
+            #else
+                Debug.Log("SWAG.ShowShareDialog() is not implemented for this platform.");
+            #endif
         }
 
-        public void ShowLoginDialog ()
+        public void OnLoginSuccess ()
         {
-              #if UNITY_WEBGL && !UNITY_EDITOR
-                SWAG.WebInterface_SendMessage("showLoginDialog", "");
-              #else
-                Debug.Log("SWAG.ShowLoginDialog() is not implemented for this platform.");
-              #endif
+            this.User.showLoginDialogAsyncHandler.Resolve(null);
+        }
+
+        public void OnLoginCancelled (string reason)
+        {
+            this.User.showLoginDialogAsyncHandler.Reject(reason);
         }
 
         public void OnCurrentViewChanged (string currentView)
@@ -311,14 +354,17 @@ namespace AddictingGames
 
         /* #region Ads */
 
-        ExternAsyncHandler<object> showAdAsyncHandler;
+        AsyncHandler<object> showAdAsyncHandler;
 
         [DllImport("__Internal")]
         static extern void WebInterface_ShowAd ();
 
-        public void ShowAd (System.Action onSuccess, System.Action<string> onError)
+        public void ShowAd (
+            System.Action onSuccess, 
+            System.Action<string> onError
+        )
         {
-            this.showAdAsyncHandler = new ExternAsyncHandler<object>(
+            this.showAdAsyncHandler = new AsyncHandler<object>(
                 (object result) => { onSuccess(); },
                 (string error) => { onError(error); }
             );

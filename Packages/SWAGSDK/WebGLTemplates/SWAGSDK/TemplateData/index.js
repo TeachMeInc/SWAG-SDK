@@ -63,10 +63,14 @@ class SWAGSDK
         const { eventName, message } = JSON.parse(payload);
         
         switch (eventName) {
-            // case 'XXX': {
-            //   this.unityInstance.SendMessage('SWAG', 'OnXXX', message);
-            //   return;
-            // }
+            case 'onLoginSuccess': {
+              this.unityInstance.SendMessage('SWAG', 'OnLoginSuccess', "");
+              return;
+            }
+            case 'onLoginCancelled': {
+              this.unityInstance.SendMessage('SWAG', 'OnLoginCancelled', message || "");
+              return;
+            }
         }
         
         throw new Error('Unknown event name: ' + eventName);

@@ -1,45 +1,51 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-    <title>{{{ PRODUCT_NAME }}}</title>
-  </head>
-  <body>
-    <canvas 
-      id="unity-canvas" 
-      class="SWAGContainer --topLevel"
-      style="background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"
-    ></canvas>
-    <div id="swag-container" class="SWAGContainer --topLevel">
-      <div id="swag-ad-container" class="SWAGContainer"></div>
-      <div id="swag-banner-container" class="SWAGContainer"></div>
-    </div>
-    <script src="TemplateData/index.js"></script>
-    <script src="Build/{{{ LOADER_FILENAME }}}"></script>
-    <script>
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/{{{ DATA_FILENAME }}}",
-        frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="shortcut icon" href="TemplateData/favicon.ico">
+        <link rel="stylesheet" href="TemplateData/style.css">
+        <title>{{{ PRODUCT_NAME }}}</title>
+    </head>
+    <body>
+        <canvas 
+            id="unity-canvas" 
+            class="SWAGContainer --topLevel"
+            style="background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"
+        ></canvas>
+        <div id="swag-container" class="SWAGContainer --topLevel">
+            <div id="swag-ad-container" class="SWAGContainer"></div>
+            <div id="swag-banner-container" class="SWAGContainer"></div>
+        </div>
+        <script id="swag-banner-template" type="text/html">
+            <div class="ympb_target" data-type="{type}" data-subtype="{subtype}"></div>
+        </script>
+        <script src="TemplateData/adsbygoogle.js"></script>
+        <script src="TemplateData/yollaHelper.js"></script>
+        <script src="TemplateData/index.js"></script>
+        <script src="Build/{{{ LOADER_FILENAME }}}"></script>
+        <script src="https://portal.cdn.yollamedia.com/storage/tag/ps3a21ed9389c3c60c71ddfc8340dceed451a88b5a.js"></script>
+        <script>
+            createUnityInstance(document.querySelector("#unity-canvas"), {
+                dataUrl: "Build/{{{ DATA_FILENAME }}}",
+                frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
 #if USE_WASM
-        codeUrl: "Build/{{{ CODE_FILENAME }}}",
+                codeUrl: "Build/{{{ CODE_FILENAME }}}",
 #endif
 #if MEMORY_FILENAME
-        memoryUrl: "Build/{{{ MEMORY_FILENAME }}}",
+                memoryUrl: "Build/{{{ MEMORY_FILENAME }}}",
 #endif
 #if SYMBOLS_FILENAME
-        symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+                symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
 #endif
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
-        productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
-        productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
-        matchWebGLToCanvasSize: true,
-        devicePixelRatio: 1.0,
-      }).then((unityInstance) => window.SWAGSDK.unityInstance = unityInstance);
-    </script>
-  </body>
+                streamingAssetsUrl: "StreamingAssets",
+                companyName: {{{ JSON.stringify(COMPANY_NAME) }}},
+                productName: {{{ JSON.stringify(PRODUCT_NAME) }}},
+                productVersion: {{{ JSON.stringify(PRODUCT_VERSION) }}},
+                matchWebGLToCanvasSize: true,
+                devicePixelRatio: 1.0,
+            }).then((unityInstance) => window.SWAGSDK.unityInstance = unityInstance);
+        </script>
+    </body>
 </html>

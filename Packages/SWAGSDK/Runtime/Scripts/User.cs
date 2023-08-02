@@ -20,15 +20,21 @@ namespace AddictingGames
     {
         public string id;
         public string memberName;
+        bool? isSubscriber;
 
-        public bool? isSubscriber;
+        [HideInInspector]
+        public string token = "";
 
         public User () 
         {}
 
+
+
+        /* #region Utilities */
+
         void Reset ()
         {
-            SWAG.Instance.userToken = "";
+            this.token = "";
 
             if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                 SWAGConfig.Instance.GameName = "";
@@ -60,6 +66,12 @@ namespace AddictingGames
             ));
         }
 
+        /* #endregion */
+
+
+
+        /* #region Login */
+
         public void LoginAsGuest (
             System.Action onSuccess, 
             System.Action<string> onError
@@ -78,54 +90,8 @@ namespace AddictingGames
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
 
                     var userData = data.user;
-                    SWAG.Instance.User.id = userData._id;
-                    SWAG.Instance.userToken = data.token;
-
-                    if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                        this.GetAPIKeyFromKeyword(
-                            () => { 
-                                onSuccess();
-                            },
-                            (string error) => {
-                                this.Reset();
-                                onError(error);
-                            }
-                        );
-                    } else {
-                        onSuccess();
-                    }
-                },
-                (string error) => {
-                    this.Reset();
-                    onError(error);
-                }
-            ));
-        }
-
-        public void LoginAsUser (
-            string username, 
-            string password, 
-            System.Action onSuccess, 
-            System.Action<string> onError
-        ) 
-        {
-            var baseUrl = SWAGConfig.Instance.Provider == Provider.AddictingGames 
-                ? SWAGConstants.AddictingGamesAuthURL
-                : SWAGConstants.ShockwaveAuthURL;
-
-            var url = baseUrl + "/login" 
-                + "?username=" + username 
-                + "&password=" + password;
-            
-            SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                url,
-                false,
-                (string response) => {
-                    var data = JsonUtility.FromJson<UserWebResponse>(response);
-
-                    var userData = data.user;
-                    SWAG.Instance.User.id = userData._id;
-                    SWAG.Instance.userToken = data.token;
+                    this.id = userData._id;
+                    this.token = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
@@ -151,12 +117,19 @@ namespace AddictingGames
         [DllImport("__Internal")]
         static extern string WebInterface_GetToken ();
 
-        public void LoginFromWeb (
+        public void LoginUsingToken (
             System.Action onSuccess, 
             System.Action<string> onError
-        ) 
+        )
         {
-            SWAG.Instance.userToken = User.WebInterface_GetToken();
+            var token = User.WebInterface_GetToken();
+
+            if (token == "") {
+                this.LoginAsGuest(onSuccess, onError);
+                return;
+            }
+
+            this.token = token;
 
             var url = SWAGConstants.SWAGServicesURL + "/user";
             
@@ -165,8 +138,8 @@ namespace AddictingGames
                 true,
                 (string response) => {
                     var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
-                    SWAG.Instance.User.id = userData._id;
-                    SWAG.Instance.User.memberName = userData.memberName;
+                    this.id = userData._id;
+                    this.memberName = userData.memberName;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
@@ -189,12 +162,68 @@ namespace AddictingGames
             ));
         }
 
+        public void Login (
+            System.Action onSuccess, 
+            System.Action<string> onError
+        )
+        {
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                this.LoginUsingToken(
+                    () => { onSuccess(); },
+                    (string error) => { onError(error); }
+                );
+            #else
+                Debug.Log("Token login is not implemented for this platform. Logging in as guest instead.");
+
+                this.LoginAsGuest(
+                    () => { onSuccess(); },
+                    (string error) => { onError(error); }
+                );
+            #endif
+        }
+
+        /* #endregion */
+
+
+
+        /* #region Login Dialog */
+
+        public AsyncHandler<object> showLoginDialogAsyncHandler;
+
+        public void ShowLoginDialog (
+            System.Action onSuccess, 
+            System.Action<string> onCancelled
+        )
+        {
+            this.showLoginDialogAsyncHandler = new AsyncHandler<object>(
+                (object result) => { onSuccess(); },
+                (string reason) => { onCancelled(reason); }
+            );
+
+            if (this.IsLoggedIn()) {
+                this.showLoginDialogAsyncHandler.Resolve(null);
+                return;
+            }
+
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                SWAG.WebInterface_SendMessage("showLoginDialog", "");
+            #else
+                Debug.Log("SWAG.ShowLoginDialog() is not implemented for this platform.");
+            #endif
+        }
+
+        /* #endregion */
+
+
+
+        /* #region Helpers */
+
         public void IsSubscriber (
             System.Action<bool> onSuccess, 
             System.Action<string> onError
         )
         {
-            if (SWAG.Instance.userToken == "") {
+            if (!this.IsLoggedIn()) {
                 throw new System.Exception("User is not logged in.");
             }
 
@@ -219,12 +248,23 @@ namespace AddictingGames
 
         public bool IsGuest () 
         {
-            if (SWAG.Instance.userToken == "") {
+            if (!this.IsLoggedIn()) {
                 throw new System.Exception("User is not logged in.");
             }
 
-            return SWAG.Instance.User.memberName.ToLower() == "guest";
+            return this.memberName.ToLower() == "guest";
         }
+
+        public bool IsLoggedIn () 
+        {
+            return this.token != "";
+        }
+
+        /* #endregion */
+
+
+
+        /* #region Datastore */
 
         public void SetData (
             string key, 
@@ -233,7 +273,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            if (SWAG.Instance.userToken == "") {
+            if (!this.IsLoggedIn()) {
                 throw new System.Exception("User is not logged in.");
             }
 
@@ -261,7 +301,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            if (SWAG.Instance.userToken == "") {
+            if (!this.IsLoggedIn()) {
                 throw new System.Exception("User is not logged in.");
             }
             
@@ -287,5 +327,7 @@ namespace AddictingGames
                 }
             ));
         }
+
+        /* #endregion */
     }
 }

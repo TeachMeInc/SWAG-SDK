@@ -236,6 +236,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SWAGBanner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 461399154160912069, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 461399154160912075, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: bannerSize
       value: 0
@@ -336,6 +340,10 @@ PrefabInstance:
     - target: {fileID: 461399154160912069, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: m_Name
       value: SWAGBanner (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 461399154160912069, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 461399154160912075, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: bannerSize
@@ -530,7 +538,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!328 &1536048049
 VideoPlayer:
   m_ObjectHideFlags: 0
@@ -689,6 +697,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SWAGBanner (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 461399154160912069, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 461399154160912075, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: bannerSize
       value: 1
@@ -731,7 +743,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1713361523
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1058,6 +1070,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SWAGBanner
       objectReference: {fileID: 0}
+    - target: {fileID: 461399154160912069, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 461399154160912075, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: bannerSize
       value: 2
@@ -1129,7 +1145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: ShockwaveKeyword
-      value: 
+      value: jigsawpuzzles
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513879, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_Name

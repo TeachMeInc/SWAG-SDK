@@ -49,7 +49,7 @@ namespace AddictingGames
             }
         }
 
-        void OnDisable()
+        void OnDisable ()
         {
             if (this.id != null && SWAG.Instance) {
                 SWAG.Instance.HideBanner(this.id);
