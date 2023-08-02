@@ -1072,7 +1072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 461399154160912069, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 461399154160912075, guid: 2b4b864a0fccf41f49567e3e28801d11, type: 3}
       propertyPath: bannerSize

@@ -308,7 +308,14 @@ namespace AddictingGames
 
         public void OnLoginSuccess ()
         {
-            this.User.showLoginDialogAsyncHandler.Resolve(null);
+            this.User.LoginUsingToken(
+                () => {
+                    this.User.showLoginDialogAsyncHandler.Resolve(null);
+                },
+                (string error) => {
+                    this.User.showLoginDialogAsyncHandler.Reject(error);
+                }
+            );
         }
 
         public void OnLoginCancelled (string reason)
