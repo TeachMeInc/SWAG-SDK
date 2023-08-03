@@ -92,7 +92,10 @@ namespace AddictingGames
         public Metrics Metrics = new Metrics();
         public Scores Scores = new Scores();
         public User User = new User();
+
+        [HideInInspector]
         public bool isReady = false;
+        // Branding branding;
 
         public static SWAG Instance { get; private set; }
         
@@ -108,6 +111,10 @@ namespace AddictingGames
 
         private void Start ()
         {
+            // this.branding = this.transform
+            //     .Find("Branding")
+            //     .GetComponent<Branding>();
+
             this.User.Login(
                 () => {
                     this.isReady = true;
@@ -350,10 +357,20 @@ namespace AddictingGames
 
         /* #region Branding */
 
-        public void ShowBrandingAnimation (System.Action onSuccess)
-        {
-            throw new System.NotImplementedException();
-        }
+        // public void ShowBrandingAnimation (System.Action onSuccess)
+        // {
+        //     this.branding.gameObject.SetActive(true);
+        //     this.branding.Play(onSuccess);
+        // }
+
+        // public void ShowBrandingAnimation (
+        //     System.Action onSuccess, 
+        //     System.Action<string> onError
+        // )
+        // {
+        //     this.branding.gameObject.SetActive(true);
+        //     this.branding.Play(onSuccess, onError);
+        // }
 
         /* #endregion */
 

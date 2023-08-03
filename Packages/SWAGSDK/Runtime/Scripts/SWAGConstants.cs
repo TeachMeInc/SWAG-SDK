@@ -23,7 +23,7 @@ namespace AddictingGames
         /* #region Shockwave */
 
         public static string ShockwaveAuthURL = "https://new.shockwave.com/api/swag/v1";
-        public static string ShockwavePreloaderURL = "";
+        public static string ShockwavePreloaderURL = "https://cdn2.addictinggames.com/addictinggames-content/ag-assets/preloaders/AG_Preloader_2023.webm";
 
         /* #endregion */
     }

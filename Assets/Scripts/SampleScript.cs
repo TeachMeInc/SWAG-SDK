@@ -9,13 +9,13 @@ public class SampleScript : MonoBehaviour
     {
         var swag = SWAG.Instance;
 
-        swag.OnReady(() => {
-            Debug.Log("Login: Success");
-        });
+        // swag.OnReady(() => {
+        //     Debug.Log("Login: Success");
+        // });
     }
 
     void OnMouseDown ()
     {
-        SWAG.Instance.OpenURL("https://www.addictinggames.com/");
+        // SWAG.Instance.OpenURL("https://www.addictinggames.com/");
     }
 }

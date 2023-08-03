@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dec1505f35cc4fcd9a244fb45e88a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UserToken: 
+  isReady: 0
+  currentView: 0
 --- !u!114 &3794113532120513878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +63,7 @@ MonoBehaviour:
   DefaultValueFormatter: 
   AllowedDomains: []
   RestrictToAllowedDomains: 0
-  GameName: 
+  ViewMode: 0
+  GameName: Demo Game
   APIKey: 5c6c3c056917a692f96f9651
   ShockwaveKeyword: 
