@@ -17,8 +17,8 @@ namespace AddictingGames
     public enum ViewMode
     {
         Responsive,
-        ForceMobile,
-        ForceDesktop,
+        ForcePortrait,
+        ForceLandscape,
     }
 
     public class SWAGConfig : MonoBehaviour
@@ -57,6 +57,9 @@ namespace AddictingGames
 
         [SerializeField]
         public ViewMode ViewMode = ViewMode.Responsive;
+
+        [SerializeField]
+        public bool PlayBrandingAnimation = true;
 
 
 

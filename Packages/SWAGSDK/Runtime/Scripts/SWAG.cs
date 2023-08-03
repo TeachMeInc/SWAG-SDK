@@ -93,9 +93,8 @@ namespace AddictingGames
         public Scores Scores = new Scores();
         public User User = new User();
 
-        [HideInInspector]
-        public bool isReady = false;
-        // Branding branding;
+        bool isReady = false;
+        BrandingAnimation brandingAnimation;
 
         public static SWAG Instance { get; private set; }
         
@@ -109,17 +108,24 @@ namespace AddictingGames
             Instance = this;
         }
 
-        private void Start ()
+        void Start ()
         {
-            // this.branding = this.transform
-            //     .Find("Branding")
-            //     .GetComponent<Branding>();
+            this.brandingAnimation = this.transform
+                .Find("BrandingAnimation")
+                .GetComponent<BrandingAnimation>();
+
+            if (!SWAGConfig.Instance.PlayBrandingAnimation) {
+                this.brandingAnimation.gameObject.SetActive(false);
+            }
 
             this.User.Login(
                 () => {
-                    this.isReady = true;
-                    if (this.readyAsyncHandler != null) {
-                        this.readyAsyncHandler.Resolve(null);
+                    if (SWAGConfig.Instance.PlayBrandingAnimation) {
+                        if (!this.brandingAnimation.IsPlaying()) {
+                            this.Ready();
+                        }
+                    } else {
+                        this.Ready();
                     }
                 },
                 (string error) => {
@@ -128,6 +134,28 @@ namespace AddictingGames
                     }
                 }
             );
+        }
+
+        void Update ()
+        {
+            if (this.isReady || !SWAGConfig.Instance.PlayBrandingAnimation) return;
+
+            if (!brandingAnimation.IsPlaying() && this.User.IsLoggedIn()) {
+                this.Ready();
+            }
+        }
+
+        void Ready ()
+        {
+            this.isReady = true;
+
+            if (this.readyAsyncHandler != null) {
+                this.readyAsyncHandler.Resolve(null);
+            }
+
+            if (SWAGConfig.Instance.PlayBrandingAnimation) {
+                this.brandingAnimation.gameObject.SetActive(false);
+            }
         }
 
         AsyncHandler<object> readyAsyncHandler;
@@ -333,10 +361,10 @@ namespace AddictingGames
         public void OnCurrentViewChanged (string currentView)
         {
             switch (SWAGConfig.Instance.ViewMode) {
-                case ViewMode.ForceDesktop:
+                case ViewMode.ForceLandscape:
                     this.currentView = CurrentView.Desktop;
                     return;
-                case ViewMode.ForceMobile:
+                case ViewMode.ForcePortrait:
                     this.currentView = CurrentView.Mobile;
                     return;
             }
@@ -350,27 +378,6 @@ namespace AddictingGames
                     break;
             }
         }
-
-        /* #endregion */
-
-
-
-        /* #region Branding */
-
-        // public void ShowBrandingAnimation (System.Action onSuccess)
-        // {
-        //     this.branding.gameObject.SetActive(true);
-        //     this.branding.Play(onSuccess);
-        // }
-
-        // public void ShowBrandingAnimation (
-        //     System.Action onSuccess, 
-        //     System.Action<string> onError
-        // )
-        // {
-        //     this.branding.gameObject.SetActive(true);
-        //     this.branding.Play(onSuccess, onError);
-        // }
 
         /* #endregion */
 
