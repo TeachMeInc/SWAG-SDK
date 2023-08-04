@@ -50,12 +50,6 @@ namespace AddictingGames
         public string DefaultValueFormatter = "";
 
         [SerializeField]
-        public List<string> AllowedDomains = new List<string>();
-
-        [SerializeField]
-        public bool RestrictToAllowedDomains  = false;
-
-        [SerializeField]
         public ViewMode ViewMode = ViewMode.Responsive;
 
         [SerializeField]
