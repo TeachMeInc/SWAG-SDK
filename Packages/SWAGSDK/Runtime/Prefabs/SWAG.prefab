@@ -891,6 +891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4703ee0d5f7ca8442bb2cb999d77a78c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoresDialogController: {fileID: 4119256598648781805}
 --- !u!1 &2818719575884941472
 GameObject:
   m_ObjectHideFlags: 0
@@ -3381,6 +3382,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 614023623712207191, guid: e228467d0c789fd4da54b31582d4aa5c, type: 3}
+      propertyPath: scoresDialogController
+      value: 
+      objectReference: {fileID: 4119256598648781805}
     - target: {fileID: 2199667607534521762, guid: e228467d0c789fd4da54b31582d4aa5c, type: 3}
       propertyPath: m_Name
       value: MyScoresToggle

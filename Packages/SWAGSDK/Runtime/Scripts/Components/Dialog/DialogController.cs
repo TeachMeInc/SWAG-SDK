@@ -53,14 +53,14 @@ namespace AddictingGames
             }
         }
 
-        bool IsLandscape ()
+        protected bool IsLandscape ()
         {
             return SWAGConfig.Instance.ViewMode != ViewMode.Responsive
                 ? SWAGConfig.Instance.ViewMode == ViewMode.ForceLandscape
                 : Screen.width > Screen.height;
         }
 
-        Dialog CurrentDialog ()
+        protected Dialog CurrentDialog ()
         {
             if (this.IsLandscape()) {
                 return this.landscapeDialog;
@@ -69,7 +69,7 @@ namespace AddictingGames
             }
         }
 
-        Dialog ActiveDialog ()
+        protected Dialog ActiveDialog ()
         {
             if (this.landscapeDialog.gameObject.activeSelf) {
                 return this.landscapeDialog;
@@ -144,7 +144,7 @@ namespace AddictingGames
             ready();
         }
 
-        protected virtual void OnLayout (Dialog dialog)
+        protected virtual void OnLayout (Dialog dialog, bool isRerender = false)
         {
             return;
         }

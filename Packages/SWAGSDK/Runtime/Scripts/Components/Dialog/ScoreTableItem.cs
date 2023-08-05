@@ -13,7 +13,7 @@ namespace AddictingGames
             fields[0].text = score.position.ToString();
             fields[1].text = score.memberName;
             fields[2].text = score.value.ToString();
-            fields[3].text = score.date.ToString();
+            fields[3].text = score.date.ToString("MMMM dd, yyyy");
 
             this.SetZebraStripe();
         }

@@ -13,8 +13,6 @@ namespace AddictingGames
         {
             this.loader = this.GetComponentInChildren<LoaderAnimation>(true);
             this.headerText = this.GetComponentInChildren<HeaderText>(true);
-            Debug.Log("HEADER TEXT");
-            Debug.Log(this.headerText);
         }
 
         public void Show ()
@@ -47,6 +45,19 @@ namespace AddictingGames
             }
             
             this.headerText.SetText(text);
+        }
+
+        public void SetLoading (bool isLoading)
+        {
+            if (this.loader == null) {
+                this.Awake();
+            }
+
+            if (isLoading) {
+                this.loader.Show();
+            } else {
+                this.loader.Hide();
+            }
         }
     }
 }

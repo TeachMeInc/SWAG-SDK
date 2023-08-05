@@ -10,8 +10,16 @@ namespace AddictingGames
         List<Score> scores;
         DailyBest? dailyBest;
 
+        int curLevelKeyIndex = 0;
+        int curPeriodIndex = 0;
+        bool onlyMyScores = false;
+
         protected override void OnBeforeShow (Dialog dialog)
         {
+            this.curLevelKeyIndex = 0;
+            this.curPeriodIndex = 0;
+            this.onlyMyScores = false;
+
             dialog
                 .SetHeaderText("");
 
@@ -21,6 +29,7 @@ namespace AddictingGames
 
             dialog.gameObject
                 .GetComponentInChildren<ScoreDropdowns>(true)
+                .Reset()
                 .gameObject.SetActive(false);
 
             dialog.gameObject
@@ -29,6 +38,7 @@ namespace AddictingGames
 
             dialog.gameObject
                 .GetComponentInChildren<MyScoresToggle>(true)
+                .Reset()
                 .gameObject.SetActive(false);
         }
 
@@ -44,14 +54,14 @@ namespace AddictingGames
                     this.levelKeys = levels;
 
                     swag.Scores.GetScores(
-                        levels[0].key,
+                        levels[this.curLevelKeyIndex].key,
                         ScorePeriod.Daily,
                         (List<Score> scores) => {
                             this.scores = scores;
 
                             if (swag.User.IsLoggedIn()) {
                                 swag.Scores.currentUser.GetDailyBest(
-                                    levels[0].key,
+                                    levels[this.curLevelKeyIndex].key,
                                     (DailyBest dailyBest) => {
                                         this.dailyBest = dailyBest;
                                         ready();
@@ -69,36 +79,40 @@ namespace AddictingGames
             );
         }
 
-        protected override void OnLayout (Dialog dialog)
+        protected override void OnLayout (Dialog dialog, bool isRerender = false)
         {
             // Header
             dialog
-                .SetHeaderText("SCORES HEADER");
+                .SetHeaderText(this.levelKeys[this.curLevelKeyIndex].valueLabel);
 
             // Player Best
-            if (
-                this.dailyBest != null && 
-                this.dailyBest?.dailyBest != "" &&
-                this.dailyBest?.position != -1
-            ) {
-                dialog.gameObject
-                    .GetComponentInChildren<PlayerBest>(true)
-                    .SetText(
-                        $"Today's Best Score: {this.dailyBest?.dailyBest}",
-                        $"You placed #{this.dailyBest?.position} out of {this.dailyBest?.totalScores} scores today." 
-                    );
+            if (!isRerender) {
+                if (
+                    this.dailyBest != null && 
+                    this.dailyBest?.dailyBest != "" &&
+                    this.dailyBest?.position != -1
+                ) {
+                    dialog.gameObject
+                        .GetComponentInChildren<PlayerBest>(true)
+                        .SetText(
+                            $"Today's Best Score: {this.dailyBest?.dailyBest}",
+                            $"You placed #{this.dailyBest?.position} out of {this.dailyBest?.totalScores} scores today." 
+                        );
+                }
             }
 
             // Dropdown Items
-            var dropdownItems = new List<string>();
-            foreach (var level in this.levelKeys) {
-                dropdownItems.Add(level.displayName);
-            }
+            if (!isRerender) {
+                var dropdownItems = new List<string>();
+                foreach (var level in this.levelKeys) {
+                    dropdownItems.Add(level.displayName);
+                }
 
-            dialog.gameObject
-                .GetComponentInChildren<ScoreDropdowns>(true)
-                .SetItems(dropdownItems)
-                .gameObject.SetActive(true);
+                dialog.gameObject
+                    .GetComponentInChildren<ScoreDropdowns>(true)
+                    .SetItems(dropdownItems)
+                    .gameObject.SetActive(true);
+            }
 
             // Table Items
             var table = dialog.gameObject.GetComponentInChildren<ScoreTable>(true);
@@ -120,7 +134,7 @@ namespace AddictingGames
             }
 
             table
-                .SetValueColumnLabel("LABEL")
+                .SetValueColumnLabel(this.levelKeys[this.curLevelKeyIndex].valueLabel)
                 .SetContent(tableItems)
                 .gameObject.SetActive(true);
 
@@ -128,6 +142,58 @@ namespace AddictingGames
             dialog.gameObject
                 .GetComponentInChildren<MyScoresToggle>(true)
                 .gameObject.SetActive(true);
+        }
+
+        public void OnDropdownsChanged (int selectedLevelKey, int selectedPeriod)
+        {
+            this.curLevelKeyIndex = selectedLevelKey;
+            this.curPeriodIndex = selectedPeriod;
+
+            this.FetchScores();
+        }
+
+        public void OnMyScoresToggleChanged (bool onlyMyScores)
+        {
+            this.onlyMyScores = onlyMyScores;
+
+            this.FetchScores();
+        }
+
+        void FetchScores ()
+        {
+            this.ActiveDialog().SetLoading(true);
+
+            var swag = SWAG.Instance;
+
+            if (this.onlyMyScores) {
+                swag.Scores.currentUser.GetScores(
+                    this.levelKeys[this.curLevelKeyIndex].key,
+                    (ScorePeriod)this.curPeriodIndex,
+                    (List<Score> scores) => {
+                        this.scores = scores;
+                        this.ActiveDialog().SetLoading(false);
+                        this.OnLayout(this.ActiveDialog(), true);
+                    },
+                    (string error) => {
+                        this.ActiveDialog().SetLoading(false);
+                        Debug.LogError(error);
+                    }
+                );
+            } else {
+                swag.Scores.GetScores(
+                    this.levelKeys[this.curLevelKeyIndex].key,
+                    (ScorePeriod)this.curPeriodIndex,
+                    (List<Score> scores) => {
+                        this.scores = scores;
+                        this.ActiveDialog().SetLoading(false);
+                        this.OnLayout(this.ActiveDialog(), true);
+                    },
+                    (string error) => {
+                        this.ActiveDialog().SetLoading(false);
+                        Debug.LogError(error);
+                    }
+                );
+            }
         }
     }
 }
