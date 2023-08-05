@@ -164,10 +164,7 @@ namespace AddictingGames
             System.Action onSuccess
         )
         {
-            this.OnReady(
-                onSuccess, 
-                (string error) => {}
-            );
+            this.OnReady(onSuccess, null);
         }
 
         public void OnReady (

@@ -6,7 +6,7 @@ namespace AddictingGames
 {
     public struct Score
     {
-        public float value;
+        public string value;
         public System.DateTime date;
         public string memberName;
         public string memberAvatarUrl;
@@ -15,7 +15,8 @@ namespace AddictingGames
 
     public struct LevelKey
     {
-        public string levelName;
+        public string key;
+        public string displayName;
         public string valueLabel;
         public string valueType;
         public int dropdownOrder;
@@ -24,7 +25,7 @@ namespace AddictingGames
 
     public struct DailyBest
     {
-        public float dailyBest;
+        public string dailyBest;
         public int position;
         public int totalScores;
     }
@@ -43,7 +44,7 @@ namespace AddictingGames
 
         public void RecordScore (
             string levelKey, 
-            float score,
+            string score,
             System.Action onSuccess,
             System.Action<string> onError
         ) 
@@ -73,7 +74,6 @@ namespace AddictingGames
 
         public void GetDailyBest (
             string levelKey, 
-            ScorePeriod period,
             System.Action<DailyBest> onSuccess,
             System.Action<string> onError
         ) 
@@ -94,7 +94,7 @@ namespace AddictingGames
             }
 
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/context" +
+                SWAGConstants.SWAGServicesURL + "/scores/context" +
                     $"?game={SWAGConfig.Instance.APIKey}" + 
                     $"&level_key={levelKey}" + 
                     $"&value_formatter={valueFormatter}",
@@ -103,14 +103,16 @@ namespace AddictingGames
                     var data = JsonUtility.FromJson<DailyBestWebResponse>(response);
 
                     var dailyBest = data.dailyBest.value == "-"
-                        ? -1
-                        : float.Parse(data.dailyBest.value);
+                        ? ""
+                        : data.dailyBest.value;
                     var position = data.scorePosition.value == "-"
                         ? -1
                         : int.Parse(data.scorePosition.value);
-                    var totalScores = data.totalScores.value == "-"
+                    var totalScores = data.totalScores == null
                         ? -1
-                        : int.Parse(data.totalScores.value);
+                        : data.totalScores?.value == "-"
+                            ? -1
+                            : int.Parse(data.totalScores?.value);
 
                     onSuccess(new DailyBest {
                         dailyBest = dailyBest,
@@ -180,16 +182,13 @@ namespace AddictingGames
 
         public static string GetPeriodString (ScorePeriod period) 
         {
-            switch (period) {
-                case ScorePeriod.Daily:
-                    return "daily";
-                case ScorePeriod.Weekly:
-                    return "weekly";
-                case ScorePeriod.AllTime:
-                    return "all_time";
-                default:
-                    throw new System.Exception("Invalid ScorePeriod");
-            }
+            return period switch
+            {
+                ScorePeriod.Daily => "daily",
+                ScorePeriod.Weekly => "weekly",
+                ScorePeriod.AllTime => "all_time",
+                _ => throw new System.Exception("Invalid ScorePeriod"),
+            };
         }
 
         public static string GetScoresURI (string levelKey, ScorePeriod period, string valueFormatter)
@@ -201,9 +200,37 @@ namespace AddictingGames
                 $"&value_formatter={valueFormatter}"; 
         }
 
-        public void ShowDialog () 
+        public void ShowDialog ()
         {
-            throw new System.NotImplementedException();
+            this.ShowDialog(
+                () => {}, 
+                (string error) => {}
+            );
+        }
+
+        public void ShowDialog (System.Action onClosed)
+        {
+            this.ShowDialog(
+                onClosed, 
+                (string error) => {}
+            );
+        }
+
+        public void ShowDialog (System.Action<string> onError)
+        {
+            this.ShowDialog(
+                () => {},
+                onError
+            );
+        }
+
+        public void ShowDialog (
+            System.Action onClosed,
+            System.Action<string> onError
+        ) 
+        {
+            var dialogController = SWAG.Instance.gameObject.GetComponentInChildren<ScoresDialogController>(true);
+            dialogController.Show(onClosed, onError);
         }
 
         public void GetLevelKeys (
@@ -217,13 +244,14 @@ namespace AddictingGames
             }
 
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/categories?game=" + SWAGConfig.Instance.APIKey,
+                SWAGConstants.SWAGServicesURL + "/score/categories?game=" + SWAGConfig.Instance.APIKey,
                 false,
                 (string response) => {
                     var data = JsonListHelper.FromJson<LevelKeysWebResponse>(response);
                     var levelKeys = data.ConvertAll<LevelKey>((LevelKeysWebResponse item) => {
                         return new LevelKey {
-                            levelName = item.name,
+                            key = item.level_key,
+                            displayName = item.name,
                             valueLabel = item.value_name,
                             valueType = item.value_type,
                             dropdownOrder = item.order,

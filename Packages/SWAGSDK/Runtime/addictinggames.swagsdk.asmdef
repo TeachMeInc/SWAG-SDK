@@ -3,6 +3,7 @@
     "references": [
         "UnityEngine",
         "UnityEngine.Networking",
-        "UnityEngine.UI"
+        "UnityEngine.UI",
+        "Unity.TextMeshPro"
     ]
 }

@@ -63,7 +63,7 @@ namespace AddictingGames {
     public struct ScoresWebResponse
     {
         public string level_key;
-        public float value;
+        public string value;
         public string date_created;
         public string screen_name;
         public string avatarUrl;
@@ -88,7 +88,7 @@ namespace AddictingGames {
     {
         public DailyBestWebResponseValue dailyBest;
         public DailyBestWebResponseValue scorePosition;
-        public DailyBestWebResponseValue totalScores;
+        public DailyBestWebResponseValue? totalScores;
     }
 
     [System.Serializable]
@@ -124,7 +124,7 @@ namespace AddictingGames {
     {
         public string game;
         public string level_key;
-        public float value;
+        public string value;
     }
     
     /* #endregion */

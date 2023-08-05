@@ -10,13 +10,8 @@ public class MyGameController : MonoBehaviour
 
     void Start ()
     {
-        this.mainCamera = this.transform
-            .Find("MainCamera")
-            .GetComponent<Camera>();
-
-        this.mainCanvas = this.transform
-            .Find("MainCanvas")
-            .GetComponent<Canvas>();
+        this.mainCamera = this.gameObject.GetComponentInChildren<Camera>(true);
+        this.mainCanvas = this.gameObject.GetComponentInChildren<Canvas>(true);
 
         var swag = SWAG.Instance;
 
@@ -27,8 +22,13 @@ public class MyGameController : MonoBehaviour
 
     void Ready () 
     {
+        Debug.Log("Ready!");
+
         this.mainCamera.gameObject.SetActive(true);
         this.mainCanvas.gameObject.SetActive(true);
-        Debug.Log("Ready!");
+
+        var swag = SWAG.Instance;
+        
+        swag.Scores.ShowDialog();
     }
 }
