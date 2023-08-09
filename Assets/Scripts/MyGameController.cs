@@ -29,6 +29,6 @@ public class MyGameController : MonoBehaviour
 
         var swag = SWAG.Instance;
         
-        swag.Scores.ShowDialog();
+        swag.Achievements.ShowDialog();
     }
 }

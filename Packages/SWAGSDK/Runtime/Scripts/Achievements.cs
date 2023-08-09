@@ -86,9 +86,37 @@ namespace AddictingGames
         public Achievements () 
         {}
 
-        public void ShowDialog () 
+        public void ShowDialog ()
         {
-            throw new System.NotImplementedException();
+            this.ShowDialog(
+                () => {}, 
+                (string error) => {}
+            );
+        }
+
+        public void ShowDialog (System.Action onClosed)
+        {
+            this.ShowDialog(
+                onClosed, 
+                (string error) => {}
+            );
+        }
+
+        public void ShowDialog (System.Action<string> onError)
+        {
+            this.ShowDialog(
+                () => {},
+                onError
+            );
+        }
+
+        public void ShowDialog (
+            System.Action onClosed,
+            System.Action<string> onError
+        ) 
+        {
+            var dialogController = SWAG.Instance.gameObject.GetComponentInChildren<AchievementsDialogController>(true);
+            dialogController.Show(onClosed, onError);
         }
 
         public void GetAll (

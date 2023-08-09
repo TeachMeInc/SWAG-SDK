@@ -8,6 +8,9 @@ namespace AddictingGames
 {
     public class DialogController : MonoBehaviour
     {
+        [SerializeField]
+        public bool UseSingleDialog = false;
+
         Dialog landscapeDialog;
         Dialog portraitDialog;
         AsyncHandler<object> dialogLifecycleHandler;
@@ -15,7 +18,7 @@ namespace AddictingGames
         void Awake ()
         {
             this.landscapeDialog = this.GetComponentsInChildren<Dialog>(true)[0];
-            this.portraitDialog = this.GetComponentsInChildren<Dialog>(true)[1];
+            this.portraitDialog = this.UseSingleDialog ? this.landscapeDialog : this.GetComponentsInChildren<Dialog>(true)[1];
         }
 
         void Start ()
@@ -62,7 +65,7 @@ namespace AddictingGames
 
         protected Dialog CurrentDialog ()
         {
-            if (this.IsLandscape()) {
+            if (this.UseSingleDialog || this.IsLandscape()) {
                 return this.landscapeDialog;
             } else {
                 return this.portraitDialog;
