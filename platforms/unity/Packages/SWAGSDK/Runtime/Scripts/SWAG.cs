@@ -70,14 +70,6 @@ namespace AddictingGames
         }
     }
 
-    public enum NotificationType
-    {
-        None,
-        Success,
-        Error,
-        Warning,
-    }
-
     public class SWAG : MonoBehaviour
     {
         /* #region Singleton */
