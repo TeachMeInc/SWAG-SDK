@@ -4,19 +4,22 @@ using UnityEngine;
 
 namespace AddictingGames
 {
-    public class Metrics
+    namespace Metrics
     {
-        public Metrics () 
-        {}
-
-        public void StartGame () 
+        public class Metrics
         {
-            throw new System.NotImplementedException();
-        }
+            public Metrics () 
+            {}
 
-        public void EndGame () 
-        {
-            throw new System.NotImplementedException();
+            public void StartGame () 
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public void EndGame () 
+            {
+                throw new System.NotImplementedException();
+            }
         }
     }
 }
