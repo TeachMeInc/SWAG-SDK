@@ -39,7 +39,7 @@ namespace AddictingGames {
         public string name;
         public string achievement_key;
         public string description;
-        public bool? user_achieved;
+        public bool user_achieved;
     }
 
     [System.Serializable]

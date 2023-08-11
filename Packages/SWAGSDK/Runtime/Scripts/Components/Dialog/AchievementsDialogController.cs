@@ -44,20 +44,20 @@ namespace AddictingGames
             var table = dialog.gameObject.GetComponentInChildren<Table>(true);
             var tableItems = new List<Transform>();
 
-            // foreach (var achievement in this.achievements) {
-            //     var scoreTableItem = Instantiate(
-            //         table.itemPrefab,
-            //         Vector3.zero,
-            //         Quaternion.identity,
-            //         dialog.gameObject.transform
-            //     );
+            foreach (var achievement in this.achievements) {
+                var scoreTableItem = Instantiate(
+                    table.itemPrefab,
+                    Vector3.zero,
+                    Quaternion.identity,
+                    dialog.gameObject.transform
+                );
 
-            //     scoreTableItem
-            //         .GetComponent<AchievementTableItem>()
-            //         .SetFields(achievement);
+                scoreTableItem
+                    .GetComponent<AchievementTableItem>()
+                    .SetFields(achievement);
 
-            //     tableItems.Add(scoreTableItem);
-            // }
+                tableItems.Add(scoreTableItem);
+            }
 
             table
                 .SetContent(tableItems)

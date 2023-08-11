@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
 
 namespace AddictingGames
 {
@@ -20,11 +21,12 @@ namespace AddictingGames
 
         void SetZebraStripe ()
         {
-            var images = new List<UnityEngine.UI.Image>(this.transform.parent.GetComponentsInChildren<UnityEngine.UI.Image>(true));
-            var thisImage = this.GetComponent<UnityEngine.UI.Image>();
+            var items = new List<ScoreTableItem>(this.transform.parent.GetComponentsInChildren<ScoreTableItem>(true));
+            var thisItem = this.GetComponent<ScoreTableItem>();
+            var thisImage = this.GetComponent<Image>();
             
-            var index = images.IndexOf(thisImage);
-            if (index % 2 == 0) {
+            var index = items.IndexOf(thisItem);
+            if (index % 2 == 1) {
                 thisImage.color = new Color(1f, 1f, 1f, 0f);
             }
         }

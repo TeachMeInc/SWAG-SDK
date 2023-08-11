@@ -78,12 +78,6 @@ namespace AddictingGames
         Warning,
     }
 
-    public enum CurrentView
-    {
-        Desktop,
-        Mobile,
-    }
-
     public class SWAG : MonoBehaviour
     {
         /* #region Singleton */
@@ -181,15 +175,6 @@ namespace AddictingGames
                 );
             }
         }
-
-        /* #endregion */
-
-
-
-        /* #region General Properties */
-
-        [HideInInspector]
-        public CurrentView currentView = CurrentView.Desktop;
 
         /* #endregion */
 
@@ -353,27 +338,6 @@ namespace AddictingGames
         public void OnLoginCancelled (string reason)
         {
             this.User.showLoginDialogAsyncHandler.Reject(reason);
-        }
-
-        public void OnCurrentViewChanged (string currentView)
-        {
-            switch (SWAGConfig.Instance.ViewMode) {
-                case ViewMode.ForceLandscape:
-                    this.currentView = CurrentView.Desktop;
-                    return;
-                case ViewMode.ForcePortrait:
-                    this.currentView = CurrentView.Mobile;
-                    return;
-            }
-
-            switch (currentView) {
-                case "desktop":
-                    this.currentView = CurrentView.Desktop;
-                    break;
-                case "mobile":
-                    this.currentView = CurrentView.Mobile;
-                    break;
-            }
         }
 
         /* #endregion */
