@@ -1,25 +1,60 @@
-# Scores (Class)
+# Scores Class Documentation
 
-- **Fields**:
-  - `ScoresCurrentUser currentUser`: Represents the currently logged-in user.
+Manages score-related operations in the game, including retrieval, formatting, and presentation.
 
-- **Methods**:
-  - **ShowDialog (overloads)**:
-    - **Description**: Displays the scores dialog.
-    - **Overloads**:
-      - Without parameters.
-      - With `System.Action onClosed` parameter.
-      - With `System.Action<string> onError` parameter.
-      - With both `System.Action onClosed` and `System.Action<string> onError` parameters.
+## Fields
 
-  - **GetLevelKeys**:
-    - **Parameters**:
-      - `System.Action<List<LevelKey>> onSuccess`: Callback to execute upon successful retrieval of level keys.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Retrieves the keys for all the levels.
-    
-  - **GetScores (overloads)**:
-    - **Description**: Retrieves the scores for the specified level and period.
-    - **Overloads**:
-      - With `string levelKey`, `ScorePeriod period`, `System.Action<List<Score>> onSuccess`, and `System.Action<string> onError` parameters.
-      - With `string levelKey`, `ScorePeriod period`, `string valueFormatter`, `System.Action<List<Score>> onSuccess`, and `System.Action<string> onError` parameters.
+| Field                  | Description                                              |
+|------------------------|----------------------------------------------------------|
+| `ScoresCurrentUser currentUser` | Represents the current user's score-related operations. |
+
+## Methods
+
+### ShowDialog (Overloaded)
+
+Displays the scores dialog.
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| --- | --- |
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| `System.Action onClosed` | Callback to execute when the dialog is closed.              |
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| `System.Action<string> onError` | Callback to execute in case of an error.                  |
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| `System.Action onClosed` | Callback to execute when the dialog is closed.              |
+| `System.Action<string> onError` | Callback to execute in case of an error.                  |
+
+### GetLevelKeys
+
+Retrieves the keys for different game levels.
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| `System.Action<List<LevelKey>> onSuccess` | Callback to execute upon successful retrieval of level keys. |
+| `System.Action<string> onError` | Callback to execute in case of an error.                  |
+
+### GetScores (Overloaded)
+
+Retrieves scores for the specified level and period.
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| `string levelKey`      | Key associated with the level.                                |
+| `ScorePeriod period`   | Time period for which the scores are to be retrieved.         |
+| `System.Action<List<Score>> onSuccess` | Callback to execute upon successful retrieval of scores. |
+| `System.Action<string> onError` | Callback to execute in case of an error.                  |
+
+| Parameter              | Description                                                  |
+|------------------------|--------------------------------------------------------------|
+| `string levelKey`      | Key associated with the level.                                |
+| `ScorePeriod period`   | Time period for which the scores are to be retrieved.         |
+| `string valueFormatter`| Formatter for the score value.                                |
+| `System.Action<List<Score>> onSuccess` | Callback to execute upon successful retrieval of scores. |
+| `System.Action<string> onError` | Callback to execute in case of an error.                  |

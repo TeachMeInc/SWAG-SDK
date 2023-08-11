@@ -4,12 +4,15 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "SWAG Documentation",
   description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Examples', link: '/markdown-examples' }
     ],
+
+    outline: [2, 3],
 
     sidebar: [
       {
@@ -66,6 +69,6 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
+    ],
   }
 })

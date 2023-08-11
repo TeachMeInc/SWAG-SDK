@@ -1,22 +1,52 @@
 # ScoresCurrentUser (Class)
 
-- **Methods**:
-  - **RecordScore**:
-    - **Parameters**:
-      - `string levelKey`: The key of the level.
-      - `string score`: The score to record.
-      - `System.Action onSuccess`: Callback to execute upon successful recording of the score.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Records a score for the given level key.
+Represents the current user's score-related operations in the game.
 
-  - **GetDailyBest (overloads)**:
-    - **Description**: Retrieves the daily best score for the specified level.
-    - **Overloads**:
-      - With `string levelKey`, `System.Action<DailyBest> onSuccess`, and `System.Action<string> onError` parameters.
-      - With `string levelKey`, `string valueFormatter`, `System.Action<DailyBest> onSuccess`, and `System.Action<string> onError` parameters.
+## Methods
 
-  - **GetScores (overloads)**:
-    - **Description**: Retrieves the scores for the specified level and period.
-    - **Overloads**:
-      - With `string levelKey`, `ScorePeriod period`, `System.Action<List<Score>> onSuccess`, and `System.Action<string> onError` parameters.
-      - With `string levelKey`, `ScorePeriod period`, `string valueFormatter`, `System.Action<List<Score>> onSuccess`, and `System.Action<string> onError` parameters.
+### RecordScore
+
+Records the user's score for a particular game level.
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `string levelKey`    | Key associated with the level for which the score is being recorded. |
+| `string score`       | The score value to be recorded.                     |
+| `System.Action onSuccess` | Callback to execute upon successful recording of the score. |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |
+
+### GetDailyBest (Overloaded)
+
+Retrieves the user's daily best score for a particular game level.
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `string levelKey`    | Key associated with the level.                      |
+| `System.Action<DailyBest> onSuccess` | Callback to execute upon successful retrieval of daily best score. |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `string levelKey`    | Key associated with the level.                      |
+| `string valueFormatter` | Formatter for the score value.                   |
+| `System.Action<DailyBest> onSuccess` | Callback to execute upon successful retrieval of daily best score. |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |
+
+### GetScores (Overloaded)
+
+Retrieves the user's scores for the specified level and period.
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `string levelKey`    | Key associated with the level.                      |
+| `ScorePeriod period` | Time period for which the scores are to be retrieved. |
+| `System.Action<List<Score>> onSuccess` | Callback to execute upon successful retrieval of scores. |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `string levelKey`    | Key associated with the level.                      |
+| `ScorePeriod period` | Time period for which the scores are to be retrieved. |
+| `string valueFormatter` | Formatter for the score value.                   |
+| `System.Action<List<Score>> onSuccess` | Callback to execute upon successful retrieval of scores. |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |

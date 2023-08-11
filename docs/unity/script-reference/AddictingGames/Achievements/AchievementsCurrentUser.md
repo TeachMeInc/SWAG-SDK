@@ -1,15 +1,22 @@
 # AchievementsCurrentUser (Class)
 
-- **Methods**:
-  - **RecordAchievement**:
-    - **Parameters**:
-      - `string key`: The key representing the achievement.
-      - `System.Action onSuccess`: Callback to execute upon successful operation.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Records an achievement for the currently logged-in user.
+## Methods
 
-  - **GetAchievements**:
-    - **Parameters**:
-      - `System.Action<List<Achievement>> onSuccess`: Callback to execute upon successful retrieval of achievements.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Retrieves the list of achievements for the currently logged-in user.
+### RecordAchievement
+
+Records an achievement for the currently logged-in user.
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `string key`         | The key representing the achievement.                |
+| `System.Action onSuccess` | Callback to execute upon successful operation.   |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |
+
+### GetAchievements
+
+Retrieves the list of achievements for the currently logged-in user.
+
+| Parameter            | Description                                          |
+|----------------------|------------------------------------------------------|
+| `System.Action<List<Achievement>> onSuccess` | Callback to execute upon successful retrieval of achievements. |
+| `System.Action<string> onError` | Callback to execute in case of an error.    |

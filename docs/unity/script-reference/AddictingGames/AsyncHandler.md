@@ -1,27 +1,44 @@
-# AsyncHandler (Class)
+# AsyncHandler\<T\> (Class)
 
-- **Type Parameters**:
-  - `T`: The type of object expected in the successful callback.
+## Type Parameters
 
-- **Fields**:
-  - `System.Action<T> onSuccess`: Callback function to call upon success.
-  - `System.Action<string> onError`: Callback function to call upon error.
+| Field                  | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `T` | The type of object expected in the successful callback. |
 
-- **Methods**:
-  - **AsyncHandler (constructor)**:
-    - **Parameters**:
-      - `System.Action<T> onSuccess`: Callback function to set.
-      - `System.Action<string> onError`: Callback function to set.
+## Fields
 
-  - **Reset**:
-    - **Description**: Resets the `onSuccess` and `onError` callbacks to null.
+| Field                  | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `System.Action<T> onSuccess` | Callback function to call upon success.     |
+| `System.Action<string> onError` | Callback function to call upon error.      |
 
-  - **Resolve**:
-    - **Parameters**:
-      - `T result`: The result to pass to the `onSuccess` callback.
-    - **Description**: Invokes the `onSuccess` callback with the given result and resets the handlers.
+## Methods
 
-  - **Reject**:
-    - **Parameters**:
-      - `string error`: The error message to pass to the `onError` callback.
-    - **Description**: Invokes the `onError` callback with the given error and resets the handlers.
+### AsyncHandler (Constructor)
+
+| Parameter            | Description                                              |
+|----------------------|----------------------------------------------------------|
+| `System.Action<T> onSuccess` | Callback function to set.                         |
+| `System.Action<string> onError` | Callback function to set.                         |
+
+### Reset
+
+Resets the `onSuccess` and `onError` callbacks to null.
+
+### Resolve
+
+Invokes the `onSuccess` callback with the given result and resets the handlers.
+
+| Parameter            | Description                                              |
+|----------------------|----------------------------------------------------------|
+| `T result`           | The result to pass to the `onSuccess` callback.           |
+
+### Reject
+
+Invokes the `onError` callback with the given error and resets the handlers.
+
+| Parameter            | Description                                              |
+|----------------------|----------------------------------------------------------|
+| `string error`       | The error message to pass to the `onError` callback.      |
+

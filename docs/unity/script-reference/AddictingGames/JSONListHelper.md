@@ -1,8 +1,12 @@
 # JsonListHelper (Class)
 
-- **Methods**:
-  - **FromJson**:
-    - **Parameters**:
-      - `string json`: JSON string containing a list of items.
-    - **Returns**: `List<T>`
-    - **Description**: Converts a JSON string into a list of type `T`.
+## Methods
+
+### static FromJson\<T\>
+
+Converts a JSON string into a list of type `T`.
+
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `string json`          | JSON string containing a list of items.            |
+| **Return Type**                | `List<T>`                                           |

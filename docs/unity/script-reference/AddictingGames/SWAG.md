@@ -1,50 +1,80 @@
 # SWAG (Class)
 
-- **Fields**:
-  - `Achievements Achievements`: An instance of the Achievements class.
-  - `Scores Scores`: An instance of the Scores class.
-  - `User User`: An instance of the User class.
-  - `bool isReady`: Boolean indicating if the SWAG is ready.
+The `SWAG` class handles various functionality for the SWAG system.
 
-- **Methods**:
-  - **OnReady (overloads)**:
-    - **Description**: Handles the readiness of the SWAG.
-    - **Overloads**:
-      - With `System.Action onSuccess` parameter.
-      - With both `System.Action onSuccess` and `System.Action<string> onError` parameters.
+## Fields
 
-  - **GetRequest**:
-    - **Parameters**:
-      - `string url`: The URL for the GET request.
-      - `bool useToken`: Flag to determine if a token should be used.
-      - `System.Action<string> onSuccess`: Callback to execute upon successful GET request.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Makes a GET request to the specified URL.
+| Field                  | Description                                            |
+|------------------------|--------------------------------------------------------|
+| `Achievements Achievements` | Instance of the Achievements class.            |
+| `Metrics Metrics`      | Instance of the Metrics class.                        |
+| `Scores Scores`        | Instance of the Scores class.                          |
+| `User User`            | Instance of the User class.                            |
+| `static SWAG Instance` | A singleton instance of the SWAG class. 
 
-  - **PostRequest**:
-    - **Parameters**:
-      - `string url`: The URL for the POST request.
-      - `string postData`: Data to be posted.
-      - `bool useToken`: Flag to determine if a token should be used.
-      - `System.Action<string> onSuccess`: Callback to execute upon successful POST request.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Makes a POST request to the specified URL.
+## Methods
 
-  - **OpenURL**:
-    - **Parameters**:
-      - `string url`: The URL to be opened.
-    - **Description**: Opens the specified URL in the browser. Implementation varies based on platform.
+### OnReady (Overloaded)
 
-  - **ToggleFullscreen**:
-    - **Parameters**:
-      - `bool fullscreen`: Boolean to determine if fullscreen mode should be enabled or disabled.
-    - **Description**: Toggles fullscreen mode. Implementation varies based on platform.
+Executes the `onSuccess` action when SWAG is ready. If not ready, it prepares an async handler to execute once ready.
 
-  - **ShowShareDialog**:
-    - **Description**: Shows the share dialog. Implementation varies based on platform.
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `System.Action<string> onSuccess` | Executes the `onSuccess` action if SWAG is ready.       |
 
-  - **ShowAd**:
-    - **Parameters**:
-      - `System.Action onSuccess`: Callback to execute upon successful ad display.
-      - `System.Action<string> onError`: Callback to execute in case of an error.
-    - **Description**: Displays an advertisement. Implementation varies based on platform.
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `System.Action<string> onSuccess` | Executes the `onSuccess` action if SWAG is ready.       |
+| `System.Action<string> onError` | Callback for initialization errors. |
+
+### GetRequest
+
+Sends a GET request and handles the response.
+
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `string url`           | The endpoint URL.                                  |
+| `bool useToken`        | If true, the request will include the user token.       |
+| `System.Action<string> onSuccess` | Callback upon a successful request.       |
+| `System.Action<string> onError` | Callback for request errors.             |
+
+### PostRequest
+
+Sends a POST request and handles the response.
+
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `string url`           | The endpoint URL.                                  |
+| `string postData`      | Data to post in the request.                       |
+| `bool useToken`        | If true, the request will include the user token.       |
+| `System.Action<string> onSuccess` | Callback upon a successful request.       |
+| `System.Action<string> onError` | Callback for request errors.             |
+
+### OpenURL
+
+Opens the provided URL in a new tab. WebGL only.
+
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `string url`           | The URL to open.                                   |
+
+### ToggleFullscreen
+
+Toggles the fullscreen state of the application. WebGL only.
+
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `bool fullscreen`      | If true, toggles to fullscreen mode.               |
+
+### ShowShareDialog
+
+Opens the share dialog. WebGL only.
+
+### ShowAd
+
+Displays an advertisement. WebGL only.
+
+| Parameter              | Description                                         |
+|------------------------|-----------------------------------------------------|
+| `System.Action onSuccess` | Callback upon successful ad display.        |
+| `System.Action<string> onError` | Callback if an error occurs during ad display. |
