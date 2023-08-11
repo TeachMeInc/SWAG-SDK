@@ -1,5 +1,7 @@
 # ScorePeriod (Enum)
 
+Specifies the score period.
+
 ## Values
 
 | Value       | Description                 |

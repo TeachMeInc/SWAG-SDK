@@ -1,6 +1,6 @@
 # Scores Class Documentation
 
-Manages score-related operations in the game, including retrieval, formatting, and presentation.
+Manages retrieving and displaying scores for a game.
 
 ## Fields
 

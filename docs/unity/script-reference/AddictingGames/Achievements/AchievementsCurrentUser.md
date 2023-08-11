@@ -1,5 +1,7 @@
 # AchievementsCurrentUser (Class)
 
+Manages retrieving and recording achievements for the currently logged-in user.
+
 ## Methods
 
 ### RecordAchievement

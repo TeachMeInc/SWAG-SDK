@@ -1,6 +1,6 @@
 # Provider (Enum)
 
-Represents the different supported providers.
+Defines the different supported providers.
 
 ## Values
 

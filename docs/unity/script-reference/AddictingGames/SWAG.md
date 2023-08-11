@@ -1,6 +1,6 @@
 # SWAG (Class)
 
-The `SWAG` class handles various functionality for the SWAG system.
+The `SWAG` class manages the complete functionality for the SWAG API and is the main entry-point into the SDK. This class inherits from MonoBehavior and should be placed on a GameObject in your scene. 
 
 ## Fields
 

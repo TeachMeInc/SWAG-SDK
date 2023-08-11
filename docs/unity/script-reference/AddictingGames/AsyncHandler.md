@@ -1,5 +1,7 @@
 # AsyncHandler\<T\> (Class)
 
+Helper class for success/error callback handling.
+
 ## Type Parameters
 
 | Field                  | Description                                         |

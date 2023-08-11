@@ -1,5 +1,7 @@
 # User (Class)
 
+Manages authentication and data for the currently logged-in user.
+
 ## Fields
 
 | Field                  | Description                                                    |

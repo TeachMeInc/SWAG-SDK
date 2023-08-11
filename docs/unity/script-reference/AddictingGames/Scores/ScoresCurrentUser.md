@@ -1,6 +1,6 @@
 # ScoresCurrentUser (Class)
 
-Represents the current user's score-related operations in the game.
+Manages retrieving and recording scores for the currently logged-in user.
 
 ## Methods
 

@@ -1,5 +1,7 @@
 # UserData (Struct)
 
+Defines a user.
+
 ## Fields
 
 | Field                  | Description                                               |

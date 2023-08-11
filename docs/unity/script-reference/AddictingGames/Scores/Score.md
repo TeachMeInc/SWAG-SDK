@@ -1,5 +1,7 @@
 # Score (Struct)
 
+Defines a score record.
+
 ## Fields
 
 | Field              | Description                                       |

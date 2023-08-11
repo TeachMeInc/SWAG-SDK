@@ -1,5 +1,7 @@
 # DailyBest (Struct)
 
+Defines the current user's daily best score for a game.
+
 ## Fields
 
 | Field             | Description                                              |

@@ -1,5 +1,7 @@
 # Achievements (Class)
 
+Manages retrieving and displaying achievements for a game.
+
 ## Fields
 | Field              | Description                                            |
 |--------------------|--------------------------------------------------------|

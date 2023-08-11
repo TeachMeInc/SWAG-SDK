@@ -1,5 +1,7 @@
 # Achievement (Struct)
 
+Defines an achievement.
+
 ## Fields
 
 | Field              | Description                                            |

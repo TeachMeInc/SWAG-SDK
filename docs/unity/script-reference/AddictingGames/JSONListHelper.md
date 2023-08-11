@@ -1,5 +1,7 @@
 # JsonListHelper (Class)
 
+Helper class for converting arrays of JSON data into lists.
+
 ## Methods
 
 ### static FromJson\<T\>

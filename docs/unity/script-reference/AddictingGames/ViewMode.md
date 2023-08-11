@@ -1,6 +1,6 @@
 # ViewMode (Enum)
 
-Specifies how the view mode should be treated.
+Specifies how dialogs and other UI should be displayed.
 
 ### Values
 
