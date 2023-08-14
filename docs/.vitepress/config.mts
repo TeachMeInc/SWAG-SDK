@@ -20,11 +20,13 @@ export default defineConfig({
         items: [
           { text: 'Markdown Examples', link: '/markdown-examples' },
           { text: 'Runtime API Examples', link: '/api-examples' },
+          { text: 'Getting Started', link: '/getting-started' },
           { 
             text: 'Unity', 
             link: '/unity',
             items: [
-              { text: 'Getting Started', link: '/unity/getting-started' },
+              { text: 'Installation', link: '/unity/installation' },
+              { text: 'Usage & Examples', link: '/unity/usage-and-examples' },
               {
                 text: 'Script Reference',
                 items: [

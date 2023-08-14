@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using AddictingGames;
 using UnityEngine;
+using AddictingGames;
 
 public class MyGameController : MonoBehaviour
 {
@@ -22,14 +22,9 @@ public class MyGameController : MonoBehaviour
 
     void Ready () 
     {
-        Debug.Log("Ready!");
-
         this.mainCamera.gameObject.SetActive(true);
         this.mainCanvas.gameObject.SetActive(true);
 
-        var swag = SWAG.Instance;
-        
-        // swag.Achievements.ShowDialog();
-        swag.Scores.ShowDialog();
+        Debug.Log("Ready!");
     }
 }
