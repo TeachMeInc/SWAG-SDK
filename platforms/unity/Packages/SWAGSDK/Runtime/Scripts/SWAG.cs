@@ -79,7 +79,7 @@ namespace AddictingGames
         public Scores Scores = new Scores();
         public User User = new User();
 
-        bool isReady = false;
+        public bool isReady = false;
         BrandingAnimation brandingAnimation;
 
         public static SWAG Instance { get; private set; }

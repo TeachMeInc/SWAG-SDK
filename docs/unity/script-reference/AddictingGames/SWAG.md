@@ -7,7 +7,6 @@ The `SWAG` class manages the complete functionality for the SWAG API and is the 
 | Field                  | Description                                            |
 |------------------------|--------------------------------------------------------|
 | `Achievements Achievements` | Instance of the Achievements class.            |
-| `Metrics Metrics`      | Instance of the Metrics class.                        |
 | `Scores Scores`        | Instance of the Scores class.                          |
 | `User User`            | Instance of the User class.                            |
 | `static SWAG Instance` | A singleton instance of the SWAG class. 
