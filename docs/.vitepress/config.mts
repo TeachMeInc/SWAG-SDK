@@ -6,6 +6,10 @@ export default defineConfig({
   description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
 
   themeConfig: {
+    search: {
+      provider: 'local'
+    },
+
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },

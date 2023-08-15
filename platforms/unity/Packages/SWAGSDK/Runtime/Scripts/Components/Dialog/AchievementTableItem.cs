@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using AddictingGames;
 using UnityEngine;
 using UnityEngine.UI;
+using AddictingGames;
 
 public class AchievementTableItem : MonoBehaviour
 {

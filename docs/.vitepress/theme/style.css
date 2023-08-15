@@ -85,7 +85,6 @@
  * Component: Algolia
  * -------------------------------------------------------------------------- */
 
-.DocSearch {
-  --docsearch-primary-color: var(--vp-c-brand) !important;
+:root {
+  --vp-local-search-highlight-bg: var(--vp-c-brand-light);
 }
-
