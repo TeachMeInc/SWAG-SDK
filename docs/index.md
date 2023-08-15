@@ -3,23 +3,22 @@
 layout: home
 
 hero:
-  name: "Addicting Games Documentation"
-  text: "Documentation for Addicting Games and Shockwave APIs and SDKs"
-  tagline: My great project tagline
+  name: Addicting Games Documentation
+  tagline: Documentation for Addicting Games and Shockwave APIs and SDKs
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Getting Started
+      link: /unity/installation
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Developer Center
+      link: https://www.addictinggames.com/about/upload
 
-features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+# features:
+#   - title: Ads
+#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+#   - title: Leaderboards & Achievements
+#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+#   - title: Authentication
+#     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
 
