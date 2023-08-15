@@ -2,20 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoaderAnimation : MonoBehaviour
+namespace AddictingGames
 {
-    public void Show ()
+    public class LoaderAnimation : MonoBehaviour
     {
-        this.SetVisible(true);
-    }
+        public void Show ()
+        {
+            this.SetVisible(true);
+        }
 
-    public void Hide ()
-    {
-        this.SetVisible(false);
-    }
+        public void Hide ()
+        {
+            this.SetVisible(false);
+        }
 
-    public void SetVisible (bool isVisible)
-    {
-        this.gameObject.SetActive(isVisible);
+        public void SetVisible (bool isVisible)
+        {
+            this.gameObject.SetActive(isVisible);
+        }
     }
 }

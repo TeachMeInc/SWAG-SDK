@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using AddictingGames;
 
-public class CloseButton : MonoBehaviour, IPointerClickHandler
+namespace AddictingGames
 {
-    public void OnPointerClick (PointerEventData eventData)
+    public class CloseButton : MonoBehaviour, IPointerClickHandler
     {
-        var dialog = this.GetComponentInParent<DialogController>(true);
-        dialog?.Hide();
+        public void OnPointerClick (PointerEventData eventData)
+        {
+            var dialog = this.GetComponentInParent<DialogController>(true);
+            dialog?.Hide();
+        }
     }
 }
