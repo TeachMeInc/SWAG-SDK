@@ -48,14 +48,6 @@ Checks if the user is logged in as a guest.
 |----------------------|----------------------------------------------------------------|
 | **Return Type**                | `bool`                                           |
 
-### IsLoggedIn
-
-Checks if the user is logged in.
-
-| Parameter            | Description                                                      |
-|----------------------|----------------------------------------------------------------|
-| **Return Type**                | `bool`                                           |
-
 ### SetData
 
 Sets data for the logged-in user.
