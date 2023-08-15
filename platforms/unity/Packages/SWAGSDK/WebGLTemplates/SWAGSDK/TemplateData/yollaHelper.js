@@ -14,12 +14,6 @@ class AdHelper
             case '320x50':
                 type = 'mobile-leaderboard-template';
                 break;
-            case '468x60':
-                type = '';
-                break;
-            case '320x100':
-                type = '';
-                break;
         }
 
         let template = document.getElementById('swag-banner-template').innerHTML;

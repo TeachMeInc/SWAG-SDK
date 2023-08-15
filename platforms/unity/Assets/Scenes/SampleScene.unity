@@ -500,6 +500,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
+      propertyPath: Provider
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
+      propertyPath: ShockwaveKeyword
+      value: jigsawpuzzles
+      objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513879, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_Name
       value: SWAG

@@ -21,7 +21,6 @@ Main configuration class for the SDK.
 
 | Field                    | Description                                       |
 |--------------------------|---------------------------------------------------|
-| `string GameName`        | The name of the game.                            |
 | `string APIKey`          | The API key for the game.                       |
 
 ### Shockwave Configuration

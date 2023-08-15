@@ -10,8 +10,6 @@ namespace AddictingGames
         Leaderboard,
         Medium,
         Mobile,
-        Main,
-        LargeMobile
     }
 
     [ExecuteInEditMode]
@@ -95,14 +93,6 @@ namespace AddictingGames
                     dimensions.x = 320;
                     dimensions.y = 50;
                     break;  
-                case BannerSize.Main:
-                    dimensions.x = 468;
-                    dimensions.y = 60;
-                    break;
-                case BannerSize.LargeMobile:
-                    dimensions.x = 320;
-                    dimensions.y = 100;
-                    break;
             }
 
             return dimensions;

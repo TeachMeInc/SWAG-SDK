@@ -2409,7 +2409,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dec1505f35cc4fcd9a244fb45e88a67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentView: 0
+  isReady: 0
 --- !u!114 &3794113532120513878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2422,13 +2422,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15c3feb06b454ea893bff590ef7ce59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Provider: 1
+  Provider: 0
   DefaultValueFormatter: 
   ViewMode: 0
   PlayBrandingAnimation: 0
-  GameName: Demo Game
-  APIKey: 5c6c3c056917a692f96f9651
-  ShockwaveKeyword: jigsawpuzzles
+  APIKey: 
+  ShockwaveKeyword: 
 --- !u!1 &3843952351520758142
 GameObject:
   m_ObjectHideFlags: 0

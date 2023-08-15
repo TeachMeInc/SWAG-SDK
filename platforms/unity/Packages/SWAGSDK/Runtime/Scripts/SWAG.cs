@@ -401,12 +401,6 @@ namespace AddictingGames
                         break;
                     case BannerSize.Mobile:
                         bannerSizeString = "320x50";
-                        break;  
-                    case BannerSize.Main:
-                        bannerSizeString = "468x60";
-                        break;
-                    case BannerSize.LargeMobile:
-                        bannerSizeString = "320x100";
                         break;
                 }
                 

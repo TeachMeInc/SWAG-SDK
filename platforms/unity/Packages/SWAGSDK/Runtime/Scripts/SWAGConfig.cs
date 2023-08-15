@@ -58,9 +58,6 @@ namespace AddictingGames
 
 
         [Header ("Addicting Games")]
-
-        [SerializeField]
-        public string GameName;
         
         [SerializeField]
         public string APIKey = "5c6c3c056917a692f96f9651"; 

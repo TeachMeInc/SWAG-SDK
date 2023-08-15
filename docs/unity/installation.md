@@ -18,7 +18,7 @@ If you're upgrading to the latest version of the SDK, please remove the existing
 
 [Download Unity SDK](https://github.com/TeachMeInc/SWAG-SDK/releases)
 
-Download the latest version of the SDK and unzip the folder somewhere outside of your project. The archive should contain three folders: `WebGLTemplates`, `SWAG SDK`, and `Example Project`.
+Download the latest version of the SDK and unzip the folder somewhere outside of your project. The archive should contain three folders: `WebGLTemplates`, `SWAGSDK`, and `Example Project`.
 
 ::: info
 If you're starting a new project from scratch using the `Example Project` you can skip to [here](/unity/installation#configuring-swag).
@@ -37,8 +37,8 @@ You can learn more about WebGL Templates, what they are, and how they work, [her
 ## Install the SWAG package
 
 1. Open the **Package Manager** (Window -> Package Manager) and from the **+** icon dropdown, choose to **Add package from disk**. 
-2. Navigate to the `SWAG SDK` folder inside the folder you unzipped.
-3. Select and open `package.json` from inside the `SWAG SDK` folder.
+2. Navigate to the `SWAGSDK` folder inside the folder you unzipped.
+3. Select and open `package.json` from inside the `SWAGSDK` folder.
 
 ::: info
 You can learn more about installing local packages [here](https://docs.unity3d.com/Manual/upm-ui-local.html).
@@ -58,14 +58,14 @@ Once the `SWAG` prefab is added to your scene, click on the game object to confi
 If your game is for [AddictingGames.com](https://www.addictinggames.com):
 
 1. Choose the `Addicting Games` provider under the **SDK** header.
-2. Enter your game's title and your API key under the **Addicting Games** header.
+2. Enter your game's API Key under the **Addicting Games** header.
 
 ### For Shockwave.com
 
 If your game is for [Shockwave.com](https://www.shockwave.com):
 
 1. Choose the `Shockwave` provider under the **SDK** header.
-2. Enter your game's Shockwave keyword under the **Shockwave** header.
+2. Enter your game's Shockwave Keyword under the **Shockwave** header.
 
 ::: info
 You can view a full list of the configuration options available [here](/unity/script-reference/AddictingGames/SWAGConfig)

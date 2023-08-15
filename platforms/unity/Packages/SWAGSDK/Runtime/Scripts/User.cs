@@ -37,7 +37,6 @@ namespace AddictingGames
             this.token = "";
 
             if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                SWAGConfig.Instance.GameName = "";
                 SWAGConfig.Instance.APIKey = "";
             }
         }
@@ -57,7 +56,6 @@ namespace AddictingGames
                 (string response) => {
                     var data = JsonUtility.FromJson<GameWebResponse>(response);
                     SWAGConfig.Instance.APIKey = data.game;
-                    SWAGConfig.Instance.GameName = data.name;
                     onSuccess();
                 },
                 (string error) => {
