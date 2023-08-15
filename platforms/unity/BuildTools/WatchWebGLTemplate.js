@@ -31,6 +31,9 @@ chokidar.watch('./Packages/SWAGSDK/WebGLTemplates/SWAGSDK').on('all', (event, pa
       { 
         recursive: true,
         force: true, 
+        filter: (src, dest) => {
+          return !src.includes('.meta');
+        }
       },
       (err) => {
         if (err) console.log(err);
