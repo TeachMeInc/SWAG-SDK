@@ -70,7 +70,7 @@ SWAG.Instance.Scores.currentUser.RecordScore(
 
 **Example**
 ```c#
-SWAG.Instance.ShowAd(
+SWAG.Instance.BeginAd(
     // Ad finished playing callback
     () => { Debug.Log("Ad done."); }
     // Error callback

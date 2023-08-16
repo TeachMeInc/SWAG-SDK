@@ -69,7 +69,7 @@ Toggles the fullscreen state of the application. WebGL only.
 
 Opens the share dialog. WebGL only.
 
-### ShowAd
+### BeginAd
 
 Displays an advertisement. WebGL only.
 

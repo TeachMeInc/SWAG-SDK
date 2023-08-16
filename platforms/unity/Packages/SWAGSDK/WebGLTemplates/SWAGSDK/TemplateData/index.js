@@ -84,7 +84,7 @@ class SWAGSDK
     
     isAdCurrentlyShowing = false;
     
-    ShowAd () 
+    BeginAd () 
     {
         return new Promise((resolve, reject) => {
             if (this.isAdCurrentlyShowing) {

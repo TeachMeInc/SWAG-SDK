@@ -33,12 +33,12 @@ mergeInto(
 
 		/* #region Ads */
 
-		WebInterface_ShowAd: async function () 
+		WebInterface_BeginAd: async function () 
 		{
 			const SWAG = window.SWAGSDK;
 
 			try {
-				await SWAG.ShowAd();
+				await SWAG.BeginAd();
 				SWAG.unityInstance.SendMessage('SWAG', 'OnAdComplete');
 			} catch (err) {
 				SWAG.unityInstance.SendMessage('SWAG', 'OnAdError', err);

@@ -20,6 +20,8 @@ If you're upgrading to the latest version of the SDK, please remove the existing
 
 Download the latest version of the SDK and unzip the folder somewhere outside of your project. The archive should contain three folders: `WebGLTemplates`, `SWAGSDK`, and `Example Project`.
 
+![Download SDK Screenshot](./images/download-sdk.png)
+
 ::: info
 If you're starting a new project from scratch using the `Example Project` you can skip to [here](/unity/installation#configuring-swag).
 :::
@@ -29,6 +31,10 @@ If you're starting a new project from scratch using the `Example Project` you ca
 1. Copy the `WebGLTemplates` folder into your project's `Assets` folder.
 2. Open your projects **Build Settings** (File -> Build Settings). With the **WebGL** platform selected, open the **Player Settings** dialog.
 3. Under the **Settings for WebGL** panel, select the **SWAGSDK** template.
+
+![Build Settings Screenshot](./images/build-settings.png)
+
+![Player Settings Screenshot](./images/player-settings.png)
 
 ::: info
 You can learn more about WebGL Templates, what they are, and how they work, [here](https://docs.unity3d.com/Manual/webgl-templates.html).
@@ -40,14 +46,21 @@ You can learn more about WebGL Templates, what they are, and how they work, [her
 2. Navigate to the `SWAGSDK` folder inside the folder you unzipped.
 3. Select and open `package.json` from inside the `SWAGSDK` folder.
 
+
+![Package Manager Screenshot](./images/package-manager.png)
+
+![Select Package JSON Screenshot](./images/select-package-json.png)
+
 ::: info
 You can learn more about installing local packages [here](https://docs.unity3d.com/Manual/upm-ui-local.html).
 :::
 
 ## Add the SWAG prefab to your scene
 
-1. In your `Packages` folder, navigate to `SWAGSDK/Runtime/Prefabs`.
+1. In your `Packages` folder, navigate to `SWAG SDK/Runtime/Prefabs`.
 2. Drop the `SWAG` prefab into your scene. 
+
+![SWAG Prefab Screenshot](./images/swag-prefab.png)
 
 ## Configuring SWAG
 

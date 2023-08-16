@@ -342,9 +342,9 @@ namespace AddictingGames
         AsyncHandler<object> showAdAsyncHandler;
 
         [DllImport("__Internal")]
-        static extern void WebInterface_ShowAd ();
+        static extern void WebInterface_BeginAd ();
 
-        public void ShowAd (
+        public void BeginAd (
             System.Action onSuccess, 
             System.Action<string> onError
         )
@@ -355,9 +355,9 @@ namespace AddictingGames
             );
 
             #if UNITY_WEBGL && !UNITY_EDITOR
-                SWAG.WebInterface_ShowAd();
+                SWAG.WebInterface_BeginAd();
             #else
-                Debug.Log("SWAG.ShowAd() is not implemented for this platform.");
+                Debug.Log("SWAG.BeginAd() is not implemented for this platform.");
                 this.OnAdComplete();
             #endif
         }
