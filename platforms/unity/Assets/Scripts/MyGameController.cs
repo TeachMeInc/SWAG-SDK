@@ -26,5 +26,11 @@ public class MyGameController : MonoBehaviour
         this.mainCanvas.gameObject.SetActive(true);
 
         Debug.Log("Ready!");
+
+        var swag = SWAG.Instance;
+
+        // swag.Achievements.ShowDialog();
+        swag.Scores.ShowDialog();
+        // swag.BeginAd(() => {});
     }
 }

@@ -7,9 +7,9 @@ using AddictingGames;
 public class AchievementTableItem : MonoBehaviour
 {
     [SerializeField]
-    public Image AchievedImage;
+    public Transform AchievedImage;
     [SerializeField]
-    public Image NotAchievedImage;
+    public Transform NotAchievedImage;
 
     public void SetFields (Achievement achievement)
     {
