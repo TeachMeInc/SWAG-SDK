@@ -10,7 +10,7 @@ hero:
       text: Getting Started
       link: /unity/installation
     - theme: alt
-      text: Developer Center
+      text: Submit Your Game
       link: https://www.addictinggames.com/about/upload
 
 # features:
