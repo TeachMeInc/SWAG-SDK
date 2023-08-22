@@ -5,6 +5,7 @@ export default defineConfig({
   title: "SWAG Documentation",
   description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
   outDir: "../../docs",
+  base: "/SWAG-SDK/",
 
   themeConfig: {
     search: {
