@@ -40,15 +40,15 @@ body {
 
 #swag-ad-container {
   z-index: 2;
-  background-color: rgba(0,0,0,0.5);
   display: none;
+  background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
 }
 
 .SWAGAd {
   position: relative;
   margin: auto;
-  border: solid 1px rgba(0,0,0,0.4);
+  border: solid 1px rgba(0, 0, 0, 0.4);
   background: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
@@ -69,8 +69,6 @@ body {
 .SWAGBanner {
   position: absolute;
   pointer-events: all;
-  border: solid 1px rgba(0, 0, 0, 0.4);
-  background: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;

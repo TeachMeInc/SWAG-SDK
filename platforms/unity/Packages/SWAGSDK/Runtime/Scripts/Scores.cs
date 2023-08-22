@@ -44,7 +44,7 @@ namespace AddictingGames
 
         public void RecordScore (
             string levelKey, 
-            string score,
+            float score,
             System.Action onSuccess,
             System.Action<string> onError
         ) 
@@ -56,7 +56,7 @@ namespace AddictingGames
             var postData = JsonUtility.ToJson(new RecordScoreWebRequest {
                 game = SWAGConfig.Instance.APIKey,
                 level_key = levelKey,
-                value = score
+                value = score,
             });
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.PostRequest(

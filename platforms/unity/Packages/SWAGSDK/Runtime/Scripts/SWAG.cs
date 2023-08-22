@@ -261,7 +261,12 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            using (var webRequest = UnityWebRequest.Post(url, postData)) { 
+            using (var webRequest = new UnityWebRequest(url, "POST")) { 
+                byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(postData);
+                webRequest.uploadHandler = (UploadHandler) new UploadHandlerRaw(bodyRaw);
+                webRequest.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+                webRequest.SetRequestHeader("Content-Type", "application/json");
+                
                 this.SetupWebRequest(
                     webRequest, 
                     useToken
@@ -284,7 +289,7 @@ namespace AddictingGames
         /* #region Website Interop */
 
         [DllImport("__Internal")]
-        static extern void WebInterface_OpenURL (string url);
+        public static extern void WebInterface_OpenURL (string url);
 
         public void OpenURL (string url)
         {
@@ -296,7 +301,7 @@ namespace AddictingGames
         }
 
         [DllImport("__Internal")]
-        static extern void WebInterface_SendMessage (string eventName, string message);
+        public static extern void WebInterface_SendMessage (string eventName, string message);
 
         public void ToggleFullscreen (bool fullscreen)
         {

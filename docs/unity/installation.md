@@ -1,11 +1,3 @@
-<!-- 1. download latest unity sdk release and unzip the archive
-2. copy the webgl template into your project
-   1. configure your project to use the webgl template
-3. drag the SWAG prefab into your scene
-4. configure the SWAG prefab
-5. add an onready callback to your game
-6. press play in the editor to make sure there are no errors -->
-
 # Installation
 
 This guide will help you install and configure the SWAG SDK for Unity.
@@ -66,6 +58,10 @@ You can learn more about installing local packages [here](https://docs.unity3d.c
 
 Once the `SWAG` prefab is added to your scene, click on the game object to configure the `SWAG` component in the editor panel.
 
+::: info
+You can view a full list of the configuration options available [here](/unity/script-reference/AddictingGames/SWAGConfig)
+:::
+
 ### For AddictingGames.com
 
 If your game is for [AddictingGames.com](https://www.addictinggames.com):
@@ -73,16 +69,14 @@ If your game is for [AddictingGames.com](https://www.addictinggames.com):
 1. Choose the `Addicting Games` provider under the **SDK** header.
 2. Enter your game's API Key under the **Addicting Games** header.
 
-### For Shockwave.com
+### For Shockwave.com<sup>*</sup>
 
 If your game is for [Shockwave.com](https://www.shockwave.com):
 
 1. Choose the `Shockwave` provider under the **SDK** header.
 2. Enter your game's Shockwave Keyword under the **Shockwave** header.
 
-::: info
-You can view a full list of the configuration options available [here](/unity/script-reference/AddictingGames/SWAGConfig)
-:::
+<sup>*</sup> <small>__Please note that at this time, the Shockwave provider is unsupported, but will be available in a future update.__</small>
 
 ## Basic Usage
 
@@ -128,6 +122,40 @@ public class MyGameController : MonoBehaviour
         });
     }
 }
+```
+
+## Building Your Game
+
+Once you've installed the SDK and verified that it works in Play Mode, you're ready to build your game. 
+
+SWAG API calls are secured via [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and as such will only work properly when coming from `local.addictinggames.com` or `local.shockwave.com` domains on port `8888`. 
+
+In order to test SWAG API integration in your built game locally, you will need to add these domains to your **HOSTS file** and run your game using an external web server. Each entry needs to be on its own line.
+
+**Entries to add to your hosts file**
+
+```
+127.0.0.1 local.addictinggames.com
+127.0.0.1 local.shockwave.com
+```
+
+::: info
+You can find the HOSTS file at the following locations. You will need to be an administrator to edit the HOSTS file.
+
+Windows: `C:\Windows\System32\Drivers\etc\hosts`
+
+MacOS & Linux: `/etc/hosts`
+:::
+
+Now that you've added the HOSTS entries, you can build your game. From the **Build Settings** menu, making sure you have the **WebGL** platform selected, click the **Build** button and choose a folder.
+
+Next, run an HTTP server in the folder where you built your game. The root of your HTTP server should be the the folder that contains your game's `index.html` file.
+
+If you have [NodeJS](https://nodejs.org/en) installed, you can do this in one command using the [http-server](https://www.npmjs.com/package/http-server) node package:
+
+**Run a local web server**
+```
+npx http-server ./ -p 8888
 ```
 
 ## Next Steps

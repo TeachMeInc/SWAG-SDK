@@ -17,8 +17,8 @@ class AdHelper
         }
 
         let template = document.getElementById('swag-banner-template').innerHTML;
-        template.replace('{type}', type);
-        template.replace('{subtype}', bannerSize);
+        template = template.replace('{type}', type);
+        template = template.replace('{subtype}', bannerSize);
 
         return template;
     }

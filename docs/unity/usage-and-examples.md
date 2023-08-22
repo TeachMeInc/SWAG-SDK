@@ -51,7 +51,7 @@ SWAG.Instance.Scores.ShowDialog(
 **Example**
 ```c#
 var levelKey = "level_0";
-var score = "10000";
+var score = 100f;
 
 SWAG.Instance.Scores.currentUser.RecordScore(
     levelKey,
@@ -68,6 +68,8 @@ SWAG.Instance.Scores.currentUser.RecordScore(
 
 ### Play an advertisement
 
+Play a full-screen video ad. The callback is executed when the ad is finished playing.
+
 **Example**
 ```c#
 SWAG.Instance.BeginAd(
@@ -81,9 +83,19 @@ SWAG.Instance.BeginAd(
 
 ### Banner ads
 
-TODO
+You can add Banner Ads to your game by using the Banner UI Component. 
+
+1. In your `Packages` folder, navigate to `SWAG SDK/Runtime/Prefabs`.
+2. Drop the `SWAGBanner` prefab into your scene's main canvas.
+3. Configure the banner's position by adjusting it's RectTransform. You can also choose the size/type of banner from the SWAGBanner component's settings. 
+
+When you build your game, these banners will be replaced with ads during runtime.
+
+![SWAG Prefab Screenshot](./images/swag-banners.png)
 
 ## Provider features
+
+The provider API let you interact with the features of the host website (AddictingGames.com or Shockwave.com), such as showing the share dialog, or toggling full-screen mode.
 
 ### Show the share dialog
 
@@ -130,6 +142,8 @@ var isGuest = SWAG.Instance.User.IsGuest(); // Logged in as guest or not
 
 ### Check if user is a subscriber
 
+Checks to see if the user is a GamePass or Shockwave Unlimited subscriber.
+
 **Example**
 ```c#
 SWAG.Instance.User.IsSubscriber(
@@ -139,9 +153,11 @@ SWAG.Instance.User.IsSubscriber(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User)</small>
+<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
 
 ### Set and get data for the user
+
+Set and retrieve cloud save data for the current user. The data is stored in key-value pairs of strings.
 
 **Example**
 ```c#
@@ -167,4 +183,4 @@ SWAG.Instance.User.GetData(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User), [UserData.cs](/unity/script-reference/AddictingGames/User/UserData)</small>
+<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User), [UserData.cs](/unity/script-reference/AddictingGames/User/UserData)</small>

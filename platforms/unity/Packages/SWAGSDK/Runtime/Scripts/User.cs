@@ -122,7 +122,7 @@ namespace AddictingGames
         {
             var token = User.WebInterface_GetToken();
 
-            if (token == "") {
+            if (token == "" || token == null) {
                 this.LoginAsGuest(onSuccess, onError);
                 return;
             }

@@ -60,12 +60,8 @@ namespace AddictingGames
                 SWAGConstants.SWAGServicesURL + "/achievement/user?game=" + SWAGConfig.Instance.APIKey,
                 true,
                 (string response) => {
-                    var mockData = "[{\"_id\":\"5c7030d56917a692f96f9657\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 1\",\"achievement_key\":\"achievement1\",\"description\":\"The description for this achievement 1\",\"user_achieved\":true},{\"_id\":\"5c7030d56917a692f96f9658\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 2\",\"achievement_key\":\"achievement2\",\"description\":\"The description for this achievement 2\",\"user_achieved\":false},{\"_id\":\"5c7030d56917a692f96f9659\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 3\",\"achievement_key\":\"achievement3\",\"description\":\"The description for this achievement 3\",\"user_achieved\":true},{\"_id\":\"5c7030d56917a692f96f965a\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 4\",\"achievement_key\":\"achievement4\",\"description\":\"The description for this achievement 4\",\"user_achieved\":false},{\"_id\":\"5c7030d56917a692f96f965b\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 5\",\"achievement_key\":\"zchievement5\",\"description\":\"The description for this achievement 5\",\"user_achieved\":false},{\"_id\":\"5c7edf366917a60ff525b162\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 6\",\"achievement_key\":\"achievement6\",\"description\":\"The description for this achievement 6\",\"user_achieved\":true},{\"_id\":\"5c7edf416917a60ff525b163\",\"game\":\"5c6c3c056917a692f96f9651\",\"name\":\"Achievement 7\",\"achievement_key\":\"achievement7\",\"description\":\"The description for this achievement 7\",\"user_achieved\":false}]";
-                    var data = JsonListHelper.FromJson<AchievementWebResponse>(mockData);
+                    var data = JsonListHelper.FromJson<AchievementWebResponse>(response);
                     var achievements = data.ConvertAll<Achievement>((AchievementWebResponse item) => {
-                        Debug.Log("ACHIEVED?");
-                        Debug.Log(item.user_achieved);
-                        
                         return new Achievement {
                             id = item._id,
                             name = item.name,

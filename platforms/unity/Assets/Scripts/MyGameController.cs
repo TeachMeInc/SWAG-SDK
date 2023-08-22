@@ -29,8 +29,31 @@ public class MyGameController : MonoBehaviour
 
         var swag = SWAG.Instance;
 
-        // swag.Achievements.ShowDialog();
-        swag.Scores.ShowDialog();
-        // swag.BeginAd(() => {});
+        // Achievements
+        // swag.Achievements.currentUser.RecordAchievement(
+        //     "achievement1",
+        //     () => { 
+        //         Debug.Log("Achievement recorded!");
+        //         swag.Achievements.ShowDialog();
+        //     },
+        //     (string error) => { Debug.Log("Error recording achievement: " + error); }
+        // );
+
+        // Scores
+        // swag.Scores.currentUser.RecordScore(
+        //     "level1",
+        //     100,
+        //     () => { 
+        //         Debug.Log("Score recorded!");
+        //         swag.Scores.ShowDialog();
+        //     },
+        //     (string error) => { Debug.Log("Error recording score: " + error); }
+        // );
+
+        // Ads
+        swag.BeginAd(
+            () => { Debug.Log("Ad complete!"); },
+            (string error) => { Debug.Log("Error playing ad: " + error); }
+        );
     }
 }
