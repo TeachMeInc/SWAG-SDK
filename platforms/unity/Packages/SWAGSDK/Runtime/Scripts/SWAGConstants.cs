@@ -14,7 +14,7 @@ namespace AddictingGames
 
         /* #region Addicting Games */
 
-        public static string AddictingGamesAuthURL = "https://local.addictinggames.com:3000/api/swag/v1";
+        public static string AddictingGamesAuthURL = "https://new.addictinggames.com/api/swag/v1";
         public static string AddictingGamesPreloaderURL = "https://cdn2.addictinggames.com/addictinggames-content/ag-assets/preloaders/AG_Preloader_2023.webm";
         public static string AddictingGamesPrimaryColor = "#E33225";
 

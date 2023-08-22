@@ -124,7 +124,7 @@ namespace AddictingGames {
     {
         public string game;
         public string level_key;
-        public int value;
+        public float value;
     }
     
     /* #endregion */

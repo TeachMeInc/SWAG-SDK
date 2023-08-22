@@ -44,16 +44,41 @@ namespace AddictingGames
             }
 
             var activeDialog = this.ActiveDialog();
+            var isLandscape = this.IsLandscape();
 
-            if (this.IsLandscape() && activeDialog != this.landscapeDialog) {
+            if (isLandscape && activeDialog != this.landscapeDialog) {
                 this.OnLayout(this.landscapeDialog);
                 this.landscapeDialog.SetVisible(true);
                 this.portraitDialog.SetVisible(false);
-            } else if (!this.IsLandscape() && activeDialog != this.portraitDialog) {
+            } else if (!isLandscape && activeDialog != this.portraitDialog) {
                 this.OnLayout(this.portraitDialog);
                 this.landscapeDialog.SetVisible(false);
                 this.portraitDialog.SetVisible(true);
             }
+
+            if (isLandscape) {
+                this.ResizeDialog(
+                    640f, 480f, 
+                    800f, 600f
+                );
+            } else {
+                this.ResizeDialog(
+                    355f, 647f, 
+                    600f, 800f
+                );
+            }
+        }
+
+        void ResizeDialog (float minWidth, float minHeight, float maxWidth, float maxHeight)
+        {
+            var screenWidth = Screen.width * .75f;
+            var screenHeight = Screen.height * .75f;
+
+            var width = Mathf.Clamp(screenWidth, minWidth, maxWidth);
+            var height = Mathf.Clamp(screenHeight, minHeight, maxHeight);
+
+            var rectTransform = this.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(width, height);
         }
 
         protected bool IsLandscape ()

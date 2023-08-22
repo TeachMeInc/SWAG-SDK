@@ -30,6 +30,7 @@ public class MyGameController : MonoBehaviour
         var swag = SWAG.Instance;
 
         // Achievements
+        // swag.Achievements.ShowDialog();
         // swag.Achievements.currentUser.RecordAchievement(
         //     "achievement1",
         //     () => { 
@@ -40,6 +41,7 @@ public class MyGameController : MonoBehaviour
         // );
 
         // Scores
+        // swag.Scores.ShowDialog();
         // swag.Scores.currentUser.RecordScore(
         //     "level1",
         //     100,
