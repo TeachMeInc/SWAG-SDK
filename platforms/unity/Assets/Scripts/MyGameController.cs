@@ -53,9 +53,9 @@ public class MyGameController : MonoBehaviour
         // );
 
         // Ads
-        swag.BeginAd(
-            () => { Debug.Log("Ad complete!"); },
-            (string error) => { Debug.Log("Error playing ad: " + error); }
-        );
+        // swag.BeginAd(
+        //     () => { Debug.Log("Ad complete!"); },
+        //     (string error) => { Debug.Log("Error playing ad: " + error); }
+        // );
     }
 }
