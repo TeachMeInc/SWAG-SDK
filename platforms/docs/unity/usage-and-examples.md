@@ -128,7 +128,7 @@ SWAG.Instance.User.ShowLoginDialog(
     (string reason) => { Debug.Log(reason); }
 );
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User)</small>
+<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
 
 ### Get information about the current user
 
@@ -138,7 +138,7 @@ var id = SWAG.Instance.User.id; // User's unique ID
 var memberName = SWAG.Instance.User.memberName; // User's display name
 var isGuest = SWAG.Instance.User.IsGuest(); // Logged in as guest or not
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User)</small>
+<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
 
 ### Check if user is a subscriber
 
