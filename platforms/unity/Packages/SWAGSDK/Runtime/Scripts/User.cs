@@ -86,9 +86,9 @@ namespace AddictingGames
                 false,
                 (string response) => {
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
-
-                    var userData = data.user;
-                    this.id = userData._id;
+                    
+                    this.id = data.user._id;
+                    this.memberName = data.user.memberName;
                     this.token = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {

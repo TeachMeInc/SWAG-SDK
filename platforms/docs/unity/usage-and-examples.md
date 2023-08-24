@@ -8,7 +8,7 @@
 ```c#
 SWAG.Instance.Achievements.ShowDialog(
     // Dialog closed callback
-    () => { Debug.Log("Dialog closed."); }
+    () => { Debug.Log("Dialog closed."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
@@ -24,7 +24,7 @@ var key = "my_achievement_key";
 SWAG.Instance.Achievements.currentUser.RecordAchievement(
     key,
     // Success callback
-    () => { Debug.Log("Achievement recorded."); }
+    () => { Debug.Log("Achievement recorded."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
@@ -39,7 +39,7 @@ SWAG.Instance.Achievements.currentUser.RecordAchievement(
 ```c#
 SWAG.Instance.Scores.ShowDialog(
     // Dialog closed callback
-    () => { Debug.Log("Dialog closed."); }
+    () => { Debug.Log("Dialog closed."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
@@ -57,7 +57,7 @@ SWAG.Instance.Scores.currentUser.RecordScore(
     levelKey,
     score,
     // Success callback
-    () => { Debug.Log("Score recorded."); }
+    () => { Debug.Log("Score recorded."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
@@ -74,7 +74,7 @@ Play a full-screen video ad. The callback is executed when the ad is finished pl
 ```c#
 SWAG.Instance.BeginAd(
     // Ad finished playing callback
-    () => { Debug.Log("Ad done."); }
+    () => { Debug.Log("Ad done."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
@@ -109,9 +109,7 @@ SWAG.Instance.ShowShareDialog();
 
 **Example**
 ```c#
-var isFullscreen = true;
-
-SWAG.Instance.ToggleFullscreen(isFullscreen);
+SWAG.Instance.ToggleFullscreen();
 ```
 <small>Source: [SWAG.cs](/unity/script-reference/AddictingGames/SWAG)</small>
 
@@ -123,7 +121,7 @@ SWAG.Instance.ToggleFullscreen(isFullscreen);
 ```c#
 SWAG.Instance.User.ShowLoginDialog(
     // Login success callback
-    () => { Debug.Log("User logged in."); }
+    () => { Debug.Log("User logged in."); },
     // Dialog closed/login cancelled callback
     (string reason) => { Debug.Log(reason); }
 );
@@ -148,7 +146,7 @@ Checks to see if the user is a GamePass or Shockwave Unlimited subscriber.
 ```c#
 SWAG.Instance.User.IsSubscriber(
     // Success callback
-    (bool isSubscriber) => { Debug.Log(isSubscriber); }
+    (bool isSubscriber) => { Debug.Log(isSubscriber); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
@@ -169,16 +167,15 @@ SWAG.Instance.User.SetData(
     key,
     value,
     // Success callback
-    () => { Debug.Log("User data saved."); }
+    () => { Debug.Log("User data saved."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );
 
 // Get data
 SWAG.Instance.User.GetData(
-    key,
     // Success callback
-    (List<UserData> data) => { Debug.Log("User data retrieved."); }
+    (List<UserData> data) => { Debug.Log("User data retrieved."); },
     // Error callback
     (string error) => { Debug.Log(error); }
 );

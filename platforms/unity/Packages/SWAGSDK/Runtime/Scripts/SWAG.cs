@@ -303,7 +303,7 @@ namespace AddictingGames
         [DllImport("__Internal")]
         public static extern void WebInterface_SendMessage (string eventName, string message);
 
-        public void ToggleFullscreen (bool fullscreen)
+        public void ToggleFullscreen ()
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
                 SWAG.WebInterface_SendMessage("toggleFullscreen", "");

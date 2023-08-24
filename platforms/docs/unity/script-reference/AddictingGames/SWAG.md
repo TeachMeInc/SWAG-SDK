@@ -61,10 +61,6 @@ Opens the provided URL in a new tab. WebGL only.
 
 Toggles the fullscreen state of the application. WebGL only.
 
-| Parameter              | Description                                         |
-|------------------------|-----------------------------------------------------|
-| `bool fullscreen`      | If true, toggles to fullscreen mode.               |
-
 ### ShowShareDialog
 
 Opens the share dialog. WebGL only.
