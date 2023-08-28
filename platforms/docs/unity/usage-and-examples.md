@@ -121,9 +121,7 @@ SWAG.Instance.ToggleFullscreen();
 ```c#
 SWAG.Instance.User.ShowLoginDialog(
     // Login success callback
-    () => { Debug.Log("User logged in."); },
-    // Dialog closed/login cancelled callback
-    (string reason) => { Debug.Log(reason); }
+    () => { Debug.Log("User logged in."); }
 );
 ```
 <small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>

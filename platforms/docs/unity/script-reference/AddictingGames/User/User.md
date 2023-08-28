@@ -28,8 +28,7 @@ Displays the login dialog to the user.
 
 | Parameter            | Description                                                    |
 |----------------------|----------------------------------------------------------------|
-| `System.Action onSuccess` | Callback executed upon successful display of the login dialog. |
-| `System.Action<string> onCancelled` | Callback executed if the display of the login dialog is cancelled. |
+| `System.Action onSuccess` | Callback executed upon successful login. |
 
 ### IsSubscriber
 

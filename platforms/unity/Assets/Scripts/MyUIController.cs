@@ -31,10 +31,12 @@ public class MyUIController : MonoBehaviour
             this.UserLabel.text = "Logged in as " + swag.User.memberName;
 
             ShowScoreDialogBtn.onClick.AddListener(() => {
+                this.HideAds();
                 swag.Scores.ShowDialog();
             });
 
             ShowAchievementDialogBtn.onClick.AddListener(() => {
+                this.HideAds();
                 swag.Achievements.ShowDialog();
             });
 
@@ -70,8 +72,7 @@ public class MyUIController : MonoBehaviour
 
             ShowLoginDialogBtn.onClick.AddListener(() => {
                 swag.User.ShowLoginDialog(
-                    () => { Debug.Log("User logged in."); },
-                    (string reason) => { Debug.Log(reason); }
+                    () => { Debug.Log("User logged in."); }
                 );
             });
 
@@ -115,8 +116,19 @@ public class MyUIController : MonoBehaviour
         });
     }
 
-    void Update ()
+    void HideAds ()
     {
-        
+        var ads = this.gameObject.GetComponentsInChildren<Banner>(true);
+        foreach (var ad in ads) {
+            ad.gameObject.SetActive(false);
+        }
+    }
+
+    void ShowAds ()
+    {
+        var ads = this.gameObject.GetComponentsInChildren<Banner>(true);
+        foreach (var ad in ads) {
+            ad.gameObject.SetActive(true);
+        }
     }
 }

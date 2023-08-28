@@ -70,7 +70,9 @@ namespace AddictingGames
 
         /* #region Login */
 
-        public void LoginAsGuest (
+        public AsyncHandler<object> loginAsyncHandler;
+
+        void LoginAsGuest (
             System.Action onSuccess, 
             System.Action<string> onError
         ) 
@@ -112,18 +114,26 @@ namespace AddictingGames
             ));
         }
 
-        [DllImport("__Internal")]
-        static extern string WebInterface_GetToken ();
-
-        public void LoginUsingToken (
+        void LoginUsingToken (
             System.Action onSuccess, 
             System.Action<string> onError
         )
         {
-            var token = User.WebInterface_GetToken();
+            this.loginAsyncHandler = new AsyncHandler<object>(
+                (object result) => { onSuccess(); },
+                (string reason) => { onCancelled(reason); }
+            );
 
+            SWAG.WebInterface_SendMessage("requestToken", "");
+        }
+
+        public void CompleteLogin (string token) 
+        {
             if (token == "" || token == null) {
-                this.LoginAsGuest(onSuccess, onError);
+                this.LoginAsGuest(
+                    () => { this.loginAsyncHandler.Resolve(null); }, 
+                    (string reason) => { this.loginAsyncHandler.Reject(reason); }
+                );
                 return;
             }
 
@@ -142,20 +152,20 @@ namespace AddictingGames
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
                         this.GetAPIKeyFromKeyword(
                             () => { 
-                                onSuccess();
+                                this.loginAsyncHandler.Resolve(null);
                             },
                             (string error) => {
                                 this.Reset();
-                                onError(error);
+                                this.loginAsyncHandler.Reject(error);
                             }
                         );
                     } else {
-                        onSuccess();
+                        this.loginAsyncHandler.Resolve(null);
                     }
                 },
                 (string error) => {
                     this.Reset();
-                    onError(error);
+                    this.loginAsyncHandler.Reject(error);
                 }
             ));
         }
@@ -186,20 +196,17 @@ namespace AddictingGames
 
         /* #region Login Dialog */
 
-        public AsyncHandler<object> showLoginDialogAsyncHandler;
-
         public void ShowLoginDialog (
-            System.Action onSuccess, 
-            System.Action<string> onCancelled
+            System.Action onSuccess
         )
         {
-            this.showLoginDialogAsyncHandler = new AsyncHandler<object>(
+            this.loginAsyncHandler = new AsyncHandler<object>(
                 (object result) => { onSuccess(); },
-                (string reason) => { onCancelled(reason); }
+                (string reason) => {}
             );
 
-            if (this.IsLoggedIn()) {
-                this.showLoginDialogAsyncHandler.Resolve(null);
+            if (!this.IsGuest()) {
+                this.loginAsyncHandler.Resolve(null);
                 return;
             }
 

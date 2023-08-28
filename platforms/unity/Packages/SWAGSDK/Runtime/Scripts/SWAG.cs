@@ -288,16 +288,9 @@ namespace AddictingGames
 
         /* #region Website Interop */
 
-        [DllImport("__Internal")]
-        public static extern void WebInterface_OpenURL (string url);
-
         public void OpenURL (string url)
         {
-           #if UNITY_WEBGL && !UNITY_EDITOR
-               SWAG.WebInterface_OpenURL(url);
-           #else
-               Debug.Log("SWAG.OpenURL() is not implemented for this platform.");
-           #endif
+           Application.OpenURL(url);
         }
 
         [DllImport("__Internal")]
@@ -321,21 +314,9 @@ namespace AddictingGames
             #endif
         }
 
-        public void OnLoginSuccess ()
+        public void OnTokenReceived (string token)
         {
-            this.User.LoginUsingToken(
-                () => {
-                    this.User.showLoginDialogAsyncHandler.Resolve(null);
-                },
-                (string error) => {
-                    this.User.showLoginDialogAsyncHandler.Reject(error);
-                }
-            );
-        }
-
-        public void OnLoginCancelled (string reason)
-        {
-            this.User.showLoginDialogAsyncHandler.Reject(reason);
+            this.User.CompleteLogin(token);
         }
 
         /* #endregion */

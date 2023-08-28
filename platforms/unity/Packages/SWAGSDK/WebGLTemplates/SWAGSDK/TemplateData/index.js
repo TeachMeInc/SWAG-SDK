@@ -29,29 +29,10 @@ class SWAGSDK
             };
         });
     }
-        
-        
-    
-    /* #region Authentication */
-    
-    GetToken () 
-    {
-        return document.cookie;
-    }
-    
-    /* #endregion */
-    
+
     
     
     /* #region Website Interop */
-    
-    OpenURL (url)
-    {
-        document.onmouseup = () => {
-            window.open(url);
-            document.onmouseup = null;
-        };
-    }
     
     SendMessage (eventName, message)
     {
@@ -63,12 +44,8 @@ class SWAGSDK
         const { eventName, message } = JSON.parse(payload);
         
         switch (eventName) {
-            case 'onLoginSuccess': {
-              this.unityInstance.SendMessage('SWAG', 'OnLoginSuccess', "");
-              return;
-            }
-            case 'onLoginCancelled': {
-              this.unityInstance.SendMessage('SWAG', 'OnLoginCancelled', message || "");
+            case 'onTokenReceived': {
+              this.unityInstance.SendMessage('SWAG', 'OnTokenReceived', message);
               return;
             }
         }
