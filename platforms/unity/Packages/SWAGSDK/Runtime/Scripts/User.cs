@@ -121,7 +121,7 @@ namespace AddictingGames
         {
             this.loginAsyncHandler = new AsyncHandler<object>(
                 (object result) => { onSuccess(); },
-                (string reason) => { onCancelled(reason); }
+                (string reason) => { onError(reason); }
             );
 
             SWAG.WebInterface_SendMessage("requestToken", "");
