@@ -3,6 +3,11 @@ mergeInto(
 	{
 		/* #region Authentication */
 
+		WebInterface_HasParentWindow: function ()
+		{
+			return window.self !== window.top;
+		},
+
 		WebInterface_GetToken: function () 
 		{
 			const SWAG = window.SWAGSDK;

@@ -114,6 +114,8 @@ namespace AddictingGames
             ));
         }
 
+ 
+
         void LoginUsingToken (
             System.Action onSuccess, 
             System.Action<string> onError
@@ -123,6 +125,14 @@ namespace AddictingGames
                 (object result) => { onSuccess(); },
                 (string reason) => { onError(reason); }
             );
+
+            if (!SWAG.WebInterface_HasParentWindow()) {
+                this.LoginAsGuest(
+                    () => { this.loginAsyncHandler.Resolve(null); }, 
+                    (string reason) => { this.loginAsyncHandler.Reject(reason); }
+                );
+                return;
+            }
 
             SWAG.WebInterface_SendMessage("requestToken", "");
         }

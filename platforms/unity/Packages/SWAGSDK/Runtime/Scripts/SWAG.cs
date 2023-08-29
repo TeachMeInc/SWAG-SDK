@@ -187,6 +187,9 @@ namespace AddictingGames
             }
         }
 
+        [DllImport("__Internal")]
+        public static extern bool WebInterface_HasParentWindow ();
+
         /* #endregion */
 
 
