@@ -35,7 +35,7 @@ namespace AddictingGames
             });
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.PostRequest(
-                SWAGConstants.SWAGServicesURL + "/achievement",
+                SWAG.Instance.GetServicesURL() + "/achievement",
                 postData,
                 true,
                 (string response) => {
@@ -57,7 +57,7 @@ namespace AddictingGames
             }
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/achievement/user?game=" + SWAGConfig.Instance.APIKey,
+                SWAG.Instance.GetServicesURL() + "/achievement/user?game=" + SWAGConfig.Instance.APIKey,
                 true,
                 (string response) => {
                     var data = JsonListHelper.FromJson<AchievementWebResponse>(response);
@@ -125,7 +125,7 @@ namespace AddictingGames
         )
         {
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/achievement/categories?game=" + SWAGConfig.Instance.APIKey,
+                SWAG.Instance.GetServicesURL() + "/achievement/categories?game=" + SWAGConfig.Instance.APIKey,
                 true,
                 (string response) => {
                     var data = JsonListHelper.FromJson<AchievementWebResponse>(response);

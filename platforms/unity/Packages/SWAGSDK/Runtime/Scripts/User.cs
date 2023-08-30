@@ -46,7 +46,7 @@ namespace AddictingGames
             System.Action<string> onError
         )
         {
-            var url = SWAGConstants.SWAGServicesURL + "/game"
+            var url = SWAG.Instance.GetServicesURL() + "/game"
                 + "?keyword=" + SWAGConfig.Instance.ShockwaveKeyword 
                 + "&keywordtype=shockwave";
 
@@ -77,11 +77,7 @@ namespace AddictingGames
             System.Action<string> onError
         ) 
         {
-            var baseUrl = SWAGConfig.Instance.Provider == Provider.AddictingGames 
-                ? SWAGConstants.AddictingGamesAuthURL
-                : SWAGConstants.ShockwaveAuthURL;
-
-            var url = baseUrl + "/login/guest";
+            var url = SWAG.Instance.GetServicesURL() + "/user";
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
                 url,
@@ -89,8 +85,8 @@ namespace AddictingGames
                 (string response) => {
                     var data = JsonUtility.FromJson<UserWebResponse>(response);
                     
-                    this.id = data.user._id;
-                    this.memberName = data.user.memberName;
+                    this.id = data._id;
+                    this.memberName = data.memberName;
                     this.token = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
@@ -114,8 +110,6 @@ namespace AddictingGames
             ));
         }
 
- 
-
         void LoginUsingToken (
             System.Action onSuccess, 
             System.Action<string> onError
@@ -125,6 +119,8 @@ namespace AddictingGames
                 (object result) => { onSuccess(); },
                 (string reason) => { onError(reason); }
             );
+
+            Debug.Log("HasParentWindow: " +((SWAG.WebInterface_HasParentWindow()) ? "true" : "false"));
 
             if (!SWAG.WebInterface_HasParentWindow()) {
                 this.LoginAsGuest(
@@ -137,47 +133,37 @@ namespace AddictingGames
             SWAG.WebInterface_SendMessage("requestToken", "");
         }
 
-        public void CompleteLogin (string token) 
+        public void CompleteLogin (string loginToken) 
         {
-            if (token == "" || token == null) {
-                this.LoginAsGuest(
-                    () => { this.loginAsyncHandler.Resolve(null); }, 
-                    (string reason) => { this.loginAsyncHandler.Reject(reason); }
-                );
-                return;
-            }
+            Debug.Log("CompleteLogin: " + loginToken);
 
-            this.token = token;
+            var payload = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(loginToken));
+            var data = JsonUtility.FromJson<UserWebResponse>(payload);
+                    
+            this.id = data._id;
+            this.memberName = data.memberName;
+            this.token = data.token;
 
-            var url = SWAGConstants.SWAGServicesURL + "/user";
-            
-            SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                url,
-                true,
-                (string response) => {
-                    var userData = JsonUtility.FromJson<UserWebResponseUser>(response);
-                    this.id = userData._id;
-                    this.memberName = userData.memberName;
-
-                    if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                        this.GetAPIKeyFromKeyword(
-                            () => { 
-                                this.loginAsyncHandler.Resolve(null);
-                            },
-                            (string error) => {
-                                this.Reset();
-                                this.loginAsyncHandler.Reject(error);
-                            }
-                        );
-                    } else {
+            if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
+                this.GetAPIKeyFromKeyword(
+                    () => { 
                         this.loginAsyncHandler.Resolve(null);
+                    },
+                    (string error) => {
+                        this.Reset();
+                        this.loginAsyncHandler.Reject(error);
                     }
-                },
-                (string error) => {
-                    this.Reset();
-                    this.loginAsyncHandler.Reject(error);
-                }
-            ));
+                );
+            } else {
+                this.loginAsyncHandler.Resolve(null);
+            }
+        }
+
+        public void LoginError (string reason)
+        {
+            Debug.Log("LoginError: " + reason);
+            this.Reset();
+            this.loginAsyncHandler.Reject(reason);
         }
 
         public void Login (
@@ -248,7 +234,7 @@ namespace AddictingGames
             }
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/subscriber",
+                SWAG.Instance.GetServicesURL() + "/subscriber",
                 true,
                 (string response) => {
                     var data = JsonUtility.FromJson<UserIsSubscriberWebResponse>(response);
@@ -299,7 +285,7 @@ namespace AddictingGames
             });
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.PostRequest(
-                SWAGConstants.SWAGServicesURL + "/datastore",
+                SWAG.Instance.GetServicesURL() + "/datastore",
                 postData,
                 true,
                 (string response) => {
@@ -321,7 +307,7 @@ namespace AddictingGames
             }
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/datastore/user?game=" + SWAGConfig.Instance.APIKey,
+                SWAG.Instance.GetServicesURL() + "/datastore/user?game=" + SWAGConfig.Instance.APIKey,
                 true,
                 (string response) => {
                     var data = JsonListHelper.FromJson<UserDataWebResponse>(response);

@@ -12,16 +12,10 @@ namespace AddictingGames {
     }
 
     [System.Serializable]
-    public struct UserWebResponseUser
+    public struct UserWebResponse 
     {
         public string _id;
         public string memberName;
-    }
-
-    [System.Serializable]
-    public struct UserWebResponse 
-    {
-        public UserWebResponseUser user;
         public string token;
     }
 

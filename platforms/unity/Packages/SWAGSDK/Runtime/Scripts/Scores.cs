@@ -60,7 +60,7 @@ namespace AddictingGames
             });
             
             SWAG.Instance.StartCoroutine(SWAG.Instance.PostRequest(
-                SWAGConstants.SWAGServicesURL + "/score",
+                SWAG.Instance.GetServicesURL() + "/score",
                 postData,
                 true,
                 (string response) => {
@@ -94,7 +94,7 @@ namespace AddictingGames
             }
 
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/scores/context" +
+                SWAG.Instance.GetServicesURL() + "/scores/context" +
                     $"?game={SWAGConfig.Instance.APIKey}" + 
                     $"&level_key={levelKey}" + 
                     $"&value_formatter={valueFormatter}",
@@ -150,7 +150,7 @@ namespace AddictingGames
             }
 
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/userbest" + Scores.GetScoresURI(levelKey, period, valueFormatter),
+                SWAG.Instance.GetServicesURL() + "/userbest" + Scores.GetScoresURI(levelKey, period, valueFormatter),
                 true,
                 (string response) => {
                     var data = JsonListHelper.FromJson<ScoresWebResponse>(response);
@@ -244,7 +244,7 @@ namespace AddictingGames
             }
 
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/score/categories?game=" + SWAGConfig.Instance.APIKey,
+                SWAG.Instance.GetServicesURL() + "/score/categories?game=" + SWAGConfig.Instance.APIKey,
                 false,
                 (string response) => {
                     var data = JsonListHelper.FromJson<LevelKeysWebResponse>(response);
@@ -287,7 +287,7 @@ namespace AddictingGames
         )
         {
             SWAG.Instance.StartCoroutine(SWAG.Instance.GetRequest(
-                SWAGConstants.SWAGServicesURL + "/scores" + Scores.GetScoresURI(levelKey, period, valueFormatter),
+                SWAG.Instance.GetServicesURL() + "/scores" + Scores.GetScoresURI(levelKey, period, valueFormatter),
                 false,
                 (string response) => {
                     var data = JsonListHelper.FromJson<ScoresWebResponse>(response);

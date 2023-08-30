@@ -45,8 +45,12 @@ class SWAGSDK
         
         switch (eventName) {
             case 'onTokenReceived': {
-              this.unityInstance.SendMessage('SWAG', 'OnTokenReceived', message);
-              return;
+                this.unityInstance.SendMessage('SWAG', 'OnTokenReceived', message);
+                return;
+            }
+            case 'onTokenError': {
+                this.unityInstance.SendMessage('SWAG', 'OnTokenError', message);
+                return;
             }
         }
         

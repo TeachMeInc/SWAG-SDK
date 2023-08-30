@@ -187,6 +187,18 @@ namespace AddictingGames
             }
         }
 
+        public string GetServicesURL () 
+        {
+            switch (SWAGConfig.Instance.Provider) {
+                case Provider.AddictingGames:
+                    return SWAGConstants.AddictingGamesServicesURL;
+                case Provider.Shockwave:
+                    return SWAGConstants.ShockwaveServicesURL;
+                default:
+                    return "";
+            }
+        }
+
         [DllImport("__Internal")]
         public static extern bool WebInterface_HasParentWindow ();
 
@@ -201,9 +213,8 @@ namespace AddictingGames
             webRequest.certificateHandler = new BypassCertificateHandler();
 
             if (useToken) {
-                var tokenBytes = System.Convert.FromBase64String(this.User.token);
-                var cookie = System.Text.Encoding.UTF8.GetString(tokenBytes);
-                webRequest.SetRequestHeader("Cookie", cookie);
+                Debug.Log("Token: " + this.User.token);
+                webRequest.SetRequestHeader("X-SWAG-Token", this.User.token);
             }
         }
 
@@ -320,6 +331,11 @@ namespace AddictingGames
         public void OnTokenReceived (string token)
         {
             this.User.CompleteLogin(token);
+        }
+
+        public void OnTokenError (string reason)
+        {
+            this.User.LoginError(reason);
         }
 
         /* #endregion */
