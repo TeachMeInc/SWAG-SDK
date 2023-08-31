@@ -120,8 +120,6 @@ namespace AddictingGames
                 (string reason) => { onError(reason); }
             );
 
-            Debug.Log("HasParentWindow: " +((SWAG.WebInterface_HasParentWindow()) ? "true" : "false"));
-
             if (!SWAG.WebInterface_HasParentWindow()) {
                 this.LoginAsGuest(
                     () => { this.loginAsyncHandler.Resolve(null); }, 
@@ -135,8 +133,6 @@ namespace AddictingGames
 
         public void CompleteLogin (string loginToken) 
         {
-            Debug.Log("CompleteLogin: " + loginToken);
-
             var payload = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(loginToken));
             var data = JsonUtility.FromJson<UserWebResponse>(payload);
                     
@@ -161,7 +157,6 @@ namespace AddictingGames
 
         public void LoginError (string reason)
         {
-            Debug.Log("LoginError: " + reason);
             this.Reset();
             this.loginAsyncHandler.Reject(reason);
         }

@@ -213,8 +213,7 @@ namespace AddictingGames
             webRequest.certificateHandler = new BypassCertificateHandler();
 
             if (useToken) {
-                Debug.Log("Token: " + this.User.token);
-                webRequest.SetRequestHeader("X-SWAG-Token", this.User.token);
+                webRequest.SetRequestHeader("x-member-token", this.User.token);
             }
         }
 

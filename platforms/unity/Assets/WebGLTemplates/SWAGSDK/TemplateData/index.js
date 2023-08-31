@@ -16,10 +16,12 @@ class SWAGSDK
             if (
                 event.origin.startsWith('http://localhost') ||
                 event.origin.startsWith('https://localhost') ||
+                event.origin.startsWith('http://local.addictinggames.com') ||
                 event.origin.startsWith('https://local.addictinggames.com') ||
                 event.origin.startsWith('https://new.addictinggames.com') ||
                 event.origin.startsWith('https://www.addictinggames.com') ||
                 event.origin.startsWith('https://addictinggames.com') ||
+                event.origin.startsWith('http://local.shockwave.com') || 
                 event.origin.startsWith('https://local.shockwave.com') || 
                 event.origin.startsWith('https://new.shockwave.com') || 
                 event.origin.startsWith('https://www.shockwave.com') ||
@@ -41,6 +43,8 @@ class SWAGSDK
     
     ReceiveMessage (payload) 
     {
+        console.log('JSLIB receive message: ', payload);
+
         const { eventName, message } = JSON.parse(payload);
         
         switch (eventName) {

@@ -177,7 +177,6 @@ namespace AddictingGames
                     },
                     (string error) => {
                         this.ActiveDialog().SetLoading(false);
-                        Debug.LogError(error);
                     }
                 );
             } else {
@@ -191,7 +190,6 @@ namespace AddictingGames
                     },
                     (string error) => {
                         this.ActiveDialog().SetLoading(false);
-                        Debug.LogError(error);
                     }
                 );
             }
