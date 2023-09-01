@@ -77,7 +77,7 @@ class SWAGSDK
             }
     
             if (window.decoyScriptLoaded === undefined) {
-                return reject('AdBlocker detected.');
+                return resolve();
             }
 
             this.isAdCurrentlyShowing = true;
@@ -104,16 +104,19 @@ class SWAGSDK
                 containerEl.style.display = 'none';
                 resolve();
             };
+
+            const error = (reason) => {
+                done();
+                console.log('Error displaying ad: ', reason);
+            };
             
             clickHandler = () => done();
             adEl.addEventListener('click', clickHandler);
             
             // Show the ad
-            // window.requestAnimationFrame(() => {
-                AdHelper.showAd(adElId, AD_DISPLAY_DURATION)
-                    .then(() => done())
-                    .catch((err) => reject(err));
-            // });
+            AdHelper.showAd(adElId, AD_DISPLAY_DURATION)
+                .then(() => done())
+                .catch((err) => reject(err));
         })
     }
     
