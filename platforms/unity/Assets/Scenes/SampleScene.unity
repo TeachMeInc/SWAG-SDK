@@ -1532,7 +1532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &777045610
 Transform:
   m_ObjectHideFlags: 0
@@ -2745,7 +2745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1382683597
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4012,12 +4012,8 @@ PrefabInstance:
       value: 64e50e6cb27610f2f209e2ee
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
-      propertyPath: DefaultValueFormatter
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: PlayBrandingAnimation
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513879, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_Name

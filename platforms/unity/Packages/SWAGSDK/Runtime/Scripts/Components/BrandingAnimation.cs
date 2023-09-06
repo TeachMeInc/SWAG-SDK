@@ -9,6 +9,7 @@ namespace AddictingGames
     public class BrandingAnimation : MonoBehaviour
     {
         VideoPlayer videoPlayer;
+        bool isPlaying = true;
 
         void Start ()
         {
@@ -26,9 +27,19 @@ namespace AddictingGames
             }
         }
 
+        void Update () 
+        {
+            var isPlaying = this.videoPlayer.time == 0f || 
+                this.videoPlayer.isPlaying;
+
+            if (!isPlaying) {
+                this.isPlaying = false;
+            }
+        }
+
         public bool IsPlaying () 
         {
-            return (this.videoPlayer.time < (this.videoPlayer.length - 0.09f)) || this.videoPlayer.isPlaying;
+            return this.isPlaying;
         }
     }
 }

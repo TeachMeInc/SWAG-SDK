@@ -28,14 +28,14 @@ class AdHelper
         return new Promise ((resolve, reject) => {
             const YMPB = window.YMPB;
             
-            if (YMPB !== undefined) {
+            if (YMPB !== undefined && window.decoyScriptLoaded) {
                 try {
                     YMPB.preroll(containerId, resolve);
                 } catch (err) {
                     reject(err.message);
                 }
             } else {
-                reject('Yolla library was not found.');
+                resolve();
             }
         });
     }

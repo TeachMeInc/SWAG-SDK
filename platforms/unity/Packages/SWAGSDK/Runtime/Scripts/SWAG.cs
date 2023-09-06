@@ -107,11 +107,7 @@ namespace AddictingGames
 
             this.User.Login(
                 () => {
-                    if (SWAGConfig.Instance.PlayBrandingAnimation) {
-                        if (!this.brandingAnimation.IsPlaying()) {
-                            this.Ready();
-                        }
-                    } else {
+                    if (!SWAGConfig.Instance.PlayBrandingAnimation) {
                         this.Ready();
                     }
                 },
@@ -125,9 +121,12 @@ namespace AddictingGames
 
         void Update ()
         {
-            if (this.isReady || !SWAGConfig.Instance.PlayBrandingAnimation) return;
-
-            if (!brandingAnimation.IsPlaying() && this.User.IsLoggedIn()) {
+            if (
+                !this.isReady && 
+                !brandingAnimation.IsPlaying() && 
+                this.User.IsLoggedIn()
+            ) {
+                Debug.Log("READY");
                 this.Ready();
             }
         }

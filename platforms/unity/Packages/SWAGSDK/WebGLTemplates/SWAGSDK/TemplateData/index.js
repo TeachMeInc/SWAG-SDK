@@ -104,11 +104,6 @@ class SWAGSDK
                 containerEl.style.display = 'none';
                 resolve();
             };
-
-            const error = (reason) => {
-                done();
-                console.log('Error displaying ad: ', reason);
-            };
             
             clickHandler = () => done();
             adEl.addEventListener('click', clickHandler);
