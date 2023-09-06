@@ -8,7 +8,7 @@ If you're upgrading to the latest version of the SDK, please remove the existing
 
 ## Download the SDK
 
-[Download Unity SDK](https://github.com/TeachMeInc/SWAG-SDK/releases)
+[Download Unity SDK](https://github.com/TeachMeInc/SWAG-SDK/releases/latest)
 
 Download the latest version of the SDK and unzip the folder somewhere outside of your project. The archive should contain three folders: `WebGLTemplates`, `SWAGSDK`, and `Example Project`.
 
