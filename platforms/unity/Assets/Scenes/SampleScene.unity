@@ -4013,7 +4013,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: PlayBrandingAnimation
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513879, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_Name

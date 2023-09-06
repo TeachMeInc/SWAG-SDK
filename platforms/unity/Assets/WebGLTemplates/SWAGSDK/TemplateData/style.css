@@ -41,15 +41,13 @@ body {
 #swag-ad-container {
   z-index: 2;
   display: none;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
 }
 
 .SWAGAd {
   position: relative;
   margin: auto;
-  border: solid 1px rgba(0, 0, 0, 0.4);
-  background: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;

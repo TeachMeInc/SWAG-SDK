@@ -32,8 +32,6 @@ public class MyUIController : MonoBehaviour
         var swag = SWAG.Instance;
 
         swag.OnReady(() => {
-            this.UserLabel.text = "Logged in as " + swag.User.memberName;
-
             ShowScoreDialogBtn.onClick.AddListener(() => {
                 this.HideAds();
                 swag.Scores.ShowDialog();
@@ -118,6 +116,15 @@ public class MyUIController : MonoBehaviour
                 );
             });
         });
+    }
+
+    void Update ()
+    {
+        var swag = SWAG.Instance;
+
+        if (swag.isReady) {
+            this.UserLabel.text = "Logged in as " + swag.User.memberName;
+        }
     }
 
     void HideAds ()
