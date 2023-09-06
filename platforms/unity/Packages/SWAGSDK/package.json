@@ -1,6 +1,6 @@
 {
   "name": "com.addictinggames.swagsdk",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "displayName": "SWAG SDK",
   "description": "AddictingGames.com/Shockwave.com SDK for Unity. Provides access to the SWAG API and other services.",
   "unity": "2021.3",
