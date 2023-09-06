@@ -43,8 +43,6 @@ class SWAGSDK
     
     ReceiveMessage (payload) 
     {
-        console.log('JSLIB receive message: ', payload);
-
         const { eventName, message } = JSON.parse(payload);
         
         switch (eventName) {

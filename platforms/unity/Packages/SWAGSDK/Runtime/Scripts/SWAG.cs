@@ -126,7 +126,6 @@ namespace AddictingGames
                 !brandingAnimation.IsPlaying() && 
                 this.User.IsLoggedIn()
             ) {
-                Debug.Log("READY");
                 this.Ready();
             }
         }
