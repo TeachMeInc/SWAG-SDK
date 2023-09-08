@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -77,5 +78,18 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/TeachMeInc/SWAG-SDK' }
     ],
+  },
+
+  vite: {
+    resolve: {
+      alias: [
+        {
+          find: /^.*\/VPHome\.vue$/,
+          replacement: fileURLToPath(
+            new URL('./components/Home.vue', import.meta.url)
+          )
+        }
+      ]
+    }
   }
 })

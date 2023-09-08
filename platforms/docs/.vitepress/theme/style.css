@@ -14,7 +14,9 @@
   --vp-c-brand-lightest: #ed7c74;
   --vp-c-brand-dark: #e43d30;
   --vp-c-brand-darker: #e43d30;
-  --vp-c-brand-dimm: rgba(100, 108, 255, 0.08);
+  --vp-c-brand-black: #171717;
+  --vp-c-brand-black-lighter: #393939;
+  --vp-c-brand-dimm: rgba(100, 100, 100, 0.08);
 }
 
 /**
