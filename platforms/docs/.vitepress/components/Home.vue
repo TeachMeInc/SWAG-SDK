@@ -265,16 +265,6 @@
 </template>
 
 <style scoped>
-.Home {
-  padding-bottom: 96px;
-}
-
-@media (min-width: 768px) {
-  .Home {
-    padding-bottom: 128px;
-  }
-}
-
 @media (max-width: 768px) {
   .--hideMobile {
     display: none !important;

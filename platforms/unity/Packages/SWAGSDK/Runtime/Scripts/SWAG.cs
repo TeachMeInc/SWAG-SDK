@@ -325,6 +325,15 @@ namespace AddictingGames
             #endif
         }
 
+        public void NavigateToArchive ()
+        {
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                SWAG.WebInterface_SendMessage("navigateToArchive", "");
+            #else
+                Debug.Log("SWAG.NavigateToArchive() is not implemented for this platform.");
+            #endif
+        }
+
         public void OnTokenReceived (string token)
         {
             this.User.CompleteLogin(token);

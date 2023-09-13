@@ -21,7 +21,8 @@ public class MyUIController : MonoBehaviour
         OpenURLBtn,
         IsUserSubscribedBtn,
         SaveCloudDataBtn,
-        RestoreCloudDataBtn;
+        RestoreCloudDataBtn,
+        NavigateToArchiveBtn;
     
     public TMPro.TMP_Text 
         UserLabel;
@@ -95,6 +96,10 @@ public class MyUIController : MonoBehaviour
                     (bool isSubscriber) => { Debug.Log(isSubscriber); },
                     (string error) => { Debug.Log(error); }
                 );
+            });
+
+            NavigateToArchiveBtn.onClick.AddListener(() => {
+                swag.NavigateToArchive();
             });
 
             var key = "any_key";

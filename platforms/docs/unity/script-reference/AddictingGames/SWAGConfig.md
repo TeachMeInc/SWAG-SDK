@@ -17,14 +17,8 @@ Main configuration class for the SDK.
 | `ViewMode ViewMode`      | The view mode to be used, can be `Responsive`, `ForcePortrait`, or `ForceLandscape`. |
 | `bool PlayBrandingAnimation` | A boolean indicating whether to play the branding animation or not. |
 
-### Addicting Games Configuration
-
-| Field                    | Description                                       |
-|--------------------------|---------------------------------------------------|
-| `string APIKey`          | The API key for the game.                       |
-
 ### Shockwave Configuration
 
 | Field                    | Description                                       |
 |--------------------------|---------------------------------------------------|
-| `string ShockwaveKeyword` | The keyword for the game.                       |
+| `string ShockwaveKeyword` | The keyword for the game. (optional)                      |

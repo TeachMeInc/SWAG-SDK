@@ -60,6 +60,11 @@ namespace AddictingGames
                 SWAG.Instance.GetServicesURL() + "/achievement/user?game=" + SWAGConfig.Instance.APIKey,
                 true,
                 (string response) => {
+                    if (response.Trim() == "{}") {
+                        onSuccess(new List<Achievement>());
+                        return;
+                    }
+
                     var data = JsonListHelper.FromJson<AchievementWebResponse>(response);
                     var achievements = data.ConvertAll<Achievement>((AchievementWebResponse item) => {
                         return new Achievement {

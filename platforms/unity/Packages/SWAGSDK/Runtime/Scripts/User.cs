@@ -35,10 +35,6 @@ namespace AddictingGames
         void Reset ()
         {
             this.token = "";
-
-            if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                SWAGConfig.Instance.APIKey = "";
-            }
         }
 
         void GetAPIKeyFromKeyword (
@@ -92,15 +88,20 @@ namespace AddictingGames
                     this.token = data.token;
 
                     if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                        this.GetAPIKeyFromKeyword(
-                            () => { 
-                                onSuccess();
-                            },
-                            (string error) => {
-                                this.Reset();
-                                onError(error);
-                            }
-                        );
+                        if (SWAGConfig.Instance.ShockwaveKeyword != "") {
+                            this.GetAPIKeyFromKeyword(
+                                () => { 
+                                    onSuccess();
+                                },
+                                (string error) => {
+                                    this.Reset();
+                                    onError(error);
+                                }
+                            );
+                        } else {
+                            onSuccess();
+                        }
+
                     } else {
                         onSuccess();
                     }
@@ -145,15 +146,19 @@ namespace AddictingGames
             this.token = data.token;
 
             if (SWAGConfig.Instance.Provider == Provider.Shockwave) {
-                this.GetAPIKeyFromKeyword(
-                    () => { 
-                        this.loginAsyncHandler.Resolve(null);
-                    },
-                    (string error) => {
-                        this.Reset();
-                        this.loginAsyncHandler.Reject(error);
-                    }
-                );
+                if (SWAGConfig.Instance.ShockwaveKeyword != "") {
+                    this.GetAPIKeyFromKeyword(
+                        () => { 
+                            this.loginAsyncHandler.Resolve(null);
+                        },
+                        (string error) => {
+                            this.Reset();
+                            this.loginAsyncHandler.Reject(error);
+                        }
+                    );
+                } else {
+                    this.loginAsyncHandler.Resolve(null);
+                }
             } else {
                 this.loginAsyncHandler.Resolve(null);
             }

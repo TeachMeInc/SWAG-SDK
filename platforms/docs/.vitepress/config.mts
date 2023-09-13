@@ -3,12 +3,15 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "SWAG Documentation",
+  title: "AddictingGames Developer Center",
   description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
   outDir: "../../docs",
   base: "/SWAG-SDK/",
 
   themeConfig: {
+    logo: '/addictingGamesLogo.svg',
+    siteTitle: false,
+
     search: {
       provider: 'local'
     },
@@ -78,6 +81,11 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/TeachMeInc/SWAG-SDK' }
     ],
+
+    footer: {
+      message: 'AddictingGames',
+      copyright: 'Copyright 2023 Addicting Games, Inc.'
+    }
   },
 
   vite: {

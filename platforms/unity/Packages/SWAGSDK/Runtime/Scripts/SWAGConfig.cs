@@ -42,6 +42,9 @@ namespace AddictingGames
 
 
         [Header ("SDK")]
+        
+        [SerializeField]
+        public string APIKey = ""; 
 
         [SerializeField]
         public Provider Provider = Provider.AddictingGames;
@@ -54,13 +57,6 @@ namespace AddictingGames
 
         [SerializeField]
         public bool PlayBrandingAnimation = true;
-
-
-
-        [Header ("Addicting Games")]
-        
-        [SerializeField]
-        public string APIKey = "5c6c3c056917a692f96f9651"; 
 
 
 

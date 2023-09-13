@@ -100,6 +100,15 @@ namespace AddictingGames
                     $"&value_formatter={valueFormatter}",
                 true,
                 (string response) => {
+                    if (response.Trim() == "{}") {
+                        onSuccess(new DailyBest {
+                            dailyBest = "",
+                            position = -1,
+                            totalScores = -1
+                        });
+                        return;
+                    }
+
                     var data = JsonUtility.FromJson<DailyBestWebResponse>(response);
 
                     var dailyBest = data.dailyBest.value == "-"
@@ -290,6 +299,11 @@ namespace AddictingGames
                 SWAG.Instance.GetServicesURL() + "/scores" + Scores.GetScoresURI(levelKey, period, valueFormatter),
                 false,
                 (string response) => {
+                    if (response.Trim() == "{}") {
+                        onSuccess(new List<Score>());
+                        return;
+                    }
+
                     var data = JsonListHelper.FromJson<ScoresWebResponse>(response);
                     var scores = data.ConvertAll<Score>((ScoresWebResponse item) => {
                         return new Score {
