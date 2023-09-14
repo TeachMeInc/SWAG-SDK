@@ -7,6 +7,13 @@ export default defineConfig({
   description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
   outDir: "../../docs",
   base: "/SWAG-SDK/",
+  head: [
+    ['link', { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48.png"}],
+    ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png"}],
+    ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png"}],
+    ['link', { rel: "shortcut icon", href: "/favicon-16.png"}],
+  ],
+  appearance: 'dark',
 
   themeConfig: {
     logo: '/addictingGamesLogo.svg',
@@ -95,6 +102,12 @@ export default defineConfig({
           find: /^.*\/VPHome\.vue$/,
           replacement: fileURLToPath(
             new URL('./components/Home.vue', import.meta.url)
+          )
+        },
+        {
+          find: /^.*\/VPFooter\.vue$/,
+          replacement: fileURLToPath(
+            new URL('./components/Footer.vue', import.meta.url)
           )
         }
       ]

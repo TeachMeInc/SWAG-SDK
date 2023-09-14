@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useData } from 'vitepress/dist/client/app/data'
+const { frontmatter: fm } = useData()
 </script>
 
 <template>
@@ -7,18 +9,23 @@
       <div>
         <div>
           <h1>
-            Level up your game with Addicting Games
+            {{ fm.hero.title }}
           </h1>
           <p>
-            Are you a talented game developer looking to share your creations with a vibrant community of players? Look no further! Our platform is dedicated to showcasing the best Flash games from developers like you. Submit your game today and let us help you captivate players from around the world.
+            {{ fm.hero.text }}
           </p>
           <footer>
-            <a class="Button --medium" href="/">Get Started</a>
+            <a 
+              class="Button --medium"
+              :href="fm.hero.action.href"
+            >
+                {{ fm.hero.action.text }}
+            </a>
           </footer>
         </div>
         <aside>
           <figure>
-            <img src="/home/mainImage.png" alt="Home Hero" />
+            <img src="/home/mainImage.png" alt="hero image" />
           </figure>
         </aside>
       </div>
@@ -28,98 +35,44 @@
       <div>
         <div>
           <h2>
-            Why submit your game with us?
+            {{  fm.whySubmit.title }}
           </h2>
-          <ul>
-            <li>
+          <ul class="--hasIcons">
+            <li v-for="item in fm.whySubmit.list">
+              <img 
+                :src="`/home/icons/${item.icon}.svg`"
+                :alt="`${item.icon} icon`"
+                aria-hidden
+              />
               <h4>
-                Opportunity for Monetization
+                {{ item.title }}
               </h4>
               <small>
-                We understand the importance of recognizing your efforts. Let your creativity pay off!
-              </small>
-            </li>
-            <li>
-              <h4>
-                Reach a Global Audience
-              </h4>
-              <small>
-                Our website attracts a diverse and enthusiastic player base, hungry for unique gaming experiences.
-              </small>
-            </li>
-            <li>
-              <h4>
-                Easy Submission Process
-              </h4>
-              <small>
-                Submitting your game is a breeze with our user-friendly portal. Just fill out the necessary details, upload your game files, and let our dedicated team take care of the rest.
-              </small>
-            </li>
-            <li>
-              <h4>
-                Developer Recognition
-              </h4>
-              <small>
-                We believe in giving credit where it's due. As a developer, you'll receive full credit for your game, including author attribution and a link to your website or social media profiles.
+                {{ item.text }}
               </small>
             </li>
           </ul>
-          <footer>
-            <a class="Button --medium --brand" href="/">Get Started</a>
-          </footer>
         </div>
         <aside>
           <div class="Grid --2x">
-            <div class="GamePod">
+            <a 
+              v-for="gameThumb in fm.whySubmit.gameThumbs"
+              class="GamePod"
+              :href="gameThumb.href"
+              target="_blank"
+            >
               <figure>
-                <img src="https://placehold.co/165x107" alt="Game Pod" />
+                <img 
+                  :src="`/home/gameThumbs/${gameThumb.imageSrc}.png`" 
+                  :alt="gameThumb.title"
+                />
               </figure>
-              <div>
+              <!-- <div>
                 <img src="/addictingGamesLogo.svg" alt="Addicting Games" />
-                <small>133.3k Users</small>
-                <small>372k Monthly Plays</small>
-              </div>
-            </div>
-            <div class="GamePod">
-              <figure>
-                <img src="https://placehold.co/165x107" alt="Game Pod" />
-              </figure>
-              <div>
-                <img src="/addictingGamesLogo.svg" alt="Addicting Games" />
-                <small>133.3k Users</small>
-                <small>372k Monthly Plays</small>
-              </div>
-            </div>
-            <div class="GamePod">
-              <figure>
-                <img src="https://placehold.co/165x107" alt="Game Pod" />
-              </figure>
-              <div>
-                <img src="/addictingGamesLogo.svg" alt="Addicting Games" />
-                <small>133.3k Users</small>
-                <small>372k Monthly Plays</small>
-              </div>
-            </div>
-            <div class="GamePod --hideMobile">
-              <figure>
-                <img src="https://placehold.co/165x107" alt="Game Pod" />
-              </figure>
-              <div>
-                <img src="/addictingGamesLogo.svg" alt="Addicting Games" />
-                <small>133.3k Users</small>
-                <small>372k Monthly Plays</small>
-              </div>
-            </div>
-            <div class="GamePod --hideMobile">
-              <figure>
-                <img src="https://placehold.co/165x107" alt="Game Pod" />
-              </figure>
-              <div>
-                <img src="/addictingGamesLogo.svg" alt="Addicting Games" />
-                <small>133.3k Users</small>
-                <small>372k Monthly Plays</small>
-              </div>
-            </div>
+                <small>{{ gameThumb.numUsers }} Users</small>
+                <small>{{ gameThumb.numPlays }} Monthly Plays</small>
+              </div> -->
+            </a>
           </div>
         </aside>
       </div>
@@ -129,49 +82,22 @@
       <div>
         <div>
           <h2>
-            Addicting Games Mobile
+            {{ fm.mobile.title }}
           </h2>
           <ul>
-            <li>
+            <li v-for="item in fm.mobile.list">
               <h4>
-                Opportunity for Monetization
+                {{ item.title }}
               </h4>
               <small>
-                We understand the importance of recognizing your efforts. Let your creativity pay off!
-              </small>
-            </li>
-            <li>
-              <h4>
-                Reach a Global Audience
-              </h4>
-              <small>
-                Our website attracts a diverse and enthusiastic player base, hungry for unique gaming experiences.
-              </small>
-            </li>
-            <li>
-              <h4>
-                Easy Submission Process
-              </h4>
-              <small>
-                Submitting your game is a breeze with our user-friendly portal. Just fill out the necessary details, upload your game files, and let our dedicated team take care of the rest.
-              </small>
-            </li>
-            <li>
-              <h4>
-                Developer Recognition
-              </h4>
-              <small>
-                We believe in giving credit where it's due. As a developer, you'll receive full credit for your game, including author attribution and a link to your website or social media profiles.
+                {{ item.text }}
               </small>
             </li>
           </ul>
-          <footer>
-            <a class="Button --medium" href="/">Get Started</a>
-          </footer>
         </div>
         <aside>
           <figure>
-            <img src="/home/mobileHighlight.png" alt="Home Hero" />
+            <img src="/home/mobileHighlight.png" alt="mobile highlight" />
           </figure>
         </aside>
       </div>
@@ -181,31 +107,55 @@
       <div>
         <div>
           <h2>
-            Ready to submit your game?
+            {{  fm.readyToSubmit.title }}
           </h2>
           <p>
-            Join us today and be a part of our passionate community of developers and gamers. Submit your game now and let your creation shine on our platform. Together, let's keep the spirit of Flash gaming alive and provide players with endless hours of entertainment.
-          </p>
-          <p>
-            Get ready to level up your game with us!
+            {{ fm.readyToSubmit.text }}
           </p>
           <footer>
-            <a class="Button --medium --brand" href="/">Get Started</a>
+            <a 
+              class="Button --medium --brand" 
+              :href="fm.readyToSubmit.action.href"
+              target="_blank"
+            >
+              {{ fm.readyToSubmit.action.text }}
+            </a>
           </footer>
         </div>
         <aside>
           <div class="Grid --3x">
-            <a href="" class="LogoPod">
-              <figure>
-                <img 
-                  src="/home/unityLogo.svg" alt="Unity"
-                />
-              </figure>
-            </a>
-            <a href="" class="LogoPod">
+            
+            <a 
+              href="https://github.com/TeachMeInc/swag-api-js" 
+              class="LogoPod"
+              target="_blank"
+            >
               <figure>
                 <img 
                   src="/home/html5Logo.svg" alt="HTML5"
+                />
+              </figure>
+            </a>
+            <a 
+              href="https://github.com/TeachMeInc/swag-api-construct-3" 
+              class="LogoPod"
+              target="_blank"
+            >
+              <figure>
+                <img 
+                  src="/home/constructLogo.svg" alt="Construct 3"
+                />
+              </figure>
+            </a>
+            <a href="/unity/installation" class="LogoPod">
+              <figure>
+                <img 
+                  src="/home/unityLogo.svg" alt="Unity"
+                  class="--light"
+                />
+                <img 
+                  src="/home/unityLogoDark.svg" alt="Unity (dark logo)"
+                  class="--dark"
                 />
               </figure>
             </a>
@@ -213,7 +163,13 @@
               <div>
                 Using another engine you don't see here? Let us know!
                 <br />
-                <a class="Button --brand">Contact Us</a>
+                <a 
+                  class="Button --brand"
+                  :href="fm.supportHref"
+                  target="_blank"
+                >
+                  Contact Us
+                </a>
               </div>
             </div>
           </div>  
@@ -225,21 +181,18 @@
       <div>
         <div>
           <h2>
-            Frequently Asked Questions
+            {{ fm.faq.title }}
           </h2>
           <dl>
-            <dt>Can I upload a game that has already been published on another site?</dt>
-            <dd>Lorem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet.</dd>
-
-            <dt>Can I upload a game that has already been published on another site?</dt>
-            <dd>Lorem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet.</dd>
-
-            <dt>Can I upload a game that has already been published on another site?</dt>
-            <dd>Lorem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet orem ipsum dolor sit amet.</dd>
+            <template v-for="item in fm.faq.questions">
+              <dt>
+                {{ item.question }}
+              </dt>
+              <dd>
+                {{ item.answer }}
+              </dd>
+            </template>
           </dl>
-          <footer>
-            <a class="Button --medium" href="/">Get Started</a>
-          </footer>
         </div>
       </div>
     </section>
@@ -248,13 +201,19 @@
       <div>
         <div>
           <h1>
-            Got Questions?
+            {{ fm.questions.title }}
           </h1>
           <p>
-            Feel free to reach out to our support team, and we'll be more than happy to assist you.
+            {{ fm.questions.text }}
           </p>
           <footer>
-            <a class="Button --medium --brand" href="/">Contact Us</a>
+            <a 
+              class="Button --medium --brand" 
+              :href="fm.supportHref"
+              target="_blank"
+            >
+              {{ fm.questions.action.text }}
+            </a>
           </footer>
         </div>
       </div>
@@ -331,7 +290,11 @@
   padding: 8px;
   border-radius: 8px;
   box-shadow: 0 0 0 1px var(--vp-c-brand-dimm) inset;
-  min-width: 300px;
+  max-width: calc(165px + 16px);
+}
+
+a.GamePod:hover {
+  box-shadow: 0 0 0 1px var(--vp-c-brand-light) inset;
 }
 
 .GamePod > * {
@@ -400,6 +363,19 @@ a.LogoPod:hover {
   border-radius: 4px;
 }
 
+.dark .LogoPod > figure img.--light {
+  display: none;
+}
+
+.LogoPod > figure img.--dark {
+  display: none;
+}
+
+.dark .LogoPod > figure img.--dark {
+  display: inline-block;
+}
+
+
 /* Section */
 
 .Section {
@@ -431,6 +407,25 @@ a.LogoPod:hover {
 
 .Section > div > div > ul li {
   margin: 16px 0;
+}
+
+.Section > div > div > ul.--hasIcons li {
+  padding-left: 48px;
+  position: relative;
+}
+
+.Section > div > div > ul.--hasIcons li img {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 32px;
+  height: auto;
+  opacity: 0.85;
+  filter: invert(1);
+}
+
+.dark .Section > div > div > ul.--hasIcons li img {
+  filter: invert(0);
 }
 
 .Section > div > div > dl {
@@ -467,6 +462,10 @@ a.LogoPod:hover {
 
 .Section.--brand {
   background-color: var(--vp-c-brand);
+  background-image: url('/home/bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   color: var(--vp-button-brand-text);
 }
 

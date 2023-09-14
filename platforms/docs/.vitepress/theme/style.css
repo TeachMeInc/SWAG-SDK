@@ -16,7 +16,7 @@
   --vp-c-brand-darker: #e43d30;
   --vp-c-brand-black: #171717;
   --vp-c-brand-black-lighter: #393939;
-  --vp-c-brand-dimm: rgba(100, 100, 100, 0.08);
+  --vp-c-brand-dimm: rgba(100, 100, 100, 0.1);
 }
 
 /**
@@ -36,38 +36,6 @@
 }
 
 /**
- * Component: Home
- * -------------------------------------------------------------------------- */
-
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(
-    120deg,
-    #e43d30 30%,
-    #e43d30
-  );
-
-  --vp-home-hero-image-background-image: linear-gradient(
-    -45deg,
-    #e43d30 50%,
-    #e43d30 50%
-  );
-  --vp-home-hero-image-filter: blur(40px);
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(72px);
-  }
-}
-
-/**
  * Component: Custom Block
  * -------------------------------------------------------------------------- */
 
@@ -84,9 +52,45 @@
 }
 
 /**
- * Component: Algolia
+ * Component: Search
  * -------------------------------------------------------------------------- */
 
 :root {
   --vp-local-search-highlight-bg: var(--vp-c-brand-light);
+}
+
+/**
+ * Component: "Submit Game" NavBarMenu Link
+ * -------------------------------------------------------------------------- */
+ 
+.VPNavBarMenu .VPLink.vp-external-link-icon {
+  height: 38px;
+  align-self: center;
+
+  font-weight: 600;
+  transition: color .25s, background-color .25s;
+  color: var(--vp-button-brand-text);
+  border-color: var(--vp-button-brand-border);
+  background-color: var(--vp-button-brand-bg);
+  border-radius: 6px;
+  padding: 0 14px;
+  font-size: 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.VPNavBarMenu .VPLink.vp-external-link-icon:hover {
+  background-color: var(--vp-c-brand-light);
+}
+
+/**
+ * Component: Footer
+ * -------------------------------------------------------------------------- */
+ 
+.VPFooter {
+  background-color: var(--vp-c-brand-dimm) !important;
+}
+
+.dark .VPFooter {
+  background-color: var(--vp-c-brand-black) !important;
 }
