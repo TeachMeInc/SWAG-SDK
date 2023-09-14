@@ -6,7 +6,7 @@ export default defineConfig({
   title: "AddictingGames Developer Center",
   description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
   outDir: "../../docs",
-  base: "/SWAG-SDK/",
+  // base: "/SWAG-SDK/",
   head: [
     ['link', { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48.png"}],
     ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png"}],
