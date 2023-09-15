@@ -54,6 +54,11 @@ You can learn more about installing local packages [here](https://docs.unity3d.c
 
 ![SWAG Prefab Screenshot](./images/swag-prefab.png)
 
+::: info
+1. Please make sure you have an EventSystem somewhere in your scene, as the prefab does not provide one. (GameObject -> UI -> Event System)
+2. [TMP Essentials](https://docs.unity3d.com/Packages/com.unity.textmeshpro@1.3/manual/index.html#installation) is required. Unity should automatically prompt you to install the resources needed when you run your game.
+:::
+
 ## Configuring SWAG
 
 Once the `SWAG` prefab is added to your scene, click on the game object to configure the `SWAG` component in the editor panel.

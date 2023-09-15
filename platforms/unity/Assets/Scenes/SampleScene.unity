@@ -1667,7 +1667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &777045610
 Transform:
   m_ObjectHideFlags: 0
@@ -3002,7 +3002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1382683597
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4265,18 +4265,6 @@ PrefabInstance:
     - target: {fileID: 3794113532120513872, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
-      propertyPath: APIKey
-      value: 6500cc285438e15d4de3c342
-      objectReference: {fileID: 0}
-    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
-      propertyPath: Provider
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
-      propertyPath: ShockwaveKeyword
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513879, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_Name
