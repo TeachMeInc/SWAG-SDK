@@ -8,7 +8,7 @@ hero:
   text: Are you a game developer looking to share your creations with a vibrant community of players? Look no further! Our platform is dedicated to showcasing the best web games from developers like you. Submit your game today and let us help you captivate players from around the world.
   action:
     text: Get Started
-    href: /unity/installation
+    href: https://www.addictinggames.com/about/upload
 
 whySubmit:
   title: Why submit your game with us?
