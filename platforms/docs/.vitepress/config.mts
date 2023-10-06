@@ -26,7 +26,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Documentation', link: '/unity/installation' },
-      { text: 'Submit Your Game', link: 'https://www.addictinggames.com/about/upload' }
+      { text: 'Submit Your Game', link: 'https://addictinggameshelp.zendesk.com/hc/en-us/requests/new' }
     ],
 
     outline: [2, 3],

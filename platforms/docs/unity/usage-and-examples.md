@@ -51,7 +51,7 @@ SWAG.Instance.Scores.ShowDialog(
 **Example**
 ```c#
 var levelKey = "level_0";
-var score = 100f;
+var score = 12000f; // time in milliseconds
 
 SWAG.Instance.Scores.currentUser.RecordScore(
     levelKey,

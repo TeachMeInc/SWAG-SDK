@@ -11,7 +11,7 @@ Records the user's score for a particular game level.
 | Parameter            | Description                                          |
 |----------------------|------------------------------------------------------|
 | `string levelKey`    | Key associated with the level for which the score is being recorded. |
-| `float score`       | The score value to be recorded.                     |
+| `float score`       | The score value (in milliseconds) to be recorded.                     |
 | `System.Action onSuccess` | Callback to execute upon successful recording of the score. |
 | `System.Action<string> onError` | Callback to execute in case of an error.    |
 

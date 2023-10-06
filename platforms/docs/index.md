@@ -8,7 +8,7 @@ hero:
   text: Are you a game developer looking to share your creations with a vibrant community of players? Look no further! Our platform is dedicated to showcasing the best web games from developers like you. Submit your game today and let us help you captivate players from around the world.
   action:
     text: Get Started
-    href: https://www.addictinggames.com/about/upload
+    href: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new
 
 whySubmit:
   title: Why submit your game with us?
@@ -68,7 +68,7 @@ readyToSubmit:
   text: Join us today and be a part of our passionate community of developers and gamers. Submit your game now and let your creation shine on our platform. Together, let's keep the spirit of Flash gaming alive and provide players with endless hours of entertainment. Get ready to level up your game with us!
   action:
     text: Submit Your Game
-    href: https://www.addictinggames.com/about/upload
+    href: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new
 
 faq:
   title: Frequently Asked Questions
