@@ -112,8 +112,8 @@ namespace AddictingGames
                     }
                 },
                 (string error) => {
-                    if (this.readyAsyncHandler != null) {
-                        this.readyAsyncHandler.Reject(error);
+                    for (int i = 0; i < this.readyAsyncHandlers.Count; i++) {
+                        this.readyAsyncHandlers[i].Reject(error);
                     }
                 }
             );
@@ -134,8 +134,8 @@ namespace AddictingGames
         {
             this.isReady = true;
 
-            if (this.readyAsyncHandler != null) {
-                this.readyAsyncHandler.Resolve(null);
+            for (int i = 0; i < this.readyAsyncHandlers.Count; i++) {
+                this.readyAsyncHandlers[i].Resolve(null);
             }
 
             if (SWAGConfig.Instance.PlayBrandingAnimation) {
@@ -143,7 +143,7 @@ namespace AddictingGames
             }
         }
 
-        AsyncHandler<object> readyAsyncHandler;
+        List<AsyncHandler<object>> readyAsyncHandlers = new List<AsyncHandler<object>>();
 
         public void OnReady (
             System.Action onSuccess
@@ -160,10 +160,10 @@ namespace AddictingGames
             if (this.isReady) {
                 onSuccess();
             } else {
-                readyAsyncHandler = new AsyncHandler<object>(
+                readyAsyncHandlers.Add(new AsyncHandler<object>(
                     (object result) => { onSuccess(); },
                     (string error) => { onError(error); }
-                );
+                ));
             }
         }
 
