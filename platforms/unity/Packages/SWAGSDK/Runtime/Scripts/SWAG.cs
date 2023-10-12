@@ -81,7 +81,7 @@ namespace AddictingGames
         public User User = new User();
 
         public bool isReady = false;
-        BrandingAnimation brandingAnimation;
+        bool hasBrandingAnimPlayed = false;
 
         public static SWAG Instance { get; private set; }
         
@@ -97,12 +97,13 @@ namespace AddictingGames
 
         void Start ()
         {
-            this.brandingAnimation = this.transform
-                .Find("BrandingAnimation")
-                .GetComponent<BrandingAnimation>();
-
-            if (!SWAGConfig.Instance.PlayBrandingAnimation) {
-                this.brandingAnimation.gameObject.SetActive(false);
+            if (SWAGConfig.Instance.PlayBrandingAnimation) {
+                #if UNITY_WEBGL && !UNITY_EDITOR
+                    this.ShowBrandingAnimation();
+                #else
+                    Debug.Log("SWAG.ShowBrandingAnimation() is not implemented for this platform.");
+                    this.OnBrandingAnimationComplete();
+                #endif
             }
 
             this.User.Login(
@@ -123,7 +124,7 @@ namespace AddictingGames
         {
             if (
                 !this.isReady && 
-                !brandingAnimation.IsPlaying() && 
+                (!SWAGConfig.Instance.PlayBrandingAnimation || this.hasBrandingAnimPlayed) &&
                 this.User.IsLoggedIn()
             ) {
                 this.Ready();
@@ -136,10 +137,6 @@ namespace AddictingGames
 
             for (int i = 0; i < this.readyAsyncHandlers.Count; i++) {
                 this.readyAsyncHandlers[i].Resolve(null);
-            }
-
-            if (SWAGConfig.Instance.PlayBrandingAnimation) {
-                this.brandingAnimation.gameObject.SetActive(false);
             }
         }
 
@@ -332,6 +329,23 @@ namespace AddictingGames
             #else
                 Debug.Log("SWAG.NavigateToArchive() is not implemented for this platform.");
             #endif
+        }
+
+        [DllImport("__Internal")]
+        public static extern void WebInterface_ShowBrandingAnimation (string videoUrl);
+
+        void ShowBrandingAnimation ()
+        {
+            SWAG.WebInterface_ShowBrandingAnimation(
+                SWAGConfig.Instance.Provider == Provider.AddictingGames
+                    ? SWAGConstants.AddictingGamesPreloaderURL
+                    : SWAGConstants.ShockwavePreloaderURL
+            );
+        }
+
+        public void OnBrandingAnimationComplete ()
+        {
+            this.hasBrandingAnimPlayed = true;
         }
 
         public void OnTokenReceived (string token)

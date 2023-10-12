@@ -58,6 +58,21 @@ class SWAGSDK
         
         throw new Error('Unknown event name: ' + eventName);
     }
+
+    ShowBrandingAnimation (videoUrl) 
+    {
+        const video = document.createElement('video');
+
+        video.src = videoUrl;
+        video.autoplay = true;
+        video.loop = false;
+        video.muted = false;
+        video.controls = false;
+
+        video.addEventListener('ended', () => {
+            this.unityInstance.SendMessage('SWAG', 'OnBrandingAnimationComplete');
+        });
+    }
     
     /* #endregion */
     
