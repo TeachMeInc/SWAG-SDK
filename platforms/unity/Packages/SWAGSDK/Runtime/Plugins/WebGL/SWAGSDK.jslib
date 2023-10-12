@@ -32,6 +32,12 @@ mergeInto(
 			SWAG.SendMessage(UTF8ToString(eventName), UTF8ToString(message));
 		},
 
+		WebInterface_ShowBrandingAnimation: function (videoUrl)
+		{
+				const SWAG = window.SWAGSDK;
+				SWAG.ShowBrandingAnimation(UTF8ToString(videoUrl));
+		},
+
 		/* #endregion */
 
 

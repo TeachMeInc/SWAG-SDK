@@ -34,6 +34,28 @@ body {
   pointer-events: none;
 }
 
+/*
+  Branding Animation Video
+*/
+
+.SWAGBrandingAnimation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+  z-index: 99999;
+  background-color: black;
+}
+
+.SWAGBrandingAnimation video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 /* 
   Ads 
 */

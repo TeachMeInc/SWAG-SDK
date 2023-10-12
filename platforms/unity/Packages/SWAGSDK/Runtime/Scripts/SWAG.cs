@@ -81,7 +81,7 @@ namespace AddictingGames
         public User User = new User();
 
         public bool isReady = false;
-        BrandingAnimation brandingAnimation;
+        bool hasBrandingAnimPlayed = false;
 
         public static SWAG Instance { get; private set; }
         
@@ -97,12 +97,13 @@ namespace AddictingGames
 
         void Start ()
         {
-            this.brandingAnimation = this.transform
-                .Find("BrandingAnimation")
-                .GetComponent<BrandingAnimation>();
-
-            if (!SWAGConfig.Instance.PlayBrandingAnimation) {
-                this.brandingAnimation.gameObject.SetActive(false);
+            if (SWAGConfig.Instance.PlayBrandingAnimation) {
+                #if UNITY_WEBGL && !UNITY_EDITOR
+                    this.ShowBrandingAnimation();
+                #else
+                    Debug.Log("SWAG.ShowBrandingAnimation() is not implemented for this platform.");
+                    this.OnBrandingAnimationComplete();
+                #endif
             }
 
             this.User.Login(
@@ -112,8 +113,8 @@ namespace AddictingGames
                     }
                 },
                 (string error) => {
-                    if (this.readyAsyncHandler != null) {
-                        this.readyAsyncHandler.Reject(error);
+                    for (int i = 0; i < this.readyAsyncHandlers.Count; i++) {
+                        this.readyAsyncHandlers[i].Reject(error);
                     }
                 }
             );
@@ -123,7 +124,7 @@ namespace AddictingGames
         {
             if (
                 !this.isReady && 
-                !brandingAnimation.IsPlaying() && 
+                (!SWAGConfig.Instance.PlayBrandingAnimation || this.hasBrandingAnimPlayed) &&
                 this.User.IsLoggedIn()
             ) {
                 this.Ready();
@@ -134,16 +135,12 @@ namespace AddictingGames
         {
             this.isReady = true;
 
-            if (this.readyAsyncHandler != null) {
-                this.readyAsyncHandler.Resolve(null);
-            }
-
-            if (SWAGConfig.Instance.PlayBrandingAnimation) {
-                this.brandingAnimation.gameObject.SetActive(false);
+            for (int i = 0; i < this.readyAsyncHandlers.Count; i++) {
+                this.readyAsyncHandlers[i].Resolve(null);
             }
         }
 
-        AsyncHandler<object> readyAsyncHandler;
+        List<AsyncHandler<object>> readyAsyncHandlers = new List<AsyncHandler<object>>();
 
         public void OnReady (
             System.Action onSuccess
@@ -160,10 +157,10 @@ namespace AddictingGames
             if (this.isReady) {
                 onSuccess();
             } else {
-                readyAsyncHandler = new AsyncHandler<object>(
+                readyAsyncHandlers.Add(new AsyncHandler<object>(
                     (object result) => { onSuccess(); },
                     (string error) => { onError(error); }
-                );
+                ));
             }
         }
 
@@ -332,6 +329,23 @@ namespace AddictingGames
             #else
                 Debug.Log("SWAG.NavigateToArchive() is not implemented for this platform.");
             #endif
+        }
+
+        [DllImport("__Internal")]
+        public static extern void WebInterface_ShowBrandingAnimation (string videoUrl);
+
+        void ShowBrandingAnimation ()
+        {
+            SWAG.WebInterface_ShowBrandingAnimation(
+                SWAGConfig.Instance.Provider == Provider.AddictingGames
+                    ? SWAGConstants.AddictingGamesPreloaderURL
+                    : SWAGConstants.ShockwavePreloaderURL
+            );
+        }
+
+        public void OnBrandingAnimationComplete ()
+        {
+            this.hasBrandingAnimPlayed = true;
         }
 
         public void OnTokenReceived (string token)

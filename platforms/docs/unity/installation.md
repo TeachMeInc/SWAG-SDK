@@ -163,6 +163,12 @@ If you have [NodeJS](https://nodejs.org/en) installed, you can do this in one co
 npx http-server ./ -p 8888
 ```
 
+## Submitting Your Game
+
+Before submitting your game, please ensure that **compression is disabled**, and that you are **not building in development mode**.
+
+![Publish Settings Screenshot](images/publish-settings.png)
+
 ## Next Steps
 
 Now that you've installed the SDK you're ready to start using it. 

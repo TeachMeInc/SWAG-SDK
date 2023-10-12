@@ -63,7 +63,7 @@ namespace AddictingGames
                 );
             } else {
                 this.ResizeDialog(
-                    355f, 647f, 
+                    320f, 480f, 
                     600f, 800f
                 );
             }
@@ -71,14 +71,40 @@ namespace AddictingGames
 
         void ResizeDialog (float minWidth, float minHeight, float maxWidth, float maxHeight)
         {
-            var screenWidth = Screen.width * .75f;
-            var screenHeight = Screen.height * .75f;
+            var isLandscape = this.IsLandscape();
+
+            var screenWidth = 0f;
+            var screenHeight = 0f;
+
+            // Landscape
+            if (isLandscape) {
+                screenWidth = Screen.width * .75f;
+                screenHeight = Screen.height * .75f;
+            }
+            
+            // Portrait
+            else {
+                screenWidth = Screen.width + 44f; // 32px padding on each side - 10px padding between edges
+                screenHeight = Screen.height + 44f;
+            }
 
             var width = Mathf.Clamp(screenWidth, minWidth, maxWidth);
             var height = Mathf.Clamp(screenHeight, minHeight, maxHeight);
 
             var rectTransform = this.GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(width, height);
+
+            this.ResizeTableItems();
+        }
+
+        void ResizeTableItems ()
+        {
+            var isLandscape = this.IsLandscape();
+            var tableCells = this.GetComponentsInChildren<TableCell>(true);
+
+            foreach (var tableCell in tableCells) {
+                tableCell.Resize(isLandscape);
+            }
         }
 
         protected bool IsLandscape ()
