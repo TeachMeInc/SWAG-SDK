@@ -61,17 +61,24 @@ class SWAGSDK
 
     ShowBrandingAnimation (videoUrl) 
     {
-        const video = document.createElement('video');
+        const containerEl = document.createElement('div');
+        containerEl.classList.add('SWAGBrandingAnimation');
 
-        video.src = videoUrl;
-        video.autoplay = true;
-        video.loop = false;
-        video.muted = false;
-        video.controls = false;
+        const videoEl = document.createElement('video');
+        videoEl.src = videoUrl;
+        videoEl.autoplay = true;
+        videoEl.loop = false;
+        videoEl.muted = false;
+        videoEl.controls = false;
 
-        video.addEventListener('ended', () => {
+        videoEl.addEventListener('ended', () => {
             this.unityInstance.SendMessage('SWAG', 'OnBrandingAnimationComplete');
+
+            document.body.removeChild(containerEl);
         });
+
+        containerEl.appendChild(videoEl);
+        document.body.appendChild(containerEl);
     }
     
     /* #endregion */
