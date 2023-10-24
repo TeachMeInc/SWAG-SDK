@@ -35,6 +35,8 @@ namespace AddictingGames
                     obj.SetColor(color);
                 }
             }
+
+            this.ResizeLogos();
         }
 
         void Update ()
@@ -44,7 +46,9 @@ namespace AddictingGames
             }
 
             var activeDialog = this.ActiveDialog();
+
             var isLandscape = this.IsLandscape();
+            var isNarrowDevice = this.IsNarrowDevice();
 
             if (isLandscape && activeDialog != this.landscapeDialog) {
                 this.OnLayout(this.landscapeDialog);
@@ -57,10 +61,17 @@ namespace AddictingGames
             }
 
             if (isLandscape) {
-                this.ResizeDialog(
-                    640f, 480f, 
-                    800f, 600f
-                );
+                if (isNarrowDevice) {
+                    this.ResizeDialog(
+                        480f, 320f,
+                        800f, 600f
+                    );
+                } else {
+                    this.ResizeDialog(
+                        640f, 480f, 
+                        800f, 600f
+                    );
+                }
             } else {
                 this.ResizeDialog(
                     320f, 480f, 
@@ -72,14 +83,20 @@ namespace AddictingGames
         void ResizeDialog (float minWidth, float minHeight, float maxWidth, float maxHeight)
         {
             var isLandscape = this.IsLandscape();
+            var isNarrowDevice = this.IsNarrowDevice();
 
             var screenWidth = 0f;
             var screenHeight = 0f;
 
             // Landscape
             if (isLandscape) {
-                screenWidth = Screen.width * .75f;
-                screenHeight = Screen.height * .75f;
+                if (isNarrowDevice) {
+                    screenWidth = Screen.width + 44f; // 32px padding on each side - 10px padding between edges
+                    screenHeight = Screen.height + 34f; // 5px adjustment on top/bottom
+                } else {
+                    screenWidth = Screen.width * .75f;
+                    screenHeight = Screen.height * .75f;
+                }
             }
             
             // Portrait
@@ -95,15 +112,33 @@ namespace AddictingGames
             rectTransform.sizeDelta = new Vector2(width, height);
 
             this.ResizeTableItems();
+            this.ResizeLogos();
         }
 
         void ResizeTableItems ()
         {
             var isLandscape = this.IsLandscape();
+
             var tableCells = this.GetComponentsInChildren<TableCell>(true);
 
             foreach (var tableCell in tableCells) {
                 tableCell.Resize(isLandscape);
+            }
+        }
+
+        void ResizeLogos ()
+        {
+            var isLandscape = this.IsLandscape();
+            var isNarrowDevice = this.IsNarrowDevice();
+
+            var logos = this.GetComponentsInChildren<Logo>(true);
+
+            foreach (var logo in logos) {
+                logo.SetLogoSize(
+                    (isNarrowDevice && !isLandscape)
+                        ? LogoSize.Compact 
+                        : LogoSize.FullWidth
+                );
             }
         }
 
@@ -112,6 +147,11 @@ namespace AddictingGames
             return SWAGConfig.Instance.ViewMode != ViewMode.Responsive
                 ? SWAGConfig.Instance.ViewMode == ViewMode.ForceLandscape
                 : Screen.width > Screen.height;
+        }
+
+        protected bool IsNarrowDevice ()
+        {
+            return Screen.width <= 768f;
         }
 
         protected Dialog CurrentDialog ()
