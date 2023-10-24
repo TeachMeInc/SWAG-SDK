@@ -11,7 +11,6 @@ public class MyGameController : MonoBehaviour
 
         swag.OnReady(() => {
             Debug.Log("Ready!");
-            swag.Scores.ShowDialog();
         });
     }
 }
