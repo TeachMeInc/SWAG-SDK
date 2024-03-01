@@ -374,6 +374,16 @@ namespace AddictingGames
             System.Action<string> onError
         )
         {
+            if (!this.isReady) {
+                throw new System.Exception("SWAG.BeginAd() cannot be called before SWAG is ready.");
+            }
+
+            if (this.User.IsSubscriber()) {
+                Debug.Log("Skipping SWAG.BeginAd(); user is subscriber.");
+                this.OnAdComplete();
+                return;
+            };
+            
             this.showAdAsyncHandler = new AsyncHandler<object>(
                 (object result) => { onSuccess(); },
                 (string error) => { onError(error); }
@@ -414,6 +424,16 @@ namespace AddictingGames
 
         public bool ShowBanner (string id, Vector3 position, string pivot, BannerSize bannerSize)
         {
+            if (!this.isReady) {
+                throw new System.Exception("SWAG.ShowBanner() cannot be called before SWAG is ready.");
+            }
+
+            if (this.User.IsSubscriber()) {
+                Debug.Log("Skipping SWAG.ShowBanner(); user is subscriber.");
+                this.OnAdComplete();
+                return true;
+            };
+
             #if UNITY_WEBGL && !UNITY_EDITOR
                 var bannerSizeString = "";
 

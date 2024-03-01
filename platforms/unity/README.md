@@ -1,0 +1,1 @@
+Please visit https://developers.addictinggames.com/unity/installation.html for more details on installation and usage.

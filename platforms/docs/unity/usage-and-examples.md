@@ -142,12 +142,7 @@ Checks to see if the user is a GamePass or Shockwave Unlimited subscriber.
 
 **Example**
 ```c#
-SWAG.Instance.User.IsSubscriber(
-    // Success callback
-    (bool isSubscriber) => { Debug.Log(isSubscriber); },
-    // Error callback
-    (string error) => { Debug.Log(error); }
-);
+var isSubscriber = SWAG.Instance.User.IsSubscriber();
 ```
 <small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
 

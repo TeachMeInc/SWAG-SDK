@@ -92,10 +92,7 @@ public class MyUIController : MonoBehaviour
             });
 
             IsUserSubscribedBtn.onClick.AddListener(() => {
-               swag.User.IsSubscriber(
-                    (bool isSubscriber) => { Debug.Log(isSubscriber); },
-                    (string error) => { Debug.Log(error); }
-                );
+                Debug.Log(swag.User.IsSubscriber());
             });
 
             NavigateToArchiveBtn.onClick.AddListener(() => {

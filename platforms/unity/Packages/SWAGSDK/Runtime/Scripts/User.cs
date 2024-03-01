@@ -21,7 +21,7 @@ namespace AddictingGames
         public string id;
         public string memberName;
         bool? isSubscriber;
-
+ 
         [HideInInspector]
         public string token = "";
 
@@ -177,7 +177,12 @@ namespace AddictingGames
         {
             #if UNITY_WEBGL && !UNITY_EDITOR
                 this.LoginUsingToken(
-                    () => { onSuccess(); },
+                    () => {
+                        this.CheckIsSubscriber(
+                            (bool result) => { onSuccess(); },
+                            (string error) => { onError(error); }
+                        );
+                    },
                     (string error) => { onError(error); }
                 );
             #else
@@ -223,7 +228,7 @@ namespace AddictingGames
 
         /* #region Helpers */
 
-        public void IsSubscriber (
+        void CheckIsSubscriber (
             System.Action<bool> onSuccess, 
             System.Action<string> onError
         )
@@ -249,6 +254,27 @@ namespace AddictingGames
                     onError(error);
                 }
             ));
+        }
+
+        public bool IsSubscriber ()
+        {
+            if (!this.IsLoggedIn()) {
+                throw new System.Exception("User is not logged in.");
+            }
+
+            if (this.isSubscriber != null) {
+                return (bool)this.isSubscriber;
+            }
+            
+            return false;
+        }
+
+        public void IsSubscriber (
+            System.Action<bool> onSuccess, 
+            System.Action<string> onError
+        )
+        {
+            onSuccess(this.IsSubscriber());
         }
 
         public bool IsGuest () 
