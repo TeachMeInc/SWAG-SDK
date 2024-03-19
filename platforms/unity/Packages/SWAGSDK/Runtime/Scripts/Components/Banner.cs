@@ -25,6 +25,7 @@ namespace AddictingGames
 
 
         string id;
+        bool shouldShowBanner = false;
 
         void Start ()
         {
@@ -33,18 +34,7 @@ namespace AddictingGames
 
         void OnEnable ()
         {
-            this.ToggleVisible();
-
-            if (SWAG.Instance) {
-                if (this.id == null) this.id = System.Guid.NewGuid().ToString();
-
-                SWAG.Instance.ShowBanner(
-                    this.id,
-                    this.GetPosition(),
-                    this.GetPivot(),
-                    this.bannerSize
-                );
-            }
+            this.shouldShowBanner = true;
         }
 
         void OnDisable ()
@@ -56,6 +46,31 @@ namespace AddictingGames
 
         void Update ()
         {
+            if (!SWAG.Instance || !SWAG.Instance.isReady) {
+                return;
+            }
+
+            if (SWAG.Instance.User.IsSubscriber()) {
+                this.shouldShowBanner = false;
+                this.gameObject.SetActive(false);
+                return;
+            }
+
+            if (this.shouldShowBanner) {
+                this.ToggleVisible();
+
+                if (this.id == null) this.id = System.Guid.NewGuid().ToString();
+
+                SWAG.Instance.ShowBanner(
+                    this.id,
+                    this.GetPosition(),
+                    this.GetPivot(),
+                    this.bannerSize
+                );
+
+                this.shouldShowBanner = false;
+            }
+
             this.GetComponent<RectTransform>().sizeDelta = this.GetDimensions();
 
             if (this.id != null && SWAG.Instance) {

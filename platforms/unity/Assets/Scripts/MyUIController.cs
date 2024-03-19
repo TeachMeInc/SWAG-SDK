@@ -29,7 +29,6 @@ public class MyUIController : MonoBehaviour
     
     void Start ()
     {
-        this.HideAds();
         var swag = SWAG.Instance;
 
         swag.OnReady(() => {
