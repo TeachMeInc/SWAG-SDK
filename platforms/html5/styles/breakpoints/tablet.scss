@@ -1,0 +1,13 @@
+&[data-breakpoint="media-tablet"] {
+  .swag-dialog {
+    font-size: 80%;
+
+    width: 60%;
+    flex: 1 1 90%;
+
+    &[data-dialog="userlogin"] {
+      width: 60%;
+      flex: 1 1 60%;
+    }
+  }
+}
