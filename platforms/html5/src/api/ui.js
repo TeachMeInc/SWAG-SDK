@@ -299,7 +299,7 @@ var methods = {
     var scoreConfirmationDialog = self.templates['dialogScoreConfirmation'](options);
     contentEl.classList.remove('loading');
     contentEl.innerHTML = scoreConfirmationDialog;
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve, reject) {
       resolve({});
     });
   },
@@ -456,7 +456,7 @@ var methods = {
 
     window.addEventListener('keypress', enterKeyListener, true);
 
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve, reject) {
       resolve({});
     });
   },
@@ -522,7 +522,7 @@ var methods = {
 
     window.addEventListener('keypress', enterKeyListener, true);
 
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve, reject) {
       resolve({});
     });
   },
@@ -589,22 +589,32 @@ var methods = {
   },
 
   startGame: function() {
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve, reject) {
       console.log('::: start game method invoked :::');
       resolve({});
     });
   },
 
   endGame: function() {
-    return new Promise(function(resolve,reject) {
+    return new Promise(function(resolve, reject) {
       console.log('::: end game method invoked :::');
       resolve({});
     });
   },
 
   showAd: function() {
-    return new Promise(function(resolve,reject) {
-      resolve({});
+    return new Promise(function(resolve, reject) {
+      const listener = function(event) {
+        const { eventName } = JSON.parse(payload);
+        if (eventName === 'onPrerollComplete') {
+          window.removeEventListener('message', listener, false);
+          resolve();
+        }
+      };
+      window.addEventListener('message', listener, false);
+
+      const eventName = 'showPrerollAd';
+      window.parent.postMessage(JSON.stringify({ eventName }), '*');
     });
   },
 
