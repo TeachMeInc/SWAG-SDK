@@ -1,70 +1,6 @@
-# SWAG API DEVELOPERS GUIDE
+# Usage and Examples
 
-Include the following files:
-
-```
-<script type="text/javascript"
-src="https://swagapi.shockwave.com/dist/swag-api.js">
-<link rel="stylesheet" type="text/css"
-href="https://swagapi.shockwave.com/dist/swag-api.css">
-```
-
-# Score Configuration
-
-Each type of score for your game can be configured individually. Expressed in JSON, a score configuration is in the following format:
-
-```
-{
-  game: String,
-  name: String,
-  level_key: String,
-  value_name: String,
-  value_type: String,
-  value_formatter: String,
-  order: Number,
-  reverse: Boolean,
-  mode: String
-}
-```
-| attribute     | required |default| type | description  |
-| ------------- | ------------- | ----- | ------ | ------ |
-|game|y|-|String|api key of your game
-|name|y|-|String|Display name for the score *eg. 'Level 1'*
-|level_key|y|-|String|reference key for this level *eg. 'level1'*
-|value_name|n|-|String|Name for the score values *eg. 'Fastest Time'*
-|value_type|n|"number"|String|The type of value (number, time)
-|value_formatter|n|"default"|String|The type of formatter to use for this value (see Formatters)
-|order|n|-|Number|The display order of this level
-|reverse|n|false|Boolean|if true, minimum scores value are used for api score calculations
-|mode|n|"default"|String| Scores with mode of `first` will only display the first score for a day in the leaderboards
-
-These configurations are loaded into our highscore system to facilitate the specific needs of each type of score for your game.
-
-<div class="page-break"></div>
-
-# Formatters
-
-Define a value_formatter in score configuration or as a parameter in api methods to format values.
-
-## Number Formatters
-
-No special number formatters are currently available.  Let us know if there is a format you'd like to see.
-
-## Time Formatters
-
-If using the time formatter you should submit your scores in milliseconds.
-
-| formatter     | example output|
-| ------------- | ------------- |
-|default|00:01:05.5
-|shortDuration|1m 5.5s
-|longDuration|1 minute, 5.5 seconds
-|seconds|65.5s
-|ms|65500
-
-<div class="page-break"></div>
-
-# Connecting to the API
+## Connecting to the API
 
 SWAGPI will be accessible as a global
 
@@ -77,7 +13,7 @@ SWAGPI will be accessible as a global
   });
 ```
 
-## API options:
+### API Options
 
 | option        | type           | description  |
 | ------------- | ------------- | ----- |
@@ -103,11 +39,9 @@ Using event listener:
   });
 ```
 
-<div class="page-break"></div>
+## Using the API
 
-# Using the API
-
-##  Session Methods
+### Session Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
@@ -115,8 +49,7 @@ Using event listener:
 |startGame|-| Call this method before the player starts a game "session"| Promise |
 |endGame|options| Call this method at the end of a player game "session"| Promise |
 
-
-## End game options
+### End Game Options
 
 The endGame method accepts an options object which enables developers to submit custom metrics for a game session.
 
@@ -140,9 +73,7 @@ Monster shooter with multiple types, tracking which enemy killed the player:
 { werewolf: 4, gargoyle: 2, ghoul: 12, killedBy: "ghoul" }
 ```
 
-<div class="page-break"></div>
-
-# Start and End Game Usage
+## Start and End Game Usage
 
 The startGame and endGame methods are intended to be used at the start and end of a game session.
 
@@ -163,9 +94,7 @@ Example use case of endGame:
 - when the promise is resolved, game displays a retry button
 ```
 
-<div class="page-break"></div>
-
-#  Score Methods
+## Score Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
@@ -174,12 +103,9 @@ Example use case of endGame:
 |postScore| level_key, value, options | Post the score `value` for the `level_key` for the current user.| Promise |
 |postDailyScore| day, level_key, value | Post the score `value` for the `level_key` and `day` for the current user.| Promise |
 
-<div class="page-break"></div>
+## Score Methods Options
 
-#  Score Methods Options
-
-
-## postScore options
+### postScore Options
 
 The following options are available:
 
@@ -194,7 +120,7 @@ example:
 api.postScore('level_1', 400, { confirmation: true });
 ```
 
-## getScores options
+### getScores Options
 
 The following options are available:
 
@@ -221,17 +147,14 @@ return api.getScores({
   });
 ```
 
-<div class="page-break"></div>
-
-# UI Methods
+## UI Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
 |showDialog | type | display a dialog of type `scores`, `dailyscores` `achievements` or `weeklyscores` (see dialog options for more information) | - |
 |showAd| - | Displays an ad| Promise|
 
-## showDialog options
-
+### showDialog Options
 
 example:
 ```
@@ -252,9 +175,7 @@ The following options are available:
 | period | Sets the default period in the select  |
 | value_formatter | Overrides the formatter used in the score config |
 
-<div class="page-break"></div>
-
-#  Achievement Methods
+## Achievement Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
@@ -262,14 +183,14 @@ The following options are available:
 |postAchievement| achievement_key | Post an achievement `achievement_key` for the current user| Promise |
 |getUserAchievements| - | Return a list of all achievements by the current user for this game| Promise, resolves json |
 
-#  Data store Methods
+## Data Store Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
 |postDatastore| key, value | Post a `value` to `key`.  If 'key' exists for this user, it will be overwritten.| Promise |
 |getUserDatastore| - | Returns a json array of all data store objects associated with this user| Promise |
 
-#  Misc Methods
+## Miscellaneous Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
@@ -277,9 +198,7 @@ The following options are available:
 |hasDailyScore|level_key| returns true if the current user has submitted a score today | Promise, resolves Boolean |
 |getCurrentDay|-|returns the current "day" used by the api (PST timezone). format: ```{"day":"2019-05-09"}```.  If the url parameters `day`, `month`, and `year` are present, this method will return this date rather than the current date.  eg. `day=04&month=07&year=19`| Promise, resolves json |
 
-<div class="page-break"></div>
-
-# Branding Methods
+## Branding Methods
 
 | method        | parameters           |  description | method result |
 | ------------- | ------------- | ----- | ------- |
@@ -307,29 +226,7 @@ SWAGAPI.showBrandingAnimation('game', function() {
 });
 ```
 
-<div class="page-break"></div>
-
-# External Component Integration
-
-| method        | parameters           |  description | method result |
-| ------------- | ------------- | ----- | ------- |
-|postExternalMessage | message | send a message to an external component | - |
-
-example:
-```
-api.postExternalMessage({
-    type: 'lobby',
-    data: [
-      { username: 'user1'},
-      { username: 'user2'},
-      ...
-    ]
-});
-```
-
-## message types:
-
-### Leaderboard
+#### Leaderboard
 
 ```
 {
@@ -342,7 +239,7 @@ api.postExternalMessage({
 }
 ```
 
-### Lobby
+#### Lobby
 
 ```
 {
@@ -355,7 +252,7 @@ api.postExternalMessage({
 }
 ```
 
-### Default
+#### Default
 
 ```
 {
@@ -363,7 +260,7 @@ api.postExternalMessage({
 }
 ```
 
-#  API Events:
+## API Events
 
 | event        | description |
 | ------------- | ------------- |
@@ -371,47 +268,8 @@ api.postExternalMessage({
 | ERROR | An api error has occurred
 | DIALOG_CLOSED | The active dialog has closed
 
-# Demo
+## Demo
 
 There is a simple demo of the api at:
 
-https://swagapi.shockwave.com/demo.html (view source)
-
-
-# Developing and Using Locally
-
-For now you will need to edit your etc\hosts file.
-
-On Windows you can find at c:windows\system32\drivers\etc\host
-
-and add the following line
-
-```
-127.0.0.1			local.shockwave.com
-```
-
-Install http-server
-
-```
-npm install -g http-server
-```
-
-Launch a local web server where your index.html is
-
-```
-http-server -p 8888
-```
-
-launch your game with
-
-```
-http://local.shockwave.com:8888
-```
-
-# Notes:
-
-- You can either be logged into shockwave.com or as a guest when testing.
-- To get an API key or anything else, please contact your support at Addicting Games.
-
-
-VERSION 2.0.9
+[https://swagapi.shockwave.com/demo.html](https://swagapi.shockwave.com/demo.html) (view source)
