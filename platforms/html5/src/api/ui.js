@@ -605,7 +605,7 @@ var methods = {
   showAd: function() {
     return new Promise(function(resolve, reject) {
       const listener = function(event) {
-        const { eventName } = JSON.parse(payload);
+        const { eventName } = JSON.parse(event.data);
         if (eventName === 'onPrerollComplete') {
           window.removeEventListener('message', listener, false);
           resolve();

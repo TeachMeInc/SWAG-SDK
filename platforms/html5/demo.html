@@ -149,6 +149,10 @@
               <div id="data-view" class="data-view">
               </div>
           </div>
+          <h2>Ad Methods</h2>
+          <div class="demo-controls">
+            <input type="button" id="show-ad" value="Show Ad">
+          </div>
       </div>
   </body>
 
@@ -391,6 +395,12 @@
                   dataView.innerHTML = "invalid method.";
               };
 
+      });
+
+      // Ad methods
+
+      document.getElementById('show-ad').addEventListener('click', function() {
+          api.showAd();
       });
 
 //-------- SWAG API Listeners ---------------------------------------------
