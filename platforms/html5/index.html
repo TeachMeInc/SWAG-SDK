@@ -1,0 +1,91 @@
+<html>
+  <head>
+      <title>SWAG JS API Demo</title>
+      <link rel="stylesheet" type="text/css" href="dist/swag-api.css">
+      <style>
+        body {
+          overflow: hidden;
+          width: 100%;
+          min-height: 100svh;
+        }
+
+        #swag-api-wrapper {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+        
+        canvas {
+          width: 100%;
+          height: 100%;
+        }
+
+        .demo-controls {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          padding: 1rem;
+        }
+      </style>
+  </head>
+  <body>
+    <div id="swag-api-wrapper" class="api-wrapper">
+      <canvas id="game-canvas"></canvas>
+      <div class="demo-controls">
+        <input type="button" id="show-ad" value="Show Ad">
+      </div>
+    </div>
+  </body>
+  <script src="dist/swag-api.js"></script>
+  <script>
+
+    var wrapper =  document.getElementById('swag-api-wrapper');
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+//-------- Create SWAG API Instance ---------------------------------------
+
+      var api = SWAGAPI.getInstance({
+        wrapper: wrapper,
+        api_key: '5c6c3c056917a692f96f9651',
+        theme: 'shockwave',
+        debug: true
+      });
+
+//-------- Demo Game --------------------------------------------------------
+
+      // Simple game example to demonstrate SWAG API functions
+      var game = {
+        init: function() {
+          return api.startSession();
+        },
+        start: function() {
+          //write some text on the game canvas
+          var demoCanvas = document.getElementById("game-canvas");
+          demoCanvas.width = demoCanvas.getBoundingClientRect().width;
+          demoCanvas.height = demoCanvas.getBoundingClientRect().height;
+          var ctx = demoCanvas.getContext("2d");
+          ctx.font = "40px Comic Sans MS";
+          ctx.fillStyle = "#2d2d2d";
+          ctx.textAlign = "center";
+          ctx.fillText("Demo Canvas", demoCanvas.width/2, demoCanvas.height/2);
+        }
+      };
+
+      // Ad methods
+
+      document.getElementById('show-ad').addEventListener('click', function() {
+          api.showAd();
+      });
+
+//-------- Start the Game ------------------------------------------------------
+
+      game.init()
+        .then(function() {
+          game.start();
+        });
+  });
+  </script>
+</html>
