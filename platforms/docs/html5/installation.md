@@ -6,11 +6,9 @@ This guide will help you install and configure the SWAG SDK for HTML5.
 
 To get started with the HTML5 SDK, insert these tags somewhere in your index.html. These tags should be added somewhere above your main game script tag, ideally in the `<head>` tag.
 
-```
-<script type="text/javascript"
-src="https://swagapi.shockwave.com/dist/swag-api.js">
-<link rel="stylesheet" type="text/css"
-href="https://swagapi.shockwave.com/dist/swag-api.css">
+```html
+<script type="text/javascript" src="https://swagapi.shockwave.com/dist/swag-api.js">
+<link rel="stylesheet" type="text/css" href="https://swagapi.shockwave.com/dist/swag-api.css">
 ```
 
 ## Building Your Game
@@ -41,7 +39,7 @@ Now that you've added the HOSTS entries, try running your game. Run an HTTP serv
 If you have [NodeJS](https://nodejs.org/en) installed, you can do this in one command using the [http-server](https://www.npmjs.com/package/http-server) node package:
 
 **Run a local web server**
-```
+```sh
 npx http-server ./ -p 8888
 ```
 
@@ -49,4 +47,4 @@ npx http-server ./ -p 8888
 
 Now that you've installed the SDK you're ready to start using it. 
 
-- For a quick overview of the available features (with examples), check out our [Usage and Examples](/html5/usage-and-examples) guide.
+For a quick overview of the available features (with examples), check out our [Usage & Examples](/html5/usage-and-examples) guide.

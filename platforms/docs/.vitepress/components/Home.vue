@@ -126,9 +126,8 @@ const { frontmatter: fm } = useData()
           <div class="Grid --3x">
             
             <a 
-              href="https://github.com/TeachMeInc/swag-api-js" 
+              href="/html5/installation" 
               class="LogoPod"
-              target="_blank"
             >
               <figure>
                 <img 

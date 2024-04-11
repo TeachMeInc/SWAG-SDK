@@ -41,6 +41,13 @@ export default defineConfig({
       //   ]
       // },
       { 
+        text: 'HTML5', 
+        items: [
+          { text: 'Installation', link: '/html5/installation' },
+          { text: 'Usage & Examples', link: '/html5/usage-and-examples' },
+        ]
+      },
+      { 
         text: 'Unity', 
         items: [
           { text: 'Installation', link: '/unity/installation' },

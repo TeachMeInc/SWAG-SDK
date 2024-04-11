@@ -1,42 +1,42 @@
-# Usage and Examples
+# Usage & Examples
 
 ## Connecting to the API
 
 SWAGPI will be accessible as a global
 
-```
-  var api = SWAGAPI.getInstance({
-    wrapper: wrapper,
-    api_key: '5c6c3c056917a692f96f9651',
-    theme: 'shockwave',
-    debug: true
-  });
+```js
+var api = SWAGAPI.getInstance({
+  wrapper: wrapper,
+  api_key: '5c6c3c056917a692f96f9651',
+  theme: 'shockwave',
+  debug: true
+});
 ```
 
 ### API Options
 
 | option        | type           | description  |
 | ------------- | ------------- | ----- |
-|wrapper|domElement|the domElement containing the game
-|api_key|String|unique identifier for the game
-|theme|String|set the theme for api ui elements
-|debug|boolean|enable debug console messages
+|wrapper|domElement|the domElement containing the game|
+|api_key|String|unique identifier for the game|
+|theme|String|set the theme for api ui elements|
+|debug|boolean|enable debug console messages|
 
- The client must use the `startSession` method to start using the api and wait for the promise to resolve or the SESSION_READY event before using any other api calls.
+The client must use the `startSession` method to start using the api and wait for the promise to resolve or the SESSION_READY event before using any other api calls.
 
 Using promise:
-```
-  return api.startSession()
-    .then(function() {
-        //do stuff
-    });
+```js
+api.startSession()
+  .then(function() {
+    //do stuff
+  });
 ```
 
 Using event listener:
-```
-  api.on('SESSION_READY', function() {
-    //do stuff
-  });
+```js
+api.on('SESSION_READY', function() {
+  //do stuff
+});
 ```
 
 ## Using the API
@@ -57,19 +57,19 @@ Example use cases:
 
 Single level runner game (without win condition):
 
-```
+```js
 { feet: 134 }
 ```
 
 Puzzle with countdown timer:
 
-```
+```js
 { success: true }
 ```
 
 Monster shooter with multiple types, tracking which enemy killed the player:
 
-```
+```js
 { werewolf: 4, gargoyle: 2, ghoul: 12, killedBy: "ghoul" }
 ```
 
@@ -116,7 +116,7 @@ The following options are available:
 
 example:
 
-```
+```js
 api.postScore('level_1', 400, { confirmation: true });
 ```
 
@@ -136,14 +136,14 @@ The following options are available:
 
 Example (scores this week on level1 for the current user):
 
-```
+```js
 return api.getScores({
   type: 'weekly',
   level_key: 'level1',
   current_user: true
 })
   .then(function(scores) {
-    //do something
+    //do stuff
   });
 ```
 
@@ -157,12 +157,12 @@ return api.getScores({
 ### showDialog Options
 
 example:
-```
+```js
 api.showDialog('scores', {
-    title: 'Best Scores',
-    level_key: 'level1',
-    period: 'alltime',
-    value_formatter: ''
+  title: 'Best Scores',
+  level_key: 'level1',
+  period: 'alltime',
+  value_formatter: ''
 });
 ```
 
@@ -204,14 +204,14 @@ The following options are available:
 | ------------- | ------------- | ----- | ------- |
 |getBrandingLogo| - |returns an HTMLImageElement of the appropriate site logo | Promise, resolves HTMLImageElement |
 |getBrandingLogoUrl| - |returns the url of the appropriate site logo | Promise, resolves a string |
-|SWAGAPI.showBrandingAnimation|elementid<String>, callback|displays a branding animation in the provided element id|Promise|
+|SWAGAPI.showBrandingAnimation|elementid\<String\>, callback|displays a branding animation in the provided element id|Promise|
 
 The method `SWAGAPI.showBrandingAnimation` can be used to display the branding animation before a game.
 Note this is a static method so it can be used independently of the API instance.
 
 example:
 
-```
+```js
 SWAGAPI.showBrandingAnimation('game')
   .then(function() {
     //display the game
@@ -220,7 +220,7 @@ SWAGAPI.showBrandingAnimation('game')
 
 example (using callback):
 
-```
+```js
 SWAGAPI.showBrandingAnimation('game', function() {
   //display the game
 });
@@ -228,7 +228,7 @@ SWAGAPI.showBrandingAnimation('game', function() {
 
 #### Leaderboard
 
-```
+```js
 {
   type: 'leaderboard',
   data: [
@@ -241,7 +241,7 @@ SWAGAPI.showBrandingAnimation('game', function() {
 
 #### Lobby
 
-```
+```js
 {
     type: 'lobby',
     data: [
@@ -254,7 +254,7 @@ SWAGAPI.showBrandingAnimation('game', function() {
 
 #### Default
 
-```
+```js
 {
     type: 'default'
 }

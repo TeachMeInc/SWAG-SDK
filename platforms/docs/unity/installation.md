@@ -173,5 +173,5 @@ Before submitting your game, please ensure that **compression is disabled**, and
 
 Now that you've installed the SDK you're ready to start using it. 
 
-- For a quick overview of the available features (with examples), check out our [Usage and Examples](/unity/usage-and-examples) guide.
+- For a quick overview of the available features (with examples), check out our [Usage & Examples](/unity/usage-and-examples) guide.
 - For a more comprehensive look at the features available, take a look at the [Script Reference guide for the SWAG C#](/unity/script-reference/AddictingGames/SWAG) class.
