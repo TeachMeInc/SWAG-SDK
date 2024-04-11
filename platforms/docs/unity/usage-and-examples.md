@@ -13,7 +13,7 @@ SWAG.Instance.Achievements.ShowDialog(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [Achievements.cs](/unity/script-reference/AddictingGames/Achievements/Achievements)</small>
+<small>Source: [Achievements.cs](/unity/script-reference/Shockwave/Achievements/Achievements)</small>
 
 ### Record an achievement
 
@@ -29,7 +29,7 @@ SWAG.Instance.Achievements.currentUser.RecordAchievement(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [AchievementsCurrentUser.cs](/unity/script-reference/AddictingGames/Achievements/AchievementsCurrentUser)</small>
+<small>Source: [AchievementsCurrentUser.cs](/unity/script-reference/Shockwave/Achievements/AchievementsCurrentUser)</small>
 
 ## Leaderboards
 
@@ -44,7 +44,7 @@ SWAG.Instance.Scores.ShowDialog(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [Scores.cs](/unity/script-reference/AddictingGames/Scores/Scores)</small>
+<small>Source: [Scores.cs](/unity/script-reference/Shockwave/Scores/Scores)</small>
 
 ### Record a score
 
@@ -62,7 +62,7 @@ SWAG.Instance.Scores.currentUser.RecordScore(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [ScoresCurrentUser.cs](/unity/script-reference/AddictingGames/Scores/ScoresCurrentUser)</small>
+<small>Source: [ScoresCurrentUser.cs](/unity/script-reference/Shockwave/Scores/ScoresCurrentUser)</small>
 
 ## Ads
 
@@ -79,7 +79,7 @@ SWAG.Instance.BeginAd(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [SWAG.cs](/unity/script-reference/AddictingGames/SWAG)</small>
+<small>Source: [SWAG.cs](/unity/script-reference/Shockwave/SWAG)</small>
 
 ### Banner ads
 
@@ -95,7 +95,7 @@ When you build your game, these banners will be replaced with ads during runtime
 
 ## Provider features
 
-The provider API let you interact with the features of the host website (AddictingGames.com or Shockwave.com), such as showing the share dialog, or toggling full-screen mode.
+The provider API let you interact with the features of the host website (Shockwave.com), such as showing the share dialog, or toggling full-screen mode.
 
 ### Show the share dialog
 
@@ -103,7 +103,7 @@ The provider API let you interact with the features of the host website (Addicti
 ```c#
 SWAG.Instance.ShowShareDialog();
 ```
-<small>Source: [SWAG.cs](/unity/script-reference/AddictingGames/SWAG)</small>
+<small>Source: [SWAG.cs](/unity/script-reference/Shockwave/SWAG)</small>
 
 ### Toggle fullscreen
 
@@ -111,7 +111,7 @@ SWAG.Instance.ShowShareDialog();
 ```c#
 SWAG.Instance.ToggleFullscreen();
 ```
-<small>Source: [SWAG.cs](/unity/script-reference/AddictingGames/SWAG)</small>
+<small>Source: [SWAG.cs](/unity/script-reference/Shockwave/SWAG)</small>
 
 ## User
 
@@ -124,7 +124,7 @@ SWAG.Instance.User.ShowLoginDialog(
     () => { Debug.Log("User logged in."); }
 );
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
+<small>Source: [User.cs](/unity/script-reference/Shockwave/User/User)</small>
 
 ### Get information about the current user
 
@@ -134,7 +134,7 @@ var id = SWAG.Instance.User.id; // User's unique ID
 var memberName = SWAG.Instance.User.memberName; // User's display name
 var isGuest = SWAG.Instance.User.IsGuest(); // Logged in as guest or not
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
+<small>Source: [User.cs](/unity/script-reference/Shockwave/User/User)</small>
 
 ### Check if user is a subscriber
 
@@ -149,7 +149,7 @@ SWAG.Instance.User.IsSubscriber(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User)</small>
+<small>Source: [User.cs](/unity/script-reference/Shockwave/User/User)</small>
 
 ### Set and get data for the user
 
@@ -178,4 +178,4 @@ SWAG.Instance.User.GetData(
     (string error) => { Debug.Log(error); }
 );
 ```
-<small>Source: [User.cs](/unity/script-reference/AddictingGames/User/User), [UserData.cs](/unity/script-reference/AddictingGames/User/UserData)</small>
+<small>Source: [User.cs](/unity/script-reference/Shockwave/User/User), [UserData.cs](/unity/script-reference/Shockwave/User/UserData)</small>

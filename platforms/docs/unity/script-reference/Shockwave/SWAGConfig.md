@@ -12,7 +12,7 @@ Main configuration class for the SDK.
 
 | Field                    | Description                                       |
 |--------------------------|---------------------------------------------------|
-| `Provider Provider`      | The provider being used, can be `AddictingGames` or `Shockwave`. |
+| `Provider Provider`      | The provider being used, can `Shockwave`. |
 | `string DefaultValueFormatter` | A string formatter for score values.       |
 | `ViewMode ViewMode`      | The view mode to be used, can be `Responsive`, `ForcePortrait`, or `ForceLandscape`. |
 | `bool PlayBrandingAnimation` | A boolean indicating whether to play the branding animation or not. |

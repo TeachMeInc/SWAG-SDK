@@ -15,14 +15,14 @@ To get started with the HTML5 SDK, insert these tags somewhere in your index.htm
 
 Once you've installed the SDK and verified that it works, you're ready to build your game. 
 
-SWAG API calls are secured via [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and as such will only work properly when coming from `local.addictinggames.com` or `local.shockwave.com` domains on port `8888`. 
+SWAG API calls are secured via [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and as such will only work properly when coming from `local.shockwave.com` or `local.shockwave.com` domains on port `8888`. 
 
 In order to test SWAG API integration in your built game locally, you will need to add these domains to your **HOSTS file** and run your game using an external web server. Each entry needs to be on its own line.
 
 **Entries to add to your hosts file**
 
 ```
-127.0.0.1 local.addictinggames.com
+127.0.0.1 local.shockwave.com
 127.0.0.1 local.shockwave.com
 ```
 

@@ -64,15 +64,8 @@ You can learn more about installing local packages [here](https://docs.unity3d.c
 Once the `SWAG` prefab is added to your scene, click on the game object to configure the `SWAG` component in the editor panel.
 
 ::: info
-You can view a full list of the configuration options available [here](/unity/script-reference/AddictingGames/SWAGConfig)
+You can view a full list of the configuration options available [here](/unity/script-reference/Shockwave/SWAGConfig)
 :::
-
-### For AddictingGames.com
-
-If your game is for [AddictingGames.com](https://www.addictinggames.com):
-
-1. Choose the `Addicting Games` provider under the **SDK** header.
-2. Enter your game's API Key under the **Addicting Games** header.
 
 ### For Shockwave.com<sup>*</sup>
 
@@ -94,7 +87,7 @@ There are two ways you can accomplish this:
 ```C#
 using UnityEngine;
 using UnityEngine.EventSystems;
-using AddictingGames;
+using Shockwave;
 
 public class OpenDialogButton : MonoBehaviour, IPointerClickHandler
 {
@@ -114,7 +107,7 @@ public class OpenDialogButton : MonoBehaviour, IPointerClickHandler
 
 ```C#
 using UnityEngine;
-using AddictingGames;
+using Shockwave;
 
 public class MyGameController : MonoBehaviour
 {
@@ -133,14 +126,14 @@ public class MyGameController : MonoBehaviour
 
 Once you've installed the SDK and verified that it works in Play Mode, you're ready to build your game. 
 
-SWAG API calls are secured via [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and as such will only work properly when coming from `local.addictinggames.com` or `local.shockwave.com` domains on port `8888`. 
+SWAG API calls are secured via [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and as such will only work properly when coming from `local.shockwave.com` or `local.shockwave.com` domains on port `8888`. 
 
 In order to test SWAG API integration in your built game locally, you will need to add these domains to your **HOSTS file** and run your game using an external web server. Each entry needs to be on its own line.
 
 **Entries to add to your hosts file**
 
 ```
-127.0.0.1 local.addictinggames.com
+127.0.0.1 local.shockwave.com
 127.0.0.1 local.shockwave.com
 ```
 
@@ -174,4 +167,4 @@ Before submitting your game, please ensure that **compression is disabled**, and
 Now that you've installed the SDK you're ready to start using it. 
 
 - For a quick overview of the available features (with examples), check out our [Usage & Examples](/unity/usage-and-examples) guide.
-- For a more comprehensive look at the features available, take a look at the [Script Reference guide for the SWAG C#](/unity/script-reference/AddictingGames/SWAG) class.
+- For a more comprehensive look at the features available, take a look at the [Script Reference guide for the SWAG C#](/unity/script-reference/Shockwave/SWAG) class.

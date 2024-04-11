@@ -67,11 +67,6 @@ const { frontmatter: fm } = useData()
                   :alt="gameThumb.title"
                 />
               </figure>
-              <!-- <div>
-                <img src="/addictingGamesLogo.svg" alt="Addicting Games" />
-                <small>{{ gameThumb.numUsers }} Users</small>
-                <small>{{ gameThumb.numPlays }} Monthly Plays</small>
-              </div> -->
             </a>
           </div>
         </aside>

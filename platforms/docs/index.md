@@ -1,14 +1,14 @@
 ---
 layout: home
 
-supportHref: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=addictinggames.com&tf_25644328=game_submissions
+supportHref: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=shockwave.com&tf_25644328=game_submissions
 
 hero:
-  title: Level up your game with Addicting Games
+  title: Level up your game with Shockwave
   text: Are you a game developer looking to share your creations with a vibrant community of players? Look no further! Our platform is dedicated to showcasing the best web games from developers like you. Submit your game today and let us help you captivate players from around the world.
   action:
     text: Get Started
-    href: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=addictinggames.com&tf_25644328=game_submissions
+    href: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=shockwave.com&tf_25644328=game_submissions
 
 whySubmit:
   title: Why submit your game with us?
@@ -28,33 +28,33 @@ whySubmit:
   gameThumbs:
     - imageSrc: apesio
       title: Apes.io
-      href: https://www.addictinggames.com/io/apesio
+      # href: https://www.shockwave.com/io/apesio
       numUsers: 1
       numPlays: 1
     - imageSrc: mopeio
       title: Mope.io
-      href: https://www.addictinggames.com/io-games/mopeio
+      # href: https://www.shockwave.com/io-games/mopeio
       numUsers: 1
       numPlays: 1
     - imageSrc: lbs
       title: LittleBigSnake
-      href: https://www.addictinggames.com/io-games/littlebigsnake-io
+      # href: https://www.shockwave.com/io-games/littlebigsnake-io
       numUsers: 1
       numPlays: 1
     - imageSrc: ggEmpire
       title: Goodgame Empire
-      href: https://www.addictinggames.com/mmo/empire
+      # href: https://www.shockwave.com/mmo/empire
       numUsers: 1
       numPlays: 1
     - imageSrc: diepio
       title: Diep.io
-      href: https://www.addictinggames.com/io-games/diepio
+      # href: https://www.shockwave.com/io-games/diepio
       numUsers: 1
       numPlays: 1
 
 
 mobile:
-  title: Addicting Games Mobile
+  title: Shockwave Mobile
   list:
     - title: Your games on the go
       text: Our users are on the move, and we'd like them to take your games with them. We'll make sure your games work on a variety of mobile devices with our QA team.
@@ -68,7 +68,7 @@ readyToSubmit:
   text: Join us today and be a part of our passionate community of developers and gamers. Submit your game now and let your creation shine on our platform. Together, let's keep the spirit of Flash gaming alive and provide players with endless hours of entertainment. Get ready to level up your game with us!
   action:
     text: Submit Your Game
-    href: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=addictinggames.com&tf_25644328=game_submissions
+    href: https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=shockwave.com&tf_25644328=game_submissions
 
 faq:
   title: Frequently Asked Questions
@@ -77,7 +77,7 @@ faq:
       answer: Of course! Just be sure to let us know what other platforms your game is present on. But we do offer incentives for exclusive content.
     - question: What is required to submit my game?
       answer: Include our SDK in your game, and you'll be good to go. We give you a testing ground to make sure your game is fully compatible with our site's features, along with some QA support to make sure everything is ready for game time.
-    - question: What development platforms does the Addicting Games SDK support?
+    - question: What development platforms does the Shockwave SDK support?
       answer: We currently have plug-ins for HTML5, Unity, and Construct 3, as well as a RESTful API interface, with more coming soon.
  
 questions:

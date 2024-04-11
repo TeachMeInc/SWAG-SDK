@@ -3,20 +3,20 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "AddictingGames Developer Center",
-  description: "Documentation for Addicting Games and Shockwave APIs and SDKs",
+  title: "Shockwave Developer Center",
+  description: "Documentation for Shockwave APIs and SDKs",
   outDir: "../../docs",
   // base: "/SWAG-SDK/",
   head: [
-    ['link', { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48.png"}],
-    ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png"}],
-    ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png"}],
-    ['link', { rel: "shortcut icon", href: "/favicon-16.png"}],
+    // ['link', { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48.png"}],
+    // ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png"}],
+    // ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16.png"}],
+    ['link', { rel: "shortcut icon", href: "/favicon.ico"}],
   ],
-  appearance: 'dark',
+  // appearance: 'dark',
 
   themeConfig: {
-    logo: '/addictingGamesLogo.svg',
+    logo: '/logo.svg',
     siteTitle: false,
 
     search: {
@@ -26,7 +26,7 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Documentation', link: '/unity/installation' },
-      { text: 'Submit Your Game', link: 'https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=addictinggames.com&tf_25644328=game_submissions' }
+      { text: 'Submit Your Game', link: 'https://addictinggameshelp.zendesk.com/hc/en-us/requests/new?tf_1500003702161=shockwave.com&tf_25644328=game_submissions' }
     ],
 
     outline: [2, 3],
@@ -58,34 +58,34 @@ export default defineConfig({
               {
                 text: 'Achievements',
                 items: [
-                  { text: 'Achievement (Struct)', link: '/unity/script-reference/AddictingGames/Achievements/Achievement' },
-                  { text: 'Achievements (Class)', link: '/unity/script-reference/AddictingGames/Achievements/Achievements' },
-                  { text: 'AchievementsCurrentUser (Class)', link: '/unity/script-reference/AddictingGames/Achievements/AchievementsCurrentUser' },
+                  { text: 'Achievement (Struct)', link: '/unity/script-reference/Shockwave/Achievements/Achievement' },
+                  { text: 'Achievements (Class)', link: '/unity/script-reference/Shockwave/Achievements/Achievements' },
+                  { text: 'AchievementsCurrentUser (Class)', link: '/unity/script-reference/Shockwave/Achievements/AchievementsCurrentUser' },
                 ]
               },
               {
                 text: 'Scores',
                 items: [
-                  { text: 'Daily Best (Struct)', link: '/unity/script-reference/AddictingGames/Scores/DailyBest' },
-                  { text: 'Score (Struct)', link: '/unity/script-reference/AddictingGames/Scores/Score' },
-                  { text: 'ScorePeriod (Enum)', link: '/unity/script-reference/AddictingGames/Scores/ScorePeriod' },
-                  { text: 'Scores (Class)', link: '/unity/script-reference/AddictingGames/Scores/Scores' },
-                  { text: 'ScoresCurrentUser (Class)', link: '/unity/script-reference/AddictingGames/Scores/ScoresCurrentUser' },
+                  { text: 'Daily Best (Struct)', link: '/unity/script-reference/Shockwave/Scores/DailyBest' },
+                  { text: 'Score (Struct)', link: '/unity/script-reference/Shockwave/Scores/Score' },
+                  { text: 'ScorePeriod (Enum)', link: '/unity/script-reference/Shockwave/Scores/ScorePeriod' },
+                  { text: 'Scores (Class)', link: '/unity/script-reference/Shockwave/Scores/Scores' },
+                  { text: 'ScoresCurrentUser (Class)', link: '/unity/script-reference/Shockwave/Scores/ScoresCurrentUser' },
                 ]
               },
               {
                 text: 'User',
                 items: [
-                  { text: 'UserData (Struct)', link: '/unity/script-reference/AddictingGames/User/UserData' },
-                  { text: 'User (Class)', link: '/unity/script-reference/AddictingGames/User/User' },
+                  { text: 'UserData (Struct)', link: '/unity/script-reference/Shockwave/User/UserData' },
+                  { text: 'User (Class)', link: '/unity/script-reference/Shockwave/User/User' },
                 ]
               },
-              { text: 'AsyncHandler<T> (Class)', link: '/unity/script-reference/AddictingGames/AsyncHandler' },
-              { text: 'JSONListHelper (Class)', link: '/unity/script-reference/AddictingGames/JSONListHelper' },
-              { text: 'Provider (Enum)', link: '/unity/script-reference/AddictingGames/Provider' },
-              { text: 'SWAG (Class)', link: '/unity/script-reference/AddictingGames/SWAG' },
-              { text: 'SWAGConfig (Class)', link: '/unity/script-reference/AddictingGames/SWAGConfig' },
-              { text: 'ViewMode (Enum)', link: '/unity/script-reference/AddictingGames/ViewMode' },
+              { text: 'AsyncHandler<T> (Class)', link: '/unity/script-reference/Shockwave/AsyncHandler' },
+              { text: 'JSONListHelper (Class)', link: '/unity/script-reference/Shockwave/JSONListHelper' },
+              { text: 'Provider (Enum)', link: '/unity/script-reference/Shockwave/Provider' },
+              { text: 'SWAG (Class)', link: '/unity/script-reference/Shockwave/SWAG' },
+              { text: 'SWAGConfig (Class)', link: '/unity/script-reference/Shockwave/SWAGConfig' },
+              { text: 'ViewMode (Enum)', link: '/unity/script-reference/Shockwave/ViewMode' },
             ]
           },
         ]
@@ -97,8 +97,8 @@ export default defineConfig({
     ],
 
     footer: {
-      message: 'AddictingGames',
-      copyright: 'Copyright 2023 Addicting Games, Inc.'
+      message: 'Shockwave',
+      copyright: 'Copyright 2023 Shockwave, Inc.'
     }
   },
 
