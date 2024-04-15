@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
@@ -58,6 +58,10 @@ module.exports = {
             { test: /\.handlebars$/, loader: "handlebars-loader" }
         ]
     },
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
     output: {
         library: 'SWAGAPI',
         libraryTarget: 'umd',
@@ -67,7 +71,6 @@ module.exports = {
         pathinfo: true
     },
     plugins: [
-        new UglifyJsPlugin({uglifyOptions: { compress: true, mangle: true} }),
         new MiniCssExtractPlugin({
           filename: 'swag-api.css'
         })
