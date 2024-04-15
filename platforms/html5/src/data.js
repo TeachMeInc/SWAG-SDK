@@ -1,9 +1,9 @@
 'use strict';
 
 var Emitter = require('component-emitter');
-var config = require('config');
-var utils = utils = require('utils');
-var session = require('session');
+var config = require('./config');
+var utils = utils = require('./utils');
+var session = require('./session');
 
 var methods = {
 
