@@ -20,8 +20,11 @@ module.exports = {
             "node_modules"
         ]
     },
-    node: {
-        fs: "empty"
+    resolve: {
+      fallback: {
+          net: false,
+          tls: false
+      }
     },
     module: {
         rules: [
