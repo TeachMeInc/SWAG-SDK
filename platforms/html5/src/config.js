@@ -9,7 +9,7 @@ module.exports = {
       }
     },
     providers: {
-      'default': {
+      'addictinggames': {
         root: 'https://www.addictinggames.com',
         current: '/ag-auth/current',
         login: '/ag-auth/login',

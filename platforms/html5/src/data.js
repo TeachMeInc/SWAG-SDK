@@ -419,7 +419,7 @@ var methods = {
   },
 
   getProvider: function() {
-    return config.providers[session.provider] || config.providers['default'];
+    return config.providers[session.provider] || config.providers['shockwave'];
   }
 
 };
