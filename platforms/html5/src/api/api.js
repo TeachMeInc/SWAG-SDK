@@ -13,8 +13,21 @@ var _isRendering = false;
 
 function SWAGAPI(options) {
   var self = this;
-  const { wrapper, api_key } = options;
-  this._options = { wrapper, api_key };
+  const { wrapper, api_key, theme } = options;
+  this._options = { wrapper, api_key, theme };
+
+  this._getSiteMode = function() {
+    var reqTheme = window.SWAGTHEME || this._options.theme;
+    return config.themes[reqTheme]
+      ? reqTheme
+      : 'shockwave';
+  };
+
+  var siteTheme = config.themes[this._getSiteMode()];
+  var siteMethods = siteTheme.active ? activeMethods : stubMethods;
+  
+  Object.assign(this, { ...siteMethods, ...methods });
+
   this._init();
   Emitter(this);
 
@@ -40,19 +53,14 @@ function SWAGAPI(options) {
 
 };
 
-var methods = {
-
-  // Interface -----------------------------------------------------------------
-
+var activeMethods = {
   startSession: function() {
     var self = this;
-    utils.debug('start session');
-
-      return data.getEntity()
-        .then(function() {
-          utils.debug('session ready');
-          self.emit(config.events.SESSION_READY, { session_ready: true });
-        });
+    return data.getEntity()
+      .then(function() {
+        utils.debug('session ready');
+        self.emit(config.events.SESSION_READY, { session_ready: true });
+      });
   },
 
   getScoreCategories: function() {
@@ -162,14 +170,127 @@ var methods = {
 
   userLogout:  function() {
     return data.userLogout();
+  }
+};
+
+var stubMethods = {
+  startSession: function() {
+    var self = this;
+    utils.debug('session ready');
+    self.emit(config.events.SESSION_READY, { session_ready: true });
+    return Promise.resolve();
   },
 
-  // ---------------------------------------------------------------------------
+  getScoreCategories: function() {
+    return Promise.resolve();
+  },
 
+  getDays: function(limit) {
+    return Promise.resolve();
+  },
+
+  getScores: function(options) {
+    return Promise.resolve();
+  },
+
+  postScore: function(level_key, value, options) {
+    return Promise.resolve();
+  },
+
+  postDailyScore: function(day, level_key, value) {
+    return Promise.resolve();
+  },
+
+  getAchievementCategories: function() {
+    return Promise.resolve();
+  },
+
+  postAchievement: function(achievement_key) {
+    return Promise.resolve();
+  },
+
+  getUserAchievements: function() {
+    return Promise.resolve();
+  },
+
+  postDatastore: function(key, value) {
+    return Promise.resolve();
+  },
+
+  getUserDatastore: function() {
+    return Promise.resolve();
+  },
+
+  populateLevelSelect: function(domId) {
+    return Promise.resolve();
+  },
+
+  populateDaySelect: function(domId, limit) {
+    return Promise.resolve();
+  },
+
+  populateAchievementSelect: function(domId) {
+    return Promise.resolve();
+  },
+
+  getCurrentEntity: function() {
+    return {};
+  },
+
+  showDialog: function(type, options) {
+    return Promise.resolve();
+  },
+
+  isSubscriber: function() {
+    return false;
+  },
+
+  hasDailyScore: function(level_key) {
+    return false;
+  },
+
+  getCurrentDay: function() {
+    return data.getCurrentDay();
+  },
+
+  getBrandingLogo: function() {
+    return ui.getBrandingLogo();
+  },
+
+  getBrandingLogoUrl: function() {
+    return ui.getBrandingLogoUrl();
+  },
+
+  startGame: function() {
+    return ui.startGame();
+  },
+
+  endGame: function() {
+    return ui.endGame();
+  },
+
+  showAd: function() {
+    return ui.showAd();
+  },
+
+  postExternalMessage: function(message) {
+    return data.postExternalMessage(message);
+  },
+
+  getCurrentUser: function() {
+    return Promise.resolve({});
+  },
+
+  userLogout:  function() {
+    return data.userLogout();
+  }
+};
+
+var methods = {
+  
   _init: function() {
     var self = this;
     var siteMode = this._getSiteMode();
-
     session.api_key = this._options.api_key;
     session.wrapper = this._options.wrapper;
     session.wrapper.classList.add('swag-wrapper');
@@ -182,13 +303,6 @@ var methods = {
         ui.resize();
       }, 400);
     });
-  },
-
-  _getSiteMode: function() {
-    var reqTheme = window.SWAGTHEME;
-    return config.themes[reqTheme]
-      ? reqTheme
-      : 'shockwave';
   },
 
   _emitError: function(errorType) {
@@ -210,7 +324,5 @@ var methods = {
   }
 
 };
-
-Object.assign(SWAGAPI.prototype, methods);
 
 module.exports = SWAGAPI;
