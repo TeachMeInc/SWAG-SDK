@@ -8,12 +8,12 @@
  * -------------------------------------------------------------------------- */
 
  :root {
-  --vp-c-brand: #e43d30;
-  --vp-c-brand-light: #ed7c74;
-  --vp-c-brand-lighter: #ed7c74;
-  --vp-c-brand-lightest: #ed7c74;
-  --vp-c-brand-dark: #e43d30;
-  --vp-c-brand-darker: #e43d30;
+  --vp-c-brand: #195AAB;
+  --vp-c-brand-light: #3377CC;
+  --vp-c-brand-lighter: #3377CC;
+  --vp-c-brand-lightest: #3377CC;
+  --vp-c-brand-dark: #21518E;
+  --vp-c-brand-darker: #21518E;
   --vp-c-brand-black: #171717;
   --vp-c-brand-black-lighter: #393939;
   --vp-c-brand-dimm: rgba(100, 100, 100, 0.1);
