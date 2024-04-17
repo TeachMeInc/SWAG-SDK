@@ -4270,6 +4270,10 @@ PrefabInstance:
       propertyPath: APIKey
       value: 5c6c3c056917a692f96f9651
       objectReference: {fileID: 0}
+    - target: {fileID: 3794113532120513878, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
+      propertyPath: Provider
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3794113532120513879, guid: 2567a12ca0ff9454d804218a2a737139, type: 3}
       propertyPath: m_Name
       value: SWAG
