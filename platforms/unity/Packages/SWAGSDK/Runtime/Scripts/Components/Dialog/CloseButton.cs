@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using AddictingGames;
+using Shockwave;
 
-namespace AddictingGames
+namespace Shockwave
 {
     public class CloseButton : MonoBehaviour, IPointerClickHandler
     {

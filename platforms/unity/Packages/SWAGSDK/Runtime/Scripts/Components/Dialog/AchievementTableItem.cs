@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using AddictingGames;
+using Shockwave;
 
 public class AchievementTableItem : MonoBehaviour
 {

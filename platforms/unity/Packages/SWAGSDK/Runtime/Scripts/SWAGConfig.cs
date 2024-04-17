@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Runtime.InteropServices;
 
-namespace AddictingGames
+namespace Shockwave
 {
     [System.Serializable]
     public enum Provider 
     {
-        AddictingGames,
         Shockwave,
     }
 
@@ -47,7 +46,7 @@ namespace AddictingGames
         public string APIKey = ""; 
 
         [SerializeField]
-        public Provider Provider = Provider.AddictingGames;
+        public Provider Provider = Provider.Shockwave;
 
         [SerializeField]
         public string DefaultValueFormatter = "";

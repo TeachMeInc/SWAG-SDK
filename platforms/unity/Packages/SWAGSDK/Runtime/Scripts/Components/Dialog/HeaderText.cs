@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-namespace AddictingGames
+namespace Shockwave
 {
     public class HeaderText : MonoBehaviour
     {

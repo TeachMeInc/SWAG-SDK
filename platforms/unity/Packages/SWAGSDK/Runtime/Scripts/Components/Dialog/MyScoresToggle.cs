@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace AddictingGames
+namespace Shockwave
 {
     public class MyScoresToggle : MonoBehaviour
     {

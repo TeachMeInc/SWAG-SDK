@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AddictingGames
+namespace Shockwave
 {
     [System.Serializable]
     public struct Achievement

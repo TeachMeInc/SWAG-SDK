@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AddictingGames;
+using Shockwave;
 
-namespace AddictingGames
+namespace Shockwave
 {
     public class AchievementsDialogController : DialogController
     {

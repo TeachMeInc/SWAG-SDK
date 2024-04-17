@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace AddictingGames
+namespace Shockwave
 {
     public class ScoreDropdowns : MonoBehaviour
     {

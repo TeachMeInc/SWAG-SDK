@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
-using AddictingGames;
+using Shockwave;
 
-namespace AddictingGames
+namespace Shockwave
 {
     class BypassCertificateHandler : CertificateHandler
     {
@@ -173,8 +173,6 @@ namespace AddictingGames
         string ProviderValue () 
         {
             switch (SWAGConfig.Instance.Provider) {
-                case Provider.AddictingGames:
-                    return "default";
                 case Provider.Shockwave:
                     return "shockwave";
                 default:
@@ -185,8 +183,6 @@ namespace AddictingGames
         public string GetServicesURL () 
         {
             switch (SWAGConfig.Instance.Provider) {
-                case Provider.AddictingGames:
-                    return SWAGConstants.AddictingGamesServicesURL;
                 case Provider.Shockwave:
                     return SWAGConstants.ShockwaveServicesURL;
                 default:
@@ -337,9 +333,7 @@ namespace AddictingGames
         void ShowBrandingAnimation ()
         {
             SWAG.WebInterface_ShowBrandingAnimation(
-                SWAGConfig.Instance.Provider == Provider.AddictingGames
-                    ? SWAGConstants.AddictingGamesPreloaderURL
-                    : SWAGConstants.ShockwavePreloaderURL
+                SWAGConstants.ShockwavePreloaderURL
             );
         }
 

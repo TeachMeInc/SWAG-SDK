@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using AddictingGames;
+using Shockwave;
 
-namespace AddictingGames
+namespace Shockwave
 {
     public class DialogController : MonoBehaviour
     {
@@ -24,9 +24,7 @@ namespace AddictingGames
         void Start ()
         {
             Color color;
-            var htmlValue = SWAGConfig.Instance.Provider == Provider.AddictingGames
-                ? SWAGConstants.AddictingGamesPrimaryColor
-                : SWAGConstants.ShockwavePrimaryColor;
+            var htmlValue = SWAGConstants.ShockwavePrimaryColor;
 
             if (ColorUtility.TryParseHtmlString(htmlValue, out color)) {
                 var objects = this.GetComponentsInChildren<ThemeHint>(true);

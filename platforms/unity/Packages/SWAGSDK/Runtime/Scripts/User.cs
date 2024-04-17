@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace AddictingGames
+namespace Shockwave
 {
     [System.Serializable]
     public struct UserData
