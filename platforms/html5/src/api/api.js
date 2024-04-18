@@ -26,8 +26,10 @@ function SWAGAPI(options) {
       : 'shockwave';
   };
 
-  var siteTheme = config.themes[this._getSiteMode()];
-  var siteMethods = siteTheme.active ? activeMethods : stubMethods;
+  var siteMode = this._getSiteMode()
+  console.log(siteMode);
+  var siteTheme = config.themes[siteMode];
+  var siteMethods = siteTheme.active ? activeMethods : stubMethods(self, config, utils, ui, data);
   
   Object.assign(this, { ...siteMethods, ...methods });
 
