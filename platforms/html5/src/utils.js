@@ -1,4 +1,4 @@
-var session = require('session');
+var session = require('./session');
 
 var mediaBreakpoints = [
   {name: 'phone', value: 400, class:'media-phone'},

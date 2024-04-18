@@ -1,15 +1,17 @@
 module.exports = {
-    version: '2.0.7',
+    version: '3.0.0',
     themes: {
       'shockwave': {
-        apiRoot: 'https://swag-services.shockwave.com'
+        apiRoot: 'https://swag-services.shockwave.com',
+        active: true
       },
       'addictinggames': {
-        apiRoot: 'https://swag-services.addictinggames.com'
+        apiRoot: 'https://swag-services.addictinggames.com',
+        active: false
       }
     },
     providers: {
-      'default': {
+      'addictinggames': {
         root: 'https://www.addictinggames.com',
         current: '/ag-auth/current',
         login: '/ag-auth/login',

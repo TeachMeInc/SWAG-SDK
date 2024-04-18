@@ -7,14 +7,32 @@ var session = require('../session');
 var data = require('./data');
 var ui = require('./ui');
 var utils = require('../utils');
+var stubMethods = require("./stub.js")
 
 var _isRendering = false;
 // -----------------------------------------------------------------------------
 
 function SWAGAPI(options) {
   var self = this;
-  const { wrapper, api_key } = options;
-  this._options = { wrapper, api_key };
+  const { wrapper, api_key, theme } = options;
+  this._options = { wrapper, api_key, theme };
+
+  this._getSiteMode = function() {
+    // priority for site mode is window.SWAGTHEME, swag options theme then based on domain hosting the game
+    var domainTheme = location.hostname.split('.').reverse().splice(1,1).reverse().join('.');
+    var reqTheme = window.SWAGTHEME || this._options.theme || domainTheme;
+    return config.themes[reqTheme]
+      ? reqTheme
+      : 'shockwave';
+  };
+
+  var siteMode = this._getSiteMode()
+  console.log(siteMode);
+  var siteTheme = config.themes[siteMode];
+  var siteMethods = siteTheme.active ? activeMethods : stubMethods(self, config, utils, ui, data);
+  
+  Object.assign(this, { ...siteMethods, ...methods });
+
   this._init();
   Emitter(this);
 
@@ -40,19 +58,15 @@ function SWAGAPI(options) {
 
 };
 
-var methods = {
-
-  // Interface -----------------------------------------------------------------
-
+var activeMethods = {
+  
   startSession: function() {
     var self = this;
-    utils.debug('start session');
-
-      return data.getEntity()
-        .then(function() {
-          utils.debug('session ready');
-          self.emit(config.events.SESSION_READY, { session_ready: true });
-        });
+    return data.getEntity()
+      .then(function() {
+        utils.debug('session ready');
+        self.emit(config.events.SESSION_READY, { session_ready: true });
+      });
   },
 
   getScoreCategories: function() {
@@ -162,14 +176,14 @@ var methods = {
 
   userLogout:  function() {
     return data.userLogout();
-  },
+  }
+};
 
-  // ---------------------------------------------------------------------------
-
+var methods = {
+  
   _init: function() {
     var self = this;
     var siteMode = this._getSiteMode();
-
     session.api_key = this._options.api_key;
     session.wrapper = this._options.wrapper;
     session.wrapper.classList.add('swag-wrapper');
@@ -182,13 +196,6 @@ var methods = {
         ui.resize();
       }, 400);
     });
-  },
-
-  _getSiteMode: function() {
-    var reqTheme = window.SWAGTHEME;
-    return config.themes[reqTheme]
-      ? reqTheme
-      : 'shockwave';
   },
 
   _emitError: function(errorType) {
@@ -210,7 +217,5 @@ var methods = {
   }
 
 };
-
-Object.assign(SWAGAPI.prototype, methods);
 
 module.exports = SWAGAPI;

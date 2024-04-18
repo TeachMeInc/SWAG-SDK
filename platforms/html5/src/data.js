@@ -1,9 +1,9 @@
 'use strict';
 
 var Emitter = require('component-emitter');
-var config = require('config');
-var utils = utils = require('utils');
-var session = require('session');
+var config = require('./config');
+var utils = utils = require('./utils');
+var session = require('./session');
 
 var methods = {
 
@@ -419,7 +419,7 @@ var methods = {
   },
 
   getProvider: function() {
-    return config.providers[session.provider] || config.providers['default'];
+    return config.providers[session.provider] || config.providers['shockwave'];
   }
 
 };
