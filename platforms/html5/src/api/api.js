@@ -18,7 +18,9 @@ function SWAGAPI(options) {
   this._options = { wrapper, api_key, theme };
 
   this._getSiteMode = function() {
-    var reqTheme = window.SWAGTHEME || this._options.theme;
+    // priority for site mode is window.SWAGTHEME, swag options theme then based on domain hosting the game
+    var domainTheme = location.hostname.split('.').reverse().splice(1,1).reverse().join('.');
+    var reqTheme = window.SWAGTHEME || this._options.theme || domainTheme;
     return config.themes[reqTheme]
       ? reqTheme
       : 'shockwave';
