@@ -603,19 +603,7 @@ var methods = {
   },
 
   showAd: function() {
-    return new Promise(function(resolve, reject) {
-      const listener = function(event) {
-        const { eventName } = JSON.parse(event.data);
-        if (eventName === 'onPrerollComplete') {
-          window.removeEventListener('message', listener, false);
-          resolve();
-        }
-      };
-      window.addEventListener('message', listener, false);
-
-      const eventName = 'showPrerollAd';
-      window.parent.postMessage(JSON.stringify({ eventName }), '*');
-    });
+    return Promise.resolve();
   },
 
   getBrandingLogo: function() {
