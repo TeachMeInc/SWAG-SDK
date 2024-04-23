@@ -24,9 +24,10 @@
 
         .demo-controls {
           position: absolute;
-          bottom: 0;
+          top: 0;
           left: 0;
           padding: 1rem;
+          z-index: 100;
         }
       </style>
   </head>
@@ -34,7 +35,7 @@
     <div id="swag-api-wrapper" class="api-wrapper">
       <canvas id="game-canvas"></canvas>
       <div class="demo-controls">
-        <input type="button" id="show-ad" value="Show Ad">
+        <button id="show-ad-btn">Show Ad</button>
       </div>
     </div>
   </body>
@@ -76,8 +77,10 @@
 
       // Ad methods
 
-      document.getElementById('show-ad').addEventListener('click', function() {
-          api.showAd();
+      document.getElementById('show-ad-btn').addEventListener('click', async function() {
+          console.log('show ad...');
+          await api.showAd();
+          console.log('done!');
       });
 
 //-------- Start the Game ------------------------------------------------------
