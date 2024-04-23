@@ -603,7 +603,25 @@ var methods = {
   },
 
   showAd: function() {
-    return Promise.resolve();
+    return new Promise(function(resolve) {
+      const timeout = setTimeout(resolve, 1000);
+
+      const listener = function(event) {
+        const { eventName } = JSON.parse(event.data);
+
+        if (eventName === 'onPrerollComplete') {
+          window.removeEventListener('message', listener, false);
+          resolve();
+        }
+        else if (eventName === 'onShowPreroll') {
+          clearTimeout(timeout);
+        }
+      };
+      window.addEventListener('message', listener, false);
+
+      const eventName = 'showPrerollAd';
+      window.parent.postMessage(JSON.stringify({ eventName }), '*');
+    });
   },
 
   getBrandingLogo: function() {
