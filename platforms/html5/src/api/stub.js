@@ -66,6 +66,7 @@ function stubMethods(self, config, utils, ui, data) {
         },
 
         showDialog: function(type, options) {
+            self.emit(ui.events.UI_EVENT, config.events.DIALOG_CLOSED);
             return Promise.resolve();
         },
 
