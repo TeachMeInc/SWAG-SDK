@@ -1,5 +1,5 @@
 module.exports = {
-    version: '3.0.0',
+    version: '3.0.1',
     themes: {
       'shockwave': {
         apiRoot: 'https://swag-services.shockwave.com',
