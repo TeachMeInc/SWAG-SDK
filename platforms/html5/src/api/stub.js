@@ -71,7 +71,7 @@ function stubMethods(self, config, utils, ui, data) {
         },
 
         isSubscriber: function() {
-            return false;
+            return Promise.resolve(false);
         },
 
         hasDailyScore: function(level_key) {
