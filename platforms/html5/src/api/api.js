@@ -29,7 +29,7 @@ function SWAGAPI(options) {
   var siteMode = this._getSiteMode()
   console.log(siteMode);
   var siteTheme = config.themes[siteMode];
-  var siteMethods = siteTheme.active ? activeMethods : stubMethods(self, config, utils, ui, data);
+  var siteMethods = activeMethods;
   
   Object.assign(this, { ...siteMethods, ...methods });
 
