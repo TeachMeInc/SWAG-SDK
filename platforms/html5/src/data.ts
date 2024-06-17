@@ -56,6 +56,13 @@ export interface PostScoreOptions {
   meta?: any;
 }
 
+interface ScoreBodyData {
+  game: string | null;
+  level_key: string;
+  value: string;
+  meta?: any;
+}
+
 const methods = Emitter({
   events: {
     DATA_EVENT: 'DATA_EVENT',
@@ -76,10 +83,17 @@ const methods = Emitter({
     'getUserAchievements': '/v1/achievement/user',
     'getUserDatastore': '/v1/datastore/user',
     'getCurrentDay': '/v1/currentday',
-    'getTokenBalance': '/v1/tokenbalance'
+    'getTokenBalance': '/v1/tokenbalance',
+    'postScore': '/v1/score',
+    'postDailyScore': '/v1/dailyscore',
+    'postAchievement': '/v1/achievement',
+    'postDatastore': '/v1/datastore'
   },
 
-  // API
+  
+
+  // #region API Methods
+
   buildUrlParamString: function(params: any) {
     return params && params instanceof Object
       ? '?' + Object.keys(params).map(function(key) {
@@ -155,40 +169,11 @@ const methods = Emitter({
     return promise;
   },
 
-  getEntity: function() {
-    const promise = new Promise(function(resolve) {
-      if(session.uid) {
-        session.entity = session.uid;
-        resolve(session.uid);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods['getEntity']
-        })
-        .then(function(entity) {
-          session.entity = entity as string;
-          resolve(entity);
-        });
-      }
-    });
-    return promise;
-  },
+  // #endregion
 
-  isSubscriber: function() {
-    const promise = new Promise(function(resolve) {
-      if(session.uid) {
-        session.entity = session.uid;
-        resolve(session.uid);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods['getSubscriber']
-        })
-        .then(function(result: any) {
-          resolve(!!result.subscriber);
-        });
-      }
-    });
-    return promise;
-  },
+
+
+  // #region Score Methods
 
   hasDailyScore: function(level_key: any) {
     const promise = new Promise(function(resolve) {
@@ -223,6 +208,35 @@ const methods = Emitter({
         resolve(categories);
       });
     });
+    return promise;
+  },
+
+  getCurrentDay: function() {
+    const padDateDigit = function(number: string | number) {
+      if (typeof number === 'number' && number <= 99) { number = ("000"+number).slice(-2); }
+      return number;
+    }
+
+    const promise = new Promise(function(resolve) {
+      const urlParams = utils.parseUrlParams();
+      if (urlParams.day && urlParams.month && urlParams.year) {
+        const dayParts = [
+          (2000 + parseInt (urlParams.year, 10)),
+          padDateDigit(parseInt (urlParams.month, 10)),
+          padDateDigit(parseInt (urlParams.day, 10))
+        ];
+        resolve({ day: dayParts.join("-") });
+      } else {
+        methods.getAPIData({
+          method: methods.apiMethods['getCurrentDay'],
+          params: {}
+        })
+        .then(function(data) {
+          resolve(data);
+        });
+      }
+    });
+
     return promise;
   },
 
@@ -277,6 +291,46 @@ const methods = Emitter({
     return promise;
   },
 
+  postScore: function(level_key: string, value: string, options: PostScoreOptions) {
+    const body: ScoreBodyData = {
+      game: session.api_key,
+      level_key: level_key,
+      value: value,
+    };
+
+    if(options && options.meta) {
+      body.meta = options.meta;
+    }
+
+    const urlParamsString = methods.buildUrlParamString(body);
+    return methods.postAPIData({
+      method: methods.apiMethods['postScore'],
+      body: body,
+      params: urlParamsString,
+    });
+  },
+
+  postDailyScore: function(day: string, level_key: string, value: string) {
+    const body = {
+      game: session.api_key,
+      day: day,
+      level_key: level_key,
+      value: value
+    };
+    const urlParamsString = methods.buildUrlParamString(body);
+    return methods.postAPIData({
+      method: methods.apiMethods['postDailyScore'],
+      body: body,
+      params: urlParamsString
+    });
+  },
+
+  // #endregion
+
+
+
+  // #region Achievement Methods
+
   getAchievementCategories: function() {
     const promise = new Promise<any[]>(function(resolve) {
       methods.getAPIData({
@@ -307,6 +361,24 @@ const methods = Emitter({
     return promise;
   },
 
+  postAchievement: function(achievement_key: string) {
+    const body = {
+      game: session.api_key,
+      achievement_key: achievement_key
+    };
+    const urlParamsString = methods.buildUrlParamString(body);
+    return methods.postAPIData({
+      method: methods.apiMethods['postAchievement'],
+      body: body,
+      params: urlParamsString
+    });
+  },
+
+  // #endregion
+
+
+  // #region User Cloud Datastore
+
   getUserDatastore: function() {
     const promise = new Promise(function(resolve) {
       methods.getAPIData({
@@ -322,32 +394,60 @@ const methods = Emitter({
     return promise;
   },
 
-  getCurrentDay: function() {
-    const padDateDigit = function(number: string | number) {
-      if (typeof number === 'number' && number <= 99) { number = ("000"+number).slice(-2); }
-      return number;
-    }
+  postDatastore: function(key: string, value: string) {
+    const body = {
+      game: session.api_key,
+      key: key,
+      value: value
+    };
 
+    const urlParamsString = methods.buildUrlParamString(body);
+
+    return methods.postAPIData({
+      method: methods.apiMethods['postDatastore'],
+      body: body,
+      params: urlParamsString
+    });
+  },
+
+  // #endregion
+
+
+
+  // #region User Methods
+
+  getEntity: function() {
     const promise = new Promise(function(resolve) {
-      const urlParams = utils.parseUrlParams();
-      if (urlParams.day && urlParams.month && urlParams.year) {
-        const dayParts = [
-          (2000 + parseInt (urlParams.year, 10)),
-          padDateDigit(parseInt (urlParams.month, 10)),
-          padDateDigit(parseInt (urlParams.day, 10))
-        ];
-        resolve({ day: dayParts.join("-") });
+      if(session.uid) {
+        session.entity = session.uid;
+        resolve(session.uid);
       } else {
         methods.getAPIData({
-          method: methods.apiMethods['getCurrentDay'],
-          params: {}
+          method: methods.apiMethods['getEntity']
         })
-        .then(function(data) {
-          resolve(data);
+        .then(function(entity) {
+          session.entity = entity as string;
+          resolve(entity);
         });
       }
     });
+    return promise;
+  },
 
+  isSubscriber: function() {
+    const promise = new Promise(function(resolve) {
+      if(session.uid) {
+        session.entity = session.uid;
+        resolve(session.uid);
+      } else {
+        methods.getAPIData({
+          method: methods.apiMethods['getSubscriber']
+        })
+        .then(function(result: any) {
+          resolve(!!result.subscriber);
+        });
+      }
+    });
     return promise;
   },
 
@@ -386,71 +486,17 @@ const methods = Emitter({
     return promise;
   },
 
-  userLogin: function(options: { username: any; password: any; }) {
-    const {username, password} = options;
-    const body = { username, password };
-    const provider = methods.getProvider();
-    return methods.postAPIData({
-      apiRoot: provider.root,
-      method: provider.login,
-      body: body
-    })
-    .then(function(result: any) {
-      if(result && !result.error) {
-        methods.emit(methods.events.DATA_EVENT, methods.events.USER_LOGIN);
-        return result;
-      } else {
-        methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-      }
-    })
-    .catch(function(result) {
-      return result;
-    });
-  },
+  // #endregion
 
-  userCreate: function(options: { username: any; mail: any; password: any; }) {
-    const { username, mail, password } = options;
-    const body = { username, mail, password };
-    const provider = methods.getProvider();
-    return methods.postAPIData({
-      apiRoot: provider.root,
-      method: provider.create,
-      body: body
-    })
-    .then(function(result: any) {
-      if(result && !result.error) {
-        methods.emit(methods.events.DATA_EVENT, methods.events.USER_LOGIN);
-        return result;
-      } else {
-        methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-      }
-    })
-    .catch(function(result) {
-      return result;
-    });
-  },
 
-  userLogout: function() {
-    const provider = methods.getProvider();
-    return methods.getAPIData({
-      apiRoot: provider.root,
-      method: provider.logout
-    })
-    .then(function(result: any) {
-      if(result && !result.error) {
-        methods.emit(methods.events.DATA_EVENT, methods.events.USER_LOGOUT);
-      } else {
-        methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-      }
-    })
-    .catch(function() {
-      methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-    });
-  },
+
+  // #region Internal API
 
   getProvider: function() {
     return config.providers[session.provider!] || config.providers['shockwave'];
   },
+
+  // #endregion
 });
 
 export default methods;

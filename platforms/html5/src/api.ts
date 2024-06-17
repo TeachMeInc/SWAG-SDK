@@ -2,12 +2,14 @@
 
 import Emitter from 'component-emitter';
 import elementResizeEvent from 'element-resize-event';
-import config from '../config';
-import session from '../session';
-import utils from '../utils';
+import config from './config';
+import session from './session';
+import utils from './utils';
 import data from './data';
-import ui, { DialogOptions, DialogType } from './ui';
-import { PostScoreOptions } from '../data';
+import dialog, { DialogOptions, DialogType } from './dialog';
+import messages, { ToolbarItem } from './messages';
+import summary from './summary';
+import { PostScoreOptions } from './data';
 
 declare global {
   interface Window {
@@ -16,7 +18,7 @@ declare global {
 }
 
 export default class SWAGAPI extends Emitter {
-  _options: any;
+  protected _options: any;
 
   constructor (options: any) {
     super();
@@ -25,15 +27,15 @@ export default class SWAGAPI extends Emitter {
     this._init();
     Emitter(this);
 
-    ui.on('UI_EVENT', (event) => {
+    dialog.on('UI_EVENT', (event) => {
       this.emit(event, {type: event});
     });
 
-    ui.on('UI_ERROR', (event) => {
+    dialog.on('UI_ERROR', (event) => {
       this._emitError(event);
     });
 
-    ui.on('DATA_ERROR', (event) => {
+    dialog.on('DATA_ERROR', (event) => {
       this._emitError(event);
     });
 
@@ -46,7 +48,7 @@ export default class SWAGAPI extends Emitter {
     });
   }
 
-  _init () {
+  protected _init () {
     const siteMode = this._getSiteMode();
     
     session.api_key = this._options.api_key;
@@ -57,12 +59,12 @@ export default class SWAGAPI extends Emitter {
 
     elementResizeEvent(session.wrapper!, function() {
       setTimeout(function() {
-        ui.resize();
+        dialog.resize();
       }, 400);
     });
   }
 
-  _getSiteMode() {
+  protected _getSiteMode() {
     // priority for site mode is window.SWAGTHEME, swag options theme then based on domain hosting the game
     const domainTheme = location.hostname.split('.').reverse().splice(1,1).reverse().join('.');
     const reqTheme = window.SWAGTHEME || this._options.theme || domainTheme;
@@ -71,11 +73,11 @@ export default class SWAGAPI extends Emitter {
       : 'shockwave';
   }
 
-  _emitError (errorType: string) {
+  protected _emitError (errorType: string) {
     this.emit('ERROR', { type: errorType });
   }
 
-  _parseUrlOptions (prop: string) {
+  protected _parseUrlOptions (prop: string) {
     const params: Record<string, string> = {};
     if(window.location.href.indexOf('?') === -1) {
       return params;
@@ -89,6 +91,10 @@ export default class SWAGAPI extends Emitter {
     return ( prop && prop in params ) ? params[ prop ] : params;
   }
 
+
+
+  // #region API Methods
+
   startSession () {
     return data.getEntity()
       .then(() => {
@@ -96,6 +102,20 @@ export default class SWAGAPI extends Emitter {
         this.emit(config.events.SESSION_READY, { session_ready: true });
       });
   }
+
+  toggleFullScreen () {
+    return messages.trySendMessage('sw.toggleFullScreen');
+  }
+
+  navigateToArchive () {
+    return messages.trySendMessage('sw.navigateToArchive');
+  }
+
+  // #endregion
+
+
+
+  // #region Score Methods
 
   getScoreCategories () {
     return data.getScoreCategories();
@@ -122,6 +142,20 @@ export default class SWAGAPI extends Emitter {
     return data.postDailyScore(day, level_key, value);
   }
 
+  hasDailyScore (level_key: any) {
+    return data.hasDailyScore(level_key);
+  }
+
+  getCurrentDay () {
+    return data.getCurrentDay();
+  }
+
+  // #endregion
+
+
+
+  // #region Achievement Methods
+
   getAchievementCategories () {
     return data.getAchievementCategories();
   }
@@ -134,6 +168,12 @@ export default class SWAGAPI extends Emitter {
     return data.getUserAchievements();
   }
 
+  // #endregion
+
+
+
+  // #region User Cloud Datastore Methods
+
   postDatastore (key: string, value: string) {
     return data.postDatastore(key, value);
   }
@@ -142,63 +182,105 @@ export default class SWAGAPI extends Emitter {
     return data.getUserDatastore();
   }
 
-  populateLevelSelect (domId: any) {
-    return ui.populateLevelSelect(domId);
-  }
+  // #endregion
 
-  populateDaySelect (domId: any, limit: any) {
-    return ui.populateDaySelect(domId, limit);
-  }
 
-  populateAchievementSelect (domId: any) {
-    return ui.populateAchievementSelect(domId);
-  }
+
+  // #region User Methods
 
   getCurrentEntity () {
     return session.entity;
-  }
-
-  showDialog (type: DialogType, options: DialogOptions) {
-    return ui.renderDialog(type, options);
   }
 
   isSubscriber () {
     return data.isSubscriber();
   }
 
-  hasDailyScore (level_key: any) {
-    return data.hasDailyScore(level_key);
-  }
-
-  getCurrentDay () {
-    return data.getCurrentDay();
-  }
-
-  getBrandingLogo () {
-    return ui.getBrandingLogo();
-  }
-
-  getBrandingLogoUrl () {
-    return ui.getBrandingLogoUrl();
-  }
-
-  startGame () {
-    return ui.startGame();
-  }
-
-  endGame () {
-    return ui.endGame();
-  }
-
-  showAd () {
-    return ui.showAd();
-  }
-
   getCurrentUser () {
     return data.getCurrentUser();
   }
 
-  userLogout () {
-    return data.userLogout();
+  navigateToLogin () {
+    return messages.trySendMessage('sw.navigateToLogin');
   }
+
+  userLogout () {
+    return messages.trySendMessage('sw.userLogout');
+  }
+
+  // #endregion
+
+
+
+  // #region Toolbar Management Methods
+
+  setToolbarItems (items: Record<string, ToolbarItem>) {
+    return messages.setToolbarItems(items);
+  }
+
+  updateToolbarItem (item: ToolbarItem) {
+    return messages.updateToolbarItem(item);
+  }
+
+  removeToolbarItem (id: string) {
+    return messages.removeToolbarItem(id);
+  }
+
+  // #endregion
+
+
+
+  // #region UI / Dialog Methods
+
+  showAd (type: 'video', options: {} = {}) {
+    return messages.trySendMessage('sw.displayAd', JSON.stringify({ type, options }), 1000 * 60);
+  }
+
+  showShareDialog () {
+    return messages.trySendMessage('sw.displayShareDialog');
+  }
+
+  showSummaryScreen (stats: Record<string, string>, resultHtml: string) {
+    return summary.showSummary(stats, resultHtml);
+  }
+
+  // #endregion
+
+
+
+  // #region Deprecated Methods
+
+  startGame () {
+    return Promise.resolve();
+  }
+
+  endGame () {
+    return Promise.resolve();
+  }
+
+  showDialog (type: DialogType, options: DialogOptions) {
+    return dialog.renderDialog(type, options);
+  }
+
+  populateLevelSelect (domId: any) {
+    return dialog.populateLevelSelect(domId);
+  }
+
+  populateDaySelect (domId: any, limit: any) {
+    return dialog.populateDaySelect(domId, limit);
+  }
+
+  populateAchievementSelect (domId: any) {
+    return dialog.populateAchievementSelect(domId);
+  }
+  
+  getBrandingLogo () {
+    return dialog.getBrandingLogo();
+  }
+
+  getBrandingLogoUrl () {
+    return dialog.getBrandingLogoUrl();
+  }
+
+  // #endregion
 };

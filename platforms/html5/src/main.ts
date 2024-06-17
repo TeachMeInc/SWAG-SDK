@@ -1,8 +1,8 @@
 'use strict';
 
 import config from './config';
-import ui from './api/ui';
-import SWAGAPI from './api/swag';
+import ui from './dialog';
+import SWAGAPI from './api';
 
 import './styles/main.scss';
 

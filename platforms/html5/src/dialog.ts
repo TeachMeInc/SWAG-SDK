@@ -1,31 +1,32 @@
 'use strict';
 
+import Emitter from 'component-emitter';
 import * as bodyScrollLock from 'body-scroll-lock';
 import Handlebars from 'handlebars';
-import config from '../config';
-import session from '../session';
-import data from '../data';
-import ui from '../ui';
-import utils from '../utils';
+import config from './config';
+import session from './session';
+import data from './data';
+import ui from './dialog';
+import utils from './utils';
 
 // Template partials
-import dialogHeader from '../assets/templates/api/dialog-header.handlebars?raw';
+import dialogHeader from './assets/templates/api/dialog-header.handlebars?raw';
 
 // Templates
-import dialog from '../assets/templates/api/dialog.handlebars?raw';
-import dialogScore from '../assets/templates/api/dialog-scores.handlebars?raw';
-import dialogDailyScore from '../assets/templates/api/dialog-daily-scores.handlebars?raw';
-import dialogScoreConfirmation from '../assets/templates/api/dialog-score-confirmation.handlebars?raw';
-import dataScore from '../assets/templates/api/data-scores.handlebars?raw';
-import dataScoreContext from '../assets/templates/api/data-score-context.handlebars?raw';
-import dataDailyScoreContext from '../assets/templates/api/data-daily-scores-context.handlebars?raw';
-import dialogAchievements from '../assets/templates/api/dialog-achievements.handlebars?raw';
-import dataAchievements from '../assets/templates/api/data-achievements.handlebars?raw';
-import dialogWeeklyScores from '../assets/templates/api/dialog-weeklyscores.handlebars?raw';
-import dataWeeklyScores from '../assets/templates/api/data-weeklyscores.handlebars?raw';
-import brandingAnimation from '../assets/templates/api/branding-animation.handlebars?raw';
-import dialogUserLogin from '../assets/templates/api/dialog-user-login.handlebars?raw';
-import dialogUserCreate from '../assets/templates/api/dialog-user-create.handlebars?raw';
+import dialog from './assets/templates/api/dialog.handlebars?raw';
+import dialogScore from './assets/templates/api/dialog-scores.handlebars?raw';
+import dialogDailyScore from './assets/templates/api/dialog-daily-scores.handlebars?raw';
+import dialogScoreConfirmation from './assets/templates/api/dialog-score-confirmation.handlebars?raw';
+import dataScore from './assets/templates/api/data-scores.handlebars?raw';
+import dataScoreContext from './assets/templates/api/data-score-context.handlebars?raw';
+import dataDailyScoreContext from './assets/templates/api/data-daily-scores-context.handlebars?raw';
+import dialogAchievements from './assets/templates/api/dialog-achievements.handlebars?raw';
+import dataAchievements from './assets/templates/api/data-achievements.handlebars?raw';
+import dialogWeeklyScores from './assets/templates/api/dialog-weeklyscores.handlebars?raw';
+import dataWeeklyScores from './assets/templates/api/data-weeklyscores.handlebars?raw';
+import brandingAnimation from './assets/templates/api/branding-animation.handlebars?raw';
+import dialogUserLogin from './assets/templates/api/dialog-user-login.handlebars?raw';
+import dialogUserCreate from './assets/templates/api/dialog-user-create.handlebars?raw';
 
 Handlebars.registerPartial('dialog-header', dialogHeader);
 
@@ -76,7 +77,7 @@ const defaultDialogTitles: Record<DialogType, string> = {
   'usercreate': 'Create Account'
 };
 
-const methods: Record<string, any> = {
+const methods = Emitter({
   events: {
     UI_EVENT: 'UI_EVENT',
     UI_ERROR: 'UI_ERROR'
@@ -112,6 +113,7 @@ const methods: Record<string, any> = {
     document.body.classList.add('swag-dialog-open');
 
     if(methods.dialogMethods[type]) {
+      // @ts-ignore
       return methods[dialogMethods[type]](dialogOptions)
         .then(function() {
             var backBtn = session.wrapper!.querySelectorAll('div[data-action="back"]');
@@ -500,42 +502,6 @@ const methods: Record<string, any> = {
       });
   },
 
-  startGame: function() {
-    return new Promise<void>(function(resolve) {
-      console.log('::: start game method invoked :::');
-      resolve();
-    });
-  },
-
-  endGame: function() {
-    return new Promise<void>(function(resolve) {
-      console.log('::: end game method invoked :::');
-      resolve();
-    });
-  },
-
-  showAd: function() {
-    return new Promise<void>(function(resolve) {
-      const timeout = setTimeout(resolve, 1000);
-
-      const listener = function(event: { data: string; }) {
-        const { eventName } = JSON.parse(event.data);
-
-        if (eventName === 'onPrerollComplete') {
-          window.removeEventListener('message', listener, false);
-          resolve();
-        }
-        else if (eventName === 'onShowPreroll') {
-          clearTimeout(timeout);
-        }
-      };
-      window.addEventListener('message', listener, false);
-
-      const eventName = 'showPrerollAd';
-      window.parent.postMessage(JSON.stringify({ eventName }), '*');
-    });
-  },
-
   getBrandingLogo: function() {
     return new Promise<HTMLImageElement>(function(resolve) {
       const img = new Image();
@@ -583,6 +549,6 @@ const methods: Record<string, any> = {
     this.cleanStage();
     ui.emit(methods.events.UI_EVENT, config.events.DIALOG_CLOSED);
   }
-};
+});
 
-export default Object.assign(ui, methods);
+export default methods;
