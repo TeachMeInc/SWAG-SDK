@@ -2,6 +2,7 @@
 
 import Emitter from 'component-emitter';
 import elementResizeEvent from 'element-resize-event';
+import { createRoot, Root } from 'react-dom/client';
 import config from './config';
 import session from './session';
 import utils from './utils';
@@ -19,13 +20,14 @@ declare global {
 
 export default class SWAGAPI extends Emitter {
   protected _options: any;
+  protected _reactRoot: Root | null = null;
 
   constructor (options: any) {
     super();
+    Emitter(this);
 
     this._options = options;
     this._init();
-    Emitter(this);
 
     dialog.on('UI_EVENT', (event) => {
       this.emit(event, {type: event});
@@ -56,6 +58,11 @@ export default class SWAGAPI extends Emitter {
     session.wrapper!.classList.add('swag-wrapper');
     session.theme = siteMode;
     session.provider = siteMode;
+
+    const reactRoot = document.createElement('div');
+    reactRoot.setAttribute('id', 'swag-react-root');
+    this._reactRoot = createRoot(reactRoot);
+    session.wrapper!.appendChild(reactRoot);
 
     elementResizeEvent(session.wrapper!, function() {
       setTimeout(function() {
@@ -241,7 +248,7 @@ export default class SWAGAPI extends Emitter {
   }
 
   showSummaryScreen (stats: Record<string, string>, resultHtml: string) {
-    return summary.showSummary(stats, resultHtml);
+    return summary.showSummary(this._reactRoot!, stats, resultHtml);
   }
 
   // #endregion

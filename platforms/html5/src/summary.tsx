@@ -1,5 +1,13 @@
+import { Root } from 'react-dom/client';
+
+function Summary (props: any) {
+  return (
+    <div />
+  );
+}
+
 class SummaryAPI {
-  showSummary (stats: Record<string, string>, resultHtml: string) {
+  showSummary (reactRoot: Root, stats: Record<string, string>, resultHtml: string) {
     return Promise.resolve();
   }
 }
