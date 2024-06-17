@@ -1,5 +1,4 @@
 .swag-wrapper {
-
     position: relative;
     overflow-y: hidden;
     font-family: "Arial, Helvetica, sans-serif";
@@ -17,6 +16,7 @@
     @import "variables.scss";
     @import "../node_modules/animate.css/animate.min.css";
     @import "dialog.scss";
+    @import "summary.scss";
     @import "ui.scss";
     @import "forms.scss";
     @import "breakpoints/phone.scss";
@@ -25,11 +25,24 @@
     @import "breakpoints/desktop.scss";
 }
 
+#swag-react-root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+#swag-react-root > * {
+  pointer-events: auto;
+}
+
 // static
 
 body.swag-dialog-open {
   pointer-events: none;
   touch-action: none;
+  overflow: hidden;
 }
 
 .swag-branding-active {

@@ -111,11 +111,11 @@ export default class SWAGAPI extends Emitter {
   }
 
   toggleFullScreen () {
-    return messages.trySendMessage('sw.toggleFullScreen');
+    return messages.trySendMessage('swag.toggleFullScreen');
   }
 
   navigateToArchive () {
-    return messages.trySendMessage('sw.navigateToArchive');
+    return messages.trySendMessage('swag.navigateToArchive');
   }
 
   // #endregion
@@ -208,11 +208,11 @@ export default class SWAGAPI extends Emitter {
   }
 
   navigateToLogin () {
-    return messages.trySendMessage('sw.navigateToLogin');
+    return messages.trySendMessage('swag.navigateToLogin');
   }
 
   userLogout () {
-    return messages.trySendMessage('sw.userLogout');
+    return messages.trySendMessage('swag.userLogout');
   }
 
   // #endregion
@@ -240,14 +240,14 @@ export default class SWAGAPI extends Emitter {
   // #region UI / Dialog Methods
 
   showAd (type: 'video', options: {} = {}) {
-    return messages.trySendMessage('sw.displayAd', JSON.stringify({ type, options }), 1000 * 60);
+    return messages.trySendMessage('swag.displayAd', JSON.stringify({ type, options }));
   }
 
   showShareDialog () {
-    return messages.trySendMessage('sw.displayShareDialog');
+    return messages.trySendMessage('swag.displayShareDialog');
   }
 
-  showSummaryScreen (stats: Record<string, string>, resultHtml: string) {
+  showSummaryScreen (stats: { key: string, value: string }[], resultHtml: string) {
     return summary.showSummary(this._reactRoot!, stats, resultHtml);
   }
 

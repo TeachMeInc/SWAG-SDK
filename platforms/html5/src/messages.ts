@@ -45,16 +45,17 @@ enum ToolbarStateActionType {
 
 
 type MessageEventName = 
-  'sw.toolbar.setItems' |
-  'sw.toolbar.updateItem' |
-  'sw.toolbar.removeItem' |
-  'sw.toolbar.click' |
-  'sw.toggleFullScreen' |
-  'sw.navigateToArchive' |
-  'sw.navigateToLogin' |
-  'sw.displayAd' |
-  'sw.displayShareDialog' |
-  'sw.userLogout';
+  'swag.toolbar.setItems' |
+  'swag.toolbar.updateItem' |
+  'swag.toolbar.removeItem' |
+  'swag.toolbar.click' |
+  'swag.toggleFullScreen' |
+  'swag.navigateToArchive' |
+  'swag.navigateToLogin' |
+  'swag.navigateToTitle' | 
+  'swag.displayAd' |
+  'swag.displayShareDialog' |
+  'swag.userLogout';
 
 interface MessagePayload {
   eventName: MessageEventName;
@@ -116,7 +117,7 @@ class MessagesAPI {
       if (!parsed) return;
 
       switch (parsed.eventName) {
-      case 'sw.toolbar.click': {
+      case 'swag.toolbar.click': {
         const id = parsed.message;
         if (this.toolbarClickEvents[ id ]) {
           this.toolbarClickEvents[ id ]();
@@ -133,18 +134,18 @@ class MessagesAPI {
       if (item.onClick) this.toolbarClickEvents[ id ] = item.onClick;
       delete item.onClick;
     }
-    return this.trySendMessage('sw.toolbar.setItems', JSON.stringify(Object.values(items)));
+    return this.trySendMessage('swag.toolbar.setItems', JSON.stringify(Object.values(items)));
   }
 
   updateToolbarItem (item: ToolbarItem) {
     if (item.onClick) this.toolbarClickEvents[ item.id ] = item.onClick;
     delete item.onClick;
-    return this.trySendMessage('sw.toolbar.updateItem', JSON.stringify(item));
+    return this.trySendMessage('swag.toolbar.updateItem', JSON.stringify(item));
   }
 
   removeToolbarItem (id: string) {
     delete this.toolbarClickEvents[ id ];
-    return this.trySendMessage('sw.toolbar.removeItem', id);
+    return this.trySendMessage('swag.toolbar.removeItem', id);
   }
 }
 

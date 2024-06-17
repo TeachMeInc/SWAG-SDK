@@ -18,6 +18,7 @@
       <input type="button" id="show-dailyscore-dialog" value="Show Daily Score Dialog">
       <input type="button" id="show-achievements-dialog" value="Show Achievements Dialog">
       <input type="button" id="show-weeklyscores-dialog" value="Show Weekly Scores Dialog">
+      <input type="button" id="show-summary-screen" value="Show Summary Screen">
     </div>
     <h2>User Methods</h2>
     <div class="demo-controls">
@@ -160,6 +161,20 @@
       
       document.getElementById('show-weeklyscores-dialog').addEventListener('click', function() {
         api.showDialog('weeklyscores');
+      });
+
+      document.getElementById('show-summary-screen').addEventListener('click', function() {
+        api.showSummaryScreen(
+          [
+            { key: 'Foo Bar', value: '9:99' },
+            { key: 'Foo Bar', value: '9:99' },
+            { key: 'Foo Bar', value: '9:99' },
+            { key: 'Foo Bar', value: '9:99' },
+            { key: 'Foo Bar', value: '9:99' },
+            { key: 'Foo Bar', value: '9:99' },
+          ], 
+          '<div>hello</div>'
+        );
       });
       
       //User methods
