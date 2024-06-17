@@ -1,49 +1,48 @@
-var session = require('./session');
+import session from './session';
 
-var mediaBreakpoints = [
+const mediaBreakpoints = [
   {name: 'phone', value: 400, class:'media-phone'},
   {name: 'phablet', value: 800, class:'media-phablet'},
   {name: 'tablet', value: 1200, class:'media-tablet'},
   {name: 'desktop', value: 1400, class:'media-desktop', default: true}
 ];
 
-var methods = {
-
+const methods = {
   getBreakpoint: function() {
-    var defaultBreakpoint = mediaBreakpoints.find(function(breakpoint) {
+    const defaultBreakpoint = mediaBreakpoints.find(function(breakpoint) {
       return breakpoint.default;
     });
-    var mmatch = mediaBreakpoints.find(function(breakpoint) {
-      return session.wrapper.clientWidth <= breakpoint.value;
+    const mmatch = mediaBreakpoints.find(function(breakpoint) {
+      return session.wrapper!.clientWidth <= breakpoint.value;
     });
     return mmatch || defaultBreakpoint;
   },
 
   applyBreakpointClass: function() {
-    var breakpoint = methods.getBreakpoint();
+    const breakpoint = methods.getBreakpoint();
     if(breakpoint && breakpoint.class) {
-      session.wrapper.dataset.breakpoint = breakpoint.class;
+      session.wrapper!.dataset.breakpoint = breakpoint.class;
     } else {
-      session.wrapper.dataset.breakpoint = '';
+      session.wrapper!.dataset.breakpoint = '';
     }
   },
 
-  checkBreakpoint: function(mediaKey) {
-    var breakpoint = methods.getBreakpoint();
+  checkBreakpoint: function(mediaKey: string) {
+    const breakpoint = methods.getBreakpoint();
     return breakpoint && (breakpoint.name === mediaKey);
   },
 
-  formatParam: function(param) {
+  formatParam: function(param: string | string[]) {
     if(!Array.isArray(param)) {
       return param;
     }
-    var formatted = _.map(param, function(item) {
+    const formatted = param.map(function(item) {
       return '"' + item + '"';
     }).join('');
     return '[' + formatted + ']';
   },
 
-  toParam: function(source) {
+  toParam: function(source: string) {
     if(source) {
       return source.toLowerCase()
         .replace(/[^a-z0-9-\s]/g, '')
@@ -54,14 +53,15 @@ var methods = {
   },
 
   parseUrlParams: function() {
-    var vars = {};
-    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-        vars[key] = value;
+    const vars: any = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(_m: string, key: string, value: string) {
+      vars[ key ] = value;
+      return '';
     });
     return vars;
   },
 
-  debug: function(message, data) {
+  debug: function(message: string, data?: any) {
     if(session.debug) {
       console.log('SWAG API :::: ' + message);
       if(data) {
@@ -71,4 +71,4 @@ var methods = {
   }
 };
 
-module.exports = methods;
+export default methods;

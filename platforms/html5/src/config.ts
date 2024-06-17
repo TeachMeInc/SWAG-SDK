@@ -1,23 +1,42 @@
-module.exports = {
-    version: '3.0.4',
+import pkg from '../package.json';
+
+export interface Config {
+  version: string;
+  themes: {
+    [key: string]: {
+      apiRoot: string;
+      active: boolean;
+    };
+  };
+  providers: {
+    [key: string]: {
+      root: string;
+      current: string;
+      login: string;
+      logout: string;
+      create: string;
+    };
+  };
+  resourceRoot: string;
+  events: {
+    API_COMMUNICATION_ERROR: string;
+    SESSION_READY: string;
+    DIALOG_CLOSED: string;
+    INVALID_DIALOG_TYPE: string;
+    ERROR: string;
+    INVALID_MESSAGE: string;
+  };
+}
+
+const config: Config = {
+    version: pkg.version,
     themes: {
       'shockwave': {
         apiRoot: 'https://swag-services.shockwave.com',
         active: true
       },
-      'addictinggames': {
-        apiRoot: 'https://swag-services.addictinggames.com',
-        active: false
-      }
     },
     providers: {
-      'addictinggames': {
-        root: 'https://www.addictinggames.com',
-        current: '/ag-auth/current',
-        login: '/ag-auth/login',
-        logout: '/ag-auth/logout',
-        create: '/ag-auth/create'
-      },
       'shockwave': {
         root: 'https://www.shockwave.com',
         current: '/shockwave-auth/current',
@@ -36,3 +55,5 @@ module.exports = {
       INVALID_MESSAGE: 'INVALID MESSAGE'
     }
 };
+
+export default config;
