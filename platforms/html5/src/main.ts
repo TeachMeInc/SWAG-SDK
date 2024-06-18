@@ -12,10 +12,12 @@ declare global {
   }
 }
 
-console.log('SWAG API ' + config.version);
+// eslint-disable-next-line no-console
+console.log('SWAG HTML5 SDK ' + config.version);
 
 export default class APIWrapper {
   getInstance (options: any) {
+    // eslint-disable-next-line no-console
     console.log(options);
     return new SWAGAPI(options);
   }

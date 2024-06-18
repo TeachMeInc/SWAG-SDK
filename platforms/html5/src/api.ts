@@ -30,7 +30,7 @@ export default class SWAGAPI extends Emitter {
     this._init();
 
     dialog.on('UI_EVENT', (event) => {
-      this.emit(event, {type: event});
+      this.emit(event, { type: event });
     });
 
     dialog.on('UI_ERROR', (event) => {
@@ -42,7 +42,7 @@ export default class SWAGAPI extends Emitter {
     });
 
     data.on('DATA_EVENT', (event) => {
-      this.emit('DATA_EVENT', {type: event});
+      this.emit('DATA_EVENT', { type: event });
     });
 
     data.on('DATA_ERROR', (event) => {
@@ -64,18 +64,18 @@ export default class SWAGAPI extends Emitter {
     this._reactRoot = createRoot(reactRoot);
     session.wrapper!.appendChild(reactRoot);
 
-    elementResizeEvent(session.wrapper!, function() {
-      setTimeout(function() {
+    elementResizeEvent(session.wrapper!, function () {
+      setTimeout(function () {
         dialog.resize();
       }, 400);
     });
   }
 
-  protected _getSiteMode() {
+  protected _getSiteMode () {
     // priority for site mode is window.SWAGTHEME, swag options theme then based on domain hosting the game
     const domainTheme = location.hostname.split('.').reverse().splice(1,1).reverse().join('.');
     const reqTheme = window.SWAGTHEME || this._options.theme || domainTheme;
-    return config.themes[reqTheme]
+    return config.themes[ reqTheme ]
       ? reqTheme
       : 'shockwave';
   }
@@ -91,7 +91,7 @@ export default class SWAGAPI extends Emitter {
     }
     const search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
     const definitions = search.split( '&' );
-    definitions.forEach( function(val) {
+    definitions.forEach( function (val) {
       const parts = val.split( '=', 2 );
       params[ parts[ 0 ] ] = parts[ 1 ];
     } );
@@ -142,9 +142,9 @@ export default class SWAGAPI extends Emitter {
 
   postScore (level_key: string, value: string, options: PostScoreOptions) {
     return data.postScore(level_key, value, options)
-      .then(function() {
+      .then(function () {
         if(options && options.confirmation === true) {
-          alert(`Your score of ${value} has been submitted!`)
+          alert(`Your score of ${value} has been submitted!`);
         }
       });
   }
@@ -243,9 +243,8 @@ export default class SWAGAPI extends Emitter {
 
   // #region UI / Dialog Methods
 
-  showAd (type: 'video', options: {} = {}) {
-    if (!type) return Promise.resolve();
-    return messages.trySendMessage('swag.displayAd', JSON.stringify({ type, options }));
+  showAd () {
+    return Promise.resolve();
   }
 
   showShareDialog () {
@@ -295,4 +294,4 @@ export default class SWAGAPI extends Emitter {
   }
 
   // #endregion
-};
+}

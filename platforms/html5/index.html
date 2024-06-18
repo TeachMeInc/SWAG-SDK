@@ -89,7 +89,6 @@
         <p>
           <button id='btnShareDialog'>Share Dialog</button>
           <button id='btnGamesummaryScreen'>Game Summary Screen</button>
-          <button id='btnShowAd'>Show Ad</button>
           <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
           <button id='btnNavigateToArchives'>Navigate to Archives</button>
           <button id='btnNavigateToTitle'>Navigate to Title</button>
@@ -252,9 +251,6 @@
           ], 
           '<div style="background:#ccc;height:150px">Preview</div>'
         );
-
-      document.getElementById('btnShowAd').onclick = 
-        () => api.showAd('video');
 
       document.getElementById('btnToggleFullScreen').onclick = 
         () => api.toggleFullScreen();

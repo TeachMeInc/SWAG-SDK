@@ -17,7 +17,7 @@ function SummaryComponent (props: SummaryProps) {
   };
 
   const shareStats = () => {
-    console.log('TODO: Implement shareStats')
+    // TODO: Implement share stats
   };
 
   return (
@@ -25,7 +25,7 @@ function SummaryComponent (props: SummaryProps) {
       <div className='swag-summary__inner'>
         <div 
           className='swag-summary__preview'
-          dangerouslySetInnerHTML={{__html: props.resultHtml}} 
+          dangerouslySetInnerHTML={{ __html: props.resultHtml }} 
         />
         <ul
           className='swag-summary__stats'
@@ -83,25 +83,27 @@ class SummaryAPI {
     stats: { key: string, value: string }[], 
     resultHtml: string
   ) {
-    return new Promise<void>(async (resolve) => {
-      try {
-        const event = await messages.trySendMessage('swag.getRelatedGames');
-        const relatedGames = JSON.parse(event.message);
-        reactRoot.render(<SummaryComponent 
-          stats={stats} 
-          resultHtml={resultHtml}
-          relatedGames={relatedGames} 
-        />);
-        document.body.classList.add('swag-dialog-open');
-        resolve();
-      } catch (e) {
-        reactRoot.render(<SummaryComponent 
-          stats={stats} 
-          resultHtml={resultHtml} 
-        />);
-        document.body.classList.add('swag-dialog-open');
-        resolve();
-      }
+    return new Promise<void>((resolve) => {
+      (async () => {
+        try {
+          const event = await messages.trySendMessage('swag.getRelatedGames');
+          const relatedGames = JSON.parse(event.message);
+          reactRoot.render(<SummaryComponent 
+            stats={stats} 
+            resultHtml={resultHtml}
+            relatedGames={relatedGames} 
+          />);
+          document.body.classList.add('swag-dialog-open');
+          resolve();
+        } catch (e) {
+          reactRoot.render(<SummaryComponent 
+            stats={stats} 
+            resultHtml={resultHtml} 
+          />);
+          document.body.classList.add('swag-dialog-open');
+          resolve();
+        }
+      })();
     });
   }
 

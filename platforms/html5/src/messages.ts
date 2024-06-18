@@ -23,22 +23,22 @@ export interface ToolbarItem {
   label?: string;
   icon?: string;
   onClick?: () => void;
-};
+}
 
 export interface ToolbarState {
   items: ToolbarItem[];
-};
+}
 
 export interface ToolbarStateAction {
   type: ToolbarStateActionType
   payload: any
-};
+}
 
 enum ToolbarStateActionType {
   SET_ITEMS,
   ADD_OR_UPDATE_ITEM,
   REMOVE_ITEM,
-};
+}
 
 // #endregion
 

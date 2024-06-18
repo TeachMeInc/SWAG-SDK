@@ -87,55 +87,54 @@ const methods = Emitter({
   dialogMethods,
   defaultDialogTitles,
 
-  renderDialog: function(type: DialogType, options?: DialogOptions) {
-    var self = this;
-    var dialogOptions = Object.assign({
-        theme: session.theme,
-        header: {
-            backButton: true
-        }
+  renderDialog: function (type: DialogType, options?: DialogOptions) {
+    const dialogOptions = Object.assign({
+      theme: session.theme,
+      header: {
+        backButton: true
+      }
     }, options);
 
-    var title = options && options.title || self.defaultDialogTitles[type];
+    const title = options && options.title || defaultDialogTitles[ type ];
 
     if(title) {
       dialogOptions.title = title;
     }
 
-    var progressDialog = self.templates['dialog'](dialogOptions);
+    const progressDialog = templates[ 'dialog' ](dialogOptions);
     this.cleanStage();
     session.wrapper!.insertAdjacentHTML('afterbegin', progressDialog);
-    var dialogEl = document.getElementById('swag-dialog')!;
-    dialogEl.dataset['dialog'] = type;
+    const dialogEl = document.getElementById('swag-dialog')!;
+    dialogEl.dataset[ 'dialog' ] = type;
     utils.applyBreakpointClass();
 
     bodyScrollLock.disableBodyScroll(session.wrapper!);
     document.body.classList.add('swag-dialog-open');
 
-    if(methods.dialogMethods[type]) {
+    if(methods.dialogMethods[ type ]) {
       // @ts-ignore
-      return methods[dialogMethods[type]](dialogOptions)
-        .then(function() {
-            var backBtn = session.wrapper!.querySelectorAll('div[data-action="back"]');
-            backBtn.forEach(function(el) {
-              el.addEventListener('click', function(event) {
-                  self.onCloseDialog(event);
-              }, true);
-            });
+      return methods[ dialogMethods[ type ] ](dialogOptions)
+        .then(function () {
+          const backBtn = session.wrapper!.querySelectorAll('div[data-action="back"]');
+          backBtn.forEach(function (el) {
+            el.addEventListener('click', function (event) {
+              methods.onCloseDialog(event);
+            }, true);
+          });
 
         });
     } else {
-      ui.emit(self.events.UI_ERROR, config.events.INVALID_DIALOG_TYPE);
+      ui.emit(methods.events.UI_ERROR, config.events.INVALID_DIALOG_TYPE);
     }
   },
 
-  renderScoresDialog: function(options: { period?: any; level_key?: any; value_formatter?: any; }) {
+  renderScoresDialog: function (options: { period?: any; level_key?: any; value_formatter?: any; }) {
     const contentEl = document.getElementById('swag-dialog-content');
     options = options || {};
 
     return data.getScoreCategories()
-      .then(function(categories) {
-        const scoreDialog = methods.templates['dialogScore']({
+      .then(function (categories) {
+        const scoreDialog = methods.templates[ 'dialogScore' ]({
           levels: categories
         });
         contentEl!.innerHTML = scoreDialog;
@@ -157,11 +156,11 @@ const methods = Emitter({
           levelSelector.value = options.level_key;
         }
 
-        const scoreMethod = function(level_key: any, period: any) {
+        const scoreMethod = function (level_key: any, period: any) {
           dataTableCont!.innerHTML = '';
           contentEl!.classList.add('loading');
 
-        const scoresContextOptions: {
+          const scoresContextOptions: {
           level_key: any;
           period: string;
           value_formatter?: any;
@@ -170,7 +169,7 @@ const methods = Emitter({
           period: 'daily'
         };
 
-        const scoresOptions: {
+          const scoresOptions: {
           type: string;
           level_key: any;
           period: any;
@@ -181,62 +180,62 @@ const methods = Emitter({
           period: period
         };
 
-        if(options.value_formatter) {
-          scoresContextOptions.value_formatter = options.value_formatter;
-          scoresOptions.value_formatter = options.value_formatter;
-        }
+          if(options.value_formatter) {
+            scoresContextOptions.value_formatter = options.value_formatter;
+            scoresOptions.value_formatter = options.value_formatter;
+          }
 
-        data.getScoresContext(scoresContextOptions)
-          .then(function(scoresContext) {
-            const contextFormatted = methods.templates['dataScoreContext']({
-              context: scoresContext
+          data.getScoresContext(scoresContextOptions)
+            .then(function (scoresContext) {
+              const contextFormatted = methods.templates[ 'dataScoreContext' ]({
+                context: scoresContext
+              });
+              contextCont.innerHTML = contextFormatted;
             });
-            contextCont.innerHTML = contextFormatted;
-          })
 
-        data.getScores(scoresOptions)
-          .then(function(scores) {
-            const selectedCategory = categories.find((category) => {
+          data.getScores(scoresOptions)
+            .then(function (scores) {
+              const selectedCategory = categories.find((category) => {
                 return level_key === category.level_key;
-            });
+              });
 
-            const formatted = methods.templates['dataScore']({
-              category: selectedCategory,
-              scores: scores
-            });
+              const formatted = methods.templates[ 'dataScore' ]({
+                category: selectedCategory,
+                scores: scores
+              });
 
             dataTableCont!.innerHTML = formatted;
 
-          })
-          .finally(function() {
+            })
+            .finally(function () {
             contentEl!.classList.remove('loading');
-          });
+            });
         };
 
-        levelSelector.addEventListener('change', function() {
-          return scoreMethod(levelSelector.options[levelSelector.selectedIndex].value,
-            periodSelector.options[periodSelector.selectedIndex].value);
+        levelSelector.addEventListener('change', function () {
+          return scoreMethod(levelSelector.options[ levelSelector.selectedIndex ].value,
+            periodSelector.options[ periodSelector.selectedIndex ].value);
         }, true);
 
-        periodSelector.addEventListener('change', function() {
-          return scoreMethod(levelSelector.options[levelSelector.selectedIndex].value,
-            periodSelector.options[periodSelector.selectedIndex].value);
+        periodSelector.addEventListener('change', function () {
+          return scoreMethod(levelSelector.options[ levelSelector.selectedIndex ].value,
+            periodSelector.options[ periodSelector.selectedIndex ].value);
         }, true);
 
-        return scoreMethod(levelSelector.options[levelSelector.selectedIndex].value, periodSelector.options[periodSelector.selectedIndex].value);
+        return scoreMethod(levelSelector.options[ levelSelector.selectedIndex ].value, periodSelector.options[ periodSelector.selectedIndex ].value);
 
       });
   },
 
-  renderDailyScoresDialog: function(options: { day: any; level_key: any; value_formatter: any; }) {
+  renderDailyScoresDialog: function (options: { day: any; level_key: any; value_formatter: any; }) {
     const contentEl = document.getElementById('swag-dialog-content');
 
-    return Promise.all([data.getDays(), data.getScoreCategories()])
-      .then(function(values) {
-        const days = values[0];
-        const categories = values[1];
+    return Promise.all([ data.getDays(), data.getScoreCategories() ])
+      .then(function (values) {
+        const days = values[ 0 ];
+        const categories = values[ 1 ];
 
-        const scoreDialog = methods.templates['dialogDailyScore']({
+        const scoreDialog = methods.templates[ 'dialogDailyScore' ]({
           days: days,
           levels: categories
         });
@@ -260,7 +259,7 @@ const methods = Emitter({
           levelSelector.value = options.level_key;
         }
 
-        const scoreMethod = function(day: any, level_key: any) {
+        const scoreMethod = function (day: any, level_key: any) {
           dataTableCont!.innerHTML = '';
           contentEl!.classList.add('loading');
 
@@ -297,92 +296,92 @@ const methods = Emitter({
             data.getScoresContext(scoresContextOptions),
             data.getScores(scoresOptions)
           ])
-          .then(function(values) {
+            .then(function (values) {
 
-            const scoresContext = values[0];
-            const scores = values[1];
+              const scoresContext = values[ 0 ];
+              const scores = values[ 1 ];
 
-            const selectedCategory = categories.find(function(category: { level_key: any; }) {
-              return level_key === category.level_key;
-            });
+              const selectedCategory = categories.find(function (category: { level_key: any; }) {
+                return level_key === category.level_key;
+              });
 
-            const formatted = methods.templates['dataScore']({
-              category: selectedCategory,
-              scores: scores
-            });
+              const formatted = methods.templates[ 'dataScore' ]({
+                category: selectedCategory,
+                scores: scores
+              });
 
             dataTableCont!.innerHTML = formatted;
 
-            const contextFormatted = methods.templates['dataDailyScoreContext']({
+            const contextFormatted = methods.templates[ 'dataDailyScoreContext' ]({
               context: scoresContext
             });
 
             contextCont!.innerHTML = contextFormatted;
-          })
-          .finally(function() {
+            })
+            .finally(function () {
             contentEl!.classList.remove('loading');
-          });
+            });
         };
 
-        daySelector.addEventListener('change', function() {
-          return scoreMethod(daySelector.options[daySelector.selectedIndex].value,
-            levelSelector.options[levelSelector.selectedIndex].value);
+        daySelector.addEventListener('change', function () {
+          return scoreMethod(daySelector.options[ daySelector.selectedIndex ].value,
+            levelSelector.options[ levelSelector.selectedIndex ].value);
         }, true);
 
-        levelSelector.addEventListener('change', function() {
-          return scoreMethod(daySelector.options[daySelector.selectedIndex].value,
-            levelSelector.options[levelSelector.selectedIndex].value);
+        levelSelector.addEventListener('change', function () {
+          return scoreMethod(daySelector.options[ daySelector.selectedIndex ].value,
+            levelSelector.options[ levelSelector.selectedIndex ].value);
         }, true);
 
-        return scoreMethod(daySelector.options[daySelector.selectedIndex].value, levelSelector.options[levelSelector.selectedIndex].value);
+        return scoreMethod(daySelector.options[ daySelector.selectedIndex ].value, levelSelector.options[ levelSelector.selectedIndex ].value);
 
       });
   },
 
-  renderScoreConfirmationDialog: function(options: any) {
+  renderScoreConfirmationDialog: function (options: any) {
     const contentEl = document.getElementById('swag-dialog-content');
-    const scoreConfirmationDialog = methods.templates['dialogScoreConfirmation'](options);
+    const scoreConfirmationDialog = methods.templates[ 'dialogScoreConfirmation' ](options);
     contentEl!.classList.remove('loading');
     contentEl!.innerHTML = scoreConfirmationDialog;
-    return new Promise<void>(function(resolve) {
+    return new Promise<void>(function (resolve) {
       resolve();
     });
   },
 
-  renderAchievementsDialog: function() {
+  renderAchievementsDialog: function () {
     const contentEl = document.getElementById('swag-dialog-content');
 
-    const achievementsDialog = methods.templates['dialogAchievements']({});
+    const achievementsDialog = methods.templates[ 'dialogAchievements' ]({});
     contentEl!.innerHTML = achievementsDialog;
 
     const dataTableCont = document.getElementById('swag-data');
 
-    const achievementsMethod = function() {
+    const achievementsMethod = function () {
       dataTableCont!.innerHTML = '';
       contentEl!.classList.add('loading');
       return data.getUserAchievements()
-      .then(function(achievements) {
-        const formatted = methods.templates['dataAchievements']({
-          achievements: achievements
-        });
+        .then(function (achievements) {
+          const formatted = methods.templates[ 'dataAchievements' ]({
+            achievements: achievements
+          });
         dataTableCont!.innerHTML = formatted;
-      })
-      .finally(function() {
+        })
+        .finally(function () {
         contentEl!.classList.remove('loading');
-      });
+        });
     };
 
     return achievementsMethod();
 
   },
 
-  renderWeeklyScoresDialog: function(options: { title: any; value_formatter: any; }) {
+  renderWeeklyScoresDialog: function (options: { title: any; value_formatter: any; }) {
     const contentEl = document.getElementById('swag-dialog-content');
 
     return data.getScoreCategories()
-      .then(function(categories) {
+      .then(function (categories) {
 
-        const scoreDialog = methods.templates['dialogWeeklyScores']({
+        const scoreDialog = methods.templates[ 'dialogWeeklyScores' ]({
           levels: categories,
           title: options.title
         });
@@ -392,7 +391,7 @@ const methods = Emitter({
         const levelSelector = document.getElementById('swag-data-view-level') as HTMLSelectElement;
         const dataTableCont = document.getElementById('swag-data');
 
-        const scoreMethod = function(level_key: any) {
+        const scoreMethod = function (level_key: any) {
           dataTableCont!.innerHTML = '';
           contentEl!.classList.add('loading');
 
@@ -410,58 +409,58 @@ const methods = Emitter({
           }
 
           return data.getScores(scoresOptions)
-          .then(function(scores) {
-            const formatted = methods.templates['dataWeeklyScores']({
-              weeklyscores: scores
-            });
+            .then(function (scores) {
+              const formatted = methods.templates[ 'dataWeeklyScores' ]({
+                weeklyscores: scores
+              });
             dataTableCont!.innerHTML = formatted;
-          })
-          .finally(function() {
+            })
+            .finally(function () {
             contentEl!.classList.remove('loading');
-          });
+            });
         };
 
-        levelSelector.addEventListener('change', function() {
-          return scoreMethod(levelSelector.options[levelSelector.selectedIndex].value);
+        levelSelector.addEventListener('change', function () {
+          return scoreMethod(levelSelector.options[ levelSelector.selectedIndex ].value);
         }, true);
 
-        if(categories[0]) {
-          return scoreMethod(levelSelector.options[0].value);
+        if(categories[ 0 ]) {
+          return scoreMethod(levelSelector.options[ 0 ].value);
         }
 
       });
   },
 
-  renderUserLoginDialog: function() {
-    return new Promise<void>(function(resolve) {
+  renderUserLoginDialog: function () {
+    return new Promise<void>(function (resolve) {
       resolve();
     });
   },
 
-  renderUserCreateDialog: function() {
-    return new Promise<void>(function(resolve) {
+  renderUserCreateDialog: function () {
+    return new Promise<void>(function (resolve) {
       resolve();
     });
   },
 
   // UI Rendering
-  cleanStage: function() {
-    bodyScrollLock.clearAllBodyScrollLocks()
+  cleanStage: function () {
+    bodyScrollLock.clearAllBodyScrollLocks();
     document.body.classList.remove('swag-dialog-open');
     const elems = session.wrapper!.getElementsByClassName('swag-dialog-wrapper');
     Array.prototype.forEach.call(elems, function (elem) {
-        elem.parentNode.removeChild(elem);
+      elem.parentNode.removeChild(elem);
     });
   },
 
-  populateLevelSelect: function(domId: string) {
+  populateLevelSelect: function (domId: string) {
     return data.getScoreCategories()
-      .then(function(categories) {
+      .then(function (categories) {
         const levelSelect = document.getElementById(domId);
         if(levelSelect) {
-          categories.map(function(category: { level_key: string; name: string; }) {
+          categories.map(function (category: { level_key: string; name: string; }) {
             const opt = document.createElement('option');
-            opt.value= category.level_key;
+            opt.value = category.level_key;
             opt.innerHTML = category.name;
             levelSelect.appendChild(opt);
           });
@@ -469,14 +468,14 @@ const methods = Emitter({
       });
   },
 
-  populateDaySelect: function(domId: string, limit: number) {
+  populateDaySelect: function (domId: string, limit: number) {
     return data.getDays(limit)
-      .then(function(days) {
+      .then(function (days) {
         const daySelect = document.getElementById(domId);
         if(daySelect) {
-          days.map(function(day: string) {
+          days.map(function (day: string) {
             const opt = document.createElement('option');
-            opt.value= day;
+            opt.value = day;
             opt.innerHTML = day;
             daySelect.appendChild(opt);
           });
@@ -484,54 +483,54 @@ const methods = Emitter({
       });
   },
 
-  resize: function() {
+  resize: function () {
     utils.debug('resize');
     utils.applyBreakpointClass();
   },
 
-  populateAchievementSelect: function(domId: string) {
+  populateAchievementSelect: function (domId: string) {
     return data.getAchievementCategories()
-      .then(function(categories) {
+      .then(function (categories) {
         const achievementSelect = document.getElementById(domId) as HTMLSelectElement;
-          categories.map(function(category: { achievement_key: string; name: string; }) {
-            const opt = document.createElement('option');
-            opt.value= category.achievement_key;
-            opt.innerHTML = category.name;
-            achievementSelect.appendChild(opt);
-          });
+        categories.map(function (category: { achievement_key: string; name: string; }) {
+          const opt = document.createElement('option');
+          opt.value = category.achievement_key;
+          opt.innerHTML = category.name;
+          achievementSelect.appendChild(opt);
+        });
       });
   },
 
-  getBrandingLogo: function() {
-    return new Promise<HTMLImageElement>(function(resolve, reject) {
+  getBrandingLogo: function () {
+    return new Promise<HTMLImageElement>(function (resolve, reject) {
       const img = new Image();
-      img.onload = function() {
+      img.onload = function () {
         resolve(img);
       };
-      img.onerror = function(err) {
+      img.onerror = function (err) {
         reject(err);
-      }
+      };
       //TODO: use appropriate logo for given context
       img.src = config.resourceRoot + 'shockwave-logo.svg';
     });
   },
 
-  getBrandingLogoUrl: function() {
-    return new Promise<string>(function(resolve) {
+  getBrandingLogoUrl: function () {
+    return new Promise<string>(function (resolve) {
       resolve(config.resourceRoot + 'shockwave-logo.svg');
     });
   },
 
-  showBrandingAnimation: function(targetElement: string, callback: () => void) {
+  showBrandingAnimation: function (targetElement: string, callback: () => void) {
     const el = document.getElementById(targetElement);
-    return new Promise<void>(function(resolve) {
-      const animationMarkup = methods.templates['brandingAnimation']({});
+    return new Promise<void>(function (resolve) {
+      const animationMarkup = methods.templates[ 'brandingAnimation' ]({});
       el!.insertAdjacentHTML('afterbegin', animationMarkup);
       el!.classList.add('swag-branding-active');
       const wrapper = document.getElementById('swag-branding-animation-wrapper');
       const anim = document.getElementById('swag-branding-animation');
-      anim!.onload = function() {
-        window.setTimeout(function() {
+      anim!.onload = function () {
+        window.setTimeout(function () {
             wrapper!.parentNode!.removeChild(wrapper!);
             el!.classList.remove('swag-branding-active');
             if(callback) callback();
@@ -541,13 +540,13 @@ const methods = Emitter({
     });
   },
 
-  leaderboardComponent: function() {
-    return new Promise<void>(function(resolve) {
+  leaderboardComponent: function () {
+    return new Promise<void>(function (resolve) {
       resolve();
     });
   },
 
-  onCloseDialog: function(event: { preventDefault: () => void; }) {
+  onCloseDialog: function (event: { preventDefault: () => void; }) {
     event.preventDefault();
     this.cleanStage();
     ui.emit(methods.events.UI_EVENT, config.events.DIALOG_CLOSED);
