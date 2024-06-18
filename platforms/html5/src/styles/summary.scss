@@ -22,6 +22,7 @@
 
 .swag-summary__preview {
   position: relative;
+  margin-top: 0;
 }
 
 .swag-summary__stats {
@@ -52,6 +53,10 @@
 .swag-summary__btn {
   cursor: pointer;
   border-radius: 100px;
-  padding: 0.4rem 1rem;
-  border: solid 1px;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  appearance: none;
+  background: #000;
+  color: #fff;
+  font-weight: 600;
 }

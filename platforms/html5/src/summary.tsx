@@ -42,11 +42,11 @@ function SummaryComponent (props: SummaryProps) {
             className='swag-summary__btn'
             onClick={shareStats}
           >
-            Share Stats X
+            Share Stats
           </button>
         </div>
         <p>
-          Ready for more? Solve more puzzles from the archive
+          Ready for more? Play more games from the archive.
         </p>
         <div>
           <button 
