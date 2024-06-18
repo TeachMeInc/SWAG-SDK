@@ -363,20 +363,38 @@
       document.getElementById('btnCheckIsSubscriber').onclick = 
         async () => console.log(await api.isSubscriber());
 
+      //timer, pause, hint, help, settings
       document.getElementById('btnSetToolbarItems').onclick = 
         () => api.setToolbarItems([
           { 
             id: 'btn1', 
-            label: 'Button 1', 
-            icon: 'faStar' 
-          }
+            icon: 'faStopwatch',
+            label: '0:00',
+          },
+          { 
+            id: 'btn2', 
+            icon: 'faPause',
+            onClick: () => { alert('toggle play/pause'); },
+          },
+          { 
+            id: 'btn3', 
+            icon: 'faMagnifyingGlass',
+          },
+          { 
+            id: 'btn4', 
+            icon: 'faCircleQuestion',
+          },
+          { 
+            id: 'btn5', 
+            icon: 'faGear',
+          },
         ]);
 
       document.getElementById('btnUpdateToolbarItem').onclick = 
         () => api.updateToolbarItem({ 
           id: 'btn1', 
-          label: Date.now().toString(), 
-          icon: 'faStar' 
+          label: new Date().toLocaleTimeString([], { minute: '2-digit', second: '2-digit' }), 
+          icon: 'faStopwatch',
         });
 
       document.getElementById('btnRemoveToolbarItem').onclick = 
