@@ -243,10 +243,6 @@ export default class SWAGAPI extends Emitter {
 
   // #region UI / Dialog Methods
 
-  showAd () {
-    return Promise.resolve();
-  }
-
   showShareDialog () {
     return messages.trySendMessage('swag.displayShareDialog');
   }
@@ -259,7 +255,7 @@ export default class SWAGAPI extends Emitter {
 
 
 
-  // #region Deprecated Methods
+  // #region WIP Methods
 
   startGame () {
     return Promise.resolve();
@@ -268,6 +264,16 @@ export default class SWAGAPI extends Emitter {
   endGame () {
     return Promise.resolve();
   }
+
+  showAd () {
+    return Promise.resolve();
+  }
+
+  // #endregion
+
+  
+
+  // #region Legacy Dialog Methods
 
   showDialog (type: DialogType, options: DialogOptions) {
     return dialog.renderDialog(type, options);
