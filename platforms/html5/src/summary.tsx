@@ -6,7 +6,7 @@ interface SummaryProps {
   stats: { key: string, value: string }[];
 }
 
-function Summary (props: SummaryProps) {
+function SummaryComponent (props: SummaryProps) {
   const navigateToArchive = () => {
     messages.trySendMessage('swag.navigateToArchive');
   };
@@ -66,7 +66,7 @@ class SummaryAPI {
     stats: { key: string, value: string }[], 
     resultHtml: string
   ) {
-    reactRoot.render(<Summary stats={stats} resultHtml={resultHtml} />);
+    reactRoot.render(<SummaryComponent stats={stats} resultHtml={resultHtml} />);
     document.body.classList.add('swag-dialog-open');
   }
 

@@ -435,10 +435,9 @@ const methods = Emitter({
   },
 
   isSubscriber: function() {
-    const promise = new Promise(function(resolve) {
-      if(session.uid) {
-        session.entity = session.uid;
-        resolve(session.uid);
+    const promise = new Promise<boolean>(function(resolve) {
+      if(!session.uid) {
+        resolve(false);
       } else {
         methods.getAPIData({
           method: methods.apiMethods['getSubscriber']

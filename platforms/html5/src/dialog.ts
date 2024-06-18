@@ -503,11 +503,14 @@ const methods = Emitter({
   },
 
   getBrandingLogo: function() {
-    return new Promise<HTMLImageElement>(function(resolve) {
+    return new Promise<HTMLImageElement>(function(resolve, reject) {
       const img = new Image();
       img.onload = function() {
         resolve(img);
       };
+      img.onerror = function(err) {
+        reject(err);
+      }
       //TODO: use appropriate logo for given context
       img.src = config.resourceRoot + 'shockwave-logo.svg';
     });
