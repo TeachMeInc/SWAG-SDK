@@ -12,6 +12,10 @@ function SummaryComponent (props: SummaryProps) {
     messages.trySendMessage('swag.navigateToArchive');
   };
 
+  const navigateToTitle = (slug: string) => {
+    messages.trySendMessage('swag.navigateToTitle', slug);
+  };
+
   const shareStats = () => {
     console.log('TODO: Implement shareStats')
   };
@@ -60,7 +64,7 @@ function SummaryComponent (props: SummaryProps) {
           {
             props.relatedGames?.map(({ slug, title, icon }) => {
               return (
-                <li key={slug}>
+                <li key={slug} onClick={() => navigateToTitle(slug)}>
                   <img src={icon} alt={title} />
                   <span>{title}</span>
                 </li>

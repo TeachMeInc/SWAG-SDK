@@ -40,10 +40,6 @@
     flex-direction: column;
     margin: 0.5rem;
 
-    span {
-
-    }
-
     strong {
       font-size: 200%;
     }
@@ -59,4 +55,32 @@
   background: #000;
   color: #fff;
   font-weight: 600;
+}
+
+.swag-summary__related-games {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+  padding: 0;
+  align-items: center;
+
+  li {
+    padding: 0 0.75rem;
+    margin: 0.5rem;
+    border-radius: 10px;
+    background-color: #D9D9D9;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 225px;
+    height: 67px;
+  }
+
+  img {
+    max-height: 48px;
+    height: auto;
+    width: 48px;
+    display: block;
+    margin-right: 0.75rem;
+  }
 }
