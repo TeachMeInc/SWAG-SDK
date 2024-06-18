@@ -118,6 +118,10 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.navigateToArchive');
   }
 
+  navigateToTitle (slug: string) {
+    return messages.trySendMessage('swag.navigateToTitle', slug);
+  }
+
   // #endregion
 
 
@@ -221,7 +225,7 @@ export default class SWAGAPI extends Emitter {
 
   // #region Toolbar Management Methods
 
-  setToolbarItems (items: Record<string, ToolbarItem>) {
+  setToolbarItems (items: ToolbarItem[]) {
     return messages.setToolbarItems(items);
   }
 
@@ -240,6 +244,7 @@ export default class SWAGAPI extends Emitter {
   // #region UI / Dialog Methods
 
   showAd (type: 'video', options: {} = {}) {
+    if (!type) return Promise.resolve();
     return messages.trySendMessage('swag.displayAd', JSON.stringify({ type, options }));
   }
 

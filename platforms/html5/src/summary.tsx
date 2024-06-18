@@ -4,6 +4,7 @@ import messages from './messages';
 interface SummaryProps {
   resultHtml: string;
   stats: { key: string, value: string }[];
+  relatedGames?: { slug: string, title: string, icon: string }[];
 }
 
 function SummaryComponent (props: SummaryProps) {
@@ -55,6 +56,18 @@ function SummaryComponent (props: SummaryProps) {
             View Archive
           </button>
         </div>
+        <ul className='swag-summary__related-games'>
+          {
+            props.relatedGames?.map(({ slug, title, icon }) => {
+              return (
+                <li key={slug}>
+                  <img src={icon} alt={title} />
+                  <span>{title}</span>
+                </li>
+              );
+            })
+          }
+        </ul>
       </div>
     </div>
   );
@@ -66,13 +79,32 @@ class SummaryAPI {
     stats: { key: string, value: string }[], 
     resultHtml: string
   ) {
-    reactRoot.render(<SummaryComponent stats={stats} resultHtml={resultHtml} />);
-    document.body.classList.add('swag-dialog-open');
+    return new Promise<void>(async (resolve) => {
+      try {
+        const event = await messages.trySendMessage('swag.getRelatedGames');
+        const relatedGames = JSON.parse(event.message);
+        reactRoot.render(<SummaryComponent 
+          stats={stats} 
+          resultHtml={resultHtml}
+          relatedGames={relatedGames} 
+        />);
+        document.body.classList.add('swag-dialog-open');
+        resolve();
+      } catch (e) {
+        reactRoot.render(<SummaryComponent 
+          stats={stats} 
+          resultHtml={resultHtml} 
+        />);
+        document.body.classList.add('swag-dialog-open');
+        resolve();
+      }
+    });
   }
 
   hideSummary (reactRoot: Root) {
     reactRoot.unmount();
     document.body.classList.remove('swag-dialog-open');
+    return Promise.resolve();
   }
 }
 

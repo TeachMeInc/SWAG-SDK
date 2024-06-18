@@ -55,7 +55,8 @@ type MessageEventName =
   'swag.navigateToTitle' | 
   'swag.displayAd' |
   'swag.displayShareDialog' |
-  'swag.userLogout';
+  'swag.userLogout' |
+  'swag.getRelatedGames';
 
 interface MessagePayload {
   eventName: MessageEventName;
@@ -63,7 +64,11 @@ interface MessagePayload {
 }
 
 class MessagesAPI {
-  trySendMessage (eventName: MessageEventName, message: string = '', timeout: number = 1000) {
+  trySendMessage (
+    eventName: MessageEventName, 
+    message: string = '', 
+    timeout: number = 200
+  ) {
     if (this.currentMessageRequests.includes(eventName)) {
       return Promise.reject(new Error(`Failed to send message for event ${eventName}. Reason: Already in progress`));
     }
@@ -74,7 +79,7 @@ class MessagesAPI {
       '*',
     );
 
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<MessagePayload>((resolve, reject) => {
       const completeRequest = () => {
         this.currentMessageRequests.splice(this.currentMessageRequests.indexOf(eventName), 1);
         window.removeEventListener('message', eventListener);
@@ -95,7 +100,7 @@ class MessagesAPI {
         else if (parsed.eventName === `${eventName}.success`) {
           clearTimeout(timeoutRef);
           completeRequest();
-          resolve();
+          resolve(parsed);
         }
         else if (parsed.eventName === `${eventName}.error`) {
           clearTimeout(timeoutRef);
@@ -124,16 +129,17 @@ class MessagesAPI {
         }
         return;
       }
+      // TODO
       }
     });
   }
 
-  setToolbarItems (items: Record<string, ToolbarItem>) {
+  setToolbarItems (items: ToolbarItem[]) {
     this.toolbarClickEvents = {};
-    for (const [ id, item ] of Object.entries(items)) {
-      if (item.onClick) this.toolbarClickEvents[ id ] = item.onClick;
+    items.forEach(item => {
+      if (item.onClick) this.toolbarClickEvents[ item.id ] = item.onClick;
       delete item.onClick;
-    }
+    });
     return this.trySendMessage('swag.toolbar.setItems', JSON.stringify(Object.values(items)));
   }
 

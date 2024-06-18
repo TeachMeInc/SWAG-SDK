@@ -78,21 +78,21 @@
       <section>
         <h4>Score & Achievement Dialogs</h4>
         <p>
-          <button>Score Dialog</button>
-          <button>Daily Score Dialog</button>
-          <button>Achievements Dialog</button>
-          <button>Weekly Scores Dialog</button>
+          <button id='btnScoreDialog'>Score Dialog</button>
+          <button id='btnDailyScoreDialog'>Daily Score Dialog</button>
+          <button id='btnAchievementsDialog'>Achievements Dialog</button>
+          <button id='btnWeeklyScoresDialog'>Weekly Scores Dialog</button>
         </p>
       </section>
       <section>
         <h4>Website & UI Methods</h4>
         <p>
-          <button>Share Dialog</button>
-          <button>Game Summary Screen</button>
-          <button>Show Ad</button>
-          <button>Toggle Full-Screen</button>
-          <button>Navigate to Archives</button>
-          <button>Navigate to Title</button>
+          <button id='btnShareDialog'>Share Dialog</button>
+          <button id='btnGamesummaryScreen'>Game Summary Screen</button>
+          <button id='btnShowAd'>Show Ad</button>
+          <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
+          <button id='btnNavigateToArchives'>Navigate to Archives</button>
+          <button id='btnNavigateToTitle'>Navigate to Title</button>
         </p>
       </section>
       <section>
@@ -101,25 +101,25 @@
           <strong>Submit Score</strong>
           <select id='submitScore_levelSelect'></select>
           <input id='submitScore_scoreInput' type='number' placeholder='Score' />
-          <button>Post Score</button>
+          <button id='submitScore_submitBtn'>Post Score</button>
         </p>
         <p>
           <strong>Submit Daily Score</strong>
           <select id='submitDailyScore_dateSelect'></select>
           <select id='submitDailyScore_levelSelect'></select>
           <input id='submitDailyScore_scoreInput' type='number' placeholder='Score' />
-          <button>Post Score</button>
+          <button id='submitDailyScore_submitBtn'>Post Score</button>
         </p>
         <p>
           <strong>Submit Achievement</strong>
           <select id='submitAchievement_achievementSelect'></select>
-          <button>Post Achievement</button>
+          <button id='submitAchievement_submitBtn'>Post Achievement</button>
         </p>
         <p>
           <strong>Save User Cloud Save Data</strong>
           <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
           <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
-          <button>Save Data</button>
+          <button id='submitCloudData_submitBtn'>Save Data</button>
         </p>
       </section>
       <section>
@@ -136,7 +136,7 @@
             <option value="datastore-currentuser">Cloud save data for current user</option>
           </select>
           <select id='getData_levelSelect'></select>
-          <button>Fetch Data (view console)</button>
+          <button id='getData_submitBtn'>Fetch Data (view console)</button>
         </p>
       </section>
       <section>
@@ -146,18 +146,18 @@
           <input id='userInfo' type='text'></input>
         </p>
         <p>
-          <button>Navigate to Login</button>
-          <button>Logout</button>
-          <button>Get Current User</button>
-          <button>Check Is Subscriber</button>
+          <button id='btnNavigateToLogin'>Navigate to Login</button>
+          <button id='btnLogout'>Logout</button>
+          <button id='btnGetCurrentUser'>Get Current User</button>
+          <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
         </p>
       </section>
       <section>
         <h4>Toolbar Methods</h4>
         <p>
-          <button>Set Toolbar State</button>
-          <button>Update Toolbar Button</button>
-          <button>Remove Toolbar Button</button>
+          <button id='btnSetToolbarItems'>Set Toolbar Items</button>
+          <button id='btnUpdateToolbarItem'>Update Toolbar Item</button>
+          <button id='btnRemoveToolbarItem'>Remove Toolbar Item</button>
         </p>
       </section>
     </div>
@@ -183,24 +183,208 @@
           api.populateAchievementSelect('submitAchievement_achievementSelect');
           document.getElementById('userInfo').value = JSON.stringify(api.getCurrentEntity());
 
-          //write some text on the game canvas
-          const cvs = document.getElementById('game-canvas');
-          cvs.width = window.innerWidth;
-          cvs.height = window.innerHeight;
+          let x = 0.5;
+          let y = 0.5;
+          const xSpeed = 0.001 + Math.random() * 0.005;
+          const ySpeed = 0.001 + Math.random() * 0.005;
+          let velX = Math.random() > 0.5 ? 1 : -1;
+          let velY = Math.random() > 0.5 ? 1 : -1;
 
-          const ctx = cvs.getContext('2d');
-          ctx.fillStyle = '#195AAB';
-          ctx.fillRect(0, 0, cvs.width, cvs.height);
+          const frame = () => {
+            requestAnimationFrame(frame);
 
-          ctx.font = '40px Comic Sans MS';
-          ctx.fillStyle = '#FFFFFF';
-          ctx.textAlign = 'center';
-          ctx.fillText('Demo Canvas', cvs.width/2, cvs.height/2);
+            const cvs = document.getElementById('game-canvas');
+            cvs.width = window.innerWidth;
+            cvs.height = window.innerHeight;
 
-          const date = await api.getCurrentDay();
-          console.log('The current day is: ' + date.day);
+            const ctx = cvs.getContext('2d');
+            ctx.fillStyle = '#195AAB';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+            ctx.font = '40px Comic Sans MS';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center';
+            const textWidth = ctx.measureText('shockwave.com').width;
+            const localX = x * cvs.width - textWidth / 2;
+            const localY = y * cvs.height;
+            ctx.fillText('shockwave.com', localX, localY);
+
+            if (x > 1) {
+              velX = -1;
+            } else if (x < 0 + textWidth / cvs.width) {
+              velX = 1;
+            }
+
+            if (y > 1) {
+              velY = -1;
+            } else if (y < 0 + 20 / cvs.height) {
+              velY = 1;
+            }
+
+            x += velX * xSpeed;
+            y += velY * ySpeed;
+          };
+          frame();
         }
       };
+
+      document.getElementById('btnScoreDialog').onclick = 
+        () => api.showDialog('scores');
+
+      document.getElementById('btnDailyScoreDialog').onclick = 
+        () => api.showDialog('dailyscores');
+
+      document.getElementById('btnAchievementsDialog').onclick = 
+        () => api.showDialog('achievements');
+
+      document.getElementById('btnWeeklyScoresDialog').onclick = 
+        () => api.showDialog('weeklyscores');
+
+      document.getElementById('btnShareDialog').onclick = 
+        () => api.showShareDialog();
+
+      document.getElementById('btnGamesummaryScreen').onclick = 
+        () => api.showSummaryScreen(
+          [
+            { key: 'Foo', value: '0:00' },
+            { key: 'Bar', value: '9:99' },
+            { key: 'Baz', value: '123' },
+          ], 
+          '<div>Preview</div>'
+        );
+
+      document.getElementById('btnShowAd').onclick = 
+        () => api.showAd('video');
+
+      document.getElementById('btnToggleFullScreen').onclick = 
+        () => api.toggleFullScreen();
+
+      document.getElementById('btnNavigateToArchives').onclick = 
+        () => api.navigateToArchive();
+
+      document.getElementById('btnNavigateToTitle').onclick = 
+        () => api.navigateToTitle('jigsawpuzzles');
+
+      document.getElementById('submitScore_submitBtn').onclick = 
+        () => {
+          const level = document.getElementById('submitScore_levelSelect').value;
+          const score = document.getElementById('submitScore_scoreInput').value;
+          api.postScore(level, score);
+        };
+
+      document.getElementById('submitDailyScore_submitBtn').onclick = 
+        () => {
+          const date = document.getElementById('submitDailyScore_dateSelect').value;
+          const level = document.getElementById('submitDailyScore_levelSelect').value;
+          const score = document.getElementById('submitDailyScore_scoreInput').value;
+          api.postDailyScore(date, level, score);
+        };
+
+      document.getElementById('submitAchievement_submitBtn').onclick = 
+        () => {
+          const achievement = document.getElementById('submitAchievement_achievementSelect').value;
+          api.postAchievement(achievement);
+        };
+
+      document.getElementById('submitCloudData_submitBtn').onclick = 
+        () => {
+          const key = document.getElementById('submitCloudData_keyInput').value;
+          const value = document.getElementById('submitCloudData_valueInput').value;
+          api.postDatastore(key, value);
+        };
+
+      document.getElementById('getData_submitBtn').onclick = 
+        async () => {
+          const method = document.getElementById('getData_methodSelect').value;
+          const level = document.getElementById('getData_levelSelect').value;
+
+          switch (method) {
+          case 'top-score-daily': {
+            console.log(await api.getScores({
+              period: 'daily',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-weekly': {
+            console.log(await api.getScores({
+              period: 'weekly',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-monthly': {
+            console.log(await api.getScores({
+              period: 'monthly',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-alltime': {
+            console.log(await api.getScores({
+              period: 'alltime',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-currentuser': {
+            console.log(await api.getScores({
+              period: 'alltime',
+              level_key: level,
+              current_user: true
+            }));
+            return;
+          }
+          case 'top-score-weekly-currentuser': {
+            console.log(await api.getScores({
+              type: 'weekly',
+              level_key: level,
+              current_user: true,
+              target_date: new Date().getTime()
+            }));
+            return;
+          }
+          case 'achievements-currentuser': {
+            console.log(await api.getUserAchievements());
+            return;
+          }
+          case 'datastore-currentuser': {
+            console.log(await api.getUserDatastore());
+            return;
+          }
+          }
+        };
+
+      document.getElementById('btnNavigateToLogin').onclick = 
+        () => api.navigateToLogin();
+
+      document.getElementById('btnLogout').onclick = 
+        () => api.userLogout();
+
+      document.getElementById('btnGetCurrentUser').onclick = 
+        async () => console.log(await api.getCurrentEntity());
+
+      document.getElementById('btnCheckIsSubscriber').onclick = 
+        async () => console.log(await api.isSubscriber());
+
+      document.getElementById('btnSetToolbarItems').onclick = 
+        () => api.setToolbarItems([
+          { 
+            id: 'btn1', 
+            label: 'Button 1', 
+            icon: 'faStar' 
+          }
+        ]);
+
+      document.getElementById('btnUpdateToolbarItem').onclick = 
+        () => api.updateToolbarItem({ 
+          id: 'btn1', 
+          label: Date.now().toString(), 
+          icon: 'faStar' 
+        });
+
+      document.getElementById('btnRemoveToolbarItem').onclick = 
+        () => api.removeToolbarItem('btn1');
 
       game.init();
     });
