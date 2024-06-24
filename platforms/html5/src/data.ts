@@ -92,7 +92,9 @@ const methods = Emitter({
     'postScore': '/v1/score',
     'postDailyScore': '/v1/dailyscore',
     'postAchievement': '/v1/achievement',
-    'postDatastore': '/v1/datastore'
+    'postDatastore': '/v1/datastore',
+    'getDailyGameProgress': '/v1/dailygameprogress',
+    'postDailyGameProgress': '/v1/dailygameprogress'
   },
 
   
@@ -342,7 +344,7 @@ const methods = Emitter({
     };
     const urlParamsString = methods.buildUrlParamString(body);
     return methods.postAPIData({
-      method: methods.apiMethods[ 'dailygameprogress' ],
+      method: methods.apiMethods[ 'postDailyGameProgress' ],
       body: body,
       params: urlParamsString
     });
@@ -354,7 +356,7 @@ const methods = Emitter({
 
     const promise = new Promise<DailyGameProgress[]>(function (resolve) {
       methods.getAPIData({
-        method: methods.apiMethods[ 'dailygameprogress' ],
+        method: methods.apiMethods[ 'getDailyGameProgress' ],
         params: params
       })
         .then(function (gameprogress: any) {
