@@ -163,7 +163,17 @@ export default class SWAGAPI extends Emitter {
 
   // #endregion
 
+  // #region Daily Game Methods
 
+  startDailyGame(day: string) {
+    return data.postDailyGameProgress(day, false);
+  }
+
+  completeDailyGame(day: string) {
+    return data.postDailyGameProgress(day, true);
+  }
+ 
+  // #endregion
 
   // #region Achievement Methods
 
