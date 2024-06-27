@@ -43,6 +43,11 @@ export interface UserBestData {
   }
 }
 
+export interface DailyGameProgress {
+  day: string
+  state: string
+}
+
 export interface PostScoreOptions {
   day?: string; 
   type?: string; 
@@ -87,7 +92,9 @@ const methods = Emitter({
     'postScore': '/v1/score',
     'postDailyScore': '/v1/dailyscore',
     'postAchievement': '/v1/achievement',
-    'postDatastore': '/v1/datastore'
+    'postDatastore': '/v1/datastore',
+    'getDailyGameProgress': '/v1/dailygameprogress',
+    'postDailyGameProgress': '/v1/dailygameprogress'
   },
 
   
@@ -327,6 +334,39 @@ const methods = Emitter({
 
   // #endregion
 
+  // #region Daily Game Methods
+  
+  postDailyGameProgress: function (day: string, complete: boolean) {
+    const body = {
+      game: session.api_key,
+      day: day,
+      complete: complete
+    };
+    const urlParamsString = methods.buildUrlParamString(body);
+    return methods.postAPIData({
+      method: methods.apiMethods[ 'postDailyGameProgress' ],
+      body: body,
+      params: urlParamsString
+    });
+  },
+
+  getDailyGameProgress: function (month: string, year: string) {
+    const clean = { month, year };
+    const params = Object.assign({ game: session[ 'api_key' ] }, clean);
+
+    const promise = new Promise<DailyGameProgress[]>(function (resolve) {
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getDailyGameProgress' ],
+        params: params
+      })
+        .then(function (gameprogress: any) {
+          resolve(gameprogress);
+        });
+    });
+    return promise;
+  },
+  
+  // #endregion
 
 
   // #region Achievement Methods
