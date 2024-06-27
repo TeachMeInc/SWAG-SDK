@@ -11,8 +11,11 @@ export default defineConfig({
     react(),
     mkcert(),
   ],
-  assetsInclude: ["**/*.handlebars"],
+  assetsInclude: [ '**/*.handlebars' ],
   server: {
+    port: 8888
+  },
+  preview: {
     port: 8888
   },
   build: {
@@ -31,4 +34,4 @@ export default defineConfig({
       },
     },
   },
-})
+});
