@@ -159,6 +159,13 @@
           <button id='btnRemoveToolbarItem'>Remove Toolbar Item</button>
         </p>
       </section>
+      <section>
+        <h4>Daily Game Methods</h4>
+        <p>
+          <button id='btnStartDailyGame'>Start Daily Game</button>
+          <button id='btnCompleteDailyGame'>Complete Daily Game</button>
+        </p>
+      </section>
     </div>
   </div>
   <script type='module' src='/src/main.ts'></script>
@@ -399,6 +406,14 @@
 
       document.getElementById('btnRemoveToolbarItem').onclick = 
         () => api.removeToolbarItem('btn1');
+
+      const today = new Date().toISOString().split('T')[0];
+
+      document.getElementById('btnStartDailyGame').onclick = 
+        () => api.startDailyGame(today);
+
+      document.getElementById('btnCompleteDailyGame').onclick = 
+        () => api.completeDailyGame(today);
 
       game.init();
     });
