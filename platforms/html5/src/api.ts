@@ -163,18 +163,22 @@ export default class SWAGAPI extends Emitter {
 
   // #endregion
 
+
+
   // #region Daily Game Methods
 
-  startDailyGame(day: string) {
+  startDailyGame (day: string) {
     return data.postDailyGameProgress(day, false);
   }
 
-  completeDailyGame(day: string) {
+  completeDailyGame (day: string) {
     return data.postDailyGameProgress(day, true);
   }
  
   // #endregion
 
+
+  
   // #region Achievement Methods
 
   getAchievementCategories () {
@@ -281,7 +285,7 @@ export default class SWAGAPI extends Emitter {
 
   // #endregion
 
-  
+
 
   // #region Legacy Dialog Methods
 

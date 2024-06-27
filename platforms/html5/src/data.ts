@@ -334,6 +334,8 @@ const methods = Emitter({
 
   // #endregion
 
+
+
   // #region Daily Game Methods
   
   postDailyGameProgress: function (day: string, complete: boolean) {
@@ -369,6 +371,7 @@ const methods = Emitter({
   // #endregion
 
 
+  
   // #region Achievement Methods
 
   getAchievementCategories: function () {
