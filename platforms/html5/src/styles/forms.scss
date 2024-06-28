@@ -34,15 +34,15 @@
       }
 
       &[type=password] {
-        background-image: url("images/input-lock.png");
+        background-image: url("/images/input-lock.png");
       }
 
       &[placeholder="username"] {
-        background-image: url("images/input-user.png");
+        background-image: url("/images/input-user.png");
       }
 
       &[placeholder="email"] {
-        background-image: url("images/input-envelope.png");
+        background-image: url("/images/input-envelope.png");
       }
 
       &::-webkit-input-placeholder {
@@ -80,7 +80,7 @@
       font-weight: 200;
 
       &.loading {
-        background-image: url("images/button-loader.gif");
+        background-image: url("/images/button-loader.gif");
         background-size: 1em 1em;
         background-position: center center;
         background-repeat: no-repeat;
