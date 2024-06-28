@@ -12,12 +12,6 @@ import messages, { ToolbarItem } from './messages';
 import summary from './summary';
 import { PostScoreOptions } from './data';
 
-declare global {
-  interface Window {
-    SWAGTHEME: string;
-  }
-}
-
 export default class SWAGAPI extends Emitter {
   protected _options: any;
   protected _reactRoot: Root | null = null;

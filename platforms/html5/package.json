@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build-demo": "tsc && vite build --config vite.config.demo.ts",
+    "build-types": "tsc && vite build --config vite.config.types.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -33,6 +34,7 @@
     "sass": "^1.77.5",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
+    "vite-plugin-dts": "^3.9.1",
     "vite-plugin-mkcert": "^1.17.5"
   }
 }

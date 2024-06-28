@@ -6,12 +6,6 @@ import SWAGAPI from './api';
 
 import './styles/main.scss';
 
-declare global {
-  interface Window {
-    SWAGAPI: APIWrapper;
-  }
-}
-
 // eslint-disable-next-line no-console
 console.log('SWAG HTML5 SDK ' + config.version);
 

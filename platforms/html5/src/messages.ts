@@ -34,7 +34,7 @@ export interface ToolbarStateAction {
   payload: any
 }
 
-enum ToolbarStateActionType {
+export enum ToolbarStateActionType {
   SET_ITEMS,
   ADD_OR_UPDATE_ITEM,
   REMOVE_ITEM,
@@ -44,7 +44,7 @@ enum ToolbarStateActionType {
 
 
 
-type MessageEventName = 
+export type MessageEventName = 
   'swag.toolbar.setItems' |
   'swag.toolbar.updateItem' |
   'swag.toolbar.removeItem' |
@@ -58,7 +58,7 @@ type MessageEventName =
   'swag.userLogout' |
   'swag.getRelatedGames';
 
-interface MessagePayload {
+export interface MessagePayload {
   eventName: MessageEventName;
   message: string;
 }
