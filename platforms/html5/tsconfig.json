@@ -26,6 +26,6 @@
       "component-emitter": ["src/types/component-emitter.ts"],
     }
   },
-  "include": ["src"],
+  "include": ["src", "plugins"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

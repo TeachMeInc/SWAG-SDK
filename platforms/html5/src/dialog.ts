@@ -2,49 +2,50 @@
 
 import Emitter from 'component-emitter';
 import * as bodyScrollLock from 'body-scroll-lock';
-import Handlebars from 'handlebars';
 import config from './config';
 import session from './session';
 import data from './data';
 import ui from './dialog';
 import utils from './utils';
+// @ts-ignore
+import Handlebars from '../node_modules/handlebars/lib/handlebars.runtime';
 
 // Template partials
-import dialogHeader from './assets/templates/api/dialog-header.handlebars?raw';
+import dialogHeaderPartial from './templates/partials/dialog-header.handlebars';
 
 // Templates
-import dialog from './assets/templates/api/dialog.handlebars?raw';
-import dialogScore from './assets/templates/api/dialog-scores.handlebars?raw';
-import dialogDailyScore from './assets/templates/api/dialog-daily-scores.handlebars?raw';
-import dialogScoreConfirmation from './assets/templates/api/dialog-score-confirmation.handlebars?raw';
-import dataScore from './assets/templates/api/data-scores.handlebars?raw';
-import dataScoreContext from './assets/templates/api/data-score-context.handlebars?raw';
-import dataDailyScoreContext from './assets/templates/api/data-daily-scores-context.handlebars?raw';
-import dialogAchievements from './assets/templates/api/dialog-achievements.handlebars?raw';
-import dataAchievements from './assets/templates/api/data-achievements.handlebars?raw';
-import dialogWeeklyScores from './assets/templates/api/dialog-weeklyscores.handlebars?raw';
-import dataWeeklyScores from './assets/templates/api/data-weeklyscores.handlebars?raw';
-import brandingAnimation from './assets/templates/api/branding-animation.handlebars?raw';
-import dialogUserLogin from './assets/templates/api/dialog-user-login.handlebars?raw';
-import dialogUserCreate from './assets/templates/api/dialog-user-create.handlebars?raw';
+import dialog from './templates/dialog.handlebars';
+import dialogScore from './templates/dialog-scores.handlebars';
+import dialogDailyScore from './templates/dialog-daily-scores.handlebars';
+import dialogScoreConfirmation from './templates/dialog-score-confirmation.handlebars';
+import dataScore from './templates/data-scores.handlebars';
+import dataScoreContext from './templates/data-score-context.handlebars';
+import dataDailyScoreContext from './templates/data-daily-scores-context.handlebars';
+import dialogAchievements from './templates/dialog-achievements.handlebars';
+import dataAchievements from './templates/data-achievements.handlebars';
+import dialogWeeklyScores from './templates/dialog-weeklyscores.handlebars';
+import dataWeeklyScores from './templates/data-weeklyscores.handlebars';
+import brandingAnimation from './templates/branding-animation.handlebars';
+import dialogUserLogin from './templates/dialog-user-login.handlebars';
+import dialogUserCreate from './templates/dialog-user-create.handlebars';
 
-Handlebars.registerPartial('dialog-header', dialogHeader);
+Handlebars.registerPartial('dialog-header', Handlebars.template(dialogHeaderPartial));
 
-const templates: Record<string, HandlebarsTemplateDelegate> = {
-  dialog: Handlebars.compile(dialog),
-  dialogScore: Handlebars.compile(dialogScore),
-  dialogDailyScore: Handlebars.compile(dialogDailyScore),
-  dialogScoreConfirmation: Handlebars.compile(dialogScoreConfirmation),
-  dataScore: Handlebars.compile(dataScore),
-  dataScoreContext: Handlebars.compile(dataScoreContext),
-  dataDailyScoreContext: Handlebars.compile(dataDailyScoreContext),
-  dialogAchievements: Handlebars.compile(dialogAchievements),
-  dataAchievements:  Handlebars.compile(dataAchievements),
-  dialogWeeklyScores: Handlebars.compile(dialogWeeklyScores),
-  dataWeeklyScores: Handlebars.compile(dataWeeklyScores),
-  brandingAnimation: Handlebars.compile(brandingAnimation),
-  dialogUserLogin: Handlebars.compile(dialogUserLogin),
-  dialogUserCreate: Handlebars.compile(dialogUserCreate),
+const templates: Record<string, (any)> = {
+  dialog: Handlebars.template(dialog),
+  dialogScore: Handlebars.template(dialogScore),
+  dialogDailyScore: Handlebars.template(dialogDailyScore),
+  dialogScoreConfirmation: Handlebars.template(dialogScoreConfirmation),
+  dataScore: Handlebars.template(dataScore),
+  dataScoreContext: Handlebars.template(dataScoreContext),
+  dataDailyScoreContext: Handlebars.template(dataDailyScoreContext),
+  dialogAchievements: Handlebars.template(dialogAchievements),
+  dataAchievements: Handlebars.template(dataAchievements),
+  dialogWeeklyScores: Handlebars.template(dialogWeeklyScores),
+  dataWeeklyScores: Handlebars.template(dataWeeklyScores),
+  brandingAnimation: Handlebars.template(brandingAnimation),
+  dialogUserLogin: Handlebars.template(dialogUserLogin),
+  dialogUserCreate: Handlebars.template(dialogUserCreate),
 };
 
 export type DialogType = 'scores' | 'dailyscores' | 'scoreconfirmation' | 'achievements' | 'weeklyscores' | 'userlogin' | 'usercreate';

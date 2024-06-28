@@ -3,15 +3,19 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import react from '@vitejs/plugin-react-swc';
+import handlebars from './plugins/handlebars';
 import mkcert from 'vite-plugin-mkcert';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    handlebars(),
     mkcert(),
   ],
-  assetsInclude: [ '**/*.handlebars' ],
+  define: {
+    'process.env': process.env
+  },
   server: {
     port: 8888
   },
@@ -19,13 +23,18 @@ export default defineConfig({
     port: 8888
   },
   build: {
+    sourcemap: false,
+    modulePreload: { polyfill: false },
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
-      name: 'SWAGAPI',
-      fileName: 'swag-api',
+      name: 'SWAGSDK',
+      fileName: () => 'swag-api.js',
+      formats: [ 'iife' ],
     },
     rollupOptions: {
-      external: [],
+      external: [
+        'source-map'
+      ],
       output: {
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') return 'swag-api.css';
