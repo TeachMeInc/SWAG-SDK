@@ -8,4 +8,5 @@ import react from '@vitejs/plugin-react-swc';
 export default defineConfig({
   plugins: [ react() ],
   assetsInclude: [ '**/*.handlebars' ],
+  base: 'https://content.shockwave.com/qa/swag-demo/',
 });

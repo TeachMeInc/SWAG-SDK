@@ -399,12 +399,12 @@
               background-color: #0064a0;
 
               .swag-logo {
-                  background-image: url("images/shockwave-logo.png");
+                  background-image: url("/images/shockwave-logo.png");
               }
             }
             .swag-dialog-content {
               &.loading {
-                  background-image: url("images/shockwave-loader.gif");
+                  background-image: url("/images/shockwave-loader.gif");
               }
             }
             .swag-data-selector {
