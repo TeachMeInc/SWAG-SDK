@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@preact/preset-vite": "^2.8.3",
     "@types/body-scroll-lock": "^3.1.2",
     "@types/element-resize-event": "^3.0.2",
     "@types/react": "^18.2.66",
