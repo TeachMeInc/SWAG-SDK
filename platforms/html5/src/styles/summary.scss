@@ -20,9 +20,27 @@
   margin: 1rem 0;
 }
 
+.swag-summary__inner > header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+  flex-direction: column;
+  
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
 .swag-summary__preview {
   position: relative;
   margin-top: 0;
+  margin-bottom: 0.5rem;
+  
+  @media (min-width: 768px) {
+    margin-right: 0.5rem;
+    margin-bottom: 0;
+  }
 }
 
 .swag-summary__stats {
@@ -35,13 +53,24 @@
   justify-content: center;
 
   li {
-    width: calc(33% - 1rem);
     display: flex;
     flex-direction: column;
-    margin: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem 1rem;
+    width: calc(33% - 2rem);
 
     strong {
       font-size: 200%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    flex-direction: column;
+    max-height: 215px;
+
+    li {
+      width: auto;
     }
   }
 }

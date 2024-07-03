@@ -255,8 +255,12 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.displayShareDialog');
   }
 
-  showSummaryScreen (stats: { key: string, value: string }[], resultHtml: string) {
-    return summary.showSummary(this._reactRoot!, stats, resultHtml);
+  showSummaryScreen (
+    stats: { key: string, value: string }[], 
+    resultHtml: string, 
+    shareString?: string
+  ) {
+    return summary.showSummary(this._reactRoot!, stats, resultHtml, shareString);
   }
 
   // #endregion
