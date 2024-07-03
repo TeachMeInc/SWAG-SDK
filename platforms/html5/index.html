@@ -1,94 +1,424 @@
 <html>
-  <head>
-      <title>SWAG JS API Demo</title>
-      <link rel="stylesheet" type="text/css" href="dist/swag-api.css">
-      <style>
-        body {
-          overflow: hidden;
-          width: 100%;
-          min-height: 100svh;
-        }
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>SWAG HTML5 SDK Demo</title>
+  <style>
+    * {
+      font-family: Arial, sans-serif;
+    }
 
-        #swag-api-wrapper {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        
-        canvas {
-          width: 100%;
-          height: 100%;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100svw;
+      height: 100svh;
+    }
 
-        .demo-controls {
-          position: absolute;
-          top: 0;
-          left: 0;
-          padding: 1rem;
-          z-index: 100;
-        }
-      </style>
-  </head>
-  <body>
-    <div id="swag-api-wrapper" class="api-wrapper">
-      <canvas id="game-canvas"></canvas>
-      <div class="demo-controls">
-        <button id="show-ad-btn">Show Ad</button>
-      </div>
+    canvas {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    #game-ui {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0.5rem 1rem;
+      box-sizing: border-box;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      margin: 1rem;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 4px;
+    }
+
+    section {
+      margin: 0.5rem 0;
+    }
+
+    section > h4 {
+      font-size: 1.2rem;
+      margin: 0 0 0.5rem 0;
+      border-bottom: solid 1px #ccc;
+    }
+
+    section > p {
+      margin: 0.5rem 0;
+    }
+
+    section > p {
+      margin: -0.25rem 0;
+    }
+
+    section > p > button {
+      border-radius: 100px;
+      border: solid 1px;
+      padding: 0.2rem 1rem;
+      margin: 0.25rem 0;
+      cursor: pointer;
+    }
+
+    section > p > input,
+    section > p > select {
+      border-radius: 4px;
+      border: solid 1px;
+      padding: 0.2rem;
+      margin: 0.25rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div id='swag-wrapper'>
+    <canvas id='game-canvas'></canvas>
+    <div id='game-ui'>
+      <section>
+        <h4>Score & Achievement Dialogs</h4>
+        <p>
+          <button id='btnScoreDialog'>Score Dialog</button>
+          <button id='btnDailyScoreDialog'>Daily Score Dialog</button>
+          <button id='btnAchievementsDialog'>Achievements Dialog</button>
+          <button id='btnWeeklyScoresDialog'>Weekly Scores Dialog</button>
+        </p>
+      </section>
+      <section>
+        <h4>Website & UI Methods</h4>
+        <p>
+          <button id='btnShareDialog'>Share Dialog</button>
+          <button id='btnGamesummaryScreen'>Game Summary Screen</button>
+          <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
+          <button id='btnNavigateToArchives'>Navigate to Archives</button>
+          <button id='btnNavigateToTitle'>Navigate to Title</button>
+        </p>
+      </section>
+      <section>
+        <h4>Post Methods</h4>
+        <p>
+          <strong>Submit Score</strong>
+          <select id='submitScore_levelSelect'></select>
+          <input id='submitScore_scoreInput' type='number' placeholder='Score' />
+          <button id='submitScore_submitBtn'>Post Score</button>
+        </p>
+        <p>
+          <strong>Submit Daily Score</strong>
+          <select id='submitDailyScore_dateSelect'></select>
+          <select id='submitDailyScore_levelSelect'></select>
+          <input id='submitDailyScore_scoreInput' type='number' placeholder='Score' />
+          <button id='submitDailyScore_submitBtn'>Post Score</button>
+        </p>
+        <p>
+          <strong>Submit Achievement</strong>
+          <select id='submitAchievement_achievementSelect'></select>
+          <button id='submitAchievement_submitBtn'>Post Achievement</button>
+        </p>
+        <p>
+          <strong>Save User Cloud Save Data</strong>
+          <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
+          <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
+          <button id='submitCloudData_submitBtn'>Save Data</button>
+        </p>
+      </section>
+      <section>
+        <h4>Get Methods</h4>
+        <p>
+          <select id='getData_methodSelect'>
+            <option value="top-score-daily">Top Daily Scores</option>
+            <option value="top-score-weekly">Top Weekly Scores</option>
+            <option value="top-score-monthly">Top Montly Scores</option>
+            <option value="top-score-alltime">Top All Time Scores</option>
+            <option value="top-score-currentuser">Top Scores - current user</option>
+            <option value="top-score-weekly-currentuser">Weekly Scores - current user</option>
+            <option value="achievements-currentuser">Achievements for current user</option>
+            <option value="datastore-currentuser">Cloud save data for current user</option>
+          </select>
+          <select id='getData_levelSelect'></select>
+          <button id='getData_submitBtn'>Fetch Data (view console)</button>
+        </p>
+      </section>
+      <section>
+        <h4>User Methods</h4>
+        <p>
+          <strong>Current User</strong>
+          <input id='userInfo' type='text'></input>
+        </p>
+        <p>
+          <button id='btnNavigateToLogin'>Navigate to Login</button>
+          <button id='btnLogout'>Logout</button>
+          <button id='btnGetCurrentUser'>Get Current User</button>
+          <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
+        </p>
+      </section>
+      <section>
+        <h4>Toolbar Methods</h4>
+        <p>
+          <button id='btnSetToolbarItems'>Set Toolbar Items</button>
+          <button id='btnUpdateToolbarItem'>Update Toolbar Item</button>
+          <button id='btnRemoveToolbarItem'>Remove Toolbar Item</button>
+        </p>
+      </section>
+      <section>
+        <h4>Daily Game Methods</h4>
+        <p>
+          <button id='btnStartDailyGame'>Start Daily Game</button>
+          <button id='btnCompleteDailyGame'>Complete Daily Game</button>
+        </p>
+      </section>
     </div>
-  </body>
-  <script src="dist/swag-api.js"></script>
+  </div>
+  <script type='module' src='/src/main.ts'></script>
   <script>
-
-    var wrapper =  document.getElementById('swag-api-wrapper');
-
-    document.addEventListener('DOMContentLoaded', function() {
-
-//-------- Create SWAG API Instance ---------------------------------------
-
-      var api = SWAGAPI.getInstance({
-        wrapper: wrapper,
+    document.addEventListener('DOMContentLoaded', async () => {
+      const api = SWAGAPI.getInstance({
+        wrapper: document.getElementById('swag-wrapper'),
         api_key: '5c6c3c056917a692f96f9651',
         theme: 'shockwave',
-        debug: true
+        debug: true,
       });
 
-//-------- Demo Game --------------------------------------------------------
+      const game = {
+        async init () {
+          await api.startSession();
 
-      // Simple game example to demonstrate SWAG API functions
-      var game = {
-        init: function() {
-          return api.startSession();
-        },
-        start: function() {
-          //write some text on the game canvas
-          var demoCanvas = document.getElementById("game-canvas");
-          demoCanvas.width = demoCanvas.getBoundingClientRect().width;
-          demoCanvas.height = demoCanvas.getBoundingClientRect().height;
-          var ctx = demoCanvas.getContext("2d");
-          ctx.font = "40px Comic Sans MS";
-          ctx.fillStyle = "#2d2d2d";
-          ctx.textAlign = "center";
-          ctx.fillText("Demo Canvas", demoCanvas.width/2, demoCanvas.height/2);
+          api.populateLevelSelect('submitScore_levelSelect');
+          api.populateLevelSelect('submitDailyScore_levelSelect');
+          api.populateLevelSelect('getData_levelSelect');
+          api.populateDaySelect('submitDailyScore_dateSelect');
+          api.populateAchievementSelect('submitAchievement_achievementSelect');
+          document.getElementById('userInfo').value = JSON.stringify(api.getCurrentEntity());
+
+          let x = 0.5;
+          let y = 0.5;
+          const xSpeed = 0.001 + Math.random() * 0.005;
+          const ySpeed = 0.001 + Math.random() * 0.005;
+          let velX = Math.random() > 0.5 ? 1 : -1;
+          let velY = Math.random() > 0.5 ? 1 : -1;
+
+          const frame = () => {
+            requestAnimationFrame(frame);
+
+            const cvs = document.getElementById('game-canvas');
+            cvs.width = window.innerWidth;
+            cvs.height = window.innerHeight;
+
+            const ctx = cvs.getContext('2d');
+            ctx.fillStyle = '#195AAB';
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+            ctx.font = '40px Comic Sans MS';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.textAlign = 'center';
+            const textWidth = ctx.measureText('shockwave.com').width;
+            const localX = x * cvs.width - textWidth / 2;
+            const localY = y * cvs.height;
+            ctx.fillText('shockwave.com', localX, localY);
+
+            if (x > 1) {
+              velX = -1;
+            } else if (x < 0 + textWidth / cvs.width) {
+              velX = 1;
+            }
+
+            if (y > 1) {
+              velY = -1;
+            } else if (y < 0 + 20 / cvs.height) {
+              velY = 1;
+            }
+
+            x += velX * xSpeed;
+            y += velY * ySpeed;
+          };
+          frame();
         }
       };
 
-      // Ad methods
+      document.getElementById('btnScoreDialog').onclick = 
+        () => api.showDialog('scores');
 
-      document.getElementById('show-ad-btn').addEventListener('click', async function() {
-          console.log('show ad...');
-          await api.showAd();
-          console.log('done!');
-      });
+      document.getElementById('btnDailyScoreDialog').onclick = 
+        () => api.showDialog('dailyscores');
 
-//-------- Start the Game ------------------------------------------------------
+      document.getElementById('btnAchievementsDialog').onclick = 
+        () => api.showDialog('achievements');
 
-      game.init()
-        .then(function() {
-          game.start();
+      document.getElementById('btnWeeklyScoresDialog').onclick = 
+        () => api.showDialog('weeklyscores');
+
+      document.getElementById('btnShareDialog').onclick = 
+        () => api.showShareDialog();
+
+      document.getElementById('btnGamesummaryScreen').onclick = 
+        () => api.showSummaryScreen(
+          [
+            { key: 'Foo', value: '0:00' },
+            { key: 'Bar', value: '9:99' },
+            { key: 'Baz', value: '123' },
+          ], 
+          '<div style="background:#ccc;height:150px;width:200px">Preview</div>',
+          'You have completed the game!',
+          () => { alert('share screen closed'); }
+        );
+
+      document.getElementById('btnToggleFullScreen').onclick = 
+        () => api.toggleFullScreen();
+
+      document.getElementById('btnNavigateToArchives').onclick = 
+        () => api.navigateToArchive();
+
+      document.getElementById('btnNavigateToTitle').onclick = 
+        () => api.navigateToTitle('jigsawpuzzles');
+
+      document.getElementById('submitScore_submitBtn').onclick = 
+        () => {
+          const level = document.getElementById('submitScore_levelSelect').value;
+          const score = document.getElementById('submitScore_scoreInput').value;
+          api.postScore(level, score);
+        };
+
+      document.getElementById('submitDailyScore_submitBtn').onclick = 
+        () => {
+          const date = document.getElementById('submitDailyScore_dateSelect').value;
+          const level = document.getElementById('submitDailyScore_levelSelect').value;
+          const score = document.getElementById('submitDailyScore_scoreInput').value;
+          api.postDailyScore(date, level, score);
+        };
+
+      document.getElementById('submitAchievement_submitBtn').onclick = 
+        () => {
+          const achievement = document.getElementById('submitAchievement_achievementSelect').value;
+          api.postAchievement(achievement);
+        };
+
+      document.getElementById('submitCloudData_submitBtn').onclick = 
+        () => {
+          const key = document.getElementById('submitCloudData_keyInput').value;
+          const value = document.getElementById('submitCloudData_valueInput').value;
+          api.postDatastore(key, value);
+        };
+
+      document.getElementById('getData_submitBtn').onclick = 
+        async () => {
+          const method = document.getElementById('getData_methodSelect').value;
+          const level = document.getElementById('getData_levelSelect').value;
+
+          switch (method) {
+          case 'top-score-daily': {
+            console.log(await api.getScores({
+              period: 'daily',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-weekly': {
+            console.log(await api.getScores({
+              period: 'weekly',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-monthly': {
+            console.log(await api.getScores({
+              period: 'monthly',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-alltime': {
+            console.log(await api.getScores({
+              period: 'alltime',
+              level_key: level
+            }));
+            return;
+          }
+          case 'top-score-currentuser': {
+            console.log(await api.getScores({
+              period: 'alltime',
+              level_key: level,
+              current_user: true
+            }));
+            return;
+          }
+          case 'top-score-weekly-currentuser': {
+            console.log(await api.getScores({
+              type: 'weekly',
+              level_key: level,
+              current_user: true,
+              target_date: new Date().getTime()
+            }));
+            return;
+          }
+          case 'achievements-currentuser': {
+            console.log(await api.getUserAchievements());
+            return;
+          }
+          case 'datastore-currentuser': {
+            console.log(await api.getUserDatastore());
+            return;
+          }
+          }
+        };
+
+      document.getElementById('btnNavigateToLogin').onclick = 
+        () => api.navigateToLogin();
+
+      document.getElementById('btnLogout').onclick = 
+        () => api.userLogout();
+
+      document.getElementById('btnGetCurrentUser').onclick = 
+        async () => console.log(await api.getCurrentEntity());
+
+      document.getElementById('btnCheckIsSubscriber').onclick = 
+        async () => console.log(await api.isSubscriber());
+
+      //timer, pause, hint, help, settings
+      document.getElementById('btnSetToolbarItems').onclick = 
+        () => api.setToolbarItems([
+          { 
+            id: 'btn1', 
+            icon: 'faStopwatch',
+            label: '0:00',
+          },
+          { 
+            id: 'btn2', 
+            icon: 'faPause',
+            onClick: () => { alert('toggle play/pause'); },
+          },
+          { 
+            id: 'btn3', 
+            icon: 'faMagnifyingGlass',
+          },
+          { 
+            id: 'btn4', 
+            icon: 'faCircleQuestion',
+          },
+          { 
+            id: 'btn5', 
+            icon: 'faGear',
+          },
+        ]);
+
+      document.getElementById('btnUpdateToolbarItem').onclick = 
+        () => api.updateToolbarItem({ 
+          id: 'btn1', 
+          label: new Date().toLocaleTimeString([], { minute: '2-digit', second: '2-digit' }), 
+          icon: 'faStopwatch',
         });
-  });
+
+      document.getElementById('btnRemoveToolbarItem').onclick = 
+        () => api.removeToolbarItem('btn1');
+
+      const today = new Date().toISOString().split('T')[0];
+
+      document.getElementById('btnStartDailyGame').onclick = 
+        () => api.startDailyGame(today);
+
+      document.getElementById('btnCompleteDailyGame').onclick = 
+        () => api.completeDailyGame(today);
+
+      game.init();
+    });
   </script>
+</body>
 </html>
