@@ -13,6 +13,5 @@ export default defineConfig({
       partialDir: resolve(__dirname, './src/templates/partials'),
     }),
   ],
-  assetsInclude: [ '**/*.handlebars' ],
   base: 'https://content.shockwave.com/qa/swag-demo/',
 });
