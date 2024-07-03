@@ -13,6 +13,7 @@ export default defineConfig({
     handlebars(),
     mkcert(),
   ],
+  base: '/dist/',
   define: {
     'process.env': process.env
   },
