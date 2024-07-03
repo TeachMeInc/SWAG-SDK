@@ -13,6 +13,7 @@ export default defineConfig({
       rollupTypes: true,
     }),
   ],
+  assetsInclude: [ '**/*.handlebars' ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),

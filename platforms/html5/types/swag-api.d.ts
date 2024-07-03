@@ -5,6 +5,12 @@ declare class APIWrapper {
   showBrandingAnimation(element: string, callback: () => {}): Promise<void>;
   showLeaderboard(): Promise<void>;
 }
+export default APIWrapper;
+
+declare interface DailyGameProgress {
+  day: string;
+  state: string;
+}
 
 declare interface DialogOptions {
   theme?: string;
@@ -92,9 +98,13 @@ declare class SWAGAPI extends emitter {
   postScore(level_key: string, value: string, options: PostScoreOptions): Promise<void>;
   postDailyScore(day: string, level_key: string, value: string): Promise<unknown>;
   hasDailyScore(level_key: any): Promise<unknown>;
-  getCurrentDay(): Promise<unknown>;
+  getCurrentDay(): Promise<{
+    day: string;
+  }>;
   startDailyGame(day: string): Promise<unknown>;
   completeDailyGame(day: string): Promise<unknown>;
+  getDailyGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
+  hasPlayedDay(day: string): Promise<boolean>;
   getAchievementCategories(): Promise<any[]>;
   postAchievement(achievement_key: string): Promise<unknown>;
   getUserAchievements(): Promise<any[]>;
@@ -112,7 +122,7 @@ declare class SWAGAPI extends emitter {
   showSummaryScreen(stats: {
     key: string;
     value: string;
-  }[], resultHtml: string): Promise<void>;
+  }[], resultHtml: string, shareString: string, onClose?: () => void): Promise<void>;
   startGame(): Promise<void>;
   endGame(): Promise<void>;
   showAd(): Promise<void>;
@@ -137,5 +147,3 @@ declare global {
     SWAGAPI: APIWrapper;
   }
 }
-
-export {};

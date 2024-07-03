@@ -13,6 +13,7 @@ export default defineConfig({
     handlebars(),
     mkcert(),
   ],
+  assetsInclude: [ '**/*.handlebars' ],
   define: {
     'process.env': process.env
   },
