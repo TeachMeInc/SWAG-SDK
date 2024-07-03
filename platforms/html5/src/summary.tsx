@@ -31,13 +31,13 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
   return (
     <button 
-      className='swag-summary__btn'
+      className='swag-summary__btn --outline'
       onClick={copyToClipboard}
     >
       {
         copying 
           ? <>Copied!</> 
-          : <>Share Stats</>
+          : <>Share Stats <img src='/images/share-icon.svg' alt='icon' aria-hidden /></>
       }
     </button>
   );
@@ -190,7 +190,7 @@ function RevisitComponent (props: RevisitProps) {
         </div>
         <div>
           <button 
-            className='swag-summary__btn'
+            className='swag-summary__btn --outline'
             onClick={props.onReplay}
           >
             Replay
