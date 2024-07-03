@@ -5,7 +5,6 @@ declare class APIWrapper {
   showBrandingAnimation(element: string, callback: () => {}): Promise<void>;
   showLeaderboard(): Promise<void>;
 }
-export default APIWrapper;
 
 declare interface DailyGameProgress {
   day: string;
