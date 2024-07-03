@@ -53,12 +53,17 @@ const methods = {
   },
 
   parseUrlParams: function () {
-    const vars: any = {};
+    const vars: Record<string, string> = {};
     window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (_m: string, key: string, value: string) {
       vars[ key ] = value;
       return '';
     });
     return vars;
+  },
+
+  getDate: function (day: string) {
+    const parts = day.split('-');
+    return new Date(parseInt(parts[ 0 ]), parseInt(parts[ 1 ]) - 1, parseInt(parts[ 2 ]));
   },
 
   debug: function (message: string, data?: any) {

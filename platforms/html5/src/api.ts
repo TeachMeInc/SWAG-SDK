@@ -168,6 +168,14 @@ export default class SWAGAPI extends Emitter {
   completeDailyGame (day: string) {
     return data.postDailyGameProgress(day, true);
   }
+
+  getDailyGameProgress (month: string, year: string) {
+    return data.getDailyGameProgress(month, year);
+  }
+
+  hasPlayedDay (day: string) {
+    return data.hasPlayedDay(day);
+  }
  
   // #endregion
 
@@ -255,12 +263,19 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.displayShareDialog');
   }
 
-  showSummaryScreen (
+  async showSummaryScreen (
     stats: { key: string, value: string }[], 
     resultHtml: string, 
-    shareString?: string
+    shareString: string,
+    onClose?: () => void
   ) {
-    return summary.showSummary(this._reactRoot!, stats, resultHtml, shareString);
+    return summary.showSummary(
+      this._reactRoot!, 
+      stats, 
+      resultHtml, 
+      shareString,
+      onClose
+    );
   }
 
   // #endregion

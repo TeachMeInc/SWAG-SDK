@@ -109,7 +109,7 @@ const methods = Emitter({
       : '';
   },
 
-  getAPIData: function (options: { apiRoot?: any; params?: any; method: any; }) {
+  getAPIData: function <T = any> (options: { apiRoot?: any; params?: any; method: any; }): Promise<T> {
     const promise = new Promise(function (resolve, reject) {
       const xhr = new XMLHttpRequest();
       const rootUrl = options.apiRoot || config.themes[ session.theme! ].apiRoot;
@@ -139,7 +139,7 @@ const methods = Emitter({
       };
       xhr.send();
     });
-    return promise;
+    return promise as Promise<T>;
   },
 
   postAPIData: function (options: { apiRoot?: any; contentType?: string; method: any; body: any; params?: string; }) {
@@ -224,7 +224,7 @@ const methods = Emitter({
       return number;
     };
 
-    const promise = new Promise(function (resolve) {
+    const promise = new Promise<{ day: string }>(function (resolve) {
       const urlParams = utils.parseUrlParams();
       if (urlParams.day && urlParams.month && urlParams.year) {
         const dayParts = [
@@ -233,8 +233,14 @@ const methods = Emitter({
           padDateDigit(parseInt (urlParams.day, 10))
         ];
         resolve({ day: dayParts.join('-') });
-      } else {
-        methods.getAPIData({
+      } 
+      else if (urlParams.date) {
+        const parts = urlParams.date.split('/');
+        parts[ 0 ] = (2000 + parseInt(parts[ 0 ], 10)).toString();
+        resolve({ day: parts.join('-') });
+      }
+      else {
+        methods.getAPIData<{ day: string }>({
           method: methods.apiMethods[ 'getCurrentDay' ],
           params: {}
         })
@@ -366,6 +372,19 @@ const methods = Emitter({
         });
     });
     return promise;
+  },
+
+  hasPlayedDay: async function (day: string) {
+    const parts = day.split('-');
+    const query = { year: parts[ 0 ], month: parts[ 1 ] };
+    const progress = await methods.getDailyGameProgress(query.month, query.year);
+
+    const found = progress.find((item: DailyGameProgress) => item.day === day);
+    if (found && found.state === 'complete') {
+      return true;
+    }
+
+    return false;
   },
   
   // #endregion

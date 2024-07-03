@@ -1,6 +1,8 @@
 import { Root } from 'react-dom/client';
 import messages from './messages';
 import { useRef, useState } from 'react';
+import data from './data';
+import utils from './utils';
 
 
 
@@ -24,7 +26,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
     }
     setTimeout(() => {
       setCopying(false);
-    }, 1000);
+    }, 1500);
   };
 
   return (
@@ -50,8 +52,9 @@ function ShareStatsComponent (props: ShareStatsProps) {
 interface SummaryProps {
   resultHtml: string;
   stats: { key: string, value: string }[];
-  relatedGames?: { slug: string, title: string, icon: string }[];
-  shareString?: string;
+  shareString: string;
+  isSubscriber: boolean;
+  relatedGames: { slug: string, title: string, icon: string }[];
 }
 
 function SummaryComponent (props: SummaryProps) {
@@ -86,29 +89,154 @@ function SummaryComponent (props: SummaryProps) {
             }
           </ul>
         </header>
+        <div>
+          <ShareStatsComponent shareString={props.shareString} />
+        </div>
         {
-          props.shareString
+          props.isSubscriber
             ? (
-              <div>
-                <ShareStatsComponent shareString={props.shareString} />
-              </div>
+              <>
+                <p>
+                  Ready for more? Play more games from the archive.
+                </p>
+                <div>
+                  <button 
+                    className='swag-summary__btn'
+                    onClick={navigateToArchive}
+                  >
+                    View Archive
+                  </button>
+                </div>
+              </>
             )
-            : <div></div>
+            : (
+              <>
+                <p>
+                  Want more puzzles? Subscribe to get access to the full archive.
+                </p>
+                <div>
+                  <button 
+                    className='swag-summary__btn'
+                    onClick={navigateToArchive}
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </>
+            )
         }
-        <p>
-          Ready for more? Play more games from the archive.
-        </p>
+        <ul className='swag-summary__related-games'>
+          {
+            props.relatedGames.map(({ slug, title, icon }) => {
+              return (
+                <li key={slug} onClick={() => navigateToTitle(slug)}>
+                  <img src={icon} alt={title} />
+                  <span>{title}</span>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+// #endregion
+
+
+
+// #region Revisit Component
+
+interface RevisitProps {
+  resultHtml: string;
+  isSubscriber: boolean;
+  currentDate: Date;
+  onReplay: () => void;
+  onShowStats: () => void;
+  relatedGames: { slug: string, title: string, icon: string }[];
+}
+
+function RevisitComponent (props: RevisitProps) {
+  const navigateToArchive = () => {
+    messages.trySendMessage('swag.navigateToArchive');
+  };
+
+  const navigateToTitle = (slug: string) => {
+    messages.trySendMessage('swag.navigateToTitle', slug);
+  };
+
+  // April 23rd, 2023
+  const dateFormatted = props.currentDate.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  return (
+    <div className='swag-summary'>
+      <div className='swag-summary__inner'>
+        <h4>
+          <strong>Great Work!</strong><br />
+          We'll have a new puzzle for you tomorrow.
+        </h4>
         <div>
           <button 
             className='swag-summary__btn'
-            onClick={navigateToArchive}
+            onClick={props.onShowStats}
           >
-            View Archive
+            See Stats
           </button>
         </div>
+        <div>
+          <button 
+            className='swag-summary__btn'
+            onClick={props.onReplay}
+          >
+            Replay
+          </button>
+        </div>
+        <p>{dateFormatted}</p>
+        <div 
+          className='swag-summary__preview-container'
+          dangerouslySetInnerHTML={{ __html: props.resultHtml }} 
+        />
+        {
+          props.isSubscriber
+            ? (
+              <>
+                <p>
+                  Ready for more? Play more games from the archive.
+                </p>
+                <div>
+                  <button 
+                    className='swag-summary__btn'
+                    onClick={navigateToArchive}
+                  >
+                    View Archive
+                  </button>
+                </div>
+              </>
+            )
+            : (
+              <>
+                <p>
+                  Want more puzzles? Subscribe to get access to the full archive.
+                </p>
+                <div>
+                  <button 
+                    className='swag-summary__btn'
+                    onClick={navigateToArchive}
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </>
+            )
+        }
         <ul className='swag-summary__related-games'>
           {
-            props.relatedGames?.map(({ slug, title, icon }) => {
+            props.relatedGames.map(({ slug, title, icon }) => {
               return (
                 <li key={slug} onClick={() => navigateToTitle(slug)}>
                   <img src={icon} alt={title} />
@@ -130,35 +258,60 @@ function SummaryComponent (props: SummaryProps) {
 // #region Summary API
 
 class SummaryAPI {
-  showSummary (
+  async showSummary (
     reactRoot: Root, 
     stats: { key: string, value: string }[], 
     resultHtml: string,
-    shareString?: string,
+    shareString: string,
+    onClose?: () => void
   ) {
+    const isSubscriber = await data.isSubscriber();
+    const currentDay = await data.getCurrentDay();
+    const currentDate = utils.getDate(currentDay.day);
+    const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
+
+    let relatedGames;
+    try {
+      const event = await messages.trySendMessage('swag.getRelatedGames');
+      relatedGames = JSON.parse(event.message);
+    } catch (e) {
+      relatedGames = [];
+    }
+
+    const showSummary = () => {
+      reactRoot.render(<SummaryComponent 
+        stats={stats} 
+        resultHtml={resultHtml}
+        relatedGames={relatedGames}
+        shareString={shareString}
+        isSubscriber={isSubscriber}
+      />);
+    };
+
+    const showRevisit = () => {
+      reactRoot.render(<RevisitComponent
+        resultHtml={resultHtml}
+        relatedGames={relatedGames}
+        isSubscriber={isSubscriber}
+        currentDate={currentDate}
+        onReplay={unmount}
+        onShowStats={showSummary}
+      />);
+    };
+
+    const unmount = () => {
+      this.unmount(reactRoot);
+      if (onClose) onClose();
+    };
+
     return new Promise<void>((resolve) => {
-      (async () => {
-        try {
-          const event = await messages.trySendMessage('swag.getRelatedGames');
-          const relatedGames = JSON.parse(event.message);
-          reactRoot.render(<SummaryComponent 
-            stats={stats} 
-            resultHtml={resultHtml}
-            relatedGames={relatedGames}
-            shareString={shareString}
-          />);
-          document.body.classList.add('swag-dialog-open');
-          resolve();
-        } catch (e) {
-          reactRoot.render(<SummaryComponent 
-            stats={stats} 
-            resultHtml={resultHtml} 
-            shareString={shareString}
-          />);
-          document.body.classList.add('swag-dialog-open');
-          resolve();
-        }
-      })();
+      if (hasPlayedToday) {
+        showRevisit();
+      } else {
+        showSummary();
+      }
+      document.body.classList.add('swag-dialog-open');
+      resolve();
     });
   }
 
