@@ -48,6 +48,10 @@ export interface DailyGameProgress {
   state: string
 }
 
+export interface DailyGameStreak {
+  streak: number
+}
+
 export interface PostScoreOptions {
   day?: string; 
   type?: string; 
@@ -94,7 +98,8 @@ const methods = Emitter({
     'postAchievement': '/v1/achievement',
     'postDatastore': '/v1/datastore',
     'getDailyGameProgress': '/v1/dailygameprogress',
-    'postDailyGameProgress': '/v1/dailygameprogress'
+    'postDailyGameProgress': '/v1/dailygameprogress',
+    'getDailyGameStreak': '/v1/dailygamestreak'
   },
 
   
@@ -369,6 +374,21 @@ const methods = Emitter({
       })
         .then(function (gameprogress: any) {
           resolve(gameprogress);
+        });
+    });
+    return promise;
+  },
+
+  getDailyGameStreak: function () {
+    const params = { game: session[ 'api_key' ] };
+
+    const promise = new Promise<DailyGameStreak>(function (resolve) {
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getDailyGameStreak' ],
+        params: params
+      })
+        .then(function (dailygamestreak: any) {
+          resolve(dailygamestreak);
         });
     });
     return promise;

@@ -166,6 +166,12 @@
           <button id='btnCompleteDailyGame'>Complete Daily Game</button>
         </p>
       </section>
+      <section>
+        <h4>Daily Game Streak</h4>
+        <p>
+          <button id='btnGetDailyGameStreak'>Get Daily Game Streak</button>
+        </p>
+      </section>
     </div>
   </div>
   <script type='module' src='/src/main.ts'></script>
@@ -411,6 +417,9 @@
 
       document.getElementById('btnCompleteDailyGame').onclick = 
         () => api.completeDailyGame(today);
+
+      document.getElementById('btnGetDailyGameStreak').onclick = 
+        () => api.getDailyGameStreak();
 
       game.init();
     });
