@@ -173,6 +173,10 @@ export default class SWAGAPI extends Emitter {
   hasPlayedDay (day: string) {
     return data.hasPlayedDay(day);
   }
+  
+  getDailyGameStreak () {
+    return data.getDailyGameStreak();
+  }
  
   // #endregion
 
