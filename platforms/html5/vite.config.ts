@@ -20,10 +20,10 @@ export default defineConfig({
     'process.env': process.env
   },
   server: {
-    port: 3000
+    port: 8888
   },
   preview: {
-    port: 3000
+    port: 8888
   },
   build: {
     // sourcemap: false,
