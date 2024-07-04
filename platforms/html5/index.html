@@ -372,7 +372,8 @@
       document.getElementById('btnCheckIsSubscriber').onclick = 
         async () => console.log(await api.isSubscriber());
 
-      //timer, pause, hint, help, settings
+      let toggled = false;
+
       document.getElementById('btnSetToolbarItems').onclick = 
         () => api.setToolbarItems([
           { 
@@ -382,20 +383,14 @@
           },
           { 
             id: 'btn2', 
-            icon: 'faPause',
-            onClick: () => { alert('toggle play/pause'); },
-          },
-          { 
-            id: 'btn3', 
-            icon: 'faMagnifyingGlass',
-          },
-          { 
-            id: 'btn4', 
-            icon: 'faCircleQuestion',
-          },
-          { 
-            id: 'btn5', 
-            icon: 'faGear',
+            icon: toggled ? 'faPlay' : 'faPause',
+            onClick: () => {
+              toggled = !toggled;
+              api.updateToolbarItem({ 
+                id: 'btn2', 
+                icon: toggled ? 'faPlay' : 'faPause',
+              });
+            },
           },
         ]);
 
