@@ -11,9 +11,7 @@ export default defineConfig({
     preact({
       reactAliasesEnabled: false,
     }),
-    handlebars({
-      partialDir: resolve(__dirname, './src/templates/partials'),
-    }),
+    handlebars(),
   ],
   base: '',
 });
