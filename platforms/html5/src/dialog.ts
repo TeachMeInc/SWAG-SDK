@@ -53,6 +53,8 @@ export type DialogType = 'scores' | 'dailyscores' | 'scoreconfirmation' | 'achie
 export interface DialogOptions {
   theme?: string;
   title?: string;
+  level_key?: string;
+  period?: string;
   header?: {
     backButton: boolean;
   };
@@ -89,44 +91,60 @@ const methods = Emitter({
   defaultDialogTitles,
 
   renderDialog: function (type: DialogType, options?: DialogOptions) {
-    const dialogOptions = Object.assign({
+    const dialogOptions: DialogOptions = Object.assign({
       theme: session.theme,
       header: {
         backButton: true
       }
     }, options);
 
-    const title = options && options.title || defaultDialogTitles[ type ];
+    const title = options?.title || defaultDialogTitles[ type ];
+    if (title) dialogOptions.title = title;
+    
+    const tryPrepDialog = () => {
+      if (!session.wrapper) {
+        setTimeout(tryPrepDialog, 10);
+        return;
+      }
 
-    if(title) {
-      dialogOptions.title = title;
-    }
+      const progressDialog = templates[ 'dialog' ](dialogOptions);
+      this.cleanStage();
+      session.wrapper.insertAdjacentHTML('afterbegin', progressDialog);
 
-    const progressDialog = templates[ 'dialog' ](dialogOptions);
-    this.cleanStage();
-    session.wrapper!.insertAdjacentHTML('afterbegin', progressDialog);
-    const dialogEl = document.getElementById('swag-dialog')!;
-    dialogEl.dataset[ 'dialog' ] = type;
-    utils.applyBreakpointClass();
+      setTimeout(() => tryShowDialog(), 1);
+    };
 
-    bodyScrollLock.disableBodyScroll(session.wrapper!);
-    document.body.classList.add('swag-dialog-open');
+    const tryShowDialog = () => {
+      const dialogEl = document.getElementById('swag-dialog');
+      if (!dialogEl) {
+        setTimeout(tryShowDialog, 10);
+        return;
+      }
 
-    if(methods.dialogMethods[ type ]) {
-      // @ts-ignore
-      return methods[ dialogMethods[ type ] ](dialogOptions)
-        .then(function () {
-          const backBtn = session.wrapper!.querySelectorAll('div[data-action="back"]');
-          backBtn.forEach(function (el) {
-            el.addEventListener('click', function (event) {
-              methods.onCloseDialog(event);
-            }, true);
+      dialogEl.dataset[ 'dialog' ] = type;
+      utils.applyBreakpointClass();
+
+      bodyScrollLock.disableBodyScroll(session.wrapper!);
+      document.body.classList.add('swag-dialog-open');
+
+      if (methods.dialogMethods[ type ]) {
+        // @ts-ignore
+        return methods[ dialogMethods[ type ] ](dialogOptions)
+          .then(function () {
+            const backBtn = session.wrapper!.querySelectorAll('div[data-action="back"]');
+            backBtn.forEach(function (el) {
+              el.addEventListener('click', function (event) {
+                methods.onCloseDialog(event);
+              }, true);
+            });
+
           });
+      } else {
+        ui.emit(methods.events.UI_ERROR, config.events.INVALID_DIALOG_TYPE);
+      }
+    };
 
-        });
-    } else {
-      ui.emit(methods.events.UI_ERROR, config.events.INVALID_DIALOG_TYPE);
-    }
+    setTimeout(() => tryPrepDialog(), 1);
   },
 
   renderScoresDialog: function (options: { period?: any; level_key?: any; value_formatter?: any; }) {

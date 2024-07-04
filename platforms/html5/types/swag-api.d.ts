@@ -1,5 +1,3 @@
-import { Root } from 'react-dom/client';
-
 declare class APIWrapper {
   getInstance(options: any): SWAGAPI;
   showBrandingAnimation(element: string, callback: () => {}): Promise<void>;
@@ -81,7 +79,6 @@ declare interface PostScoreOptions {
 
 declare class SWAGAPI extends emitter {
   protected _options: any;
-  protected _reactRoot: Root | null;
   constructor(options: any);
   protected _init(): void;
   protected _getSiteMode(): any;

@@ -3,7 +3,7 @@ import data from './data';
 import utils from './utils';
 import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
-
+import shareIcon from './assets/share-icon.svg';
 
 
 // #region Share Stats Component
@@ -37,7 +37,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
       {
         copying 
           ? <>Copied!</> 
-          : <>Share Stats <img src='/images/share-icon.svg' alt='icon' aria-hidden /></>
+          : <>Share Stats <img src={shareIcon} alt='icon' aria-hidden /></>
       }
     </button>
   );
