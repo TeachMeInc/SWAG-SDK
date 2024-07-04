@@ -419,7 +419,7 @@
         () => api.completeDailyGame(today);
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
-        () => api.getDailyGameStreak();
+        async () => console.log(await api.getDailyGameStreak());
 
       game.init();
     });
