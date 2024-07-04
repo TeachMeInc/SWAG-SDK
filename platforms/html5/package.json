@@ -16,19 +16,14 @@
     "body-scroll-lock": "^4.0.0-beta.0",
     "component-emitter": "^2.0.0",
     "element-resize-event": "^3.0.6",
-    "handlebars": "^4.7.8",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "handlebars": "^4.7.8"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.3",
     "@types/body-scroll-lock": "^3.1.2",
     "@types/element-resize-event": "^3.0.2",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",

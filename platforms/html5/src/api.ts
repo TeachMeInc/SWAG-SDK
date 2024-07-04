@@ -2,7 +2,6 @@
 
 import Emitter from 'component-emitter';
 import elementResizeEvent from 'element-resize-event';
-import { createRoot, Root } from 'react-dom/client';
 import config from './config';
 import session from './session';
 import utils from './utils';
@@ -14,7 +13,6 @@ import { PostScoreOptions } from './data';
 
 export default class SWAGAPI extends Emitter {
   protected _options: any;
-  protected _reactRoot: Root | null = null;
 
   constructor (options: any) {
     super();
@@ -55,7 +53,6 @@ export default class SWAGAPI extends Emitter {
 
     const reactRoot = document.createElement('div');
     reactRoot.setAttribute('id', 'swag-react-root');
-    this._reactRoot = createRoot(reactRoot);
     session.wrapper!.appendChild(reactRoot);
 
     elementResizeEvent(session.wrapper!, function () {
@@ -270,7 +267,6 @@ export default class SWAGAPI extends Emitter {
     onClose?: () => void
   ) {
     return summary.showSummary(
-      this._reactRoot!, 
       stats, 
       resultHtml, 
       shareString,

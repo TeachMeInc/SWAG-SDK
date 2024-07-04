@@ -2,12 +2,14 @@
 
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import react from '@vitejs/plugin-react-swc';
+import preact from '@preact/preset-vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   plugins: [
-    react(),
+    preact({
+      reactAliasesEnabled: false,
+    }),
     dts({
       insertTypesEntry: true,
       rollupTypes: true,

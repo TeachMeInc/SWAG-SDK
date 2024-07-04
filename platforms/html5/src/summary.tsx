@@ -1,8 +1,8 @@
-import { Root } from 'react-dom/client';
 import messages from './messages';
-import { useRef, useState } from 'react';
 import data from './data';
 import utils from './utils';
+import { render } from 'preact';
+import { useState, useRef } from 'preact/hooks';
 
 
 
@@ -259,7 +259,6 @@ function RevisitComponent (props: RevisitProps) {
 
 class SummaryAPI {
   async showSummary (
-    reactRoot: Root, 
     stats: { key: string, value: string }[], 
     resultHtml: string,
     shareString: string,
@@ -278,29 +277,31 @@ class SummaryAPI {
       relatedGames = [];
     }
 
+    const rootEl = document.getElementById('swag-react-root')!;
+
     const showSummary = () => {
-      reactRoot.render(<SummaryComponent 
+      render(<SummaryComponent 
         stats={stats} 
         resultHtml={resultHtml}
         relatedGames={relatedGames}
         shareString={shareString}
         isSubscriber={isSubscriber}
-      />);
+      />, rootEl);
     };
 
     const showRevisit = () => {
-      reactRoot.render(<RevisitComponent
+      render(<RevisitComponent
         resultHtml={resultHtml}
         relatedGames={relatedGames}
         isSubscriber={isSubscriber}
         currentDate={currentDate}
         onReplay={unmount}
         onShowStats={showSummary}
-      />);
+      />, rootEl);
     };
 
     const unmount = () => {
-      this.unmount(reactRoot);
+      this.unmount();
       if (onClose) onClose();
     };
 
@@ -315,8 +316,9 @@ class SummaryAPI {
     });
   }
 
-  protected unmount (reactRoot: Root) {
-    reactRoot.unmount();
+  protected unmount () {
+    const rootEl = document.getElementById('swag-react-root')!;
+    render(null, rootEl);
     document.body.classList.remove('swag-dialog-open');
     return Promise.resolve();
   }
