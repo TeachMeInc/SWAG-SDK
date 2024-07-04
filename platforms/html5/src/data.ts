@@ -382,7 +382,7 @@ const methods = Emitter({
   getDailyGameStreak: function () {
     const params = { game: session[ 'api_key' ] };
 
-    const promise = new Promise<DailyGameStreak[]>(function (resolve) {
+    const promise = new Promise<DailyGameStreak>(function (resolve) {
       methods.getAPIData({
         method: methods.apiMethods[ 'getDailyGameStreak' ],
         params: params
