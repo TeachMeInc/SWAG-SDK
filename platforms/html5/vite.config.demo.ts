@@ -13,5 +13,5 @@ export default defineConfig({
     }),
     handlebars(),
   ],
-  base: '',
+  base: 'https://content.shockwave.com/qa/swag-demo/',
 });
