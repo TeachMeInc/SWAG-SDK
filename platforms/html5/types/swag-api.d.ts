@@ -9,9 +9,15 @@ declare interface DailyGameProgress {
   state: string;
 }
 
+declare interface DailyGameStreak {
+  streak: number;
+}
+
 declare interface DialogOptions {
   theme?: string;
   title?: string;
+  level_key?: string;
+  period?: string;
   header?: {
     backButton: boolean;
   };
@@ -101,6 +107,7 @@ declare class SWAGAPI extends emitter {
   completeDailyGame(day: string): Promise<unknown>;
   getDailyGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
   hasPlayedDay(day: string): Promise<boolean>;
+  getDailyGameStreak(): Promise<DailyGameStreak>;
   getAchievementCategories(): Promise<any[]>;
   postAchievement(achievement_key: string): Promise<unknown>;
   getUserAchievements(): Promise<any[]>;
@@ -122,7 +129,7 @@ declare class SWAGAPI extends emitter {
   startGame(): Promise<void>;
   endGame(): Promise<void>;
   showAd(): Promise<void>;
-  showDialog(type: DialogType, options: DialogOptions): any;
+  showDialog(type: DialogType, options: DialogOptions): void;
   populateLevelSelect(domId: any): Promise<void>;
   populateDaySelect(domId: any, limit: any): Promise<void>;
   populateAchievementSelect(domId: any): Promise<void>;
@@ -134,6 +141,7 @@ declare interface ToolbarItem {
   id: string;
   label?: string;
   icon?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
