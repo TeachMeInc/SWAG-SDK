@@ -82,7 +82,9 @@ class MessagesAPI {
       '*',
     );
 
-    if (ignoreResponse) return Promise.resolve();
+    if (ignoreResponse) {
+      return new Promise<MessagePayload>((resolve) => resolve);
+    }
 
     return new Promise<MessagePayload>((resolve, reject) => {
       const completeRequest = () => {
