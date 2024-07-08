@@ -540,29 +540,13 @@ const methods = Emitter({
     });
   },
 
-  showBrandingAnimation: function (targetElement: string, callback: () => void) {
-    const el = document.getElementById(targetElement);
-    return new Promise<void>(function (resolve) {
-      const animationMarkup = methods.templates[ 'brandingAnimation' ]({});
-      el!.insertAdjacentHTML('afterbegin', animationMarkup);
-      el!.classList.add('swag-branding-active');
-      const wrapper = document.getElementById('swag-branding-animation-wrapper');
-      const anim = document.getElementById('swag-branding-animation');
-      anim!.onload = function () {
-        window.setTimeout(function () {
-            wrapper!.parentNode!.removeChild(wrapper!);
-            el!.classList.remove('swag-branding-active');
-            if(callback) callback();
-            resolve();
-        }, 4500);
-      };
-    });
+  showBrandingAnimation: function (_targetElement: string, callback: () => void) {
+    if (callback) callback();
+    return Promise.resolve();
   },
 
   leaderboardComponent: function () {
-    return new Promise<void>(function (resolve) {
-      resolve();
-    });
+    return Promise.resolve();
   },
 
   onCloseDialog: function (event: { preventDefault: () => void; }) {

@@ -164,14 +164,16 @@
         <p>
           <button id='btnStartDailyGame'>Start Daily Game</button>
           <button id='btnCompleteDailyGame'>Complete Daily Game</button>
-        </p>
-      </section>
-      <section>
-        <h4>Daily Game Streak</h4>
-        <p>
           <button id='btnGetDailyGameStreak'>Get Daily Game Streak</button>
         </p>
       </section>
+      <!-- <section>
+        <h4>Wrapper Methods</h4>
+        <p>
+          <button id='btnShowBrandingAnim'>Show Branding Animation</button>
+          <button id='btnShowLeaderboards'>Show Leaderboards</button>
+        </p>
+      </section> -->
     </div>
   </div>
   <script type='module' src='/src/main.ts'></script>
@@ -239,6 +241,8 @@
           frame();
         }
       };
+
+      /* --- */
 
       document.getElementById('btnScoreDialog').onclick = 
         () => api.showDialog('scores');
@@ -398,6 +402,11 @@
               });
             },
           },
+          { 
+            id: 'btn3', 
+            icon: 'faInfoCircle',
+            disabled: true,
+          },
         ]);
 
       document.getElementById('btnUpdateToolbarItem').onclick = 
@@ -420,6 +429,14 @@
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());
+
+      // document.getElementById('btnShowBrandingAnim').onclick = 
+      //   () => SWAGAPI.showBrandingAnimation(null, () => alert('Animation complete.'));
+
+      // document.getElementById('btnShowLeaderboards').onclick = 
+      //   () => SWAGAPI.showLeaderboard();
+
+      /* --- */
 
       game.init();
     });

@@ -22,6 +22,7 @@ export interface ToolbarItem {
   id: string;
   label?: string;
   icon?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -67,17 +68,21 @@ class MessagesAPI {
   trySendMessage (
     eventName: MessageEventName, 
     message: string = '', 
-    timeout: number = 200
+    ignoreResponse: boolean = false
   ) {
-    if (this.currentMessageRequests.includes(eventName)) {
-      return Promise.reject(new Error(`Failed to send message for event ${eventName}. Reason: Already in progress`));
+    if (!ignoreResponse) {
+      if (this.currentMessageRequests.includes(eventName)) {
+        return Promise.reject(new Error(`Failed to send message for event ${eventName}. Reason: Already in progress`));
+      }
+      this.currentMessageRequests.push(eventName);
     }
-    this.currentMessageRequests.push(eventName);
 
     window.parent.postMessage(
       JSON.stringify({ eventName, message }),
       '*',
     );
+
+    if (ignoreResponse) return Promise.resolve();
 
     return new Promise<MessagePayload>((resolve, reject) => {
       const completeRequest = () => {
@@ -88,7 +93,7 @@ class MessagesAPI {
       const timeoutRef = setTimeout(() => {
         completeRequest();
         reject(new Error(`Failed to send message for event ${eventName}. Reason: Timeout`));
-      }, timeout);
+      }, 100);
 
       const eventListener = (event: { data: string }) => {
         const parsed = tryParse<MessagePayload>(event.data);
@@ -136,21 +141,37 @@ class MessagesAPI {
   setToolbarItems (items: ToolbarItem[]) {
     this.toolbarClickEvents = {};
     items.forEach(item => {
-      if (item.onClick) this.toolbarClickEvents[ item.id ] = item.onClick;
-      delete item.onClick;
+      if (item.onClick) {
+        this.toolbarClickEvents[ item.id ] = item.onClick;
+        item.onClick = true as any;
+      }
     });
-    return this.trySendMessage('swag.toolbar.setItems', JSON.stringify(Object.values(items)));
+    return this.trySendMessage(
+      'swag.toolbar.setItems', 
+      JSON.stringify(Object.values(items)),
+      true
+    );
   }
 
   updateToolbarItem (item: ToolbarItem) {
-    if (item.onClick) this.toolbarClickEvents[ item.id ] = item.onClick;
-    delete item.onClick;
-    return this.trySendMessage('swag.toolbar.updateItem', JSON.stringify(item));
+    if (item.onClick) {
+      this.toolbarClickEvents[ item.id ] = item.onClick;
+      item.onClick = true as any;
+    }
+    return this.trySendMessage(
+      'swag.toolbar.updateItem', 
+      JSON.stringify(item),
+      true
+    );
   }
 
   removeToolbarItem (id: string) {
-    delete this.toolbarClickEvents[ id ];
-    return this.trySendMessage('swag.toolbar.removeItem', id);
+    if (this.toolbarClickEvents[ id ]) delete this.toolbarClickEvents[ id ];
+    return this.trySendMessage(
+      'swag.toolbar.removeItem', 
+      id, 
+      true
+    );
   }
 }
 
