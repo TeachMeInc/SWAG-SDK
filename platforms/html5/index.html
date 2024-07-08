@@ -171,7 +171,7 @@
         <h4>Wrapper Methods</h4>
         <p>
           <button id='btnShowBrandingAnim'>Show Branding Animation</button>
-          <button id='btnShowLeaderboards'>Show Leaderboards</button>
+          <!-- <button id='btnShowLeaderboards'>Show Leaderboards</button> -->
         </p>
       </section>
     </div>
@@ -182,7 +182,7 @@
       const api = SWAGAPI.getInstance({
         wrapper: document.getElementById('swag-wrapper'),
         api_key: '5c6c3c056917a692f96f9651',
-        theme: 'addictinggames',
+        theme: 'shockwave',
         debug: true,
       });
 
@@ -433,8 +433,8 @@
       document.getElementById('btnShowBrandingAnim').onclick = 
         () => SWAGAPI.showBrandingAnimation('swag-wrapper', () => alert('Animation complete.'));
 
-      document.getElementById('btnShowLeaderboards').onclick = 
-        () => SWAGAPI.showLeaderboard();
+      // document.getElementById('btnShowLeaderboards').onclick = 
+      //   () => SWAGAPI.showLeaderboard();
 
       /* --- */
 
