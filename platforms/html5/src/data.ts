@@ -575,7 +575,7 @@ const methods = Emitter({
   // #region Internal API
 
   getProvider: function () {
-    return config.providers[ session.provider! ] || config.providers[ 'shockwave' ];
+    return config.providers[ session.provider! ] || config.providers[ 'default' ];
   },
 
   // #endregion

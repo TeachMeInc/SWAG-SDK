@@ -5,7 +5,7 @@ export interface Config {
   themes: {
     [key: string]: {
       apiRoot: string;
-      active: boolean;
+      active?: boolean;
     };
   };
   providers: {
@@ -35,8 +35,18 @@ const config: Config = {
       apiRoot: 'https://swag-services.shockwave.com',
       active: true
     },
+    'addictinggames': {
+      apiRoot: 'https://swag-services.addictinggames.com'
+    }
   },
   providers: {
+    'default': {
+      root: 'https://www.addictinggames.com',
+      current: '/ag-auth/current',
+      login: '/ag-auth/login',
+      logout: '/ag-auth/logout',
+      create: '/ag-auth/create'
+    },
     'shockwave': {
       root: 'https://www.shockwave.com',
       current: '/shockwave-auth/current',

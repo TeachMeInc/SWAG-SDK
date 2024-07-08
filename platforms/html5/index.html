@@ -167,13 +167,13 @@
           <button id='btnGetDailyGameStreak'>Get Daily Game Streak</button>
         </p>
       </section>
-      <!-- <section>
+      <section>
         <h4>Wrapper Methods</h4>
         <p>
           <button id='btnShowBrandingAnim'>Show Branding Animation</button>
           <button id='btnShowLeaderboards'>Show Leaderboards</button>
         </p>
-      </section> -->
+      </section>
     </div>
   </div>
   <script type='module' src='/src/main.ts'></script>
@@ -182,7 +182,7 @@
       const api = SWAGAPI.getInstance({
         wrapper: document.getElementById('swag-wrapper'),
         api_key: '5c6c3c056917a692f96f9651',
-        theme: 'shockwave',
+        theme: 'addictinggames',
         debug: true,
       });
 
@@ -430,11 +430,11 @@
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());
 
-      // document.getElementById('btnShowBrandingAnim').onclick = 
-      //   () => SWAGAPI.showBrandingAnimation(null, () => alert('Animation complete.'));
+      document.getElementById('btnShowBrandingAnim').onclick = 
+        () => SWAGAPI.showBrandingAnimation('swag-wrapper', () => alert('Animation complete.'));
 
-      // document.getElementById('btnShowLeaderboards').onclick = 
-      //   () => SWAGAPI.showLeaderboard();
+      document.getElementById('btnShowLeaderboards').onclick = 
+        () => SWAGAPI.showLeaderboard();
 
       /* --- */
 
