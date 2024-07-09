@@ -269,6 +269,18 @@ class SummaryAPI {
     const currentDate = utils.getDate(currentDay.day);
     const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
 
+    const gameStreak = await data.getDailyGameStreak();
+    stats.unshift(
+      {
+        key: 'Current Streak',
+        value: gameStreak.streak.toString()
+      },
+      {
+        key: 'Max Streak',
+        value: '--'
+      }
+    );
+
     let relatedGames;
     try {
       const event = await messages.trySendMessage('swag.getRelatedGames');

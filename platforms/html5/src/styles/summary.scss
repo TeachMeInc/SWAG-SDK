@@ -37,9 +37,9 @@
   margin-bottom: 0;
   flex-direction: column;
   
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
+  // @media (min-width: 768px) {
+  //   flex-direction: row;
+  // }
 }
 
 .swag-summary__preview-container {
@@ -53,10 +53,10 @@
   margin-top: 0;
   margin-bottom: 0.5rem;
   
-  @media (min-width: 768px) {
-    margin-right: 0.5rem;
-    margin-bottom: 0;
-  }
+  // @media (min-width: 768px) {
+  //   margin-right: 0.5rem;
+  //   margin-bottom: 0;
+  // }
 }
 
 .swag-summary__stats {
@@ -81,14 +81,14 @@
     }
   }
 
-  @media (min-width: 768px) {
-    flex-direction: column;
-    max-height: 215px;
+  // @media (min-width: 768px) {
+  //   flex-direction: column;
+  //   max-height: 215px;
 
-    li {
-      width: auto;
-    }
-  }
+  //   li {
+  //     width: auto;
+  //   }
+  // }
 }
 
 .swag-summary__btn {
