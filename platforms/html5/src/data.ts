@@ -49,7 +49,8 @@ export interface DailyGameProgress {
 }
 
 export interface DailyGameStreak {
-  streak: number
+  streak: number,
+  maxStreak: number
 }
 
 export interface PostScoreOptions {
