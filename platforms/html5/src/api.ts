@@ -265,16 +265,20 @@ export default class SWAGAPI extends Emitter {
   }
 
   async showSummaryScreen (
-    stats: { key: string, value: string }[], 
-    resultHtml: string, 
-    shareString: string,
-    onClose?: () => void
+    options: {
+      stats: { key: string, value: string }[], 
+      titleHtml: string, 
+      resultHtml: string, 
+      shareString: string, 
+      onClose?: () => void
+    }
   ) {
     return summary.showSummary(
-      stats, 
-      resultHtml, 
-      shareString,
-      onClose
+      options.stats, 
+      options.resultHtml, 
+      options.shareString,
+      options?.titleHtml,
+      options?.onClose
     );
   }
 

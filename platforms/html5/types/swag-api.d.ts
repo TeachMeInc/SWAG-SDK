@@ -122,10 +122,16 @@ declare class SWAGAPI extends emitter {
   updateToolbarItem(item: ToolbarItem): Promise<MessagePayload>;
   removeToolbarItem(id: string): Promise<MessagePayload>;
   showShareDialog(): Promise<MessagePayload>;
-  showSummaryScreen(stats: {
-    key: string;
-    value: string;
-  }[], resultHtml: string, shareString: string, onClose?: () => void): Promise<void>;
+  showSummaryScreen(options: {
+    stats: {
+      key: string;
+      value: string;
+    }[], 
+    resultHtml: string, 
+    shareString: string, 
+    titleHtml?: string, 
+    onClose?: () => void
+  }): Promise<void>;
   startGame(): Promise<void>;
   endGame(): Promise<void>;
   showAd(): Promise<void>;

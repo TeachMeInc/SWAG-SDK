@@ -260,16 +260,17 @@
         () => api.showShareDialog();
 
       document.getElementById('btnGamesummaryScreen').onclick = 
-        () => api.showSummaryScreen(
-          [
+        () => api.showSummaryScreen({
+          stats: [
             { key: 'Foo', value: '0:00' },
             { key: 'Bar', value: '9:99' },
             { key: 'Baz', value: '123' },
           ], 
-          '<div style="background:#ccc;height:150px;width:200px">Preview</div>',
-          'You have completed the game!',
-          () => { alert('share screen closed'); }
-        );
+          titleHtml: '<div style="font-size: 120%; font-weight: bold">Well Done!</div>',
+          resultHtml: '<div style="background:#ccc;height:150px;width:200px">Preview</div>',
+          shareString: 'You have completed the game, this is the share string!!',
+          onClose: () => { alert('share screen closed'); }
+      });
 
       document.getElementById('btnToggleFullScreen').onclick = 
         () => api.toggleFullScreen();
