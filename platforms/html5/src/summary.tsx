@@ -50,6 +50,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
 // #region Summary Component
 
 interface SummaryProps {
+  titleHtml?: string;
   resultHtml: string;
   stats: { key: string, value: string }[];
   shareString: string;
@@ -70,6 +71,12 @@ function SummaryComponent (props: SummaryProps) {
     <div className='swag-summary'>
       <div className='swag-summary__inner'>
         <header>
+          {props.titleHtml && (
+            <div 
+              className='swag-summary__title'
+              dangerouslySetInnerHTML={{ __html: props.titleHtml }}
+            />
+          )}
           <div 
             className='swag-summary__preview'
             dangerouslySetInnerHTML={{ __html: props.resultHtml }} 
@@ -262,6 +269,7 @@ class SummaryAPI {
     stats: { key: string, value: string }[], 
     resultHtml: string,
     shareString: string,
+    titleHtml?: string,
     onClose?: () => void
   ) {
     const isSubscriber = await data.isSubscriber();
@@ -294,6 +302,7 @@ class SummaryAPI {
     const showSummary = () => {
       render(<SummaryComponent 
         stats={stats} 
+        titleHtml={titleHtml}
         resultHtml={resultHtml}
         relatedGames={relatedGames}
         shareString={shareString}
