@@ -1,9 +1,9 @@
-name: HTML5 - Canary Deployment
+name: HTML5 - Production Deployment
 
 on:
   push:
     branches:
-      - canary
+      - main
   workflow_dispatch:
 
 jobs:
@@ -36,4 +36,4 @@ jobs:
           aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
           aws configure set default.region us-east-1
-          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/canary --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
+          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/dist --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
