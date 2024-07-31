@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -36,4 +36,4 @@ jobs:
           aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
           aws configure set default.region us-east-1
-          aws s3 sync ./platforms/html5/dist s3://swagapi-canary.shockwave.com/dist-canary --endpoint-url "https://sfo3.digitaloceanspaces.com"
+          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/canary --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
