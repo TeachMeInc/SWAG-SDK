@@ -4,6 +4,7 @@ import utils from './utils';
 import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import shareIcon from './assets/share-icon.svg';
+import replayIcon from './assets/replay-icon.svg';
 
 
 // #region Share Stats Component
@@ -46,6 +47,27 @@ function ShareStatsComponent (props: ShareStatsProps) {
 // #endregion
 
 
+// #region Replay Component
+
+interface ReplayProps {
+  onReplay?: () => void;
+}
+
+function ReplayComponent (props: ReplayProps) {
+  const { onReplay } = props;
+
+  return (
+    <button 
+      className='swag-summary__btn --outline --noMarginTop'
+      onClick={onReplay}
+    >
+      Replay <img src={replayIcon} alt='icon' aria-hidden />
+    </button>
+  );
+}
+
+// #endregion
+
 
 // #region Summary Component
 
@@ -56,6 +78,7 @@ interface SummaryProps {
   shareString: string;
   isSubscriber: boolean;
   relatedGames: { slug: string, title: string, icon: string }[];
+  onReplay?: () => void;
 }
 
 function SummaryComponent (props: SummaryProps) {
@@ -131,6 +154,13 @@ function SummaryComponent (props: SummaryProps) {
                 </div>
               </>
             )
+        }
+        {
+          props.onReplay && (
+            <ReplayComponent 
+              onReplay={props.onReplay} 
+            />
+          )
         }
         <ul className='swag-summary__related-games'>
           {
@@ -270,6 +300,7 @@ class SummaryAPI {
     resultHtml: string,
     shareString: string,
     titleHtml?: string,
+    onReplay?: () => void,
     onClose?: () => void
   ) {
     const isSubscriber = await data.isSubscriber();
@@ -307,6 +338,7 @@ class SummaryAPI {
         relatedGames={relatedGames}
         shareString={shareString}
         isSubscriber={isSubscriber}
+        onReplay={onReplay}
       />, rootEl);
     };
 

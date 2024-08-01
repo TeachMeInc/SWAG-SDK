@@ -270,6 +270,7 @@ export default class SWAGAPI extends Emitter {
       titleHtml: string, 
       resultHtml: string, 
       shareString: string, 
+      onReplay?: () => void,
       onClose?: () => void
     }
   ) {
@@ -278,6 +279,7 @@ export default class SWAGAPI extends Emitter {
       options.resultHtml, 
       options.shareString,
       options?.titleHtml,
+      options?.onReplay,
       options?.onClose
     );
   }
