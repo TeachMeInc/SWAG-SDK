@@ -1,0 +1,39 @@
+name: HTML5 - Canary Deployment
+
+on:
+  push:
+    branches:
+      - canary
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./platforms/html5
+
+      - name: Build project
+        run: npm run build
+        working-directory: ./platforms/html5
+
+      - name: Upload to DigitalOcean Spaces
+        env:
+          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+        run: |
+          npm install -g aws-cli
+          aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
+          aws configure set default.region us-east-1
+          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/canary --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
