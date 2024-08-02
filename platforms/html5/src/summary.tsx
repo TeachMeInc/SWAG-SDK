@@ -285,7 +285,7 @@ class SummaryAPI {
       },
       {
         key: 'Max Streak',
-        value: '--'
+        value: gameStreak.maxStreak.toString()
       }
     );
 
