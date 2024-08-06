@@ -129,6 +129,10 @@
   color: #F90;
 }
 
+.swag-summary__btn.--noMarginTop {
+  margin-top: 0;
+}
+
 .swag-summary__related-games {
   display: flex;
   flex-direction: column;

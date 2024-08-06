@@ -130,6 +130,7 @@ declare class SWAGAPI extends emitter {
     resultHtml: string, 
     shareString: string, 
     titleHtml?: string, 
+    onReplay?: () => void
     onClose?: () => void
   }): Promise<void>;
   startGame(): Promise<void>;
