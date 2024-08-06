@@ -338,7 +338,7 @@ class SummaryAPI {
         relatedGames={relatedGames}
         shareString={shareString}
         isSubscriber={isSubscriber}
-        onReplay={onReplay}
+        onReplay={unmount}
       />, rootEl);
     };
 
@@ -355,6 +355,7 @@ class SummaryAPI {
 
     const unmount = () => {
       this.unmount();
+      if (onReplay) onReplay();
       if (onClose) onClose();
     };
 
