@@ -304,9 +304,9 @@ class SummaryAPI {
     onClose?: () => void
   ) {
     const isSubscriber = await data.isSubscriber();
-    const currentDay = await data.getCurrentDay();
-    const currentDate = utils.getDate(currentDay.day);
-    const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
+    // const currentDay = await data.getCurrentDay();
+    // const currentDate = utils.getDate(currentDay.day);
+    // const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
 
     const gameStreak = await data.getDailyGameStreak();
     stats.unshift(
@@ -342,6 +342,7 @@ class SummaryAPI {
       />, rootEl);
     };
 
+    /*
     const showRevisit = () => {
       render(<RevisitComponent
         resultHtml={resultHtml}
@@ -352,6 +353,7 @@ class SummaryAPI {
         onShowStats={showSummary}
       />, rootEl);
     };
+    */
 
     const unmount = () => {
       this.unmount();
@@ -360,11 +362,15 @@ class SummaryAPI {
     };
 
     return new Promise<void>((resolve) => {
+      /*
       if (hasPlayedToday) {
         showRevisit();
       } else {
         showSummary();
       }
+      */
+
+      showSummary();
       document.body.classList.add('swag-dialog-open');
       resolve();
     });
