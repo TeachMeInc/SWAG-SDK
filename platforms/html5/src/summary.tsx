@@ -1,6 +1,5 @@
 import messages from './messages';
 import data from './data';
-import utils from './utils';
 import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import shareIcon from './assets/share-icon.svg';
@@ -184,7 +183,7 @@ function SummaryComponent (props: SummaryProps) {
 
 
 // #region Revisit Component
-
+/*
 interface RevisitProps {
   resultHtml: string;
   isSubscriber: boolean;
@@ -193,6 +192,7 @@ interface RevisitProps {
   onShowStats: () => void;
   relatedGames: { slug: string, title: string, icon: string }[];
 }
+
 
 function RevisitComponent (props: RevisitProps) {
   const navigateToArchive = () => {
@@ -287,6 +287,7 @@ function RevisitComponent (props: RevisitProps) {
     </div>
   );
 }
+*/
 
 // #endregion
 
