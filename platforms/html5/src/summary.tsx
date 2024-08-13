@@ -313,11 +313,11 @@ class SummaryAPI {
     stats.unshift(
       {
         key: 'Current Streak',
-        value: gameStreak.streak.toString()
+        value: gameStreak.streak?.toString()
       },
       {
         key: 'Max Streak',
-        value: gameStreak.maxStreak.toString()
+        value: gameStreak.maxStreak?.toString()
       }
     );
 
