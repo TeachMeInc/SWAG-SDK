@@ -1,4 +1,4 @@
-import pkg from '../package.json';
+import { version } from '../package.json';
 
 export interface Config {
   version: string;
@@ -29,7 +29,7 @@ export interface Config {
 }
 
 const config: Config = {
-  version: pkg.version,
+  version,
   themes: {
     'shockwave': {
       apiRoot: 'https://swag-services.shockwave.com',
