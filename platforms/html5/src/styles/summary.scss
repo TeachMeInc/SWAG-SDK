@@ -9,7 +9,8 @@
   
   background-color: white !important;
   color: #000 !important;
-  
+
+  font-family: 'Roboto', Helvetica, sans-serif !important;
 }
 
 .swag-summary__inner {
@@ -84,7 +85,8 @@
     width: calc(33% - 2rem);
 
     strong {
-      font-size: 200%;
+      font-size: 2rem !important;
+      font-weight: bold !important;
     }
   }
 
