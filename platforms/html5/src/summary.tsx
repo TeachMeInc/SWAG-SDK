@@ -81,13 +81,14 @@ interface SummaryProps {
 }
 
 function SummaryComponent (props: SummaryProps) {
-  const navigateToArchive = () => {
-    messages.trySendMessage('swag.navigateToArchive');
-  };
 
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
+
+  const navigateToGameLanding = () => {
+    messages.trySendMessage('swag.navigateToGameLanding');
+  }
 
   return (
     <div className='swag-summary'>
@@ -121,39 +122,17 @@ function SummaryComponent (props: SummaryProps) {
         <div>
           <ShareStatsComponent shareString={props.shareString} />
         </div>
-        {
-          props.isSubscriber
-            ? (
-              <>
-                <p>
-                  Ready for more? Play more games from the archive.
-                </p>
-                <div>
-                  <button 
-                    className='swag-summary__btn'
-                    onClick={navigateToArchive}
-                  >
-                    View Archive
-                  </button>
-                </div>
-              </>
-            )
-            : (
-              <>
-                <p>
-                  Want more puzzles? Subscribe to get access to the full archive.
-                </p>
-                <div>
-                  <button 
-                    className='swag-summary__btn'
-                    onClick={navigateToArchive}
-                  >
-                    Subscribe
-                  </button>
-                </div>
-              </>
-            )
-        }
+        <p>
+          Ready for more? Play more games from the archive.
+        </p>
+        <div>
+          <button 
+            className='swag-summary__btn'
+            onClick={navigateToGameLanding}
+          >
+            View Archive
+          </button>
+        </div>
         {
           props.onReplay && (
             <ReplayComponent 

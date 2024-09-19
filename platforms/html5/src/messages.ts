@@ -52,6 +52,7 @@ export type MessageEventName =
   'swag.toolbar.click' |
   'swag.toggleFullScreen' |
   'swag.navigateToArchive' |
+  'swag.navigateToGameLanding' |
   'swag.navigateToLogin' |
   'swag.navigateToTitle' | 
   'swag.displayAd' |

@@ -63,7 +63,7 @@ declare interface LeaderboardData {
   avatarUrl: string;
 }
 
-declare type MessageEventName = 'swag.toolbar.setItems' | 'swag.toolbar.updateItem' | 'swag.toolbar.removeItem' | 'swag.toolbar.click' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToLogin' | 'swag.navigateToTitle' | 'swag.displayAd' | 'swag.displayShareDialog' | 'swag.userLogout' | 'swag.getRelatedGames';
+declare type MessageEventName = 'swag.toolbar.setItems' | 'swag.toolbar.updateItem' | 'swag.toolbar.removeItem' | 'swag.toolbar.click' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToLogin' | 'swag.navigateToTitle' | 'swag.displayAd' | 'swag.displayShareDialog' | 'swag.userLogout' | 'swag.getRelatedGames';
 
 declare interface MessagePayload {
   eventName: MessageEventName;
@@ -93,6 +93,7 @@ declare class SWAGAPI extends emitter {
   startSession(): Promise<void>;
   toggleFullScreen(): Promise<MessagePayload>;
   navigateToArchive(): Promise<MessagePayload>;
+  navigateToGameLanding(): Promise<MessagePayload>;
   navigateToTitle(slug: string): Promise<MessagePayload>;
   getScoreCategories(): Promise<GameModeData[]>;
   getDays(limit: number): Promise<any[]>;

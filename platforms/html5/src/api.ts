@@ -109,6 +109,10 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.navigateToArchive');
   }
 
+  navigateToGameLanding () {
+    return messages.trySendMessage('swag.navigateToGameLanding');
+  }
+
   navigateToTitle (slug: string) {
     return messages.trySendMessage('swag.navigateToTitle', slug);
   }
