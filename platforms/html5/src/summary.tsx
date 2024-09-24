@@ -31,7 +31,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
   return (
     <button 
-      className='swag-summary__btn --outline'
+      className='swag-summary__btn'
       onClick={copyToClipboard}
     >
       {
@@ -120,42 +120,54 @@ function SummaryComponent (props: SummaryProps) {
             }
           </ul>
         </header>
-        <div>
-          <ShareStatsComponent shareString={props.shareString} />
-        </div>
-        {
-          props.onReplay && (
-            <ReplayComponent 
-              onReplay={props.onReplay} 
-            />
-          )
-        }
-        <ul className='swag-summary__related-games'>
-          {
-            props.relatedGames.map(({ slug, title, icon }) => {
-              return (
-                <li key={slug} onClick={() => navigateToTitle(slug)}>
-                  <img src={icon} alt={title} />
-                  <span>{title}</span>
-                </li>
-              );
-            })
-          }
-        </ul>
 
-        <ul className='swag-summary__promo-links'>
+        <div className='swag-summary__button-container'>
+          <ShareStatsComponent shareString={props.shareString} />
           {
-            props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
-              let navMethod = type === 'archive' ? navigateToArchive : navigateToTitle;
-              return (
-                <li key={title} style={{backgroundColor: background_color}} onClick={() => navMethod(url)}>
-                  <img src={icon_url} alt={title} />
-                  <span>{title}</span>
-                </li>
-              );
-            })
+            props.onReplay && (
+              <ReplayComponent 
+                onReplay={props.onReplay} 
+              />
+            )
           }
-        </ul>
+        </div>
+        
+        {
+          props.relatedGames.length 
+            ? (
+              <ul className='swag-summary__related-games'>
+                {
+                  props.relatedGames.map(({ slug, title, icon }) => {
+                    return (
+                      <li key={slug} onClick={() => navigateToTitle(slug)}>
+                        <img src={icon} alt={title} />
+                        <span>{title}</span>
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            ) : <></>
+        }
+
+        {
+          props.promoLinks.length
+            ? (
+              <ul className='swag-summary__promo-links'>
+                {
+                  props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                    const navMethod = type === 'archive' ? navigateToArchive : navigateToTitle;
+                    return (
+                      <li key={title} style={{ backgroundColor: background_color }} onClick={() => navMethod(url)}>
+                        <img src={icon_url} alt={title} />
+                        <span>{title}</span>
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            ) : <></>
+        }
       </div>
     </div>
   );
