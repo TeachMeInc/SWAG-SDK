@@ -123,17 +123,6 @@ function SummaryComponent (props: SummaryProps) {
         <div>
           <ShareStatsComponent shareString={props.shareString} />
         </div>
-        <p>
-          Ready for more? Play more games from the archive.
-        </p>
-        <div>
-          <button 
-            className='swag-summary__btn'
-            onClick={navigateToGameLanding}
-          >
-            View Archive
-          </button>
-        </div>
         {
           props.onReplay && (
             <ReplayComponent 
