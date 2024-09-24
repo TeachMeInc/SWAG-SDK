@@ -77,6 +77,7 @@ interface SummaryProps {
   shareString: string;
   isSubscriber: boolean;
   relatedGames: { slug: string, title: string, icon: string }[];
+  promoLinks: { icon_url: string, background_color: string, title: string, url: string }[];
   onReplay?: () => void;
 }
 
@@ -146,6 +147,19 @@ function SummaryComponent (props: SummaryProps) {
               return (
                 <li key={slug} onClick={() => navigateToTitle(slug)}>
                   <img src={icon} alt={title} />
+                  <span>{title}</span>
+                </li>
+              );
+            })
+          }
+        </ul>
+
+        <ul className='swag-summary__promo-links'>
+          {
+            props.promoLinks.map(({ icon_url, background_color, title, url }) => {
+              return (
+                <li key={title} style={{backgroundColor: background_color}} onClick={() => navigateToTitle(url)}>
+                  <img src={icon_url} alt={title} />
                   <span>{title}</span>
                 </li>
               );
@@ -300,6 +314,8 @@ class SummaryAPI {
       }
     );
 
+    const promoLinks = await data.getGamePromoLinks();
+
     let relatedGames;
     try {
       const event = await messages.trySendMessage('swag.getRelatedGames');
@@ -316,6 +332,7 @@ class SummaryAPI {
         titleHtml={titleHtml}
         resultHtml={resultHtml}
         relatedGames={relatedGames}
+        promoLinks={promoLinks}
         shareString={shareString}
         isSubscriber={isSubscriber}
         onReplay={unmount}
