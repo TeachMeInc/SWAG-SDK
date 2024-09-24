@@ -77,7 +77,7 @@ interface SummaryProps {
   shareString: string;
   isSubscriber: boolean;
   relatedGames: { slug: string, title: string, icon: string }[];
-  promoLinks: { icon_url: string, background_color: string, title: string, url: string }[];
+  promoLinks: { icon_url: string, background_color: string, title: string, url: string, type: string }[];
   onReplay?: () => void;
 }
 
@@ -86,10 +86,10 @@ function SummaryComponent (props: SummaryProps) {
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
-
-  const navigateToGameLanding = () => {
-    messages.trySendMessage('swag.navigateToGameLanding');
-  }
+  
+  const navigateToArchive = () => {
+    messages.trySendMessage('swag.navigateToArchive');
+  };
 
   return (
     <div className='swag-summary'>
@@ -156,9 +156,10 @@ function SummaryComponent (props: SummaryProps) {
 
         <ul className='swag-summary__promo-links'>
           {
-            props.promoLinks.map(({ icon_url, background_color, title, url }) => {
+            props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+              let navMethod = type === 'archive' ? navigateToArchive : navigateToTitle;
               return (
-                <li key={title} style={{backgroundColor: background_color}} onClick={() => navigateToTitle(url)}>
+                <li key={title} style={{backgroundColor: background_color}} onClick={() => navMethod(url)}>
                   <img src={icon_url} alt={title} />
                   <span>{title}</span>
                 </li>

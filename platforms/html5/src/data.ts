@@ -67,11 +67,11 @@ export interface PostScoreOptions {
 }
 
 export interface GamePromoLink {
-  game: string;
   icon_url: string;
   background_color: string;
   title: string;
   url: string;
+  type: string;
 }
 
 interface ScoreBodyData {
