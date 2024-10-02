@@ -66,6 +66,14 @@ export interface PostScoreOptions {
   meta?: any;
 }
 
+export interface GamePromoLink {
+  icon_url: string;
+  background_color: string;
+  title: string;
+  url: string;
+  type: string;
+}
+
 interface ScoreBodyData {
   game: string | null;
   level_key: string;
@@ -100,7 +108,8 @@ const methods = Emitter({
     'postDatastore': '/v1/datastore',
     'getDailyGameProgress': '/v1/dailygameprogress',
     'postDailyGameProgress': '/v1/dailygameprogress',
-    'getDailyGameStreak': '/v1/dailygamestreak'
+    'getDailyGameStreak': '/v1/dailygamestreak',
+    'getGamePromoLinks': '/v1/promolinks'
   },
 
   
@@ -407,6 +416,21 @@ const methods = Emitter({
     }
 
     return false;
+  },
+
+  getGamePromoLinks: async function () {
+    const params = { game: session[ 'api_key' ] };
+
+    const promise = new Promise<GamePromoLink[]>(function (resolve) {
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getGamePromoLinks' ],
+        params: params
+      })
+        .then(function (gamepromolink: any) {
+          resolve(gamepromolink);
+        });
+    });
+    return promise;
   },
   
   // #endregion

@@ -31,7 +31,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
   return (
     <button 
-      className='swag-summary__btn --outline'
+      className='swag-summary__btn'
       onClick={copyToClipboard}
     >
       {
@@ -77,6 +77,7 @@ interface SummaryProps {
   shareString: string;
   isSubscriber: boolean;
   relatedGames: { slug: string, title: string, icon: string }[];
+  promoLinks: { icon_url: string, background_color: string, title: string, url: string, type: string }[];
   onReplay?: () => void;
 }
 
@@ -85,10 +86,10 @@ function SummaryComponent (props: SummaryProps) {
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
-
-  const navigateToGameLanding = () => {
-    messages.trySendMessage('swag.navigateToGameLanding');
-  }
+  
+  const navigateToArchive = () => {
+    messages.trySendMessage('swag.navigateToArchive');
+  };
 
   return (
     <div className='swag-summary'>
@@ -119,39 +120,54 @@ function SummaryComponent (props: SummaryProps) {
             }
           </ul>
         </header>
-        <div>
+
+        <div className='swag-summary__button-container'>
           <ShareStatsComponent shareString={props.shareString} />
-        </div>
-        <p>
-          Ready for more? Play more games from the archive.
-        </p>
-        <div>
-          <button 
-            className='swag-summary__btn'
-            onClick={navigateToGameLanding}
-          >
-            View Archive
-          </button>
-        </div>
-        {
-          props.onReplay && (
-            <ReplayComponent 
-              onReplay={props.onReplay} 
-            />
-          )
-        }
-        <ul className='swag-summary__related-games'>
           {
-            props.relatedGames.map(({ slug, title, icon }) => {
-              return (
-                <li key={slug} onClick={() => navigateToTitle(slug)}>
-                  <img src={icon} alt={title} />
-                  <span>{title}</span>
-                </li>
-              );
-            })
+            props.onReplay && (
+              <ReplayComponent 
+                onReplay={props.onReplay} 
+              />
+            )
           }
-        </ul>
+        </div>
+        
+        {
+          props.relatedGames.length 
+            ? (
+              <ul className='swag-summary__related-games'>
+                {
+                  props.relatedGames.map(({ slug, title, icon }) => {
+                    return (
+                      <li key={slug} onClick={() => navigateToTitle(slug)}>
+                        <img src={icon} alt={title} />
+                        <span>{title}</span>
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            ) : <></>
+        }
+
+        {
+          props.promoLinks.length
+            ? (
+              <ul className='swag-summary__promo-links'>
+                {
+                  props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                    const navMethod = type === 'archive' ? navigateToArchive : navigateToTitle;
+                    return (
+                      <li key={title} style={{ backgroundColor: background_color }} onClick={() => navMethod(url)}>
+                        <img src={icon_url} alt={title} />
+                        <span>{title}</span>
+                      </li>
+                    );
+                  })
+                }
+              </ul>
+            ) : <></>
+        }
       </div>
     </div>
   );
@@ -300,6 +316,8 @@ class SummaryAPI {
       }
     );
 
+    const promoLinks = await data.getGamePromoLinks();
+
     let relatedGames;
     try {
       const event = await messages.trySendMessage('swag.getRelatedGames');
@@ -316,6 +334,7 @@ class SummaryAPI {
         titleHtml={titleHtml}
         resultHtml={resultHtml}
         relatedGames={relatedGames}
+        promoLinks={promoLinks}
         shareString={shareString}
         isSubscriber={isSubscriber}
         onReplay={unmount}
