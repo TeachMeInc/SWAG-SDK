@@ -58,7 +58,8 @@ export type MessageEventName =
   'swag.displayAd' |
   'swag.displayShareDialog' |
   'swag.userLogout' |
-  'swag.getRelatedGames';
+  'swag.getRelatedGames' |
+  'swag.captureEvent';
 
 export interface MessagePayload {
   eventName: MessageEventName;
