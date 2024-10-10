@@ -37,7 +37,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
       {
         copying 
           ? <>Copied!</> 
-          : <>Share Stats <img src={shareIcon} alt='icon' aria-hidden /></>
+          : <>Share<img src={shareIcon} alt='icon' aria-hidden /></>
       }
     </button>
   );
@@ -60,7 +60,7 @@ function ReplayComponent (props: ReplayProps) {
       className='swag-summary__btn --outline --noMarginTop'
       onClick={onReplay}
     >
-      Replay <img src={replayIcon} alt='icon' aria-hidden />
+      Replay<img src={replayIcon} alt='icon' aria-hidden />
     </button>
   );
 }
