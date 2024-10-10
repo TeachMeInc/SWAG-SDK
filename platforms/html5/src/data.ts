@@ -242,7 +242,7 @@ const methods = Emitter({
     const promise = new Promise<{ day: string }>(function (resolve) {
       const urlParams = utils.parseUrlParams();
       if (urlParams.day && urlParams.month && urlParams.year) {
-        var yearPart = parseInt (urlParams.year, 10);
+        const yearPart = parseInt(urlParams.year, 10);
         const dayParts = [
           (yearPart > 2000 ? yearPart : 2000 + yearPart), // handle both 4 digit and 2 digit years
           padDateDigit(parseInt (urlParams.month, 10)),
