@@ -132,6 +132,7 @@ function SummaryComponent (props: SummaryProps) {
           }
         </div>
         
+        {/*
         {
           props.relatedGames.length 
             ? (
@@ -149,6 +150,7 @@ function SummaryComponent (props: SummaryProps) {
               </ul>
             ) : <></>
         }
+        */}
 
         {
           props.promoLinks.length
