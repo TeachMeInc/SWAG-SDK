@@ -119,7 +119,7 @@ export default class SWAGAPI extends Emitter {
 
   captureEvent (event: string, params: any) {
     const payload = JSON.stringify({ event, params });
-    return messages.trySendMessage('swag.captureEvent', payload);
+    return messages.trySendMessage('swag.captureEvent', payload, true);
   }
 
   // #endregion
