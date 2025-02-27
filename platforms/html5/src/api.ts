@@ -297,6 +297,49 @@ export default class SWAGAPI extends Emitter {
 
 
 
+  // #region Platform Interface Methods
+
+  getPlatform (): ('embed' | 'app' | 'standalone') {
+    // @ts-ignore
+    if (typeof window.ReactNativeWebView !== 'undefined') {
+      return 'app';
+    }
+    if (window.self === window.top) {
+      return 'standalone';
+    }
+    return 'embed';
+  }
+
+  getPlatformTheme (): ('light' | 'dark') {
+    if (this._parseUrlOptions('theme')) {
+      return this._parseUrlOptions('theme') === 'dark' 
+        ? 'dark' : 'light';
+    }
+    else if (this.getPlatform() === 'standalone') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return systemTheme ? 'dark' : 'light';
+    }
+    return 'light';
+  }
+
+  // #endregion
+
+
+
+  // #region JWT Authentication
+
+  getExternalToken (): string {
+    return this._parseUrlOptions('jwt') as string;
+  }
+
+  async generateGuestToken (): Promise<string> {
+    return await data.getGuestToken();
+  }
+
+  // #endregion
+
+
+
   // #region WIP Methods
 
   startGame () {
