@@ -109,7 +109,8 @@ const methods = Emitter({
     'getDailyGameProgress': '/v1/dailygameprogress',
     'postDailyGameProgress': '/v1/dailygameprogress',
     'getDailyGameStreak': '/v1/dailygamestreak',
-    'getGamePromoLinks': '/v1/promolinks'
+    'getGamePromoLinks': '/v1/promolinks',
+    'getGuestToken': '/v1/token',
   },
 
   
@@ -130,7 +131,11 @@ const methods = Emitter({
       const rootUrl = options.apiRoot || config.themes[ session.theme! ].apiRoot;
       const params = methods.buildUrlParamString(options.params);
       xhr.open('GET', encodeURI(rootUrl + options.method + params));
-      xhr.withCredentials = true;
+      if (session.jwt) {
+        xhr.setRequestHeader('x-member-token', session.jwt);
+      } else {
+        xhr.withCredentials = true;
+      }
       xhr.onload = function () {
         const response = xhr.status === 200
           ? JSON.parse(xhr.response)
@@ -164,7 +169,11 @@ const methods = Emitter({
       const contentType = options.contentType || 'application/json;charset=UTF-8';
       xhr.open('POST', encodeURI(rootUrl + options.method), true);
       xhr.setRequestHeader('Content-Type', contentType);
-      xhr.withCredentials = true;
+      if (session.jwt) {
+        xhr.setRequestHeader('x-member-token', session.jwt);
+      } else {
+        xhr.withCredentials = true;
+      }
       xhr.onload = function () {
         const response = xhr.status === 200
           ? JSON.parse(xhr.response)
@@ -485,6 +494,7 @@ const methods = Emitter({
   // #endregion
 
 
+
   // #region User Cloud Datastore
 
   getUserDatastore: function () {
@@ -602,6 +612,24 @@ const methods = Emitter({
 
   getProvider: function () {
     return config.providers[ session.provider! ] || config.providers[ 'default' ];
+  },
+
+  // #endregion
+
+
+
+  // #region JWT Authentication
+
+  getGuestToken: function () {
+    const promise = new Promise<string>(function (resolve) {
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getGuestToken' ]
+      })
+        .then(function (token: any) {
+          resolve(token);
+        });
+    });
+    return promise;
   },
 
   // #endregion

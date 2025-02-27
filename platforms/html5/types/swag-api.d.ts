@@ -1,5 +1,6 @@
 declare class APIWrapper {
-  getInstance(options: any): SWAGAPI;
+  getInstance(options: any, onReady?: (instance: SWAGAPI) => {}): SWAGAPI;
+  getInstanceAsync(options: any): Promise<SWAGAPI>;
   showBrandingAnimation(element: string, callback: () => {}): Promise<void>;
   showLeaderboard(): Promise<void>;
 }
@@ -143,6 +144,10 @@ declare class SWAGAPI extends emitter {
   populateAchievementSelect(domId: any): Promise<void>;
   getBrandingLogo(): Promise<HTMLImageElement>;
   getBrandingLogoUrl(): Promise<string>;
+  getPlatform(): ('embed' | 'app' | 'standalone');
+  getPlatformTheme(): ('light' | 'dark');
+  getExternalToken(): string;
+  generateGuestToken(): Promise<string>;
 }
 
 declare interface ToolbarItem {
@@ -152,6 +157,8 @@ declare interface ToolbarItem {
   disabled?: boolean;
   onClick?: () => void;
 }
+
+export {};
 
 declare global {
   interface Window {
