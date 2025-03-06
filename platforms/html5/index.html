@@ -176,7 +176,7 @@
   <script type='module' src='/src/main.ts'></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      const api = await SWAGAPI.getInstanceAsync({
+      const api = SWAGAPI.getInstance({
         wrapper: document.getElementById('swag-wrapper'),
         api_key: '5c6c3c056917a692f96f9651',
         theme: 'shockwave',
