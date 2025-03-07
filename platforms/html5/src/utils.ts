@@ -75,6 +75,17 @@ const methods = {
         console.log(data);
       }
     }
+  },
+
+  getPlatform: function (): ('embed' | 'app' | 'standalone') {
+    // @ts-ignore
+    if (typeof window.ReactNativeWebView !== 'undefined') {
+      return 'app';
+    }
+    if (window.self === window.top) {
+      return 'standalone';
+    }
+    return 'embed';
   }
 };
 
