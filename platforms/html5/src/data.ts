@@ -110,7 +110,6 @@ const methods = Emitter({
     'postDailyGameProgress': '/v1/dailygameprogress',
     'getDailyGameStreak': '/v1/dailygamestreak',
     'getGamePromoLinks': '/v1/promolinks',
-    'getGuestToken': '/v1/token',
   },
 
   
@@ -600,27 +599,6 @@ const methods = Emitter({
 
   getProvider: function () {
     return config.providers[ session.provider! ] || config.providers[ 'default' ];
-  },
-
-  // #endregion
-
-
-
-  // #region JWT Authentication
-
-  getGuestToken: function () {
-    const promise = new Promise<string>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getGuestToken' ],
-        params: {
-          entity: session.entity?._id
-        }
-      })
-        .then(function (token: any) {
-          resolve(token);
-        });
-    });
-    return promise;
   },
 
   // #endregion
