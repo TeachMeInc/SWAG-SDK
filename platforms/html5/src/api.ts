@@ -93,12 +93,32 @@ export default class SWAGAPI extends Emitter {
 
   // #region API Methods
 
-  startSession () {
-    return data.getEntity()
-      .then(() => {
-        utils.debug('session ready');
-        this.emit(config.events.SESSION_READY, { session_ready: true });
-      });
+  async startSession () {
+    if (utils.getPlatform() !== 'embed') {
+      const storedToken = localStorage.getItem('swag_token');
+      const passedInToken = this._parseUrlOptions('jwt') as string;
+
+      // External token provided in the URL
+      if (typeof passedInToken === 'string' && passedInToken.length > 0) {
+        session.jwt = passedInToken;
+      }
+      // Token stored in local storage
+      else if (typeof storedToken === 'string' && storedToken.length > 0) {
+        session.jwt = storedToken;
+      }
+    } else {
+      session.jwt = null;
+      localStorage.removeItem('swag_token');
+    }
+
+    // Fetch the current user
+    const entity = await data.getEntity();
+
+    // Ready
+    // eslint-disable-next-line no-console
+    console.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
+    utils.debug('session ready');
+    this.emit(config.events.SESSION_READY, { session_ready: true });
   }
 
   toggleFullScreen () {
@@ -299,15 +319,8 @@ export default class SWAGAPI extends Emitter {
 
   // #region Platform Interface Methods
 
-  getPlatform (): ('embed' | 'app' | 'standalone') {
-    // @ts-ignore
-    if (typeof window.ReactNativeWebView !== 'undefined') {
-      return 'app';
-    }
-    if (window.self === window.top) {
-      return 'standalone';
-    }
-    return 'embed';
+  getPlatform () {
+    return utils.getPlatform();
   }
 
   getPlatformTheme (): ('light' | 'dark') {
@@ -320,20 +333,6 @@ export default class SWAGAPI extends Emitter {
       return systemTheme ? 'dark' : 'light';
     }
     return 'light';
-  }
-
-  // #endregion
-
-
-
-  // #region JWT Authentication
-
-  getExternalToken (): string {
-    return this._parseUrlOptions('jwt') as string;
-  }
-
-  async generateGuestToken (): Promise<string> {
-    return await data.getGuestToken();
   }
 
   // #endregion

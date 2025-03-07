@@ -7,7 +7,7 @@ export interface Entity {
 export interface Session {
   api_key: string | null;
   uid: string | null;
-  entity: string | null;
+  entity: Entity | null;
   wrapper: HTMLElement | null;
   theme: 'shockwave' | null;
   debug: boolean;

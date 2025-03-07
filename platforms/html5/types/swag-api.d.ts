@@ -146,8 +146,6 @@ declare class SWAGAPI extends emitter {
   getBrandingLogoUrl(): Promise<string>;
   getPlatform(): ('embed' | 'app' | 'standalone');
   getPlatformTheme(): ('light' | 'dark');
-  getExternalToken(): string;
-  generateGuestToken(): Promise<string>;
 }
 
 declare interface ToolbarItem {

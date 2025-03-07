@@ -2,7 +2,7 @@
 
 import Emitter from 'component-emitter';
 import config from './config';
-import session from './session';
+import session, { Entity } from './session';
 import utils from './utils';
 
 export const LEADERBOARD_PERIOD = {
@@ -110,7 +110,6 @@ const methods = Emitter({
     'postDailyGameProgress': '/v1/dailygameprogress',
     'getDailyGameStreak': '/v1/dailygamestreak',
     'getGamePromoLinks': '/v1/promolinks',
-    'getGuestToken': '/v1/token',
   },
 
   
@@ -208,21 +207,16 @@ const methods = Emitter({
 
   hasDailyScore: function (level_key: any) {
     const promise = new Promise(function (resolve) {
-      if(session.uid) {
-        session.entity = session.uid;
-        resolve(session.uid);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods[ 'hasDailyScore' ],
-          params: {
-            game: session[ 'api_key' ],
-            level_key: level_key
-          }
-        })
-          .then(function (result: any) {
-            resolve(!!result.daily_score);
-          });
-      }
+      methods.getAPIData({
+        method: methods.apiMethods[ 'hasDailyScore' ],
+        params: {
+          game: session[ 'api_key' ],
+          level_key: level_key
+        }
+      })
+        .then(function (result: any) {
+          resolve(!!result.daily_score);
+        });
     });
     return promise;
   },
@@ -535,16 +529,19 @@ const methods = Emitter({
   // #region User Methods
 
   getEntity: function () {
-    const promise = new Promise(function (resolve) {
-      if(session.uid) {
-        session.entity = session.uid;
-        resolve(session.uid);
+    const promise = new Promise<Entity>(function (resolve) {
+      if (session.entity) {
+        resolve(session.entity);
       } else {
         methods.getAPIData({
           method: methods.apiMethods[ 'getEntity' ]
         })
-          .then(function (entity) {
-            session.entity = entity as string;
+          .then(function (entity: Entity) {
+            session.entity = entity;
+            if (utils.getPlatform() === 'standalone') {
+              session.jwt = entity.token;
+              localStorage.setItem('swag_token', entity.token);
+            }
             resolve(entity);
           });
       }
@@ -554,34 +551,24 @@ const methods = Emitter({
 
   isSubscriber: function () {
     const promise = new Promise<boolean>(function (resolve) {
-      if (session.uid) {
-        session.entity = session.uid;
-        resolve(!!session.uid);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods[ 'getSubscriber' ]
-        })
-          .then(function (result: any) {
-            resolve(!!result.subscriber);
-          });
-      }
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getSubscriber' ]
+      })
+        .then(function (result: any) {
+          resolve(!!result.subscriber);
+        });
     });
     return promise;
   },
 
   getTokenBalance: function () {
     const promise = new Promise(function (resolve) {
-      if(session.uid) {
-        session.entity = session.uid;
-        resolve(session.uid);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods[ 'getTokenBalance' ]
-        })
-          .then(function (result) {
-            resolve(result);
-          });
-      }
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getTokenBalance' ]
+      })
+        .then(function (result) {
+          resolve(result);
+        });
     });
     return promise;
   },
@@ -594,7 +581,7 @@ const methods = Emitter({
         method: provider.current
       })
         .then(function (result: any) {
-          if(result && !result.error) {
+          if (result && !result.error) {
             resolve(result);
           } else {
             reject();
@@ -612,24 +599,6 @@ const methods = Emitter({
 
   getProvider: function () {
     return config.providers[ session.provider! ] || config.providers[ 'default' ];
-  },
-
-  // #endregion
-
-
-
-  // #region JWT Authentication
-
-  getGuestToken: function () {
-    const promise = new Promise<string>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getGuestToken' ]
-      })
-        .then(function (token: any) {
-          resolve(token);
-        });
-    });
-    return promise;
   },
 
   // #endregion
