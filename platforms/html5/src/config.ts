@@ -1,4 +1,4 @@
-import pkg from '../package.json';
+import { version } from '../package.json';
 
 function getApiRoot () {
   if (
@@ -40,7 +40,7 @@ export interface Config {
 }
 
 const config: Config = {
-  version: pkg.version,
+  version,
   themes: {
     'shockwave': {
       apiRoot: getApiRoot(),

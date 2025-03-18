@@ -66,6 +66,14 @@ export interface PostScoreOptions {
   meta?: any;
 }
 
+export interface GamePromoLink {
+  icon_url: string;
+  background_color: string;
+  title: string;
+  url: string;
+  type: string;
+}
+
 interface ScoreBodyData {
   game: string | null;
   level_key: string;
@@ -100,7 +108,9 @@ const methods = Emitter({
     'postDatastore': '/v1/datastore',
     'getDailyGameProgress': '/v1/dailygameprogress',
     'postDailyGameProgress': '/v1/dailygameprogress',
-    'getDailyGameStreak': '/v1/dailygamestreak'
+    'getDailyGameStreak': '/v1/dailygamestreak',
+    'getGamePromoLinks': '/v1/promolinks',
+    'getGuestToken': '/v1/token',
   },
 
   
@@ -121,7 +131,11 @@ const methods = Emitter({
       const rootUrl = options.apiRoot || config.themes[ session.theme! ].apiRoot;
       const params = methods.buildUrlParamString(options.params);
       xhr.open('GET', encodeURI(rootUrl + options.method + params));
-      xhr.withCredentials = true;
+      if (session.jwt) {
+        xhr.setRequestHeader('x-member-token', session.jwt);
+      } else {
+        xhr.withCredentials = true;
+      }
       xhr.onload = function () {
         const response = xhr.status === 200
           ? JSON.parse(xhr.response)
@@ -155,7 +169,11 @@ const methods = Emitter({
       const contentType = options.contentType || 'application/json;charset=UTF-8';
       xhr.open('POST', encodeURI(rootUrl + options.method), true);
       xhr.setRequestHeader('Content-Type', contentType);
-      xhr.withCredentials = true;
+      if (session.jwt) {
+        xhr.setRequestHeader('x-member-token', session.jwt);
+      } else {
+        xhr.withCredentials = true;
+      }
       xhr.onload = function () {
         const response = xhr.status === 200
           ? JSON.parse(xhr.response)
@@ -233,7 +251,7 @@ const methods = Emitter({
     const promise = new Promise<{ day: string }>(function (resolve) {
       const urlParams = utils.parseUrlParams();
       if (urlParams.day && urlParams.month && urlParams.year) {
-        var yearPart = parseInt (urlParams.year, 10);
+        const yearPart = parseInt(urlParams.year, 10);
         const dayParts = [
           (yearPart > 2000 ? yearPart : 2000 + yearPart), // handle both 4 digit and 2 digit years
           padDateDigit(parseInt (urlParams.month, 10)),
@@ -408,6 +426,21 @@ const methods = Emitter({
 
     return false;
   },
+
+  getGamePromoLinks: async function () {
+    const params = { game: session[ 'api_key' ] };
+
+    const promise = new Promise<GamePromoLink[]>(function (resolve) {
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getGamePromoLinks' ],
+        params: params
+      })
+        .then(function (gamepromolink: any) {
+          resolve(gamepromolink);
+        });
+    });
+    return promise;
+  },
   
   // #endregion
 
@@ -459,6 +492,7 @@ const methods = Emitter({
   },
 
   // #endregion
+
 
 
   // #region User Cloud Datastore
@@ -578,6 +612,24 @@ const methods = Emitter({
 
   getProvider: function () {
     return config.providers[ session.provider! ] || config.providers[ 'default' ];
+  },
+
+  // #endregion
+
+
+
+  // #region JWT Authentication
+
+  getGuestToken: function () {
+    const promise = new Promise<string>(function (resolve) {
+      methods.getAPIData({
+        method: methods.apiMethods[ 'getGuestToken' ]
+      })
+        .then(function (token: any) {
+          resolve(token);
+        });
+    });
+    return promise;
   },
 
   // #endregion
