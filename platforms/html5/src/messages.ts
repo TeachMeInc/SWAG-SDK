@@ -52,12 +52,14 @@ export type MessageEventName =
   'swag.toolbar.click' |
   'swag.toggleFullScreen' |
   'swag.navigateToArchive' |
+  'swag.navigateToGameLanding' |
   'swag.navigateToLogin' |
   'swag.navigateToTitle' | 
   'swag.displayAd' |
   'swag.displayShareDialog' |
   'swag.userLogout' |
-  'swag.getRelatedGames';
+  'swag.getRelatedGames' |
+  'swag.captureEvent';
 
 export interface MessagePayload {
   eventName: MessageEventName;
@@ -77,12 +79,12 @@ class MessagesAPI {
       this.currentMessageRequests.push(eventName);
     }
 
-    window.parent.postMessage(
-      JSON.stringify({ eventName, message }),
-      '*',
-    );
-
     if (ignoreResponse) {
+      window.parent.postMessage(
+        JSON.stringify({ eventName, message }),
+        '*',
+      );
+
       return new Promise<MessagePayload>((resolve) => resolve);
     }
 
@@ -117,6 +119,11 @@ class MessagesAPI {
       };
 
       window.addEventListener('message', eventListener);
+
+      window.parent.postMessage(
+        JSON.stringify({ eventName, message }),
+        '*',
+      );
     });
   }
 
