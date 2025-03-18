@@ -3,7 +3,7 @@ import pkg from '../package.json';
 function getApiRoot () {
   if (
     window.location.href.includes('env=staging') && 
-    import.meta.env.MODE === 'staging'
+    (import.meta.env.MODE === 'staging' || import.meta.env.MODE === 'development')
   ) {
     return import.meta.env.VITE_API_STAGING_URL;
   } else {
