@@ -1,5 +1,16 @@
 import { version } from '../package.json';
 
+function getApiRoot () {
+  if (
+    window.location.href.includes('env=staging') && 
+    (import.meta.env.MODE === 'staging' || import.meta.env.MODE === 'development')
+  ) {
+    return import.meta.env.VITE_API_STAGING_URL;
+  } else {
+    return import.meta.env.VITE_API_URL;
+  }
+}
+
 export interface Config {
   version: string;
   themes: {
@@ -32,7 +43,7 @@ const config: Config = {
   version,
   themes: {
     'shockwave': {
-      apiRoot: 'https://swag-services.shockwave.com',
+      apiRoot: getApiRoot(),
       active: true
     },
     'addictinggames': {
