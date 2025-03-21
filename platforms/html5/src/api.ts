@@ -109,17 +109,8 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.navigateToArchive');
   }
 
-  navigateToGameLanding () {
-    return messages.trySendMessage('swag.navigateToGameLanding');
-  }
-
   navigateToTitle (slug: string) {
     return messages.trySendMessage('swag.navigateToTitle', slug);
-  }
-
-  captureEvent (event: string, params: any) {
-    const payload = JSON.stringify({ event, params });
-    return messages.trySendMessage('swag.captureEvent', payload, true);
   }
 
   // #endregion
@@ -279,7 +270,6 @@ export default class SWAGAPI extends Emitter {
       titleHtml: string, 
       resultHtml: string, 
       shareString: string, 
-      onReplay?: () => void,
       onClose?: () => void
     }
   ) {
@@ -288,52 +278,8 @@ export default class SWAGAPI extends Emitter {
       options.resultHtml, 
       options.shareString,
       options?.titleHtml,
-      options?.onReplay,
       options?.onClose
     );
-  }
-
-  // #endregion
-
-
-
-  // #region Platform Interface Methods
-
-  getPlatform (): ('embed' | 'app' | 'standalone') {
-    // @ts-ignore
-    if (typeof window.ReactNativeWebView !== 'undefined') {
-      return 'app';
-    }
-    if (window.self === window.top) {
-      return 'standalone';
-    }
-    return 'embed';
-  }
-
-  getPlatformTheme (): ('light' | 'dark') {
-    if (this._parseUrlOptions('theme')) {
-      return this._parseUrlOptions('theme') === 'dark' 
-        ? 'dark' : 'light';
-    }
-    else if (this.getPlatform() === 'standalone') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return systemTheme ? 'dark' : 'light';
-    }
-    return 'light';
-  }
-
-  // #endregion
-
-
-
-  // #region JWT Authentication
-
-  getExternalToken (): string {
-    return this._parseUrlOptions('jwt') as string;
-  }
-
-  async generateGuestToken (): Promise<string> {
-    return await data.getGuestToken();
   }
 
   // #endregion

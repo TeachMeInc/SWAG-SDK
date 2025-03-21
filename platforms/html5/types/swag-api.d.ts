@@ -1,6 +1,5 @@
 declare class APIWrapper {
-  getInstance(options: any, onReady?: (instance: SWAGAPI) => {}): SWAGAPI;
-  getInstanceAsync(options: any): Promise<SWAGAPI>;
+  getInstance(options: any): SWAGAPI;
   showBrandingAnimation(element: string, callback: () => {}): Promise<void>;
   showLeaderboard(): Promise<void>;
 }
@@ -64,7 +63,7 @@ declare interface LeaderboardData {
   avatarUrl: string;
 }
 
-declare type MessageEventName = 'swag.toolbar.setItems' | 'swag.toolbar.updateItem' | 'swag.toolbar.removeItem' | 'swag.toolbar.click' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToLogin' | 'swag.navigateToTitle' | 'swag.displayAd' | 'swag.displayShareDialog' | 'swag.userLogout' | 'swag.getRelatedGames';
+declare type MessageEventName = 'swag.toolbar.setItems' | 'swag.toolbar.updateItem' | 'swag.toolbar.removeItem' | 'swag.toolbar.click' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToLogin' | 'swag.navigateToTitle' | 'swag.displayAd' | 'swag.displayShareDialog' | 'swag.userLogout' | 'swag.getRelatedGames';
 
 declare interface MessagePayload {
   eventName: MessageEventName;
@@ -94,7 +93,6 @@ declare class SWAGAPI extends emitter {
   startSession(): Promise<void>;
   toggleFullScreen(): Promise<MessagePayload>;
   navigateToArchive(): Promise<MessagePayload>;
-  navigateToGameLanding(): Promise<MessagePayload>;
   navigateToTitle(slug: string): Promise<MessagePayload>;
   getScoreCategories(): Promise<GameModeData[]>;
   getDays(limit: number): Promise<any[]>;
@@ -132,7 +130,6 @@ declare class SWAGAPI extends emitter {
     resultHtml: string, 
     shareString: string, 
     titleHtml?: string, 
-    onReplay?: () => void
     onClose?: () => void
   }): Promise<void>;
   startGame(): Promise<void>;
@@ -144,10 +141,6 @@ declare class SWAGAPI extends emitter {
   populateAchievementSelect(domId: any): Promise<void>;
   getBrandingLogo(): Promise<HTMLImageElement>;
   getBrandingLogoUrl(): Promise<string>;
-  getPlatform(): ('embed' | 'app' | 'standalone');
-  getPlatformTheme(): ('light' | 'dark');
-  getExternalToken(): string;
-  generateGuestToken(): Promise<string>;
 }
 
 declare interface ToolbarItem {
@@ -157,8 +150,6 @@ declare interface ToolbarItem {
   disabled?: boolean;
   onClick?: () => void;
 }
-
-export {};
 
 declare global {
   interface Window {
