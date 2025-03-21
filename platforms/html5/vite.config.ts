@@ -20,7 +20,6 @@ export default defineConfig({
     'process.env': process.env
   },
   server: {
-    host: 'local.shockwave.com',
     port: 8888
   },
   preview: {

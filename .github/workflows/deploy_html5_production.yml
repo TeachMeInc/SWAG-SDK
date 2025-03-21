@@ -34,13 +34,3 @@ jobs:
           aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
           aws configure set default.region us-east-1
           aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/dist --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
-
-      - name: Clear Cloudflare Cache
-        env:
-          CF_TOKEN: ${{ secrets.CF_TOKEN }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-        run: |
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
-                -H "Authorization: Bearer ${CF_TOKEN}" \
-                -H "Content-Type: application/json" \
-                --data '{"files":["https://swagapi.shockwave.com/dist/swag-api.js", "https://swagapi.shockwave.com/dist/swag-api.css"]}'

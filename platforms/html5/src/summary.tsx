@@ -1,9 +1,9 @@
 import messages from './messages';
 import data from './data';
+import utils from './utils';
 import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import shareIcon from './assets/share-icon.svg';
-import replayIcon from './assets/replay-icon.svg';
 
 
 // #region Share Stats Component
@@ -31,13 +31,13 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
   return (
     <button 
-      className='swag-summary__btn'
+      className='swag-summary__btn --outline'
       onClick={copyToClipboard}
     >
       {
         copying 
           ? <>Copied!</> 
-          : <>Share<img src={shareIcon} alt='icon' aria-hidden /></>
+          : <>Share Stats <img src={shareIcon} alt='icon' aria-hidden /></>
       }
     </button>
   );
@@ -45,27 +45,6 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
 // #endregion
 
-
-// #region Replay Component
-
-interface ReplayProps {
-  onReplay?: () => void;
-}
-
-function ReplayComponent (props: ReplayProps) {
-  const { onReplay } = props;
-
-  return (
-    <button 
-      className='swag-summary__btn --outline --noMarginTop'
-      onClick={onReplay}
-    >
-      Replay<img src={replayIcon} alt='icon' aria-hidden />
-    </button>
-  );
-}
-
-// #endregion
 
 
 // #region Summary Component
@@ -77,18 +56,15 @@ interface SummaryProps {
   shareString: string;
   isSubscriber: boolean;
   relatedGames: { slug: string, title: string, icon: string }[];
-  promoLinks: { icon_url: string, background_color: string, title: string, url: string, type: string }[];
-  onReplay?: () => void;
 }
 
 function SummaryComponent (props: SummaryProps) {
+  const navigateToArchive = () => {
+    messages.trySendMessage('swag.navigateToArchive');
+  };
 
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
-  };
-  
-  const navigateToArchive = () => {
-    messages.trySendMessage('swag.navigateToArchive');
   };
 
   return (
@@ -120,56 +96,54 @@ function SummaryComponent (props: SummaryProps) {
             }
           </ul>
         </header>
-
-        <div className='swag-summary__button-container'>
+        <div>
           <ShareStatsComponent shareString={props.shareString} />
-          {
-            props.onReplay && (
-              <ReplayComponent 
-                onReplay={props.onReplay} 
-              />
-            )
-          }
         </div>
-        
-        {/*
         {
-          props.relatedGames.length 
+          props.isSubscriber
             ? (
-              <ul className='swag-summary__related-games'>
-                {
-                  props.relatedGames.map(({ slug, title, icon }) => {
-                    return (
-                      <li key={slug} onClick={() => navigateToTitle(slug)}>
-                        <img src={icon} alt={title} />
-                        <span>{title}</span>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            ) : <></>
+              <>
+                <p>
+                  Ready for more? Play more games from the archive.
+                </p>
+                <div>
+                  <button 
+                    className='swag-summary__btn'
+                    onClick={navigateToArchive}
+                  >
+                    View Archive
+                  </button>
+                </div>
+              </>
+            )
+            : (
+              <>
+                <p>
+                  Want more puzzles? Subscribe to get access to the full archive.
+                </p>
+                <div>
+                  <button 
+                    className='swag-summary__btn'
+                    onClick={navigateToArchive}
+                  >
+                    Subscribe
+                  </button>
+                </div>
+              </>
+            )
         }
-        */}
-
-        {
-          props.promoLinks.length
-            ? (
-              <ul className='swag-summary__promo-links'>
-                {
-                  props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
-                    const navMethod = type === 'archive' ? navigateToArchive : navigateToTitle;
-                    return (
-                      <li key={title} style={{ backgroundColor: background_color }} onClick={() => navMethod(url)}>
-                        <img src={icon_url} alt={title} />
-                        <span>{title}</span>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            ) : <></>
-        }
+        <ul className='swag-summary__related-games'>
+          {
+            props.relatedGames.map(({ slug, title, icon }) => {
+              return (
+                <li key={slug} onClick={() => navigateToTitle(slug)}>
+                  <img src={icon} alt={title} />
+                  <span>{title}</span>
+                </li>
+              );
+            })
+          }
+        </ul>
       </div>
     </div>
   );
@@ -180,7 +154,7 @@ function SummaryComponent (props: SummaryProps) {
 
 
 // #region Revisit Component
-/*
+
 interface RevisitProps {
   resultHtml: string;
   isSubscriber: boolean;
@@ -189,7 +163,6 @@ interface RevisitProps {
   onShowStats: () => void;
   relatedGames: { slug: string, title: string, icon: string }[];
 }
-
 
 function RevisitComponent (props: RevisitProps) {
   const navigateToArchive = () => {
@@ -284,7 +257,6 @@ function RevisitComponent (props: RevisitProps) {
     </div>
   );
 }
-*/
 
 // #endregion
 
@@ -298,27 +270,24 @@ class SummaryAPI {
     resultHtml: string,
     shareString: string,
     titleHtml?: string,
-    onReplay?: () => void,
     onClose?: () => void
   ) {
     const isSubscriber = await data.isSubscriber();
-    // const currentDay = await data.getCurrentDay();
-    // const currentDate = utils.getDate(currentDay.day);
-    // const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
+    const currentDay = await data.getCurrentDay();
+    const currentDate = utils.getDate(currentDay.day);
+    const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
 
     const gameStreak = await data.getDailyGameStreak();
     stats.unshift(
       {
         key: 'Current Streak',
-        value: gameStreak.streak?.toString()
+        value: gameStreak.streak.toString()
       },
       {
         key: 'Max Streak',
-        value: gameStreak.maxStreak?.toString()
+        value: gameStreak.maxStreak.toString()
       }
     );
-
-    const promoLinks = await data.getGamePromoLinks();
 
     let relatedGames;
     try {
@@ -336,14 +305,11 @@ class SummaryAPI {
         titleHtml={titleHtml}
         resultHtml={resultHtml}
         relatedGames={relatedGames}
-        promoLinks={promoLinks}
         shareString={shareString}
         isSubscriber={isSubscriber}
-        onReplay={unmount}
       />, rootEl);
     };
 
-    /*
     const showRevisit = () => {
       render(<RevisitComponent
         resultHtml={resultHtml}
@@ -354,24 +320,18 @@ class SummaryAPI {
         onShowStats={showSummary}
       />, rootEl);
     };
-    */
 
     const unmount = () => {
       this.unmount();
-      if (onReplay) onReplay();
       if (onClose) onClose();
     };
 
     return new Promise<void>((resolve) => {
-      /*
       if (hasPlayedToday) {
         showRevisit();
       } else {
         showSummary();
       }
-      */
-
-      showSummary();
       document.body.classList.add('swag-dialog-open');
       resolve();
     });

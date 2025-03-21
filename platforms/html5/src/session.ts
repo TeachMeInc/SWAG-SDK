@@ -12,7 +12,6 @@ export interface Session {
   theme: 'shockwave' | null;
   debug: boolean;
   provider: 'shockwave' | null;
-  jwt: string | null;
 }
 
 const session: Session = {
@@ -22,8 +21,7 @@ const session: Session = {
   wrapper: null,
   theme: null,
   debug: false,
-  provider: null,
-  jwt: null,
+  provider: null
 };
 
 export default session;
