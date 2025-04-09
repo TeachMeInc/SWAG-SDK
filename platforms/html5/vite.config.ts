@@ -21,10 +21,10 @@ export default defineConfig({
   },
   server: {
     host: 'local.shockwave.com',
-    port: 8888
+    port: process.env.PORT || 8888
   },
   preview: {
-    port: 8888
+    port: process.env.PORT || 8888
   },
   build: {
     // sourcemap: false,
