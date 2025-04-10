@@ -130,6 +130,7 @@ const methods = Emitter({
       const rootUrl = options.apiRoot || config.themes[ session.theme! ].apiRoot;
       const params = methods.buildUrlParamString(options.params);
       xhr.open('GET', encodeURI(rootUrl + options.method + params));
+      xhr.setRequestHeader('x-local-tz', utils.getTimeZone());
       if (session.jwt) {
         xhr.setRequestHeader('x-member-token', session.jwt);
       } else {
@@ -168,6 +169,7 @@ const methods = Emitter({
       const contentType = options.contentType || 'application/json;charset=UTF-8';
       xhr.open('POST', encodeURI(rootUrl + options.method), true);
       xhr.setRequestHeader('Content-Type', contentType);
+      xhr.setRequestHeader('x-local-tz', utils.getTimeZone());
       if (session.jwt) {
         xhr.setRequestHeader('x-member-token', session.jwt);
       } else {
