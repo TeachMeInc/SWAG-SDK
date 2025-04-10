@@ -89,9 +89,11 @@ const methods = {
   },
 
   getTimeZone: function (): string {
-    if(typeof window === 'undefined' || 
-       typeof Intl.DateTimeFormat !== 'function' || 
-       typeof Intl.DateTimeFormat().resolvedOptions !== 'function') {
+    if (
+      typeof window === 'undefined' || 
+      typeof Intl?.DateTimeFormat !== 'function' || 
+      typeof Intl?.DateTimeFormat().resolvedOptions !== 'function'
+    ) {
       return import.meta.env.VITE_DEFAULT_TIMEZONE;
     }
 
