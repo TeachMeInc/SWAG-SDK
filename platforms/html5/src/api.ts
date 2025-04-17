@@ -94,19 +94,21 @@ export default class SWAGAPI extends Emitter {
   // #region API Methods
 
   async startSession () {
-    if (utils.getPlatform() !== 'embed') {
-      const storedToken = localStorage.getItem('swag_token');
-      const passedInToken = this._parseUrlOptions('jwt') as string;
+    const passedInToken = this._parseUrlOptions('jwt') as string;
 
-      // External token provided in the URL
-      if (typeof passedInToken === 'string' && passedInToken.length > 0) {
-        session.jwt = passedInToken;
-      }
-      // Token stored in local storage
-      else if (typeof storedToken === 'string' && storedToken.length > 0) {
+    // External token provided in the URL
+    if (typeof passedInToken === 'string' && passedInToken.length > 0) {
+      session.jwt = passedInToken;
+    } 
+    // Local storage for standalone sites
+    else if (utils.getPlatform() === 'standalone') {
+      const storedToken = localStorage.getItem('swag_token');
+      if (typeof storedToken === 'string' && storedToken.length > 0) {
         session.jwt = storedToken;
       }
-    } else {
+    } 
+    // Embeded, will get user from member ID in cookie
+    else {
       session.jwt = null;
       localStorage.removeItem('swag_token');
     }
