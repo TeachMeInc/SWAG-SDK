@@ -25,6 +25,9 @@
     @import "breakpoints/desktop.scss";
 }
 
+// Theme overrides
+@import "summary.theme.scss";
+
 #swag-react-root {
   position: absolute;
   top: 0;

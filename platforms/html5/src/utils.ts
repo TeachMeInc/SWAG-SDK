@@ -86,7 +86,20 @@ const methods = {
       return 'standalone';
     }
     return 'embed';
-  }
+  },
+
+  getTimeZone: function (): string {
+    if (
+      typeof window === 'undefined' || 
+      typeof Intl?.DateTimeFormat !== 'function' || 
+      typeof Intl?.DateTimeFormat().resolvedOptions !== 'function'
+    ) {
+      return import.meta.env.VITE_DEFAULT_TIMEZONE;
+    }
+
+    return Intl.DateTimeFormat().resolvedOptions()?.timeZone ?? import.meta.env.VITE_DEFAULT_TIMEZONE;
+  },
+
 };
 
 export default methods;

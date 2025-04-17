@@ -113,6 +113,10 @@ export default class SWAGAPI extends Emitter {
       localStorage.removeItem('swag_token');
     }
 
+    // Theme
+    const theme = this.getPlatformTheme();
+    if (theme === 'dark') document.body.classList.add('swag-theme--dark');
+
     // Fetch the current user
     const entity = await data.getEntity();
 
