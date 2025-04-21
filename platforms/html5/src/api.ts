@@ -193,12 +193,16 @@ export default class SWAGAPI extends Emitter {
 
   // #region Daily Game Methods
 
-  startDailyGame (day: string) {
-    return data.postDailyGameProgress(day, false);
+  async startDailyGame (day: string) {
+    const result = await data.postDailyGameProgress(day, false);
+    messages.trySendMessage('swag.dailyGameProgress.start', day);
+    return result;
   }
 
-  completeDailyGame (day: string) {
-    return data.postDailyGameProgress(day, true);
+  async completeDailyGame (day: string) {
+    const result = await data.postDailyGameProgress(day, true);
+    messages.trySendMessage('swag.dailyGameProgress.complete', day);
+    return result;
   }
 
   getDailyGameProgress (month: string, year: string) {
