@@ -264,6 +264,8 @@ export default class SWAGAPI extends Emitter {
   }
 
   getCurrentUser () {
+    // eslint-disable-next-line no-console
+    console.warn('getCurrentUser is deprecated, use getCurrentEntity instead');
     return data.getCurrentUser();
   }
 

@@ -5,6 +5,13 @@ declare class APIWrapper {
   showLeaderboard(): Promise<void>;
 }
 
+declare interface Entity {
+  _id: string;
+  memberName: string;
+  isMember: boolean;
+  token: string;
+}
+
 declare interface DailyGameProgress {
   day: string;
   state: string;
@@ -115,7 +122,7 @@ declare class SWAGAPI extends emitter {
   getUserAchievements(): Promise<any[]>;
   postDatastore(key: string, value: string): Promise<unknown>;
   getUserDatastore(): Promise<unknown>;
-  getCurrentEntity(): string | null;
+  getCurrentEntity(): Entity | null;
   isSubscriber(): Promise<boolean>;
   getCurrentUser(): Promise<unknown>;
   navigateToLogin(): Promise<MessagePayload>;
