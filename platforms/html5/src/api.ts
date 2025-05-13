@@ -7,9 +7,10 @@ import session from './session';
 import utils from './utils';
 import data from './data';
 import dialog, { DialogOptions, DialogType } from './dialog';
-import messages, { ToolbarItem } from './messages';
+import messages from './messages';
 import summary from './summary';
 import { PostScoreOptions } from './data';
+import toolbar, { ToolbarItem } from 'src/toolbar';
 
 export default class SWAGAPI extends Emitter {
   protected _options: any;
@@ -284,15 +285,15 @@ export default class SWAGAPI extends Emitter {
   // #region Toolbar Management Methods
 
   setToolbarItems (items: ToolbarItem[]) {
-    return messages.setToolbarItems(items);
+    toolbar.setItems(items);
   }
 
   updateToolbarItem (item: ToolbarItem) {
-    return messages.updateToolbarItem(item);
+    toolbar.updateItem(item);
   }
 
   removeToolbarItem (id: string) {
-    return messages.removeToolbarItem(id);
+    toolbar.removeItem(id);
   }
 
   // #endregion
