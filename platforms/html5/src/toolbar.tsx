@@ -117,6 +117,28 @@ function useToolbarState () {
 
 // #region Component
 
+function FontAwesomeIcon (props: { icon: IconDefinition }) {
+  const icon = props.icon;
+
+  return (
+    <svg 
+      aria-hidden='true' 
+      focusable='false' 
+      data-prefix={icon.prefix}
+      data-icon={icon.iconName}
+      className={`svg-inline--fa fa-${icon.iconName}`} 
+      role='img' 
+      xmlns='http://www.w3.org/2000/svg' 
+      viewBox={`0 0 ${icon.icon[ 0 ]} ${icon.icon[ 1 ]}`}
+    >
+      <path 
+        fill='currentColor' 
+        d={icon.icon[ 4 ] as string}
+      />
+    </svg>
+  );
+}
+
 interface ToolbarProps {
   date: string;
   title: string;
@@ -254,7 +276,7 @@ export function Toolbar (props: ToolbarProps) {
                 className='swag-toolbar__icon' 
                 onClick={props.onClickFullScreen} 
               >
-                {/* <FontAwesomeIcon icon={faExpand} /> */}
+                <FontAwesomeIcon icon={faExpand} />
               </i>
             </span>
             {
@@ -262,7 +284,7 @@ export function Toolbar (props: ToolbarProps) {
                 <span
                   key={item.id}
                   onClick={() => props.onClickItem(item.id)}
-                  data-clickable={item.onClick}
+                  data-clickable={!!item.onClick}
                   data-disabled={item.disabled}
                   data-toggled={item.toggled}
                 >
@@ -270,7 +292,7 @@ export function Toolbar (props: ToolbarProps) {
                     item.icon 
                       ? (
                         <i className='swag-toolbar__icon'>
-                          {/* <FontAwesomeIcon icon={icons[ item.icon ]} /> */}
+                          <FontAwesomeIcon icon={icons[ item.icon ]} />
                         </i>
                       )
                       : null 

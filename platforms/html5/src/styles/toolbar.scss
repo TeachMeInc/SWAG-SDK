@@ -31,14 +31,6 @@
     }
 
     .swag-toolbar__icon {
-      width: 1.25rem;
-      height: 1.25rem;
-
-      svg {
-        width: 100%;
-        height: 100%;
-      }
-
       &:last-child {
         margin-right: 0;
       }
@@ -92,6 +84,7 @@
     margin-right: $marginSm;
     font-weight: 600;
     user-select: none;
+    position: relative;
 
     @media (min-width: 431px) {
       margin-right: $margin;
@@ -116,28 +109,58 @@
     }
 
     &[data-disabled=true] {
-      opacity: 0.5;
       pointer-events: none;
-    }
 
-    .swag-toolbar__icon {
-      height: 18px;
-      width: 18px;
-      margin-right: $marginVerySm;
+      i {
+        opacity: 0.5;
+      }
 
-      @media (min-width: 431px) {
-        height: 20px;
-        width: 20px;
-        margin-right: $marginVerySm;
+      &::after {
+        opacity: 0.5;
       }
     }
 
-    .swag-toolbar__icon-label {
-      height: 1.25rem;
-      line-height: 1.25rem;
-      display: inline-flex;
+    &[data-toggled=true] {
+      &::after {
+        content: '';
+        display: flex;
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        height: 2em;
+        width: 3px;
+        background-color: var(--swag-toolbar-font-color);
+        border: solid 1px var(--swag-toolbar-bg-color);
+        border-radius: 100px;
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
     }
   }
+}
+
+.swag-toolbar__icon {
+  position: relative;
+  height: 18px;
+  width: 18px;
+  margin-right: $marginVerySm;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (min-width: 431px) {
+    height: 20px;
+    width: 20px;
+    margin-right: $marginVerySm;
+  }
+}
+
+.swag-toolbar__icon-label {
+  height: 1.25rem;
+  line-height: 1.25rem;
+  display: inline-flex;
 }
 
 .swag-toolbar__container {

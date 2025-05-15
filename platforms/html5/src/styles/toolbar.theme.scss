@@ -12,15 +12,6 @@
   }
 }
 
-.swag-toolbar__icons {
-  > span {
-    .swag-toolbar__icon {
-      color: var(--swag-toolbar-font-color);
-      background-color: var(--swag-toolbar-font-color); // todo: remove
-    }
-  }
-}
-
 .swag-toolbar__title-icon {
   &.--hide-light {
     display: none;
@@ -36,4 +27,8 @@
       display: inline-block;
     }
   }
+}
+
+.swag-toolbar__icon {
+  color: var(--swag-toolbar-font-color);
 }
