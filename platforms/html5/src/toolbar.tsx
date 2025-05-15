@@ -1,10 +1,46 @@
-
+import { faBoltLightning, faBookmark, faCircleHalfStroke, faCircleQuestion, faClock, faExpand, faFlag, faGamepad, faGear, faHeart, faInfoCircle, faMagnifyingGlass, faMoon, faPause, faPencil, faPlay, faRankingStar, faStar, faStopwatch, faSun, faTrophy, faVolumeHigh, faVolumeLow, faVolumeOff, faVolumeXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faCircleQuestion as faCircleQuestionToggled } from '@fortawesome/free-regular-svg-icons';
 import { render } from 'preact';
-import { useEffect, useReducer } from 'preact/hooks';
+import { useEffect, useReducer, useRef } from 'preact/hooks';
 
 
 
-// #region Types
+// #region Icons
+
+const icons: Record<string, IconDefinition> = {
+  faBoltLightning,
+  faBookmark,
+  faCircleHalfStroke,
+  faCircleQuestion,
+  faCircleQuestionToggled,
+  faClock,
+  faExpand,
+  faFlag,
+  faGamepad,
+  faGear,
+  faHeart,
+  faInfoCircle,
+  faMagnifyingGlass,
+  faMoon,
+  faPause,
+  faPencil,
+  faPlay,
+  faRankingStar,
+  faStar,
+  faStopwatch,
+  faSun,
+  faTrophy,
+  faVolumeXmark,
+  faVolumeOff,
+  faVolumeLow,
+  faVolumeHigh,
+};
+
+// #endregion
+
+
+
+// #region State
 
 export interface ToolbarItem {
   id: string;
@@ -29,54 +65,6 @@ enum ToolbarStateActionType {
   ADD_OR_UPDATE_ITEM,
   REMOVE_ITEM,
 }
-
-enum ToolbarEventName {
-  SET_ITEMS = 'swag.toolbar.setItems',
-  UPDATE_ITEM = 'swag.toolbar.updateItem',
-  REMOVE_ITEM = 'swag.toolbar.removeItem',
-}
-
-// #endregion
-
-
-
-// #region Component
-
-interface ToolbarProps {
-  date: string
-  title: string
-  onClickFullScreen: () => void
-  onClickItem: (id: string) => void;
-}
-
-const icons = {
-  // faBoltLightning,
-  // faBookmark,
-  // faCircleHalfStroke,
-  // faCircleQuestion,
-  // faCircleQuestionToggled,
-  // faClock,
-  // faExpand,
-  // faFlag,
-  // faGamepad,
-  // faGear,
-  // faHeart,
-  // faInfoCircle,
-  // faMagnifyingGlass,
-  // faMoon,
-  // faPause,
-  // faPencil,
-  // faPlay,
-  // faRankingStar,
-  // faStar,
-  // faStopwatch,
-  // faSun,
-  // faTrophy,
-  // faVolumeXmark,
-  // faVolumeOff,
-  // faVolumeLow,
-  // faVolumeHigh,
-};
 
 function useToolbarState () {
   return useReducer<ToolbarState, ToolbarStateAction>((state, action) => {
@@ -123,8 +111,24 @@ function useToolbarState () {
   }, { items: [] });
 }
 
+// #endregion
+
+
+
+// #region Component
+
+interface ToolbarProps {
+  date: string;
+  title: string;
+  titleIcon?: string;
+  titleIconDark?: string;
+  onClickFullScreen: () => void;
+  onClickItem: (id: string) => void;
+}
+
 export function Toolbar (props: ToolbarProps) {
   const [ toolbarState, dispatchToolbarState ] = useToolbarState();
+  const elRef = useRef<HTMLDivElement>(null);
 
   // 08-12-2024
   const shortDate = new Date(props.date).toLocaleDateString('en-US', {
@@ -195,41 +199,93 @@ export function Toolbar (props: ToolbarProps) {
       document.removeEventListener(ToolbarEventName.UPDATE_ITEM, updateItemHandler as EventListener);
       document.removeEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
     };
-  }, [  dispatchToolbarState ]);
+  }, [ dispatchToolbarState ]);
+
+  useEffect(() => {
+    const el = elRef.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const height = rect.height;
+
+    document.body.style.paddingTop = `${height}px`;
+  }, []);
 
   return (
-    <header className='swag-toolbar'>
-      <div className='swag-toolbar-container'>
-        <div className='swag-toolba-container-inner'>
-          <aside className='swag-toolbar-flex' data-pull-left>
-            <span data-hide-desktop>
+    <header className='swag-toolbar' ref={elRef}>
+      <div className='swag-toolbar__container'>
+        <div className='swag-toolbar__container__inner'>
+          <aside className='swag-toolbar__flex --pull-left'>
+            <span className='--hide-desktop'>
               {shortDate}
             </span>
-            <span data-hide-mobile>
+            <span className='--hide-mobile'>
               {fullDate}
             </span>
           </aside>
-          <div className='swag-toolbar-flex'>
-            <h1>{props.title}</h1>
+          <div className='swag-toolbar__flex'>
+            <h1>
+              {
+                props.titleIcon
+                  ? (
+                    <>
+                      <img 
+                        className='swag-toolbar__title-icon --hide-dark'
+                        src={props.titleIcon} 
+                        alt={`${props.title} logo`} 
+                        aria-hidden 
+                      />
+                      <img 
+                        className='swag-toolbar__title-icon --hide-light'
+                        src={props.titleIconDark || props.titleIcon} 
+                        alt={`${props.title} logo`} 
+                        aria-hidden 
+                      />
+                    </>
+                  )
+                  : null
+              }
+              {props.title}
+            </h1>
           </div>
-          <div className='swag-toolbar-flex swag-toolbar-icons' data-pull-right>
-            <span data-clickable data-hide-mobile>
-              <i className='swag-toolbar-icon' onClick={props.onClickFullScreen} />
+          <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>
+            <span className='--hide-mobile' data-clickable>
+              <i 
+                className='swag-toolbar__icon' 
+                onClick={props.onClickFullScreen} 
+              >
+                {/* <FontAwesomeIcon icon={faExpand} /> */}
+              </i>
             </span>
             {
-              toolbarState.items.forEach((item) => (
+              toolbarState.items.map((item) => (
                 <span
                   key={item.id}
                   onClick={() => props.onClickItem(item.id)}
                   data-clickable={item.onClick}
                   data-disabled={item.disabled}
+                  data-toggled={item.toggled}
                 >
-                  { item.icon ? <i className='swag-toolbar-icon' /> : null }
-                  { item.label ? <span className='swag-toolbar-icon-label'>{item.label}</span> : null }
+                  { 
+                    item.icon 
+                      ? (
+                        <i className='swag-toolbar__icon'>
+                          {/* <FontAwesomeIcon icon={icons[ item.icon ]} /> */}
+                        </i>
+                      )
+                      : null 
+                  }
+                  { 
+                    item.label 
+                      ? (
+                        <span className='swag-toolbar__icon-label'>{item.label}</span> 
+                      )
+                      : null 
+                  }
                 </span>
               ))
             }
-          </div>
+          </aside>
         </div>
       </div>
     </header>
@@ -242,13 +298,32 @@ export function Toolbar (props: ToolbarProps) {
 
 // #region Toolbar API
 
+enum ToolbarEventName {
+  SET_ITEMS = 'swag.toolbar.setItems',
+  UPDATE_ITEM = 'swag.toolbar.updateItem',
+  REMOVE_ITEM = 'swag.toolbar.removeItem',
+}
+
 class ToolbarAPI {
-  async showToolbar (
-  ) {
+  async showToolbar () {
     const rootEl = document.getElementById('swag-react-root')!;
 
     const showToolbar = () => {
-      render(<div></div>, rootEl);
+      render(
+        <Toolbar 
+          date='2024-08-12'
+          title='Toolbar Title'
+          titleIcon='https://new.shockwave.com/images/SW25.svg'
+          titleIconDark='https://new.shockwave.com/images/SW25_alt.svg'
+          onClickFullScreen={() => {
+            // Handle full screen click
+          }}
+          onClickItem={(_id) => {
+            // Handle item click
+          }}
+        />, 
+        rootEl
+      );
     };
 
     return new Promise<void>((resolve) => {
@@ -292,5 +367,9 @@ class ToolbarAPI {
 
 
 
+// #region Export
+
 const toolbar = new ToolbarAPI();
 export default toolbar;
+
+// #endregion

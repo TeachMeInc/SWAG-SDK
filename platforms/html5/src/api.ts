@@ -10,7 +10,7 @@ import dialog, { DialogOptions, DialogType } from './dialog';
 import messages from './messages';
 import summary from './summary';
 import { PostScoreOptions } from './data';
-import toolbar, { ToolbarItem } from 'src/toolbar';
+import toolbar, { ToolbarItem } from './toolbar';
 
 export default class SWAGAPI extends Emitter {
   protected _options: any;
@@ -55,6 +55,8 @@ export default class SWAGAPI extends Emitter {
     const reactRoot = document.createElement('div');
     reactRoot.setAttribute('id', 'swag-react-root');
     session.wrapper!.appendChild(reactRoot);
+
+    toolbar.showToolbar();
 
     elementResizeEvent(session.wrapper!, function () {
       setTimeout(function () {

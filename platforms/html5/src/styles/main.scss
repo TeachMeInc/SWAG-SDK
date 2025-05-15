@@ -1,32 +1,35 @@
+@import 'variables.scss';
+
 .swag-wrapper {
-    position: relative;
-    overflow-y: hidden;
-    font-family: Arial, Helvetica, sans-serif !important;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    flex: 1 1 100%;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  overflow-y: hidden;
+  font-family: Arial, Helvetica, sans-serif !important;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: column;
 
-    * {
-      user-select: none;
-    }
+  * {
+    user-select: none;
+  }
 
-    @import "variables.scss";
-    @import "animate.scss";
-    @import "dialog.scss";
-    @import "summary.scss";
-    @import "ui.scss";
-    @import "forms.scss";
-    @import "breakpoints/phone.scss";
-    @import "breakpoints/phablet.scss";
-    @import "breakpoints/tablet.scss";
-    @import "breakpoints/desktop.scss";
+  @import 'animate.scss';
+  @import 'dialog.scss';
+  @import 'summary.scss';
+  @import 'toolbar.scss';
+  @import 'ui.scss';
+  @import 'forms.scss';
+  @import 'breakpoints/phone.scss';
+  @import 'breakpoints/phablet.scss';
+  @import 'breakpoints/tablet.scss';
+  @import 'breakpoints/desktop.scss';
 }
 
-// Theme overrides
-@import "summary.theme.scss";
+// Component themes
+@import 'summary.theme.scss';
+@import 'toolbar.theme.scss';
 
 #swag-react-root {
   position: absolute;
@@ -41,6 +44,11 @@
 }
 
 // static
+
+body {
+  position: relative;
+  box-sizing: border-box;
+}
 
 body.swag-dialog-open {
   pointer-events: none;
