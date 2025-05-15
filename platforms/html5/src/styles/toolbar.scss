@@ -110,13 +110,14 @@
 
     &[data-disabled=true] {
       pointer-events: none;
+      opacity: 0.5;
 
       i {
-        opacity: 0.5;
+        opacity: 1;
       }
 
       &::after {
-        opacity: 0.5;
+        opacity: 1;
       }
     }
 
@@ -130,8 +131,6 @@
         left: 50%;
         height: 2em;
         width: 3px;
-        background-color: var(--swag-toolbar-font-color);
-        border: solid 1px var(--swag-toolbar-bg-color);
         border-radius: 100px;
         transform: translate(-50%, -50%) rotate(45deg);
       }

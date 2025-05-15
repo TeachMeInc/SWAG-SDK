@@ -29,6 +29,17 @@
   }
 }
 
+.swag-toolbar__icons {
+  > span {
+    &[data-toggled=true] {
+      &::after {
+        background-color: var(--swag-toolbar-font-color);
+        border: solid 1px var(--swag-toolbar-bg-color);
+      }
+    }
+  }
+}
+
 .swag-toolbar__icon {
   color: var(--swag-toolbar-font-color);
 }
