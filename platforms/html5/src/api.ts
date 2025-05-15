@@ -52,9 +52,9 @@ export default class SWAGAPI extends Emitter {
     session.theme = siteMode;
     session.provider = siteMode;
 
-    const reactRoot = document.createElement('div');
-    reactRoot.setAttribute('id', 'swag-react-root');
-    session.wrapper!.appendChild(reactRoot);
+    const summaryRoot = document.createElement('div');
+    summaryRoot.setAttribute('id', 'swag-summary-root');
+    session.wrapper!.appendChild(summaryRoot);
 
     toolbar.showToolbar();
 

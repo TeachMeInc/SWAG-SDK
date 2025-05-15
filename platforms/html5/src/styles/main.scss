@@ -15,10 +15,9 @@
     user-select: none;
   }
 
+  // Legacy UI
   @import 'animate.scss';
   @import 'dialog.scss';
-  @import 'summary.scss';
-  @import 'toolbar.scss';
   @import 'ui.scss';
   @import 'forms.scss';
   @import 'breakpoints/phone.scss';
@@ -27,28 +26,18 @@
   @import 'breakpoints/desktop.scss';
 }
 
-// Component themes
+// Preact Components
+@import 'summary.scss';
 @import 'summary.theme.scss';
+@import 'toolbar.scss';
 @import 'toolbar.theme.scss';
-
-#swag-react-root {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-#swag-react-root > * {
-  pointer-events: auto;
-}
-
-// static
 
 body {
   position: relative;
   box-sizing: border-box;
 }
+
+// Legacy styles
 
 body.swag-dialog-open {
   pointer-events: none;

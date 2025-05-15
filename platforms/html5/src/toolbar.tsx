@@ -273,7 +273,7 @@ export function Toolbar (props: ToolbarProps) {
     const rect = el.getBoundingClientRect();
     const height = rect.height;
 
-    document.body.style.paddingTop = `${height}px`;
+    document.body.style.marginTop = `${height}px`;
   }, []);
 
 
@@ -375,9 +375,11 @@ enum ToolbarEventName {
 }
 
 class ToolbarAPI {
-  async showToolbar () {
-    const rootEl = document.getElementById('swag-react-root')!;
+  getRootEl () {
+    return document.body;
+  }
 
+  async showToolbar () {
     const showToolbar = () => {
       render(
         <Toolbar
@@ -389,7 +391,7 @@ class ToolbarAPI {
             // Handle full screen click
           }}
         />, 
-        rootEl
+        this.getRootEl()
       );
     };
 
@@ -400,8 +402,7 @@ class ToolbarAPI {
   }
 
   protected unmount () {
-    const rootEl = document.getElementById('swag-react-root')!;
-    render(null, rootEl);
+    render(null, this.getRootEl());
     return Promise.resolve();
   }
 
