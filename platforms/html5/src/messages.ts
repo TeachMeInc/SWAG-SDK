@@ -18,6 +18,8 @@ function tryParse <T> (data: string): T | undefined {
 
 export type MessageEventName = 
   // 'swag.toolbar.click' |
+  'swag.toolbar.hide' |
+  'swag.toolbar.show' |
   'swag.toggleFullScreen' |
   'swag.navigateToArchive' |
   'swag.navigateToGameLanding' |

@@ -19,9 +19,14 @@ body.swag-summary-open {
     width: 100svw;
     height: 100svh;
   }
+
+  .swag-summary__inner {
+    pointer-events: auto;
+  }
 }
 
 .swag-summary {
+  position: relative;
   display: flex;
   text-align: center;
 }
@@ -32,7 +37,6 @@ body.swag-summary-open {
   padding: 1rem;
   margin: auto;
   box-sizing: border-box;
-  pointer-events: auto;
 
   h4 {
     font-size: 125%;

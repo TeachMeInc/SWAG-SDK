@@ -168,6 +168,7 @@ interface ToolbarProps {
   title: string;
   titleIcon?: string;
   titleIconDark?: string;
+  useCustomRootEl?: boolean;
   onClickFullScreen: () => void;
 }
 
@@ -267,6 +268,8 @@ export function Toolbar (props: ToolbarProps) {
   }, [ dispatchToolbarState ]);
 
   useEffect(() => {
+    if (props.useCustomRootEl) return;
+
     const el = elRef.current;
     if (!el) return;
 
@@ -274,7 +277,7 @@ export function Toolbar (props: ToolbarProps) {
     const height = rect.height;
 
     document.body.style.marginTop = `${height}px`;
-  }, []);
+  }, [ props.useCustomRootEl ]);
 
 
   /* 
@@ -375,11 +378,15 @@ enum ToolbarEventName {
 }
 
 class ToolbarAPI {
+  rootElId: string = 'swag-toolbar-root';
+
   getRootEl () {
-    return document.body;
+    return document.getElementById(this.rootElId)!;
   }
 
-  async showToolbar () {
+  async showToolbar (options: {
+    useCustomRootEl?: boolean;
+  }) {
     const showToolbar = () => {
       render(
         <Toolbar
@@ -387,8 +394,9 @@ class ToolbarAPI {
           title='Toolbar Title'
           titleIcon='https://new.shockwave.com/images/SW25.svg'
           titleIconDark='https://new.shockwave.com/images/SW25_alt.svg'
+          useCustomRootEl={options.useCustomRootEl}
           onClickFullScreen={() => {
-            // Handle full screen click
+            // TODO: Handle full screen click
           }}
         />, 
         this.getRootEl()

@@ -1,7 +1,20 @@
-.swag-toolbar {
-  position: fixed;
+#swag-toolbar-root {
+  position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
+  pointer-events: none;
+  
+  .swag-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: auto;
+  }
+}
+
+.swag-toolbar {
+  position: relative;
   width: 100svw;
   max-width: 100svw;
   height: var(--swag-toolbar-height);

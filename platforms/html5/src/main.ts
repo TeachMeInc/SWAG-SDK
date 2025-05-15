@@ -2,7 +2,7 @@
 
 import config from './config';
 import ui from './dialog';
-import SWAGAPI from './api';
+import SWAGAPI, { SWAGAPIOptions } from './api';
 
 import './styles/main.scss';
 
@@ -10,11 +10,11 @@ import './styles/main.scss';
 console.log('SWAG HTML5 SDK ' + config.version);
 
 export default class APIWrapper {
-  getInstance (options: any) {
+  getInstance (options: SWAGAPIOptions) {
     return new SWAGAPI(options);
   }
 
-  getInstanceAsync (options: any) {
+  getInstanceAsync (options: SWAGAPIOptions) {
     // eslint-disable-next-line no-console
     console.warn('getInstanceAsync is deprecated. Please use getInstance instead.');
     return new Promise((resolve) => {

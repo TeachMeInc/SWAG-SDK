@@ -12,10 +12,24 @@ import summary from './summary';
 import { PostScoreOptions } from './data';
 import toolbar, { ToolbarItem } from './toolbar';
 
-export default class SWAGAPI extends Emitter {
-  protected _options: any;
+export interface SWAGAPIOptions {
+  gameId?: string;
+  wrapper: HTMLElement;
+  summary?: {
+    wrapperId: string;
+  },
+  toolbar?: {
+    wrapperId: string;
+  },
+  // Deprecated
+  theme?: 'shockwave';
+  api_key?: string;
+}
 
-  constructor (options: any) {
+export default class SWAGAPI extends Emitter {
+  protected _options: SWAGAPIOptions;
+
+  constructor (options: SWAGAPIOptions) {
     super();
     Emitter(this);
 
@@ -43,21 +57,41 @@ export default class SWAGAPI extends Emitter {
     });
   }
 
+  protected _createPreactRoot (id: string) {
+    const root = document.createElement('div');
+    root.setAttribute('id', id);
+    session.wrapper!.appendChild(root);
+  }
+
   protected _init () {
+    // Configuration setup
     const siteMode = this._getSiteMode();
-    
-    session.api_key = this._options.api_key;
+
+    session.api_key = this._options.gameId || this._options.api_key || null;
     session.wrapper = this._options.wrapper;
     session.wrapper!.classList.add('swag-wrapper');
     session.theme = siteMode;
     session.provider = siteMode;
 
-    const summaryRoot = document.createElement('div');
-    summaryRoot.setAttribute('id', 'swag-summary-root');
-    session.wrapper!.appendChild(summaryRoot);
+    // Summary screen setup
+    if (!this._options.summary?.wrapperId) this._createPreactRoot('swag-summary-root');
+    else summary.rootElId = this._options.summary.wrapperId;
 
-    toolbar.showToolbar();
+    // Toolbar setup
+    if (this._options.toolbar) {
+      messages.trySendMessage('swag.toolbar.hide');
 
+      if (!this._options.toolbar.wrapperId) this._createPreactRoot('swag-toolbar-root');
+      else toolbar.rootElId = this._options.toolbar.wrapperId;
+
+      toolbar.showToolbar({ 
+        useCustomRootEl: !!this._options.toolbar?.wrapperId 
+      });
+    } else {
+      messages.trySendMessage('swag.toolbar.show');
+    }
+
+    // Dialog setup (legacy)
     elementResizeEvent(session.wrapper!, function () {
       setTimeout(function () {
         dialog.resize();
@@ -65,13 +99,8 @@ export default class SWAGAPI extends Emitter {
     });
   }
 
-  protected _getSiteMode () {
-    // priority for site mode is window.SWAGTHEME, swag options theme then based on domain hosting the game
-    const domainTheme = location.hostname.split('.').reverse().splice(1,1).reverse().join('.');
-    const reqTheme = window.SWAGTHEME || this._options.theme || domainTheme;
-    return config.themes[ reqTheme ]
-      ? reqTheme
-      : 'shockwave';
+  protected _getSiteMode (): 'shockwave' {
+    return 'shockwave';
   }
 
   protected _emitError (errorType: string) {

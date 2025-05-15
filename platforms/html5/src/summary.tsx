@@ -164,8 +164,10 @@ function SummaryComponent (props: SummaryProps) {
 // #region Summary API
 
 class SummaryAPI {
+  rootElId: string = 'swag-summary-root';
+
   getRootEl () {
-    return document.getElementById('swag-summary-root')!;
+    return document.getElementById(this.rootElId)!;
   }
 
   async showSummary (
