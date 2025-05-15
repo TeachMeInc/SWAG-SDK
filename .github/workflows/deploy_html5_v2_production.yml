@@ -1,6 +1,9 @@
-name: HTML5 - Production Deployment
+name: HTML5 - v2 Production Deployment
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -33,8 +36,8 @@ jobs:
           aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
           aws configure set default.region us-east-1
-          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/dist --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
-
+          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/v2/dist --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
+      
       - name: Clear Cloudflare Cache
         env:
           CF_TOKEN: ${{ secrets.CF_TOKEN }}
@@ -43,4 +46,4 @@ jobs:
           curl -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
                 -H "Authorization: Bearer ${CF_TOKEN}" \
                 -H "Content-Type: application/json" \
-                --data '{"files":["https://swagapi.shockwave.com/dist/swag-api.js", "https://swagapi.shockwave.com/dist/swag-api.css"]}'
+                --data '{"files":["https://swagapi.shockwave.com/v2/dist/swag-api.js", "https://swagapi.shockwave.com/v2/dist/swag-api.css"]}'
