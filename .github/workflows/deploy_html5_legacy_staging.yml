@@ -1,6 +1,9 @@
-name: HTML5 - Production Deployment
+name: HTML5 - Legacy Staging Deployment
 
 on:
+  push:
+    branches:
+      - legacy-staging
   workflow_dispatch:
 
 jobs:
@@ -21,7 +24,7 @@ jobs:
         working-directory: ./platforms/html5
 
       - name: Build project
-        run: npm run build
+        run: npm run build-staging
         working-directory: ./platforms/html5
 
       - name: Upload to DigitalOcean Spaces
@@ -33,4 +36,14 @@ jobs:
           aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
           aws configure set default.region us-east-1
-          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/dist --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
+          aws s3 sync ./platforms/html5/dist s3://swagapi.shockwave.com/staging/dist --endpoint-url "https://sfo2.digitaloceanspaces.com" --acl public-read
+
+      - name: Clear Cloudflare Cache
+        env:
+          CF_TOKEN: ${{ secrets.CF_TOKEN }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+                -H "Authorization: Bearer ${CF_TOKEN}" \
+                -H "Content-Type: application/json" \
+                --data '{"files":["https://swagapi.shockwave.com/staging/dist/swag-api.js", "https://swagapi.shockwave.com/staging/dist/swag-api.css"]}'
