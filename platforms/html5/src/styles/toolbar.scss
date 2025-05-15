@@ -120,21 +120,6 @@
         opacity: 1;
       }
     }
-
-    &[data-toggled=true] {
-      &::after {
-        content: '';
-        display: flex;
-        position: absolute;
-        z-index: 1;
-        top: 50%;
-        left: 50%;
-        height: 2em;
-        width: 3px;
-        border-radius: 100px;
-        transform: translate(-50%, -50%) rotate(45deg);
-      }
-    }
   }
 }
 
