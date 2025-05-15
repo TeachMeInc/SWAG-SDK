@@ -2,6 +2,8 @@ import { faBoltLightning, faBookmark, faCircleHalfStroke, faCircleQuestion, faCl
 import { faCircleQuestion as faCircleQuestionToggled } from '@fortawesome/free-regular-svg-icons';
 import { render } from 'preact';
 import { useEffect, useReducer, useRef } from 'preact/hooks';
+import messages from './messages';
+import utils from './utils';
 
 
 
@@ -169,7 +171,7 @@ interface ToolbarProps {
   titleIcon?: string;
   titleIconDark?: string;
   useCustomRootEl?: boolean;
-  onClickFullScreen: () => void;
+  onClickFullScreen?: () => void;
 }
 
 export function Toolbar (props: ToolbarProps) {
@@ -322,14 +324,20 @@ export function Toolbar (props: ToolbarProps) {
             </h1>
           </div>
           <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>
-            <span className='--hide-mobile' data-clickable>
-              <i 
-                className='swag-toolbar__icon' 
-                onClick={props.onClickFullScreen} 
-              >
-                <FontAwesomeIcon icon={faExpand} />
-              </i>
-            </span>
+            {
+              props.onClickFullScreen 
+                ? (
+                  <span className='--hide-mobile' data-clickable>
+                    <i 
+                      className='swag-toolbar__icon' 
+                      onClick={props.onClickFullScreen} 
+                    >
+                      <FontAwesomeIcon icon={faExpand} />
+                    </i>
+                  </span>
+                )
+                : null
+            }
             {
               toolbarState.items.map((item) => (
                 <span
@@ -386,7 +394,18 @@ class ToolbarAPI {
 
   async showToolbar (options: {
     useCustomRootEl?: boolean;
+    onClickFullScreen?: () => void;
   }) {
+    let onClickFullScreen: () => void;
+
+    if (utils.getPlatform() === 'embed') {
+      onClickFullScreen = () => {
+        messages.trySendMessage('swag.toggleFullScreen', '', true);
+      };
+    } else if (options.onClickFullScreen) {
+      onClickFullScreen = options.onClickFullScreen;
+    }
+
     const showToolbar = () => {
       render(
         <Toolbar
@@ -395,9 +414,7 @@ class ToolbarAPI {
           titleIcon='https://new.shockwave.com/images/SW25.svg'
           titleIconDark='https://new.shockwave.com/images/SW25_alt.svg'
           useCustomRootEl={options.useCustomRootEl}
-          onClickFullScreen={() => {
-            // TODO: Handle full screen click
-          }}
+          onClickFullScreen={onClickFullScreen}
         />, 
         this.getRootEl()
       );

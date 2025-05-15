@@ -182,7 +182,16 @@
         theme: 'shockwave',
         debug: true,
         summary: {},
-        toolbar: {},
+        toolbar: {
+          wrapperId: '',
+          onClickFullScreen: () => {
+            if (document.fullscreenElement) {
+              document.exitFullscreen();
+            } else {
+              document.body.requestFullscreen();
+            }
+          },
+        },
       });
 
       const game = {

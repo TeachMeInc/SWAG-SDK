@@ -20,6 +20,7 @@ export interface SWAGAPIOptions {
   },
   toolbar?: {
     wrapperId: string;
+    onClickFullScreen?: () => void;
   },
   // Deprecated
   theme?: 'shockwave';
@@ -79,16 +80,17 @@ export default class SWAGAPI extends Emitter {
 
     // Toolbar setup
     if (this._options.toolbar) {
-      messages.trySendMessage('swag.toolbar.hide');
+      messages.trySendMessage('swag.toolbar.hide', '', true);
 
       if (!this._options.toolbar.wrapperId) this._createPreactRoot('swag-toolbar-root');
       else toolbar.rootElId = this._options.toolbar.wrapperId;
 
       toolbar.showToolbar({ 
-        useCustomRootEl: !!this._options.toolbar?.wrapperId 
+        useCustomRootEl: !!this._options.toolbar?.wrapperId,
+        onClickFullScreen: this._options.toolbar.onClickFullScreen,
       });
     } else {
-      messages.trySendMessage('swag.toolbar.show');
+      messages.trySendMessage('swag.toolbar.show', '', true);
     }
 
     // Dialog setup (legacy)

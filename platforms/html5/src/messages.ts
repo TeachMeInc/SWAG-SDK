@@ -44,6 +44,12 @@ class MessagesAPI {
     message: string = '', 
     ignoreResponse: boolean = false
   ) {
+    if (!window.parent || window.parent === window) {
+      // eslint-disable-next-line no-console
+      console.warn(`Failed to send message for event ${eventName}. Reason: No parent window`);
+      return Promise.resolve();
+    }
+
     if (!ignoreResponse) {
       if (this.currentMessageRequests.includes(eventName)) {
         return Promise.reject(new Error(`Failed to send message for event ${eventName}. Reason: Already in progress`));
