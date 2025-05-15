@@ -36,6 +36,52 @@ const icons: Record<string, IconDefinition> = {
   faVolumeHigh,
 };
 
+function FontAwesomeIcon (props: { icon: IconDefinition }) {
+  const icon = props.icon;
+
+  return (
+    <svg 
+      aria-hidden='true' 
+      focusable='false' 
+      data-prefix={icon.prefix}
+      data-icon={icon.iconName}
+      className={`svg-inline--fa fa-${icon.iconName}`} 
+      role='img' 
+      xmlns='http://www.w3.org/2000/svg' 
+      viewBox={`0 0 ${icon.icon[ 0 ]} ${icon.icon[ 1 ]}`}
+    >
+      <path 
+        fill='currentColor' 
+        d={icon.icon[ 4 ] as string}
+      />
+    </svg>
+  );
+}
+
+// interface CustomIconDefinition {
+//   viewbox: [number, number];
+// }
+
+// function CustomIcon (props: { icon: CustomIconDefinition }) {
+//   const icon = props.icon;
+
+//   return (
+//     <svg 
+//       aria-hidden='true'
+//       focusable='false'
+//       className='swag-toolbar__custom-icon'
+//       role='img' 
+//       xmlns='http://www.w3.org/2000/svg'
+//       viewBox={`0 0 ${icon.viewbox[ 0 ]} ${icon.viewbox[ 1 ]}`}
+//     >
+//       {/* <path 
+//         fill='currentColor' 
+//         d={icon.icon[ 4 ] as string}
+//       /> */}
+//     </svg>
+//   );
+// }
+
 // #endregion
 
 
@@ -117,38 +163,19 @@ function useToolbarState () {
 
 // #region Component
 
-function FontAwesomeIcon (props: { icon: IconDefinition }) {
-  const icon = props.icon;
-
-  return (
-    <svg 
-      aria-hidden='true' 
-      focusable='false' 
-      data-prefix={icon.prefix}
-      data-icon={icon.iconName}
-      className={`svg-inline--fa fa-${icon.iconName}`} 
-      role='img' 
-      xmlns='http://www.w3.org/2000/svg' 
-      viewBox={`0 0 ${icon.icon[ 0 ]} ${icon.icon[ 1 ]}`}
-    >
-      <path 
-        fill='currentColor' 
-        d={icon.icon[ 4 ] as string}
-      />
-    </svg>
-  );
-}
-
 interface ToolbarProps {
   date: string;
   title: string;
   titleIcon?: string;
   titleIconDark?: string;
   onClickFullScreen: () => void;
-  onClickItem: (id: string) => void;
 }
 
 export function Toolbar (props: ToolbarProps) {
+  /*
+   * State
+   */
+
   const [ toolbarState, dispatchToolbarState ] = useToolbarState();
   const elRef = useRef<HTMLDivElement>(null);
 
@@ -165,6 +192,22 @@ export function Toolbar (props: ToolbarProps) {
     day: 'numeric',
     year: 'numeric',
   });
+
+
+  /*
+   * Methods
+   */
+
+  const onClickItem = (id: string) => {
+    const item = toolbarState.items.find(item => item.id === id);
+    if (!item) return;
+    if (item.onClick) item.onClick();
+  };
+
+
+  /*
+   * Effects
+   */
 
   useEffect(() => {
     // Set Items
@@ -233,6 +276,11 @@ export function Toolbar (props: ToolbarProps) {
     document.body.style.paddingTop = `${height}px`;
   }, []);
 
+
+  /* 
+   * Layout
+   */
+
   return (
     <header className='swag-toolbar' ref={elRef}>
       <div className='swag-toolbar__container'>
@@ -283,7 +331,7 @@ export function Toolbar (props: ToolbarProps) {
               toolbarState.items.map((item) => (
                 <span
                   key={item.id}
-                  onClick={() => props.onClickItem(item.id)}
+                  onClick={() => onClickItem(item.id)}
                   data-clickable={!!item.onClick}
                   data-disabled={item.disabled}
                   data-toggled={item.toggled}
@@ -332,16 +380,13 @@ class ToolbarAPI {
 
     const showToolbar = () => {
       render(
-        <Toolbar 
+        <Toolbar
           date='2024-08-12'
           title='Toolbar Title'
           titleIcon='https://new.shockwave.com/images/SW25.svg'
           titleIconDark='https://new.shockwave.com/images/SW25_alt.svg'
           onClickFullScreen={() => {
             // Handle full screen click
-          }}
-          onClickItem={(_id) => {
-            // Handle item click
           }}
         />, 
         rootEl
