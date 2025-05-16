@@ -393,6 +393,8 @@ class ToolbarAPI {
   async showToolbar (options: {
     useCustomRootEl?: boolean;
     onClickFullScreen?: () => void;
+    titleIcon?: string;
+    titleIconDark?: string;
   }) {
     let onClickFullScreen: () => void;
 
@@ -407,10 +409,10 @@ class ToolbarAPI {
     const showToolbar = () => {
       render(
         <Toolbar
-          date='2024-08-12'
-          title='Toolbar Title'
-          titleIcon='https://new.shockwave.com/images/SW25.svg'
-          titleIconDark='https://new.shockwave.com/images/SW25_alt.svg'
+          date='2024-08-12' // TODO
+          title='Toolbar Title' // TODO
+          titleIcon={options.titleIcon}
+          titleIconDark={options.titleIconDark}
           useCustomRootEl={options.useCustomRootEl}
           onClickFullScreen={onClickFullScreen}
         />, 

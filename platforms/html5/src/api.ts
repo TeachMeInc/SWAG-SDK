@@ -21,6 +21,8 @@ export interface SWAGAPIOptions {
   toolbar?: {
     wrapperId: string;
     onClickFullScreen?: () => void;
+    titleIcon?: string;
+    titleIconDark?: string;
   },
   // Deprecated
   theme?: 'shockwave';
@@ -86,8 +88,8 @@ export default class SWAGAPI extends Emitter {
       else toolbar.rootElId = this._options.toolbar.wrapperId;
 
       toolbar.showToolbar({ 
+        ...this._options.toolbar,
         useCustomRootEl: !!this._options.toolbar?.wrapperId,
-        onClickFullScreen: this._options.toolbar.onClickFullScreen,
       });
     } else {
       messages.trySendMessage('swag.toolbar.show', '', true);
