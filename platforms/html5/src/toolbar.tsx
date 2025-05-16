@@ -9,7 +9,7 @@ import utils from './utils';
 
 // #region Icons
 
-const icons: Record<string, IconDefinition> = {
+const faIcons: Record<string, IconDefinition> = {
   faBoltLightning,
   faBookmark,
   faCircleHalfStroke,
@@ -60,29 +60,28 @@ function FontAwesomeIcon (props: { icon: IconDefinition }) {
   );
 }
 
-// interface CustomIconDefinition {
-//   viewbox: [number, number];
-// }
+function SWAGIcon (props: { icon: string, toggled?: boolean }) {
+  const icon = props.icon;
 
-// function CustomIcon (props: { icon: CustomIconDefinition }) {
-//   const icon = props.icon;
+  return (
+    <i 
+      aria-hidden='true'
+      className={`swag-icon ${icon}-${props.toggled ? 'line' : 'fill'}`}
+    />
+  );
+}
 
-//   return (
-//     <svg 
-//       aria-hidden='true'
-//       focusable='false'
-//       className='swag-toolbar__custom-icon'
-//       role='img' 
-//       xmlns='http://www.w3.org/2000/svg'
-//       viewBox={`0 0 ${icon.viewbox[ 0 ]} ${icon.viewbox[ 1 ]}`}
-//     >
-//       {/* <path 
-//         fill='currentColor' 
-//         d={icon.icon[ 4 ] as string}
-//       /> */}
-//     </svg>
-//   );
-// }
+function Icon (props: { icon: string, toggled?: boolean }) {
+  if (props.icon.startsWith('fa')) {
+    return (
+      <FontAwesomeIcon icon={faIcons[ props.icon ]} />
+    );
+  } else {
+    return (
+      <SWAGIcon icon={props.icon} toggled={props.toggled} />
+    );
+  }
+}
 
 // #endregion
 
@@ -328,12 +327,12 @@ export function Toolbar (props: ToolbarProps) {
               props.onClickFullScreen 
                 ? (
                   <span className='--hide-mobile' data-clickable>
-                    <i 
+                    <span
                       className='swag-toolbar__icon' 
                       onClick={props.onClickFullScreen} 
                     >
-                      <FontAwesomeIcon icon={faExpand} />
-                    </i>
+                      <Icon icon={'expand'} />
+                    </span>
                   </span>
                 )
                 : null
@@ -345,14 +344,13 @@ export function Toolbar (props: ToolbarProps) {
                   onClick={() => onClickItem(item.id)}
                   data-clickable={!!item.onClick}
                   data-disabled={item.disabled}
-                  data-toggled={item.toggled}
                 >
                   { 
                     item.icon 
                       ? (
-                        <i className='swag-toolbar__icon'>
-                          <FontAwesomeIcon icon={icons[ item.icon ]} />
-                        </i>
+                        <span className='swag-toolbar__icon'>
+                          <Icon icon={item.icon} toggled={item.toggled} />
+                        </span>
                       )
                       : null 
                   }

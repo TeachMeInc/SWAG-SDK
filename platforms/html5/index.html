@@ -398,37 +398,37 @@
         () => api.setToolbarItems([
           { 
             id: 'btn1', 
-            icon: 'faStopwatch',
+            icon: 'stopwatch',
             label: '0:00',
           },
           { 
             id: 'btn2', 
-            icon: toggled ? 'faPlay' : 'faPause',
+            icon: toggled ? 'play' : 'pause',
             onClick: () => {
               toggled = !toggled;
               api.updateToolbarItem({ 
                 id: 'btn2', 
-                icon: toggled ? 'faPlay' : 'faPause',
+                icon: toggled ? 'play' : 'pause',
               });
             },
           },
           { 
             id: 'btn3', 
-            icon: 'faInfoCircle',
+            icon: 'info',
           },
           { 
             id: 'btn4', 
-            icon: 'faInfoCircle',
+            icon: 'info',
             disabled: true,
           },
           { 
             id: 'btn5', 
-            icon: 'faInfoCircle',
+            icon: 'info',
             toggled: true,
           },
           { 
             id: 'btn6', 
-            icon: 'faInfoCircle',
+            icon: 'info',
             disabled: true,
             toggled: true,
           },
@@ -438,7 +438,7 @@
         () => api.updateToolbarItem({ 
           id: 'btn1', 
           label: new Date().toLocaleTimeString([], { minute: '2-digit', second: '2-digit' }), 
-          icon: 'faStopwatch',
+          icon: 'stopwatch',
         });
 
       document.getElementById('btnRemoveToolbarItem').onclick = 

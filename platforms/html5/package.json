@@ -13,19 +13,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "animate.css": "^4.1.1",
-    "body-scroll-lock": "^4.0.0-beta.0",
-    "component-emitter": "^2.0.0",
-    "element-resize-event": "^3.0.6",
-    "handlebars": "^4.7.8",
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
     "@fortawesome/free-brands-svg-icons": "^6.1.2",
     "@fortawesome/free-regular-svg-icons": "^6.1.2",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
-    "@fortawesome/react-fontawesome": "^0.2.0"
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "animate.css": "^4.1.1",
+    "body-scroll-lock": "^4.0.0-beta.0",
+    "component-emitter": "^2.0.0",
+    "element-resize-event": "^3.0.6",
+    "handlebars": "^4.7.8"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.3",
+    "@sumsolution/vite-plugin-svg-to-font": "^1.0.3",
     "@types/body-scroll-lock": "^3.1.2",
     "@types/element-resize-event": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
