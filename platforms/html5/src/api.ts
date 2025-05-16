@@ -54,6 +54,8 @@ export default class SWAGAPI extends Emitter {
     const reactRoot = document.createElement('div');
     reactRoot.setAttribute('id', 'swag-react-root');
     session.wrapper!.appendChild(reactRoot);
+    
+    messages.trySendMessage('swag.toolbar.show', '', true);
 
     elementResizeEvent(session.wrapper!, function () {
       setTimeout(function () {
