@@ -1,0 +1,35 @@
+.swag-toolbar {
+  color: var(--swag-toolbar-font-color);
+  background-color: var(--swag-toolbar-bg-color);
+  border-bottom-color: var(--swag-toolbar-border-color);
+
+  h1 {
+    font-family: var(--swag-title-font-family);
+    font-size: var(--swag-toolbar-title-font-size);
+  }
+
+  aside {
+    font-family: var(--swag-ui-font-family);
+  }
+}
+
+.swag-toolbar__title-icon {
+  &.--hide-light {
+    display: none;
+  }
+}
+
+.swag-theme--dark {
+  .swag-toolbar__title-icon {
+    &.--hide-dark {
+      display: none;
+    }
+    &.--hide-light {
+      display: inline-block;
+    }
+  }
+}
+
+.swag-toolbar__icon {
+  color: var(--swag-toolbar-font-color);
+}
