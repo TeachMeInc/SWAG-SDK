@@ -13,7 +13,8 @@ import { PostScoreOptions } from './data';
 import toolbar, { ToolbarItem } from './toolbar';
 
 export interface SWAGAPIOptions {
-  gameId?: string;
+  apiKey: string;
+  gameTitle: string;
   wrapper: HTMLElement;
   summary?: {
     wrapperId: string;
@@ -70,7 +71,7 @@ export default class SWAGAPI extends Emitter {
     // Configuration setup
     const siteMode = this._getSiteMode();
 
-    session.api_key = this._options.gameId || this._options.api_key || null;
+    session.api_key = this._options.apiKey || this._options.api_key || null;
     session.wrapper = this._options.wrapper;
     session.wrapper!.classList.add('swag-wrapper');
     session.theme = siteMode;
@@ -87,10 +88,21 @@ export default class SWAGAPI extends Emitter {
       if (!this._options.toolbar.wrapperId) this._createPreactRoot('swag-toolbar-root');
       else toolbar.rootElId = this._options.toolbar.wrapperId;
 
-      toolbar.showToolbar({ 
-        ...this._options.toolbar,
-        useCustomRootEl: !!this._options.toolbar?.wrapperId,
-      });
+      (async () => {
+        let title = this._options.gameTitle;
+
+        if (!title) {
+          const game = await data.getGame();
+          if (game && game.name) title = game.name;
+          else title = '';
+        }
+
+        toolbar.showToolbar({ 
+          ...this._options.toolbar,
+          title,
+          useCustomRootEl: !!this._options.toolbar?.wrapperId,
+        });
+      })();
     } else {
       messages.trySendMessage('swag.toolbar.show', '', true);
     }

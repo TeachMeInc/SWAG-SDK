@@ -173,6 +173,11 @@ interface ToolbarProps {
   onClickFullScreen?: () => void;
 }
 
+function parseLocalDate (dateStr: string) {
+  const [ year, month, day ] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 export function Toolbar (props: ToolbarProps) {
   /*
    * State
@@ -180,16 +185,17 @@ export function Toolbar (props: ToolbarProps) {
 
   const [ toolbarState, dispatchToolbarState ] = useToolbarState();
   const elRef = useRef<HTMLDivElement>(null);
+  const date = parseLocalDate(props.date);
 
-  // 08-12-2024
-  const shortDate = new Date(props.date).toLocaleDateString('en-US', {
+  // 2025-01-10
+  const shortDate = date.toLocaleDateString('en-US', {
     month: '2-digit',
     day: '2-digit',
     year: 'numeric',
   }).replace(/\//g, '-'); 
 
-  // August 12, 2024
-  const fullDate = new Date(props.date).toLocaleDateString('en-US', {
+  // January 10, 2025
+  const fullDate = date.toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
@@ -393,6 +399,7 @@ class ToolbarAPI {
   async showToolbar (options: {
     useCustomRootEl?: boolean;
     onClickFullScreen?: () => void;
+    title: string;
     titleIcon?: string;
     titleIconDark?: string;
   }) {
@@ -409,8 +416,8 @@ class ToolbarAPI {
     const showToolbar = () => {
       render(
         <Toolbar
-          date='2024-08-12' // TODO
-          title='Toolbar Title' // TODO
+          date={utils.getDateString()}
+          title={options.title}
           titleIcon={options.titleIcon}
           titleIconDark={options.titleIconDark}
           useCustomRootEl={options.useCustomRootEl}

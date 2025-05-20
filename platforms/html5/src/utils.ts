@@ -61,6 +61,21 @@ const methods = {
     return vars;
   },
 
+  getDateString: function () {
+    const { date: dateParam } = methods.parseUrlParams();
+    
+    if (dateParam) {
+      return dateParam;
+    }
+
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  },
+
   getDate: function (day: string) {
     const parts = day.split('-');
     return new Date(parseInt(parts[ 0 ]), parseInt(parts[ 1 ]) - 1, parseInt(parts[ 2 ]));
