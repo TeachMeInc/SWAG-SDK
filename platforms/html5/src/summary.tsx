@@ -194,10 +194,10 @@ class SummaryAPI {
 
     const promoLinks = await data.getGamePromoLinks();
 
-    let relatedGames;
+    let relatedGames = [];
     try {
       const event = await messages.trySendMessage('swag.getRelatedGames');
-      relatedGames = JSON.parse(event.message);
+      if (event.message) relatedGames = JSON.parse(event.message);
     } catch (e) {
       relatedGames = [];
     }

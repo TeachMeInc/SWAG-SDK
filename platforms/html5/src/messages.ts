@@ -17,7 +17,8 @@ function tryParse <T> (data: string): T | undefined {
 
 
 export type MessageEventName = 
-  // 'swag.toolbar.click' |
+  'noop' |
+  'swag.toolbar.click' |
   'swag.toolbar.hide' |
   'swag.toolbar.show' |
   'swag.toggleFullScreen' |
@@ -43,11 +44,11 @@ class MessagesAPI {
     eventName: MessageEventName, 
     message: string = '', 
     ignoreResponse: boolean = false
-  ) {
+  ): Promise<MessagePayload> {
     if (!window.parent || window.parent === window) {
       // eslint-disable-next-line no-console
       console.warn(`Failed to send message for event ${eventName}. Reason: No parent window`);
-      return Promise.resolve();
+      return Promise.resolve({ eventName: 'noop', message: '' });
     }
 
     if (!ignoreResponse) {
