@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "build-staging": "tsc && vite build --mode staging",
+    "build": "tsc && vite build && node scripts/fix-icon-paths.js",
+    "build-staging": "tsc && vite build --mode staging && node scripts/fix-icon-paths.js",
     "build-demo": "tsc && vite build --config vite.config.demo.ts",
     "build-types": "tsc && vite build --config vite.config.types.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
