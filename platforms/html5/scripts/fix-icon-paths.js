@@ -12,7 +12,7 @@ files.forEach((file) => {
 
     const updated = data.replace(
       /url\((["'])?\/icons\//g,
-      'url($1/dist/icons/'
+      'url($1./icons/'
     );
 
     fs.writeFile(file, updated, 'utf-8', (err) => {
