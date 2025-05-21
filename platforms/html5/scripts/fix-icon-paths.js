@@ -11,8 +11,8 @@ files.forEach((file) => {
     if (err) throw err;
 
     const updated = data.replace(
-      /url\(["']?\/icons\//g,
-      'url(\'/dist/icons/'
+      /url\((["'])?\/icons\//g,
+      'url($1/dist/icons/'
     );
 
     fs.writeFile(file, updated, 'utf-8', (err) => {
@@ -20,6 +20,10 @@ files.forEach((file) => {
     });
   });
 });
+
+let css = fs.readFileSync(files[ 0 ], 'utf-8');
+css += fs.readFileSync(files[ 1 ], 'utf-8');
+fs.writeFileSync(files[ 0 ], css, 'utf-8');
 
 // eslint-disable-next-line no-console
 console.log('✓ fixed icon file paths');
