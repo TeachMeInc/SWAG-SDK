@@ -9,6 +9,7 @@ import data from './data';
 import dialog, { DialogOptions, DialogType } from './dialog';
 import messages, { ToolbarItem } from './messages';
 import summary from './summary';
+import summaryV2 from './summaryv2';
 import { PostScoreOptions } from './data';
 
 export default class SWAGAPI extends Emitter {
@@ -314,7 +315,8 @@ export default class SWAGAPI extends Emitter {
       resultHtml: string, 
       shareString: string, 
       onReplay?: () => void,
-      onClose?: () => void
+      onClose?: () => void,
+      injectDiv?: string,
     }
   ) {
     return summary.showSummary(
@@ -324,6 +326,28 @@ export default class SWAGAPI extends Emitter {
       options?.titleHtml,
       options?.onReplay,
       options?.onClose
+    );
+  }
+
+  async showSummaryV2Screen (
+    options: {
+      stats: { key: string, value: string, lottie: object }[], 
+      contentHtml: string, 
+      shareString: string, 
+      onFavorite?: () => void,
+      onReplay?: () => void,
+      onClose?: () => void,
+      injectDiv?: string,
+    }
+  ) {
+    return summaryV2.showSummary(
+      options.stats, 
+      options.contentHtml,
+      options.shareString,
+      options?.onFavorite,
+      options?.onReplay,
+      options?.onClose,
+      options?.injectDiv
     );
   }
 

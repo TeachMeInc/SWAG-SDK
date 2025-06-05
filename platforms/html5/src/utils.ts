@@ -100,6 +100,17 @@ const methods = {
     return Intl.DateTimeFormat().resolvedOptions()?.timeZone ?? import.meta.env.VITE_DEFAULT_TIMEZONE;
   },
 
+  parseLottie: function (lottie: object, value: string | number): object {
+    const stringifyLottie = JSON.stringify(lottie).replace('0123456789:%./', String(value));
+
+    try {
+      return JSON.parse(stringifyLottie);
+    } catch (e) {
+      methods.debug('Error parsing Lottie animation', e);
+      return {};
+    }
+  }
+
 };
 
 export default methods;
