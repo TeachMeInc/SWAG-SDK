@@ -23,11 +23,11 @@ function UpsellComponent (props: UpsellProps) {
   return (!isMember || !isSubscriber) ? (
     <div className='swag-summary-v2__upsell'>
       <a 
-        href={`https://shockwave.com/${!isSubscriber ? '/unlimited' : '/account/login'}`}
+        href={`https://shockwave.com${!isSubscriber ? '/unlimited' : '/account/login'}`}
         className='swag-summary-v2__upsell-banner'
       >
         {
-          !isSubscriber ? (
+          (!isSubscriber && isMember) ? (
             <p>
               <strong>Shockwave is more fun with a Subscription!</strong><br/>
               No Ads, Archive Access and more
@@ -229,7 +229,7 @@ function SummaryComponent (props: SummaryProps) {
           }
         </div>
 
-        <div className='swag-summary-v2__button-container'>
+        <div className={`swag-summary-v2__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
           <ShareStatsComponent shareString={props.shareString} />
           {
             props.onReplay && (
@@ -305,8 +305,8 @@ class SummaryAPI {
     stats: { key: string, value: string, lottie: object }[], 
     contentHtml: string,
     shareString: string,
-    onReplay?: () => void,
     onFavorite?: () => void,
+    onReplay?: () => void,
     onClose?: () => void,
     injectDiv?: string
   ) {

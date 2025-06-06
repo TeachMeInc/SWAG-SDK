@@ -54,7 +54,7 @@ $smallScreenWidth: 468px;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-bottom: -0.75rem;
+  margin: -0.75rem 0;
 
   .swag-summary-v2__stat {
     width: 6rem;
@@ -65,15 +65,18 @@ $smallScreenWidth: 468px;
 .swag-summary-v2__button-container {
   // grid with 2 columns
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 1rem;
   width: 100%;
+
+  &.--has-favorite {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   > * {
     &:first-child {
       grid-column: 1 / -1;
     }
-
     &:nth-child(2),
     &:nth-child(3) {
       grid-column: span 1;
@@ -215,7 +218,7 @@ $smallScreenWidth: 468px;
       width: 35px;
       max-height: 35px;
       height: auto;
-      object-fit: cover;
+      object-fit: contain;
       margin-right: 1rem;
     }
 
