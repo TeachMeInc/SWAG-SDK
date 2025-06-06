@@ -17,6 +17,7 @@
     @import "animate.scss";
     @import "dialog.scss";
     @import "summary.scss";
+    @import "summaryv2.scss";
     @import "ui.scss";
     @import "forms.scss";
     @import "breakpoints/phone.scss";
@@ -27,6 +28,7 @@
 
 // Theme overrides
 @import "summary.theme.scss";
+@import "summaryv2.theme.scss";
 
 #swag-react-root {
   position: absolute;

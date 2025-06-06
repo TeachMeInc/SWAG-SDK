@@ -142,6 +142,15 @@ declare class SWAGAPI extends emitter {
     onReplay?: () => void
     onClose?: () => void
   }): Promise<void>;
+  showSummaryV2Screen(options: {
+    stats: { key: string, value: string, lottie: object }[], 
+    contentHtml: string, 
+    shareString: string, 
+    onFavorite?: () => void,
+    onReplay?: () => void,
+    onClose?: () => void,
+    injectDiv?: string,
+  }): Promise<void>;
   startGame(): Promise<void>;
   endGame(): Promise<void>;
   showAd(): Promise<void>;
