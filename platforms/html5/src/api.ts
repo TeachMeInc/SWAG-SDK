@@ -17,10 +17,10 @@ export interface SWAGAPIOptions {
   gameTitle: string;
   wrapper: HTMLElement;
   summary?: {
-    wrapperId: string;
+    wrapperId?: string;
   },
   toolbar?: {
-    wrapperId: string;
+    wrapperId?: string;
     onClickFullScreen?: () => void;
     titleIcon?: string;
     titleIconDark?: string;
