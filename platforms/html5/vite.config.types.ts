@@ -4,11 +4,16 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import preact from '@preact/preset-vite';
 import dts from 'vite-plugin-dts';
+import vitePluginSVGToFont from '@sumsolution/vite-plugin-svg-to-font';
 
 export default defineConfig({
   plugins: [
     preact({
       reactAliasesEnabled: false,
+    }),
+    vitePluginSVGToFont({
+      svgPath: resolve(__dirname, 'icons'),
+      fontName: 'swag-icon',
     }),
     dts({
       insertTypesEntry: true,

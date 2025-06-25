@@ -14,6 +14,7 @@ export interface Session {
   debug: boolean;
   provider: 'shockwave' | null;
   jwt: string | null;
+  game: { name: string } | null;
 }
 
 const session: Session = {
@@ -25,6 +26,7 @@ const session: Session = {
   debug: false,
   provider: null,
   jwt: null,
+  game: null,
 };
 
 export default session;

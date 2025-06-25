@@ -1,4 +1,25 @@
-.swag-theme--dark .swag-wrapper .swag-summary {
-  background-color: #1f1f1f !important;
-  color: #fff !important;
+.swag-summary {
+  color: var(--swag-summary-font-color);
+  background-color: var(--swag-summary-bg-color);
+  font-family: var(--swag-ui-font-family);
+}
+
+.swag-summary__btn {
+  color: var(--swag-btn-font-color);
+  background-color: var(--swag-btn-secondary-color);
+  font-family: var(--swag-ui-font-family);
+}
+
+.swag-summary__btn.--outline {
+  color: var(--swag-btn-border-color);
+  background-color: transparent;
+  box-shadow: 0 0 0 1px var(--swag-btn-border-color) inset;
+}
+
+.swag-summary__promo-links {
+  li {
+    color: var(--swag-btn-font-color);
+    background-color: #000;
+    font-family: var(--swag-ui-font-family);
+  }
 }
