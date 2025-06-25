@@ -8,11 +8,7 @@ function getApiRoot () {
       return import.meta.env.VITE_API_STAGING_URL;
     }
   }
-<<<<<<< SWAGAPI-127
   
-=======
-
->>>>>>> staging
   return import.meta.env.VITE_API_URL;
 }
 
