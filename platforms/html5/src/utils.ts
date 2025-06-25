@@ -82,10 +82,10 @@ const methods = {
   },
 
   debug: function (message: string, data?: any) {
-    if(session.debug) {
+    if (session.debug) {
       // eslint-disable-next-line no-console
-      console.log('SWAG API :::: ' + message);
-      if(data) {
+      console.log('[DEBUG] SWAG API', message);
+      if (data) {
         // eslint-disable-next-line no-console
         console.log(data);
       }
