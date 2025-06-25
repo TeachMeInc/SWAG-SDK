@@ -46,6 +46,7 @@ export enum ToolbarStateActionType {
 
 
 export type MessageEventName = 
+  'noop' |
   'swag.toolbar.show' |
   'swag.toolbar.hide' |
   'swag.toolbar.setItems' |
