@@ -1,5 +1,5 @@
 import messages from './messages';
-import data from './data';
+import data, { DailyGameStreak, GamePromoLink } from './data';
 import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import shareIcon from './assets/share-icon.svg';
@@ -301,12 +301,21 @@ class SummaryAPI {
     onReplay?: () => void,
     onClose?: () => void
   ) {
-    const isSubscriber = await data.isSubscriber();
-    // const currentDay = await data.getCurrentDay();
-    // const currentDate = utils.getDate(currentDay.day);
-    // const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
+    let isSubscriber = false;
+    try {
+      isSubscriber = await data.isSubscriber();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error checking subscription status:', e);
+    }
 
-    const gameStreak = await data.getDailyGameStreak();
+    let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
+    try {
+      gameStreak = await data.getDailyGameStreak();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error fetching game streak:', e);
+    }
     stats.unshift(
       {
         key: 'Current Streak',
@@ -318,7 +327,13 @@ class SummaryAPI {
       }
     );
 
-    const promoLinks = await data.getGamePromoLinks();
+    let promoLinks: GamePromoLink[] = [];
+    try {
+      promoLinks = await data.getGamePromoLinks();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error fetching promo links:', e);
+    }
 
     let relatedGames;
     try {
