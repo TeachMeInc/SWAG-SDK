@@ -91,6 +91,7 @@ const methods = Emitter({
 
   apiMethods: {
     'getEntity': '/v1/user',
+    'getGame': '/v1/game',
     'getSubscriber': '/v1/subscriber',
     'getScoreCategories': '/v1/score/categories',
     'getDays': '/v1/days',
@@ -197,6 +198,32 @@ const methods = Emitter({
         reject();
       };
       xhr.send(JSON.stringify(options.body));
+    });
+    return promise;
+  },
+
+  // #endregion
+
+
+
+  // #region Game Methods
+
+  getGame: function () {
+    const promise = new Promise<{ name: string }>(function (resolve) {
+      if (session.game) {
+        resolve(session.game);
+      } else {
+        methods.getAPIData({
+          method: methods.apiMethods[ 'getGame' ],
+          params: {
+            game: session[ 'api_key' ],
+          }
+        })
+          .then(function (game: { name: string }) {
+            session.game = game;
+            resolve(game);
+          });
+      }
     });
     return promise;
   },

@@ -136,7 +136,7 @@ interface LottieProps {
   className?: string;
 }
 
-function LottieComponent({ animationData, className }: LottieProps) {
+function LottieComponent ({ animationData, className }: LottieProps) {
 
   const lottieCanvas = useRef<HTMLCanvasElement | null>(null);
   const lottieAnimation = useRef<DotLottie | null>(null);

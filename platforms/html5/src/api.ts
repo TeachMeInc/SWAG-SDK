@@ -7,15 +7,34 @@ import session from './session';
 import utils from './utils';
 import data from './data';
 import dialog, { DialogOptions, DialogType } from './dialog';
-import messages, { ToolbarItem } from './messages';
+import messages from './messages';
 import summary from './summary';
 import summaryV2 from './summaryv2';
 import { PostScoreOptions } from './data';
+import toolbar, { ToolbarItem } from './toolbar';
+
+export interface SWAGAPIOptions {
+  apiKey: string;
+  gameTitle: string;
+  wrapper: HTMLElement;
+  summary?: {
+    wrapperId: string;
+  },
+  toolbar?: {
+    wrapperId: string;
+    onClickFullScreen?: () => void;
+    titleIcon?: string;
+    titleIconDark?: string;
+  },
+  // Deprecated
+  theme?: 'shockwave';
+  api_key?: string;
+}
 
 export default class SWAGAPI extends Emitter {
-  protected _options: any;
+  protected _options: SWAGAPIOptions;
 
-  constructor (options: any) {
+  constructor (options: SWAGAPIOptions) {
     super();
     Emitter(this);
 
@@ -43,21 +62,53 @@ export default class SWAGAPI extends Emitter {
     });
   }
 
+  protected _createPreactRoot (id: string) {
+    const root = document.createElement('div');
+    root.setAttribute('id', id);
+    session.wrapper!.appendChild(root);
+  }
+
   protected _init () {
+    // Configuration setup
     const siteMode = this._getSiteMode();
-    
-    session.api_key = this._options.api_key;
+
+    session.api_key = this._options.apiKey || this._options.api_key || null;
     session.wrapper = this._options.wrapper;
     session.wrapper!.classList.add('swag-wrapper');
     session.theme = siteMode;
     session.provider = siteMode;
 
-    const reactRoot = document.createElement('div');
-    reactRoot.setAttribute('id', 'swag-react-root');
-    session.wrapper!.appendChild(reactRoot);
-    
-    messages.trySendMessage('swag.toolbar.show', '', true);
+    // Summary screen setup
+    if (!this._options.summary?.wrapperId) this._createPreactRoot('swag-summary-root');
+    else summary.rootElId = this._options.summary.wrapperId;
 
+    // Toolbar setup
+    if (this._options.toolbar) {
+      messages.trySendMessage('swag.toolbar.hide', '', true);
+
+      if (!this._options.toolbar.wrapperId) this._createPreactRoot('swag-toolbar-root');
+      else toolbar.rootElId = this._options.toolbar.wrapperId;
+
+      (async () => {
+        let title = this._options.gameTitle;
+
+        if (!title) {
+          const game = await data.getGame();
+          if (game && game.name) title = game.name;
+          else title = '';
+        }
+
+        toolbar.showToolbar({ 
+          ...this._options.toolbar,
+          title,
+          useCustomRootEl: !!this._options.toolbar?.wrapperId,
+        });
+      })();
+    } else {
+      messages.trySendMessage('swag.toolbar.show', '', true);
+    }
+
+    // Dialog setup (legacy)
     elementResizeEvent(session.wrapper!, function () {
       setTimeout(function () {
         dialog.resize();
@@ -65,13 +116,8 @@ export default class SWAGAPI extends Emitter {
     });
   }
 
-  protected _getSiteMode () {
-    // priority for site mode is window.SWAGTHEME, swag options theme then based on domain hosting the game
-    const domainTheme = location.hostname.split('.').reverse().splice(1,1).reverse().join('.');
-    const reqTheme = window.SWAGTHEME || this._options.theme || domainTheme;
-    return config.themes[ reqTheme ]
-      ? reqTheme
-      : 'shockwave';
+  protected _getSiteMode (): 'shockwave' {
+    return 'shockwave';
   }
 
   protected _emitError (errorType: string) {
@@ -287,15 +333,15 @@ export default class SWAGAPI extends Emitter {
   // #region Toolbar Management Methods
 
   setToolbarItems (items: ToolbarItem[]) {
-    return messages.setToolbarItems(items);
+    toolbar.setItems(items);
   }
 
   updateToolbarItem (item: ToolbarItem) {
-    return messages.updateToolbarItem(item);
+    toolbar.updateItem(item);
   }
 
   removeToolbarItem (id: string) {
-    return messages.removeToolbarItem(id);
+    toolbar.removeItem(id);
   }
 
   // #endregion
