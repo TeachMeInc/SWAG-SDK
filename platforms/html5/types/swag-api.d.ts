@@ -146,6 +146,19 @@ declare class SWAGAPI extends emitter {
         onReplay?: () => void;
         onClose?: () => void;
     }): Promise<void>;
+    showSummaryV2Screen(options: {
+        stats: {
+            key: string;
+            value: string;
+            lottie: object;
+        }[];
+        contentHtml: string;
+        shareString: string;
+        onFavorite?: () => void;
+        onReplay?: () => void;
+        onClose?: () => void;
+        injectDiv?: string;
+    }): Promise<void>;
     getPlatform(): "embed" | "app" | "standalone";
     getPlatformTheme(): ('light' | 'dark');
     startGame(): Promise<void>;
@@ -164,10 +177,10 @@ declare interface SWAGAPIOptions {
     gameTitle: string;
     wrapper: HTMLElement;
     summary?: {
-        wrapperId?: string;
+        wrapperId: string;
     };
     toolbar?: {
-        wrapperId?: string;
+        wrapperId: string;
         onClickFullScreen?: () => void;
         titleIcon?: string;
         titleIconDark?: string;

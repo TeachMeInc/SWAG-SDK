@@ -115,6 +115,25 @@ const methods = {
     return Intl.DateTimeFormat().resolvedOptions()?.timeZone ?? import.meta.env.VITE_DEFAULT_TIMEZONE;
   },
 
+  parseLottie: function (lottie: object, value: string | number): object {
+    let stringifyLottie = '';
+
+    try {
+      stringifyLottie = JSON
+        .stringify(lottie)
+        .replace('0123456789:%./', value.toString());
+    } catch (e) {
+      methods.debug('Error stringifying Lottie animation', e);
+      return {};
+    }
+
+    try {
+      return JSON.parse(stringifyLottie);
+    } catch (e) {
+      methods.debug('Error parsing Lottie animation', e);
+      return {};
+    }
+  }
 };
 
 export default methods;
