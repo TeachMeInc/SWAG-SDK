@@ -203,7 +203,6 @@ interface SummaryProps {
 }
 
 function SummaryComponent (props: SummaryProps) {
-
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
@@ -218,7 +217,7 @@ function SummaryComponent (props: SummaryProps) {
         <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
 
         <div className='swag-summary-v2__stats'>
-          {
+          {/* {
             props.stats.map(({ key, value, lottie }) => 
               <LottieComponent 
                 key={key}
@@ -226,7 +225,7 @@ function SummaryComponent (props: SummaryProps) {
                 animationData={utils.parseLottie(lottie, value)} 
               />
             )
-          }
+          } */}
         </div>
 
         <div className={`swag-summary-v2__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
@@ -301,6 +300,22 @@ function SummaryComponent (props: SummaryProps) {
 // #region Summary API
 
 class SummaryAPI {
+  private _rootElId: string = 'swag-summary-root';
+  private _isInjected: boolean = false;
+
+  get rootElId () {
+    return this._rootElId;
+  }
+
+  set rootElId (id: string) {
+    this._rootElId = id;
+    this._isInjected = true;
+  }
+
+  getRootEl () {
+    return document.getElementById(this.rootElId)!;
+  }
+
   async showSummary (
     stats: { key: string, value: string, lottie: object }[], 
     contentHtml: string,
@@ -308,7 +323,6 @@ class SummaryAPI {
     onFavorite?: () => void,
     onReplay?: () => void,
     onClose?: () => void,
-    injectDiv?: string
   ) {
 
     const getEntity = await data.getEntity();
@@ -337,10 +351,6 @@ class SummaryAPI {
       relatedGames = [];
     }
 
-    const rootEl = !injectDiv 
-      ? document.getElementById('swag-react-root')!
-      : document.querySelector(injectDiv)!;
-
     const showSummary = () => {
       render(<SummaryComponent 
         stats={stats} 
@@ -351,37 +361,28 @@ class SummaryAPI {
         isMember={isMember}
         isSubscriber={isSubscriber}
         hasPlayedToday={hasPlayedToday}
-        isInjected={!!injectDiv}
+        isInjected={this._isInjected}
         onFavorite={onFavorite}
         onReplay={unmount}
-      />, rootEl);
+      />, this.getRootEl());
     };
 
     const unmount = () => {
-      this.unmount(rootEl!, injectDiv);
+      this.unmount();
       if (onReplay) onReplay();
       if (onClose) onClose();
     };
 
     return new Promise<void>((resolve) => {
-      /*
-      if (hasPlayedToday) 
-        showRevisit();
-      else
-        showSummary();
-      */
-
+      if (!this._isInjected) document.body.classList.add('swag-summary-open');
       showSummary();
-      if (!injectDiv)
-        document.body.classList.add('swag-dialog-open');
       resolve();
     });
   }
 
-  protected unmount (rootEl: Element, injectDiv?: string) {
-    render(null, rootEl);
-    if (!injectDiv)
-      document.body.classList.remove('swag-dialog-open');
+  protected unmount () {
+    document.body.classList.remove('swag-summary-open');
+    render(null, this.getRootEl());
     return Promise.resolve();
   }
 }

@@ -79,8 +79,12 @@ export default class SWAGAPI extends Emitter {
     session.provider = siteMode;
 
     // Summary screen setup
-    if (!this._options.summary?.wrapperId) this._createPreactRoot('swag-summary-root');
-    else summary.rootElId = this._options.summary.wrapperId;
+    if (!this._options.summary?.wrapperId) {
+      this._createPreactRoot('swag-summary-root');
+    } else {
+      summary.rootElId = this._options.summary.wrapperId;
+      summaryV2.rootElId = this._options.summary.wrapperId;
+    }
 
     // Toolbar setup
     if (this._options.toolbar) {
@@ -393,7 +397,6 @@ export default class SWAGAPI extends Emitter {
       options?.onFavorite,
       options?.onReplay,
       options?.onClose,
-      options?.injectDiv
     );
   }
 

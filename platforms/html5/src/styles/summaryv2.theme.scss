@@ -1,4 +1,42 @@
-.swag-theme--dark .swag-summary-v2.swag-summary-v2__fullscreen {
-  background-color: #1f1f1f !important;
-  color: #fff !important;
+.swag-summary-v2 {
+  color: var(--swag-summary-font-color);
+  background-color: var(--swag-summary-bg-color);
+  font-family: var(--swag-ui-font-family);
+
+  &.swag-summary-v2__fullscreen {
+    background-color: var(--swag-summary-bg-color) !important;
+  }
+}
+
+.swag-summary-v2__button-container {
+  .swag-summary-v2__btn {
+    color: var(--swag-btn-font-color);
+    background-color: var(--swag-btn-secondary-color);
+    font-family: var(--swag-ui-font-family);
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    &.--outline {
+      box-shadow: 0 0 0 1px var(--swag-btn-secondary-color) inset;
+      color: var(--swag-btn-secondary-color);
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
+}
+
+.swag-summary-v2__upsell {
+  > .swag-summary-v2__upsell-banner {
+    color: var(--swag-btn-font-color);
+  }
+}
+
+.swag-summary-v2__promo-links-container {
+  button {
+    color: var(--swag-btn-font-color);
+  }
 }
