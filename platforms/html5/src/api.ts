@@ -366,7 +366,6 @@ export default class SWAGAPI extends Emitter {
       shareString: string, 
       onReplay?: () => void,
       onClose?: () => void,
-      injectDiv?: string,
     }
   ) {
     return summary.showSummary(
@@ -387,7 +386,6 @@ export default class SWAGAPI extends Emitter {
       onFavorite?: () => void,
       onReplay?: () => void,
       onClose?: () => void,
-      injectDiv?: string,
     }
   ) {
     return summaryV2.showSummary(
