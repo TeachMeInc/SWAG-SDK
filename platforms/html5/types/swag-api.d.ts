@@ -145,7 +145,6 @@ declare class SWAGAPI extends emitter {
         shareString: string;
         onReplay?: () => void;
         onClose?: () => void;
-        injectDiv?: string;
     }): Promise<void>;
     showSummaryV2Screen(options: {
         stats: {
