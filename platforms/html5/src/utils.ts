@@ -116,7 +116,16 @@ const methods = {
   },
 
   parseLottie: function (lottie: object, value: string | number): object {
-    const stringifyLottie = JSON.stringify(lottie).replace('0123456789:%./', String(value));
+    let stringifyLottie = '';
+
+    try {
+      stringifyLottie = JSON
+        .stringify(lottie)
+        .replace('0123456789:%./', String(value));
+    } catch (e) {
+      methods.debug('Error stringifying Lottie animation', e);
+      return {};
+    }
 
     try {
       return JSON.parse(stringifyLottie);
@@ -125,7 +134,6 @@ const methods = {
       return {};
     }
   }
-
 };
 
 export default methods;

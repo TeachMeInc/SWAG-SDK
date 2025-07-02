@@ -217,7 +217,7 @@ function SummaryComponent (props: SummaryProps) {
         <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
 
         <div className='swag-summary-v2__stats'>
-          {/* {
+          {
             props.stats.map(({ key, value, lottie }) => 
               <LottieComponent 
                 key={key}
@@ -225,7 +225,7 @@ function SummaryComponent (props: SummaryProps) {
                 animationData={utils.parseLottie(lottie, value)} 
               />
             )
-          } */}
+          }
         </div>
 
         <div className={`swag-summary-v2__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
