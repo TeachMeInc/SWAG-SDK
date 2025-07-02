@@ -121,7 +121,7 @@ const methods = {
     try {
       stringifyLottie = JSON
         .stringify(lottie)
-        .replace('0123456789:%./', String(value));
+        .replace('0123456789:%./', value.toString());
     } catch (e) {
       methods.debug('Error stringifying Lottie animation', e);
       return {};

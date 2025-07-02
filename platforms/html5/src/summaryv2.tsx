@@ -4,7 +4,8 @@ import { render } from 'preact';
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks';
 import utils from './utils';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
-import lottieStreak from './lottie/streak.json';
+import lottieStreak from './assets/lottie/streak.json';
+import lottieTime from './assets/lottie/time.json';
 import arrowIcon from './assets/arrow-icon.svg';
 import shareIcon from './assets/share-icon.svg';
 import replayIcon from './assets/replay-icon.svg';
@@ -324,6 +325,7 @@ class SummaryAPI {
     onReplay?: () => void,
     onClose?: () => void,
   ) {
+    // Fetch member status
     let isMember = false;
     try {
       const getEntity = await data.getEntity();
@@ -333,6 +335,7 @@ class SummaryAPI {
       console.warn('Error checking membership status:', e);
     }
 
+    // Fetch subscriber status
     let isSubscriber = false;
     try {
       isSubscriber = await data.isSubscriber();
@@ -341,6 +344,7 @@ class SummaryAPI {
       console.warn('Error checking subscription status:', e);
     }
 
+    // Check if the game has been played today
     let hasPlayedToday = false;
     try {
       const currentDay = await data.getCurrentDay();
@@ -350,6 +354,7 @@ class SummaryAPI {
       console.warn('Error checking if game has been played today:', e);
     }
 
+    // Fetch daily game streak
     let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
     try {
       gameStreak = await data.getDailyGameStreak();
@@ -364,7 +369,14 @@ class SummaryAPI {
         lottie: lottieStreak
       }
     );
+    
+    // Add time stat if it exists
+    const timeStat = stats.find(stat => stat.key.toLowerCase() === 'time');
+    if (timeStat) {
+      timeStat.lottie = lottieTime;
+    }
 
+    // Fetch promo links
     let promoLinks: GamePromoLink[] = [];
     try {
       promoLinks = await data.getGamePromoLinks();
@@ -373,6 +385,7 @@ class SummaryAPI {
       console.warn('Error fetching promo links:', e);
     }
 
+    // Fetch related games (deprecated)
     let relatedGames;
     try {
       const event = await messages.trySendMessage('swag.getRelatedGames');
