@@ -1,5 +1,5 @@
 import messages from './messages';
-import data from './data';
+import data, { DailyGameStreak, GamePromoLink } from './data';
 import { render } from 'preact';
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks';
 import utils from './utils';
@@ -324,15 +324,39 @@ class SummaryAPI {
     onReplay?: () => void,
     onClose?: () => void,
   ) {
+    let isMember = false;
+    try {
+      const getEntity = await data.getEntity();
+      isMember = getEntity.isMember;
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error checking membership status:', e);
+    }
 
-    const getEntity = await data.getEntity();
-    const isMember = getEntity.isMember;
-    const isSubscriber = await data.isSubscriber();
-    const currentDay = await data.getCurrentDay();
-    const hasPlayedToday = await data.hasPlayedDay(currentDay.day);
+    let isSubscriber = false;
+    try {
+      isSubscriber = await data.isSubscriber();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error checking subscription status:', e);
+    }
 
-    const gameStreak = await data.getDailyGameStreak();
+    let hasPlayedToday = false;
+    try {
+      const currentDay = await data.getCurrentDay();
+      hasPlayedToday = await data.hasPlayedDay(currentDay.day);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error checking if game has been played today:', e);
+    }
 
+    let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
+    try {
+      gameStreak = await data.getDailyGameStreak();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error fetching game streak:', e);
+    }
     stats.unshift(
       {
         key: 'Streak',
@@ -341,7 +365,13 @@ class SummaryAPI {
       }
     );
 
-    const promoLinks = await data.getGamePromoLinks();
+    let promoLinks: GamePromoLink[] = [];
+    try {
+      promoLinks = await data.getGamePromoLinks();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Error fetching promo links:', e);
+    }
 
     let relatedGames;
     try {
