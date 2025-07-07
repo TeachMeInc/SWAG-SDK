@@ -8,7 +8,7 @@ function getApiRoot () {
       return import.meta.env.VITE_API_STAGING_URL;
     }
   }
-
+  
   return import.meta.env.VITE_API_URL;
 }
 

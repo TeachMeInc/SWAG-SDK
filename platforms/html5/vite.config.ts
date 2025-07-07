@@ -1,10 +1,11 @@
 // @ts-nocheck
 
-import { defineConfig } from 'vite';
+import { ResolvedConfig, defineConfig } from 'vite';
 import { resolve } from 'path';
 import preact from '@preact/preset-vite';
 import handlebars from './plugins/handlebars';
 import mkcert from 'vite-plugin-mkcert';
+import vitePluginSVGToFont from '@sumsolution/vite-plugin-svg-to-font';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +15,10 @@ export default defineConfig({
     }),
     handlebars(),
     mkcert(),
+    vitePluginSVGToFont({
+      svgPath: resolve(__dirname, 'icons'),
+      fontName: 'swag-icon',
+    }),
   ],
   base: '/dist/',
   define: {

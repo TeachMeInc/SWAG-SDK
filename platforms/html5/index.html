@@ -3,13 +3,16 @@
   <meta charset='UTF-8' />
   <meta name='viewport' content='width=device-width, initial-scale=1.0' />
   <title>SWAG HTML5 SDK Demo</title>
+  <link rel='preconnect' href='https://fonts.googleapis.com'>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link href='https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:wght@300;400;700&display=swap' rel='stylesheet'>
   <style>
-
     body {
       margin: 0;
       padding: 0;
       width: 100svw;
       height: 100svh;
+      background-color: #195AAB;
     }
 
     canvas {
@@ -85,7 +88,8 @@
         <h4>Website & UI Methods</h4>
         <p>
           <button id='btnShareDialog'>Share Dialog</button>
-          <button id='btnGamesummaryScreen'>Game Summary Screen</button>
+          <button id='btnGameSummaryScreen'>Game Summary Screen (v1)</button>
+          <button id='btnGameSummaryScreen2'>Game Summary Screen (v2)</button>
           <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
           <button id='btnNavigateToArchives'>Navigate to Archives</button>
           <button id='btnNavigateToTitle'>Navigate to Title</button>
@@ -122,14 +126,14 @@
         <h4>Get Methods</h4>
         <p>
           <select id='getData_methodSelect'>
-            <option value="top-score-daily">Top Daily Scores</option>
-            <option value="top-score-weekly">Top Weekly Scores</option>
-            <option value="top-score-monthly">Top Montly Scores</option>
-            <option value="top-score-alltime">Top All Time Scores</option>
-            <option value="top-score-currentuser">Top Scores - current user</option>
-            <option value="top-score-weekly-currentuser">Weekly Scores - current user</option>
-            <option value="achievements-currentuser">Achievements for current user</option>
-            <option value="datastore-currentuser">Cloud save data for current user</option>
+            <option value='top-score-daily'>Top Daily Scores</option>
+            <option value='top-score-weekly'>Top Weekly Scores</option>
+            <option value='top-score-monthly'>Top Montly Scores</option>
+            <option value='top-score-alltime'>Top All Time Scores</option>
+            <option value='top-score-currentuser'>Top Scores - current user</option>
+            <option value='top-score-weekly-currentuser'>Weekly Scores - current user</option>
+            <option value='achievements-currentuser'>Achievements for current user</option>
+            <option value='datastore-currentuser'>Cloud save data for current user</option>
           </select>
           <select id='getData_levelSelect'></select>
           <button id='getData_submitBtn'>Fetch Data (view console)</button>
@@ -174,13 +178,38 @@
     </div>
   </div>
   <script type='module' src='/src/main.ts'></script>
+  <style>
+    :root {
+      /* --swag-l-toolbar-bg-color: #EADAB9;
+      --swag-l-toolbar-font-color: #1f1f1f;
+      --swag-l-toolbar-border-color: #313131;
+      --swag-title-font-family: 'Roboto Slab', serif;
+      --swag-toolbar-height: 63px;
+      --swag-toolbar-title-font-size: 18px;
+      --swag-toolbar-border-width: 1; */
+    }
+  </style>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const api = SWAGAPI.getInstance({
         wrapper: document.getElementById('swag-wrapper'),
-        api_key: '5c6c3c056917a692f96f9651',
+        apiKey: '5c6c3c056917a692f96f9651',
+        gameTitle: 'SWAG HTML5 SDK Demo',
         theme: 'shockwave',
         debug: true,
+        summary: {},
+        toolbar: {
+          wrapperId: '',
+          titleIcon: 'https://new.shockwave.com/images/SW25.svg',
+          titleIconDark: 'https://new.shockwave.com/images/SW25_alt.svg',
+          onClickFullScreen: () => {
+            if (document.fullscreenElement) {
+              document.exitFullscreen();
+            } else {
+              document.body.requestFullscreen();
+            }
+          },
+        },
       });
 
       const game = {
@@ -256,7 +285,7 @@
       document.getElementById('btnShareDialog').onclick = 
         () => api.showShareDialog();
 
-      document.getElementById('btnGamesummaryScreen').onclick = 
+      document.getElementById('btnGameSummaryScreen').onclick = 
         () => api.showSummaryScreen({
           stats: [
             { key: 'Foo', value: '0:00' },
@@ -266,6 +295,18 @@
           titleHtml: '<div style="font-size: 120%; font-weight: bold">Well Done!</div>',
           resultHtml: '<div style="background:#ccc;height:150px;width:200px">Preview</div>',
           shareString: 'You have completed the game, this is the share string!!',
+          onReplay: () => { alert('replay clicked'); },
+          onClose: () => { alert('share screen closed'); }
+      });
+
+      document.getElementById('btnGameSummaryScreen2').onclick = 
+        () => api.showSummaryV2Screen({
+          stats: [
+            { key: 'Time', value: '1:00' },
+          ], 
+          contentHtml: '<div style="background:#ccc;width:100%;height:100px;">Preview</div>',
+          shareString: 'You have completed the game, this is the share string!!',
+          onFavorite: () => { alert('favorite clicked'); },
           onReplay: () => { alert('replay clicked'); },
           onClose: () => { alert('share screen closed'); }
       });
@@ -387,24 +428,29 @@
         () => api.setToolbarItems([
           { 
             id: 'btn1', 
-            icon: 'faStopwatch',
+            icon: 'stopwatch',
             label: '0:00',
           },
           { 
             id: 'btn2', 
-            icon: toggled ? 'faPlay' : 'faPause',
+            icon: toggled ? 'play' : 'pause',
             onClick: () => {
               toggled = !toggled;
               api.updateToolbarItem({ 
                 id: 'btn2', 
-                icon: toggled ? 'faPlay' : 'faPause',
+                icon: toggled ? 'play' : 'pause',
               });
             },
           },
           { 
             id: 'btn3', 
-            icon: 'faInfoCircle',
+            icon: 'info',
             disabled: true,
+          },
+          { 
+            id: 'btn4', 
+            icon: 'info',
+            toggled: true,
           },
         ]);
 
@@ -412,7 +458,7 @@
         () => api.updateToolbarItem({ 
           id: 'btn1', 
           label: new Date().toLocaleTimeString([], { minute: '2-digit', second: '2-digit' }), 
-          icon: 'faStopwatch',
+          icon: 'stopwatch',
         });
 
       document.getElementById('btnRemoveToolbarItem').onclick = 
