@@ -153,7 +153,7 @@ function LottieComponent ({ animationData, className }: LottieProps) {
       canvas: lottieCanvas.current as HTMLCanvasElement,
       data: JSON.stringify(animationData),
       renderConfig: {
-        autoResize: true
+        autoResize: false
       }
     });
   }, [ animationData ]);
@@ -179,7 +179,7 @@ function LottieComponent ({ animationData, className }: LottieProps) {
 
   return (
     <div className={className}>
-      <canvas ref={lottieCanvas} id="dotlottie-canvas" width="6rem" height="6rem"></canvas>
+      <canvas ref={lottieCanvas} id="dotlottie-canvas" width="90" height="90"></canvas>
     </div>
   );
 }
