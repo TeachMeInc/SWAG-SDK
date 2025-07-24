@@ -57,6 +57,10 @@ $smallScreenWidth: 468px;
   .swag-summary-v2__stat {
     width: 6rem;
     height: auto;
+
+    > canvas {
+      max-width: 6rem;
+    }
   }
 }
 
@@ -174,7 +178,7 @@ $smallScreenWidth: 468px;
     }
 
     @media (max-width: $smallScreenWidth) {
-      padding: 0rem 0.75rem;
+      padding: 0.5rem 0.75rem;
       font-size: 0.85rem;
     }
   }
