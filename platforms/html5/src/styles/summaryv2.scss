@@ -57,6 +57,10 @@ $smallScreenWidth: 468px;
   .swag-summary-v2__stat {
     width: 6rem;
     height: auto;
+
+    > canvas {
+      max-width: 6rem;
+    }
   }
 }
 
@@ -153,7 +157,7 @@ $smallScreenWidth: 468px;
     background: url('./images/upsell-banner.jpg') no-repeat center center;
     background-size: cover;
     border-radius: 0.25rem;
-    padding: 0.25rem 1rem;
+    padding: 0.75rem 1rem;
   
     text-decoration: none;
     text-align: left;
@@ -162,6 +166,7 @@ $smallScreenWidth: 468px;
 
     p {
       line-height: 1.4;
+      margin: 0;
     }
     
     img {
@@ -173,7 +178,7 @@ $smallScreenWidth: 468px;
     }
 
     @media (max-width: $smallScreenWidth) {
-      padding: 0rem 0.75rem;
+      padding: 0.5rem 0.75rem;
       font-size: 0.85rem;
     }
   }
