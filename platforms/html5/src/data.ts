@@ -450,8 +450,8 @@ const methods = Emitter({
     return false;
   },
 
-  getGamePromoLinks: async function () {
-    const params = { game: session[ 'api_key' ] };
+  getGamePromoLinks: async function (limit: number = 1) {
+    const params = { game: session[ 'api_key' ], n: Number(limit) };
 
     const promise = new Promise<GamePromoLink[]>(function (resolve) {
       methods.getAPIData({
