@@ -275,7 +275,7 @@ function SummaryComponent (props: SummaryProps) {
             ? (
               <div className='swag-summary-v2__related-games'>
                 <p>More Games:</p>
-                <ul className={(props.isMember && props.isSubscriber) ? '--is-subscribed': ''}>
+                <ul>
                   {
                     props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
                       return type === 'link' && (

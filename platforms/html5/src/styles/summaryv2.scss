@@ -128,7 +128,7 @@ $smallScreenWidth: 468px;
 }
 
 .swag-summary-v2__related-games {
-  max-width: 320px;
+  width: 100%;
 
   p {
     margin-top: 0;
@@ -139,7 +139,6 @@ $smallScreenWidth: 468px;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem 2rem;
-    flex: 0 0 33.3333%;
 
     justify-content: center;
     align-items: center;
@@ -148,14 +147,21 @@ $smallScreenWidth: 468px;
     padding: 0;
 
     li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       transition: transform 0.1s ease-in-out;
       border-radius: 0.25rem;
 
+      width: 4rem;
+      height: 4rem;
+
+      cursor: pointer;
+
       img {
-        cursor: pointer;
-        width: 2.25rem;
-        height: 2.25rem;
-        padding: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
       }
 
       &:hover {
