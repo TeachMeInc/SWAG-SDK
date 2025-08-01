@@ -195,7 +195,6 @@ interface SummaryProps {
   shareString: string;
   isMember: boolean;
   isSubscriber: boolean;
-  relatedGames: { slug: string, title: string, icon: string }[];
   promoLinks: { icon_url: string, background_color: string, title: string, url: string, type: string }[];
   hasPlayedToday?: boolean;
   isInjected?: boolean;
@@ -251,36 +250,15 @@ function SummaryComponent (props: SummaryProps) {
           isMember={props.isMember} 
           isSubscriber={props.isSubscriber}
         />
-        
-        {
-          props.relatedGames.length 
-            ? (
-              <div className='swag-summary-v2__related-games'>
-                <p>More Games:</p>
-                <ul>
-                  {
-                    props.relatedGames.map(({ slug, title, icon }) => {
-                      return (
-                        <li key={slug} onClick={() => navigateToTitle(slug)}>
-                          <img src={icon} alt={title} />
-                        </li>
-                      );
-                    })
-                  }
-                </ul>
-              </div>
-            ) : <></>
-        }
 
         {
           props.promoLinks.length
             ? (
               <div className='swag-summary-v2__promo-links-container'>
                 {
-                  props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
-                    const navMethod = type === 'archive' ? navigateToArchive : navigateToTitle;
-                    return (
-                      <button key={title} style={{ backgroundColor: background_color }} onClick={() => navMethod(url)}>
+                  props.promoLinks.map(({ icon_url, background_color, title, type }) => {
+                    return type === 'archive' && (
+                      <button key={title} style={{ backgroundColor: background_color }} onClick={() => navigateToArchive()}>
                         <img src={icon_url} alt={title} />
                         <span>{title}</span>
                         <img src={arrowIcon} alt='arrow' />
@@ -288,6 +266,26 @@ function SummaryComponent (props: SummaryProps) {
                     );
                   })
                 }
+              </div>
+            ) : <></>
+        }
+
+        {
+          props.promoLinks.length 
+            ? (
+              <div className='swag-summary-v2__related-games'>
+                <p>More Games:</p>
+                <ul>
+                  {
+                    props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                      return type === 'link' && (
+                        <li key={url} style={{ backgroundColor: background_color }} onClick={() => navigateToTitle(url)}>
+                          <img src={icon_url} alt={title} />
+                        </li>
+                      );
+                    })
+                  }
+                </ul>
               </div>
             ) : <></>
         }
@@ -379,26 +377,20 @@ class SummaryAPI {
     // Fetch promo links
     let promoLinks: GamePromoLink[] = [];
     try {
-      promoLinks = await data.getGamePromoLinks();
+      const isMemberAndSubscriber = isMember && isSubscriber;
+      promoLinks = await data.getGamePromoLinks(isMemberAndSubscriber
+        ? 6
+        : 3
+      );
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Error fetching promo links:', e);
-    }
-
-    // Fetch related games (deprecated)
-    let relatedGames;
-    try {
-      const event = await messages.trySendMessage('swag.getRelatedGames');
-      relatedGames = JSON.parse(event.message);
-    } catch (e) {
-      relatedGames = [];
     }
 
     const showSummary = () => {
       render(<SummaryComponent 
         stats={stats} 
         contentHtml={contentHtml}
-        relatedGames={relatedGames}
         promoLinks={promoLinks}
         shareString={shareString}
         isMember={isMember}
