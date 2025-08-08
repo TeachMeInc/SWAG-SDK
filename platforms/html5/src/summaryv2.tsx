@@ -2,7 +2,6 @@ import messages from './messages';
 import data, { DailyGameStreak, GamePromoLink } from './data';
 import { render } from 'preact';
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks';
-import utils from './utils';
 import { DotLottie } from '@lottiefiles/dotlottie-web';
 import lottieStreak from './assets/lottie/streak.json';
 import lottieTime from './assets/lottie/time.json';
@@ -10,6 +9,7 @@ import arrowIcon from './assets/arrow-icon.svg';
 import shareIcon from './assets/share-icon.svg';
 import replayIcon from './assets/replay-icon.svg';
 import favoriteIcon from './assets/favorite-icon.svg';
+import utils from './utils';
 
 // #region Shockwave Upsell
 
@@ -378,10 +378,9 @@ class SummaryAPI {
     let promoLinks: GamePromoLink[] = [];
     try {
       const isMemberAndSubscriber = isMember && isSubscriber;
-      promoLinks = await data.getGamePromoLinks(isMemberAndSubscriber
-        ? 6
-        : 3
-      );
+      const limit = isMemberAndSubscriber ? 6 : 3;
+      const platforms = [ utils.getPlatform() === 'app' ? 'app' : 'web' ];
+      promoLinks = await data.getGamePromoLinks(limit, platforms);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Error fetching promo links:', e);

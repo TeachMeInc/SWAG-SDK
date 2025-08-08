@@ -4,6 +4,7 @@ import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
 import shareIcon from './assets/share-icon.svg';
 import replayIcon from './assets/replay-icon.svg';
+import utils from './utils';
 
 
 
@@ -206,7 +207,9 @@ class SummaryAPI {
 
     let promoLinks: GamePromoLink[] = [];
     try {
-      promoLinks = await data.getGamePromoLinks();
+      const limit = 1;
+      const platforms = [ utils.getPlatform() === 'app' ? 'app' : 'web' ];
+      promoLinks = await data.getGamePromoLinks(limit, platforms);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.warn('Error fetching promo links:', e);
