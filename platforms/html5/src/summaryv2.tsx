@@ -331,6 +331,10 @@ function SummaryComponent (props: SummaryProps) {
                 </div>
               ) : <></>
           }
+
+          {
+            isOverflow && <div style={{ height: '2rem' }} />
+          }
         </div>
 
         {
