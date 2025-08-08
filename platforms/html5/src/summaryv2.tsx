@@ -9,6 +9,7 @@ import lottieTime from './assets/lottie/time.json';
 import arrowIcon from './assets/arrow-icon.svg';
 import shareIcon from './assets/share-icon.svg';
 import replayIcon from './assets/replay-icon.svg';
+import caretIcon from './assets/caret-icon.svg';
 import favoriteIcon from './assets/favorite-icon.svg';
 
 // #region Shockwave Upsell
@@ -203,6 +204,11 @@ interface SummaryProps {
 }
 
 function SummaryComponent (props: SummaryProps) {
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const [ isOverflow, setIsOverflow ] = useState<boolean>(false);
+  const [ showScrollIndicator, setShowScrollIndicator ] = useState<boolean>(false);
+
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
@@ -210,84 +216,129 @@ function SummaryComponent (props: SummaryProps) {
   const navigateToArchive = () => {
     messages.trySendMessage('swag.navigateToArchive');
   };
+
+  const handleResize = useCallback(() => {
+    if (!contentRef.current) return;
+
+    const { scrollHeight, clientHeight } = contentRef.current;
+    const isScrollable = scrollHeight > clientHeight;
+
+    setIsOverflow(isScrollable);
+  }, [ contentRef.current ]);
+
+  const handleScroll = useCallback(() => {
+    const { scrollTop, scrollHeight, clientHeight } = contentRef.current!;
+    const isAtBottom = (scrollTop + clientHeight) >= (scrollHeight - 10); // Small buffer
+    
+    setShowScrollIndicator(!isAtBottom);
+  }, [ contentRef.current ]);
+
+  useEffect(() => {
+    if (!contentRef.current || props.isInjected) return;
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    handleScroll();
+    contentRef.current.addEventListener('scroll', handleScroll);
+  }, [ contentRef.current]);
+
+  const handleScrollToBottom = () => {
+    if (!contentRef.current) return;
+
+    contentRef.current.scrollTo({
+      top: contentRef.current.scrollHeight,
+      behavior: 'smooth'
+    });
+  }
   
   return (
     <div className={`swag-summary-v2 ${!props.isInjected ? 'swag-summary-v2__fullscreen' : 'swag-summary-v2__injected'}`}>
-      <div className='swag-summary-v2__content'>
-        <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
+      <div ref={contentRef} className={`swag-summary-v2__scroll-content ${isOverflow ? '--is-overflow' : ''}`}>
+        <div ref={contentRef} className='swag-summary-v2__content'>
+          <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
 
-        <div className='swag-summary-v2__stats'>
+          <div className='swag-summary-v2__stats'>
+            {
+              props.stats.map(({ key, value, lottie }) => 
+                <LottieComponent 
+                  key={key}
+                  className='swag-summary-v2__stat' 
+                  animationData={utils.parseLottie(lottie, value)} 
+                />
+              )
+            }
+          </div>
+
+          <div className={`swag-summary-v2__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
+            <ShareStatsComponent shareString={props.shareString} />
+            {
+              props.onReplay && (
+                <ReplayComponent 
+                  onReplay={props.onReplay} 
+                />
+              )
+            }
+            {
+              props.onFavorite && (
+                <FavoriteComponent 
+                  onFavorite={props.onFavorite} 
+                />
+              )
+            }
+          </div>
+
+          <UpsellComponent 
+            isMember={props.isMember} 
+            isSubscriber={props.isSubscriber}
+          />
+
           {
-            props.stats.map(({ key, value, lottie }) => 
-              <LottieComponent 
-                key={key}
-                className='swag-summary-v2__stat' 
-                animationData={utils.parseLottie(lottie, value)} 
-              />
-            )
-          }
-        </div>
-
-        <div className={`swag-summary-v2__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
-          <ShareStatsComponent shareString={props.shareString} />
-          {
-            props.onReplay && (
-              <ReplayComponent 
-                onReplay={props.onReplay} 
-              />
-            )
-          }
-          {
-            props.onFavorite && (
-              <FavoriteComponent 
-                onFavorite={props.onFavorite} 
-              />
-            )
-          }
-        </div>
-
-        <UpsellComponent 
-          isMember={props.isMember} 
-          isSubscriber={props.isSubscriber}
-        />
-
-        {
-          props.promoLinks.length
-            ? (
-              <div className='swag-summary-v2__promo-links-container'>
-                {
-                  props.promoLinks.map(({ icon_url, background_color, title, type }) => {
-                    return type === 'archive' && (
-                      <button key={title} style={{ backgroundColor: background_color }} onClick={() => navigateToArchive()}>
-                        <img src={icon_url} alt={title} />
-                        <span>{title}</span>
-                        <img src={arrowIcon} alt='arrow' />
-                      </button>
-                    );
-                  })
-                }
-              </div>
-            ) : <></>
-        }
-
-        {
-          props.promoLinks.length 
-            ? (
-              <div className='swag-summary-v2__related-games'>
-                <p>More Games:</p>
-                <ul>
+            props.promoLinks.length
+              ? (
+                <div className='swag-summary-v2__promo-links-container'>
                   {
-                    props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
-                      return type === 'link' && (
-                        <li key={url} style={{ backgroundColor: background_color }} onClick={() => navigateToTitle(url)}>
+                    props.promoLinks.map(({ icon_url, background_color, title, type }) => {
+                      return type === 'archive' && (
+                        <button key={title} style={{ backgroundColor: background_color }} onClick={() => navigateToArchive()}>
                           <img src={icon_url} alt={title} />
-                        </li>
+                          <span>{title}</span>
+                          <img src={arrowIcon} alt='arrow' />
+                        </button>
                       );
                     })
                   }
-                </ul>
-              </div>
-            ) : <></>
+                </div>
+              ) : <></>
+          }
+
+          {
+            props.promoLinks.length 
+              ? (
+                <div className='swag-summary-v2__related-games'>
+                  <p>More Games:</p>
+                  <ul>
+                    {
+                      props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                        return type === 'link' && (
+                          <li key={url} style={{ backgroundColor: background_color }} onClick={() => navigateToTitle(url)}>
+                            <img src={icon_url} alt={title} />
+                          </li>
+                        );
+                      })
+                    }
+                  </ul>
+                </div>
+              ) : <></>
+          }
+        </div>
+
+        {
+          (isOverflow && showScrollIndicator) && (
+            <button type='button' className='swag-summary-v2__scroll-indicator' onClick={handleScrollToBottom}>
+              <img src={caretIcon} alt='scroll down' />
+            </button>
+          )
         }
       </div>
     </div>
