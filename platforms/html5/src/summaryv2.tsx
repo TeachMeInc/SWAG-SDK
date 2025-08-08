@@ -241,7 +241,7 @@ function SummaryComponent (props: SummaryProps) {
 
     handleScroll();
     contentRef.current.addEventListener('scroll', handleScroll);
-  }, [ contentRef.current]);
+  }, [ contentRef.current, props.isInjected ]);
 
   const handleScrollToBottom = () => {
     if (!contentRef.current) return;
