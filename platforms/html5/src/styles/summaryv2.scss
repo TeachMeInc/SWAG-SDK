@@ -9,7 +9,7 @@ $smallScreenWidth: 468px;
   }
 
   &.swag-summary-v2__fullscreen {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100svw;

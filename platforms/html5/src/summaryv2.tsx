@@ -217,6 +217,16 @@ function SummaryComponent (props: SummaryProps) {
     messages.trySendMessage('swag.navigateToArchive');
   };
 
+  const handleHeaderPadding = useCallback(() => {
+    if (!contentRef.current) return;
+
+    const header = document.querySelector('header.swag-toolbar');
+    if (!header) return;
+
+    const headerHeight = header.clientHeight;
+    contentRef.current!.style.marginTop = `${headerHeight}px`;
+  }, []);
+
   const handleResize = useCallback(() => {
     if (!contentRef.current) return;
 
@@ -224,6 +234,7 @@ function SummaryComponent (props: SummaryProps) {
     const isScrollable = scrollHeight > clientHeight;
 
     setIsOverflow(isScrollable);
+    handleScroll();
   }, [ contentRef.current ]);
 
   const handleScroll = useCallback(() => {
@@ -241,6 +252,8 @@ function SummaryComponent (props: SummaryProps) {
 
     handleScroll();
     contentRef.current.addEventListener('scroll', handleScroll);
+
+    handleHeaderPadding();
   }, [ contentRef.current, props.isInjected ]);
 
   const handleScrollToBottom = () => {
@@ -330,10 +343,6 @@ function SummaryComponent (props: SummaryProps) {
                   </ul>
                 </div>
               ) : <></>
-          }
-
-          {
-            isOverflow && <div style={{ height: '2rem' }} />
           }
         </div>
 
