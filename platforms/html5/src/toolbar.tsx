@@ -1,7 +1,7 @@
 import { faBoltLightning, faBookmark, faCircleHalfStroke, faCircleQuestion, faClock, faExpand, faFlag, faGamepad, faGear, faHeart, faInfoCircle, faMagnifyingGlass, faMoon, faPause, faPencil, faPlay, faRankingStar, faStar, faStopwatch, faSun, faTrophy, faVolumeHigh, faVolumeLow, faVolumeOff, faVolumeXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faCircleQuestion as faCircleQuestionToggled } from '@fortawesome/free-regular-svg-icons';
 import { render } from 'preact';
-import { useEffect, useReducer, useRef } from 'preact/hooks';
+import { useEffect, useReducer, useRef, useState } from 'preact/hooks';
 import messages from './messages';
 import utils from './utils';
 
@@ -113,7 +113,7 @@ enum ToolbarStateActionType {
   REMOVE_ITEM,
 }
 
-function useToolbarState () {
+function useToolbarState (initialState?: ToolbarState) {
   return useReducer<ToolbarState, ToolbarStateAction>((state, action) => {
     switch (action.type) {
     case ToolbarStateActionType.SET_ITEMS: {
@@ -155,7 +155,7 @@ function useToolbarState () {
       };
     }
     }
-  }, { items: [] });
+  }, initialState || { items: [] });
 }
 
 // #endregion
@@ -166,9 +166,10 @@ function useToolbarState () {
 
 interface ToolbarProps {
   date: string;
-  title: string;
+  title?: string;
   titleIcon?: string;
   titleIconDark?: string;
+  initialToolbarState?: ToolbarState;
   useCustomRootEl?: boolean;
   onClickFullScreen?: () => void;
 }
@@ -183,7 +184,8 @@ export function Toolbar (props: ToolbarProps) {
    * State
    */
 
-  const [ toolbarState, dispatchToolbarState ] = useToolbarState();
+  const [ toolbarState, dispatchToolbarState ] = useToolbarState(props.initialToolbarState);
+  const [ title, setTitle ] = useState<string>(props.title || '');
   const elRef = useRef<HTMLDivElement>(null);
   const date = parseLocalDate(props.date);
 
@@ -267,10 +269,19 @@ export function Toolbar (props: ToolbarProps) {
     };
     document.addEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
 
+    // Show Toolbar
+    const showToolbarHandler = (evt: CustomEvent<{ title: string }>) => {
+      const title = evt.detail.title;
+      if (!title) throw new Error('Toolbar error: Missing title.');
+      setTitle(title);
+    };
+    document.addEventListener(ToolbarEventName.SHOW_TOOLBAR, showToolbarHandler as EventListener);
+
     return () => {
       document.removeEventListener(ToolbarEventName.SET_ITEMS, setItemsHandler as EventListener);
       document.removeEventListener(ToolbarEventName.UPDATE_ITEM, updateItemHandler as EventListener);
       document.removeEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
+      document.removeEventListener(ToolbarEventName.SHOW_TOOLBAR, showToolbarHandler as EventListener);
     };
   }, [ dispatchToolbarState ]);
 
@@ -292,7 +303,7 @@ export function Toolbar (props: ToolbarProps) {
    */
 
   return (
-    <header className='swag-toolbar' ref={elRef}>
+    <header className='swag-toolbar' ref={elRef} style={{ opacity: title ? 1 : 0 }}>
       <div className='swag-toolbar__container'>
         <div className='swag-toolbar__container__inner'>
           <aside className='swag-toolbar__flex --pull-left'>
@@ -312,20 +323,20 @@ export function Toolbar (props: ToolbarProps) {
                       <img 
                         className='swag-toolbar__title-icon --hide-dark'
                         src={props.titleIcon} 
-                        alt={`${props.title} logo`} 
+                        alt={`${title} logo`} 
                         aria-hidden 
                       />
                       <img 
                         className='swag-toolbar__title-icon --hide-light'
                         src={props.titleIconDark || props.titleIcon} 
-                        alt={`${props.title} logo`} 
+                        alt={`${title} logo`} 
                         aria-hidden 
                       />
                     </>
                   )
                   : null
               }
-              {props.title}
+              {title}
             </h1>
           </div>
           <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>
@@ -387,6 +398,7 @@ enum ToolbarEventName {
   SET_ITEMS = 'swag.toolbar.setItems',
   UPDATE_ITEM = 'swag.toolbar.updateItem',
   REMOVE_ITEM = 'swag.toolbar.removeItem',
+  SHOW_TOOLBAR = 'swag.toolbar.showToolbar',
 }
 
 class ToolbarAPI {
@@ -396,12 +408,13 @@ class ToolbarAPI {
     return document.getElementById(this.rootElId)!;
   }
 
-  async showToolbar (options: {
+  async mountToolbar (options: {
     useCustomRootEl?: boolean;
     onClickFullScreen?: () => void;
-    title: string;
+    title?: string;
     titleIcon?: string;
     titleIconDark?: string;
+    initialToolbarState?: ToolbarState;
   }) {
     let onClickFullScreen: () => void;
 
@@ -417,9 +430,10 @@ class ToolbarAPI {
       render(
         <Toolbar
           date={utils.getDateString()}
-          title={options.title}
+          title={options.title || ''}
           titleIcon={options.titleIcon}
           titleIconDark={options.titleIconDark}
+          initialToolbarState={options.initialToolbarState}
           useCustomRootEl={options.useCustomRootEl}
           onClickFullScreen={onClickFullScreen}
         />, 
@@ -431,6 +445,16 @@ class ToolbarAPI {
       showToolbar();
       resolve();
     });
+  }
+
+  showToolbar (options: {
+    title: string;
+  }) {
+    document.dispatchEvent(new CustomEvent(ToolbarEventName.SHOW_TOOLBAR, {
+      detail: {
+        title: options.title,
+      },
+    }));
   }
 
   protected unmount () {

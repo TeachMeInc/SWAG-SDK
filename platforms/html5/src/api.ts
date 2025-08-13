@@ -39,7 +39,6 @@ export default class SWAGAPI extends Emitter {
     Emitter(this);
 
     this._options = options;
-    this._init();
 
     dialog.on('UI_EVENT', (event) => {
       this.emit(event, { type: event });
@@ -60,6 +59,8 @@ export default class SWAGAPI extends Emitter {
     data.on('DATA_ERROR', (event) => {
       this._emitError(event);
     });
+
+    this._init();
   }
 
   protected _createPreactRoot (id: string) {
@@ -94,19 +95,20 @@ export default class SWAGAPI extends Emitter {
       else toolbar.rootElId = this._options.toolbar.wrapperId;
 
       (async () => {
-        let title = this._options.gameTitle;
-
-        if (!title) {
-          const game = await data.getGame();
-          if (game && game.name) title = game.name;
-          else title = '';
-        }
-
-        toolbar.showToolbar({ 
+        toolbar.mountToolbar({ 
           ...this._options.toolbar,
-          title,
+          title: this._options.gameTitle || '',
           useCustomRootEl: !!this._options.toolbar?.wrapperId,
         });
+        
+        if (!this._options.gameTitle) {
+          const game = await data.getGame();
+          if (game && game.name) {
+            toolbar.showToolbar({
+              title: game.name,
+            });
+          }
+        }
       })();
     } else {
       messages.trySendMessage('swag.toolbar.show', '', true);
@@ -152,7 +154,7 @@ export default class SWAGAPI extends Emitter {
     // External token provided in the URL
     if (typeof passedInToken === 'string' && passedInToken.length > 0) {
       session.jwt = passedInToken;
-    } 
+    }
     // Local storage for standalone sites
     else if (utils.getPlatform() === 'standalone') {
       const storedToken = localStorage.getItem('swag_token');
@@ -174,10 +176,25 @@ export default class SWAGAPI extends Emitter {
     const entity = await data.getEntity();
 
     // Ready
-    // eslint-disable-next-line no-console
-    console.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
-    utils.debug('session ready');
-    this.emit(config.events.SESSION_READY, { session_ready: true });
+    const ready = () => {
+      // eslint-disable-next-line no-console
+      console.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
+      utils.debug('session ready');
+      this.emit(config.events.SESSION_READY, { session_ready: true });
+    };
+
+    // Wait for toolbar to be ready
+    if (this._options.toolbar) {
+      const interval = setInterval(() => {
+        const toolbarEl = document.getElementById(toolbar.rootElId);
+        if (toolbarEl) {
+          clearInterval(interval);
+          ready();
+        }
+      }, 10);
+    } else {
+      ready();
+    }
   }
 
   toggleFullScreen () {
