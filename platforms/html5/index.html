@@ -155,7 +155,6 @@
       <section>
         <h4>Toolbar Methods</h4>
         <p>
-          <button id='btnSetToolbarItems'>Set Toolbar Items</button>
           <button id='btnUpdateToolbarItem'>Update Toolbar Item</button>
           <button id='btnRemoveToolbarItem'>Remove Toolbar Item</button>
         </p>
@@ -202,6 +201,29 @@
           wrapperId: '',
           titleIcon: 'https://new.shockwave.com/images/SW25.svg',
           titleIconDark: 'https://new.shockwave.com/images/SW25_alt.svg',
+          initialToolbarState: {
+            items: [
+              { 
+                id: 'btn1', 
+                icon: 'stopwatch',
+                label: '0:00',
+              },
+              { 
+                id: 'btn2', 
+                icon: 'pause',
+              },
+              { 
+                id: 'btn3', 
+                icon: 'info',
+                disabled: true,
+              },
+              { 
+                id: 'btn4', 
+                icon: 'info',
+                toggled: true,
+              },
+            ]
+          },
           onClickFullScreen: () => {
             if (document.fullscreenElement) {
               document.exitFullscreen();
@@ -215,6 +237,18 @@
       const game = {
         async init () {
           await api.startSession();
+
+          let toggled = false;
+          api.updateToolbarItem({
+            id: 'btn2',
+            onClick: () => {
+              toggled = !toggled;
+              api.updateToolbarItem({ 
+                id: 'btn2', 
+                icon: toggled ? 'play' : 'pause',
+              });
+            },
+          });
 
           api.populateLevelSelect('submitScore_levelSelect');
           api.populateLevelSelect('submitDailyScore_levelSelect');
@@ -421,38 +455,6 @@
 
       document.getElementById('btnCheckIsSubscriber').onclick = 
         async () => console.log(await api.isSubscriber());
-
-      let toggled = false;
-
-      document.getElementById('btnSetToolbarItems').onclick = 
-        () => api.setToolbarItems([
-          { 
-            id: 'btn1', 
-            icon: 'stopwatch',
-            label: '0:00',
-          },
-          { 
-            id: 'btn2', 
-            icon: toggled ? 'play' : 'pause',
-            onClick: () => {
-              toggled = !toggled;
-              api.updateToolbarItem({ 
-                id: 'btn2', 
-                icon: toggled ? 'play' : 'pause',
-              });
-            },
-          },
-          { 
-            id: 'btn3', 
-            icon: 'info',
-            disabled: true,
-          },
-          { 
-            id: 'btn4', 
-            icon: 'info',
-            toggled: true,
-          },
-        ]);
 
       document.getElementById('btnUpdateToolbarItem').onclick = 
         () => api.updateToolbarItem({ 
