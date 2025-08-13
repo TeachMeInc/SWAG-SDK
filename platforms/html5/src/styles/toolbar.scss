@@ -102,16 +102,17 @@
       margin-right: $margin;
     }
 
-    &:last-child,
-    &:first-child {
+    &:last-child:not(.--hide-mobile) {
       margin-right: 0;
     }
 
     &.--hide-mobile {
       order: 9999;
+      margin-right: 0;
       margin-left: $marginSm;
 
       @media (min-width: 431px) {
+        margin-right: 0;
         margin-left: $margin;
       }
     }
