@@ -11,7 +11,7 @@ import messages from './messages';
 import summary from './summary';
 import summaryV2 from './summaryv2';
 import { PostScoreOptions } from './data';
-import toolbar, { ToolbarItem } from './toolbar';
+import toolbar, { ToolbarItem, ToolbarState } from './toolbar';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -25,6 +25,7 @@ export interface SWAGAPIOptions {
     onClickFullScreen?: () => void;
     titleIcon?: string;
     titleIconDark?: string;
+    initialToolbarState?: ToolbarState;
   },
   // Deprecated
   theme?: 'shockwave';

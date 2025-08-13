@@ -183,6 +183,7 @@ declare interface SWAGAPIOptions {
         onClickFullScreen?: () => void;
         titleIcon?: string;
         titleIconDark?: string;
+        initialToolbarState?: ToolbarState;
     };
     theme?: 'shockwave';
     api_key?: string;
@@ -195,6 +196,10 @@ declare interface ToolbarItem {
     disabled?: boolean;
     toggled?: boolean;
     onClick?: () => void;
+}
+
+declare interface ToolbarState {
+    items: ToolbarItem[];
 }
 
 export { }

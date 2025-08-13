@@ -98,7 +98,7 @@ export interface ToolbarItem {
   onClick?: () => void;
 }
 
-interface ToolbarState {
+export interface ToolbarState {
   items: ToolbarItem[];
 }
 
