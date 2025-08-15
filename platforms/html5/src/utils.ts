@@ -65,7 +65,10 @@ const methods = {
     const { date: dateParam } = methods.parseUrlParams();
     
     if (dateParam) {
-      return dateParam;
+      // eslint-disable-next-line prefer-const
+      let [ year, month, day ] = dateParam.split('-');
+      if (year.length === 2) year = '20' + year;
+      return `${year}-${month}-${day}`;
     }
 
     const date = new Date();
