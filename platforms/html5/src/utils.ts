@@ -106,6 +106,18 @@ const methods = {
     return 'embed';
   },
 
+  getPlatformTheme: function (): ('light' | 'dark') {
+    if (this.parseUrlOptions('theme')) {
+      return this.parseUrlOptions('theme') === 'dark' 
+        ? 'dark' : 'light';
+    }
+    else if (this.getPlatform() === 'standalone') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return systemTheme ? 'dark' : 'light';
+    }
+    return 'light';
+  },
+
   getTimeZone: function (): string {
     if (
       typeof window === 'undefined' || 
@@ -136,6 +148,28 @@ const methods = {
       methods.debug('Error parsing Lottie animation', e);
       return {};
     }
+  },
+
+  parseUrlOptions: function (prop: string) {
+    const params: Record<string, string> = {};
+    if (window.location.href.indexOf('?') === -1) {
+      return params;
+    }
+
+    const search = decodeURIComponent(
+      window.location.href.slice(window.location.href.indexOf('?') + 1) 
+    );
+
+    search.split('&').forEach(function (val) {
+      const parts = val.split('=', 2);
+      params[ parts[ 0 ] ] = parts[ 1 ];
+    } );
+
+    return (
+      (prop && prop in params) 
+        ? params[ prop ] 
+        : params
+    );
   }
 };
 
