@@ -9,7 +9,6 @@ export interface Session {
   api_key: string | null;
   uid: string | null;
   entity: Entity | null;
-  wrapper: HTMLElement | null;
   theme: 'shockwave' | null;
   debug: boolean;
   provider: 'shockwave' | null;
@@ -21,7 +20,6 @@ const session: Session = {
   api_key: null,
   uid: null,
   entity: null,
-  wrapper: null,
   theme: null,
   debug: false,
   provider: null,

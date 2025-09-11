@@ -9,27 +9,15 @@ const mediaBreakpoints = [
 
 const methods = {
   getBreakpoint: function () {
-    const defaultBreakpoint = mediaBreakpoints.find(function (breakpoint) {
-      return breakpoint.default;
-    });
-    const mmatch = mediaBreakpoints.find(function (breakpoint) {
-      return session.wrapper!.clientWidth <= breakpoint.value;
-    });
-    return mmatch || defaultBreakpoint;
+    throw new Error('getBreakpoint method not implemented');
   },
 
   applyBreakpointClass: function () {
-    const breakpoint = methods.getBreakpoint();
-    if(breakpoint && breakpoint.class) {
-      session.wrapper!.dataset.breakpoint = breakpoint.class;
-    } else {
-      session.wrapper!.dataset.breakpoint = '';
-    }
+    throw new Error('applyBreakpointClass method not implemented');
   },
 
   checkBreakpoint: function (mediaKey: string) {
-    const breakpoint = methods.getBreakpoint();
-    return breakpoint && (breakpoint.name === mediaKey);
+    throw new Error('checkBreakpoint method not implemented');
   },
 
   formatParam: function (param: string | string[]) {
@@ -106,6 +94,18 @@ const methods = {
     return 'embed';
   },
 
+  getPlatformTheme: function (): ('light' | 'dark') {
+    if (this.parseUrlOptions('theme')) {
+      return this.parseUrlOptions('theme') === 'dark' 
+        ? 'dark' : 'light';
+    }
+    else if (this.getPlatform() === 'standalone') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return systemTheme ? 'dark' : 'light';
+    }
+    return 'light';
+  },
+
   getTimeZone: function (): string {
     if (
       typeof window === 'undefined' || 
@@ -136,6 +136,12 @@ const methods = {
       methods.debug('Error parsing Lottie animation', e);
       return {};
     }
+  },
+
+  parseUrlOptions: function (prop: string) {
+    const url = new URL(window.location.href);
+    const params = Object.fromEntries(url.searchParams.entries());
+    return prop ? params[ prop ] : params;
   }
 };
 

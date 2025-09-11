@@ -1,16 +1,17 @@
-import messages from './messages';
-import data, { DailyGameStreak, GamePromoLink } from './data';
+import messages from '../messages';
+import data, { DailyGameStreak, GamePromoLink } from '../data';
 import { render } from 'preact';
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks';
-import utils from './utils';
-import { DotLottie } from '@lottiefiles/dotlottie-web';
-import lottieStreak from './assets/lottie/streak.json';
-import lottieTime from './assets/lottie/time.json';
-import arrowIcon from './assets/arrow-icon.svg';
-import shareIcon from './assets/share-icon.svg';
-import replayIcon from './assets/replay-icon.svg';
-import caretIcon from './assets/caret-icon.svg';
-import favoriteIcon from './assets/favorite-icon.svg';
+import utils from '../utils';
+import lottieStreak from '../assets/lottie/streak.json';
+import lottieTime from '../assets/lottie/time.json';
+import arrowIcon from '../assets/arrow-icon.svg';
+import shareIcon from '../assets/share-icon.svg';
+import replayIcon from '../assets/replay-icon.svg';
+import caretIcon from '../assets/caret-icon.svg';
+import favoriteIcon from '../assets/favorite-icon.svg';
+import LottieComponent from '../components/lottie';
+import { loaderAPI } from '../components/loader';
 
 // #region Shockwave Upsell
 
@@ -90,7 +91,6 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
 // #endregion
 
-
 // #region Replay Component
 
 interface ReplayProps {
@@ -110,6 +110,8 @@ function ReplayComponent (props: ReplayProps) {
     </button>
   );
 }
+
+// #endregion
 
 // #region Favorite Component
 
@@ -131,62 +133,7 @@ function FavoriteComponent (props: FavoriteProps) {
   );
 }
 
-// #region Lottie Component
-
-interface LottieProps {
-  animationData: object;
-  className?: string;
-}
-
-function LottieComponent ({ animationData, className }: LottieProps) {
-
-  const lottieCanvas = useRef<HTMLCanvasElement | null>(null);
-  const lottieAnimation = useRef<DotLottie | null>(null);
-  
-  useEffect(() => {
-    if (lottieAnimation.current) return;
-
-    renderLottieScript();
-    assignLottieCanvas();
-
-    lottieAnimation.current = new DotLottie({
-      autoplay: true,
-      canvas: lottieCanvas.current as HTMLCanvasElement,
-      data: JSON.stringify(animationData),
-      renderConfig: {
-        autoResize: false
-      }
-    });
-  }, [ animationData ]);
-
-  const renderLottieScript = useCallback(() => {
-    const scriptElementExists = document.querySelector('script#lottie-js');
-    if (scriptElementExists) return;
-
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@lottielab/lottie-player@latest/dist/lottie-player.js';
-    script.id = 'lottie-js';
-
-    document.body.appendChild(script);
-  }, []);
-
-  const assignLottieCanvas = useCallback(() => {
-    if (!lottieCanvas.current) return;
-
-    const dateNow = Date.now();
-    const canvasId = `dotlottie-canvas-${dateNow}`;
-    lottieCanvas.current.id = canvasId;
-  }, []);
-
-  return (
-    <div className={className}>
-      <canvas ref={lottieCanvas} id="dotlottie-canvas" width="90" height="90"></canvas>
-    </div>
-  );
-}
-
 // #endregion
-
 
 // #region Summary Component
 
@@ -387,43 +334,78 @@ class SummaryAPI {
     onReplay?: () => void,
     onClose?: () => void,
   ) {
+    loaderAPI.showLoader(350);
+
+    const promises = [];
+
     // Fetch member status
-    let isMember = false;
-    try {
-      const getEntity = await data.getEntity();
-      isMember = getEntity.isMember;
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error checking membership status:', e);
-    }
+    promises.push((async () => {
+      try {
+        const getEntity = await data.getEntity();
+        return getEntity.isMember;
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error checking membership status:', e);
+      }
+    })());
 
     // Fetch subscriber status
-    let isSubscriber = false;
-    try {
-      isSubscriber = await data.isSubscriber();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error checking subscription status:', e);
-    }
+    promises.push((async () => {
+      try {
+        return await data.isSubscriber();
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error checking subscription status:', e);
+      }
+    })());
 
     // Check if the game has been played today
-    let hasPlayedToday = false;
-    try {
-      const currentDay = await data.getCurrentDay();
-      hasPlayedToday = await data.hasPlayedDay(currentDay.day);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error checking if game has been played today:', e);
-    }
+    promises.push((async () => {
+      try {
+        const currentDay = await data.getCurrentDay();
+        return await data.hasPlayedDay(currentDay.day);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error checking if game has been played today:', e);
+      }
+    })());
 
     // Fetch daily game streak
-    let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
-    try {
-      gameStreak = await data.getDailyGameStreak();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error fetching game streak:', e);
-    }
+    promises.push((async () => {
+      let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
+      try {
+        gameStreak = await data.getDailyGameStreak();
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error fetching game streak:', e);
+      }
+      return gameStreak;
+    })());
+
+    // Fetch promo links
+    promises.push((async () => {
+      try {
+        return await data.getGamePromoLinks(6);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error fetching promo links:', e);
+      }
+    })());
+
+    const [ 
+      isMember, 
+      isSubscriber, 
+      hasPlayedToday,
+      gameStreak,
+      promoLinks
+    ] = await Promise.all(promises) as [
+      boolean, 
+      boolean, 
+      boolean, 
+      DailyGameStreak, 
+      GamePromoLink[]
+    ];
+
     stats.unshift(
       {
         key: 'Streak',
@@ -438,24 +420,13 @@ class SummaryAPI {
       timeStat.lottie = lottieTime;
     }
 
-    // Fetch promo links
-    let promoLinks: GamePromoLink[] = [];
-    try {
-      const isMemberAndSubscriber = isMember && isSubscriber;
-      promoLinks = await data.getGamePromoLinks(isMemberAndSubscriber
-        ? 6
-        : 3
-      );
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error fetching promo links:', e);
-    }
-
     const showSummary = () => {
+      loaderAPI.hideLoader();
+
       render(<SummaryComponent 
         stats={stats} 
         contentHtml={contentHtml}
-        promoLinks={promoLinks}
+        promoLinks={(isMember && isSubscriber) ? promoLinks : promoLinks.slice(0, 4)}
         shareString={shareString}
         isMember={isMember}
         isSubscriber={isSubscriber}
@@ -467,6 +438,8 @@ class SummaryAPI {
     };
 
     const unmount = () => {
+      loaderAPI.hideLoader();
+
       this.unmount();
       if (onReplay) onReplay();
       if (onClose) onClose();

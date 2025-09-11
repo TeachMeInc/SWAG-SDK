@@ -1,17 +1,15 @@
 'use strict';
 
-import config from './config';
 import session from './session';
 import utils from './utils';
 import data from './data';
 import messages from './messages';
-import summary from './summary';
-import toolbar, { ToolbarItem, ToolbarState } from './toolbar';
+import summary from './components/summary';
+import toolbar, { ToolbarItem, ToolbarState } from './components/toolbar';
 
 export interface SWAGAPIOptions {
   apiKey: string;
   gameTitle: string;
-  rootElementId: string;
   debug?: boolean;
   summary?: {
     containerElementId?: string;
@@ -45,7 +43,7 @@ export default class SWAGAPI {
   protected _createPreactRoot (id: string) {
     const root = document.createElement('div');
     root.setAttribute('id', id);
-    session.wrapper!.appendChild(root);
+    document.body.appendChild(root);
   }
 
   protected _init () {
@@ -53,8 +51,6 @@ export default class SWAGAPI {
     const siteMode = 'shockwave';
 
     session.api_key = this._options.apiKey || null;
-    session.wrapper = document.getElementById(this._options.rootElementId);
-    session.wrapper!.classList.add('swag-wrapper');
     session.theme = siteMode;
     session.provider = siteMode;
 
@@ -93,18 +89,12 @@ export default class SWAGAPI {
     }
   }
 
-  protected _parseUrlOptions (prop: string) {
-    const url = new URL(window.location.href);
-    const params = Object.fromEntries(url.searchParams.entries());
-    return prop ? params[ prop ] : params;
-  }
-
 
 
   // #region API Methods
 
   async startSession () {
-    const passedInToken = this._parseUrlOptions('jwt') as string;
+    const passedInToken = utils.parseUrlOptions('jwt') as string;
 
     // External token provided in the URL
     if (typeof passedInToken === 'string' && passedInToken.length > 0) {
@@ -204,13 +194,13 @@ export default class SWAGAPI {
 
   // #region User Cloud Datastore Methods
 
-  setUserData (key: string, value: string) {
-    return data.postDatastore(key, value);
-  }
+  // setUserData (key: string, value: string) {
+  //   return data.postDatastore(key, value);
+  // }
 
-  getUserData () {
-    return data.getUserDatastore();
-  }
+  // getUserData () {
+  //   return data.getUserDatastore();
+  // }
 
   // #endregion
 
@@ -281,15 +271,7 @@ export default class SWAGAPI {
   }
 
   getPlatformTheme (): ('light' | 'dark') {
-    if (this._parseUrlOptions('theme')) {
-      return this._parseUrlOptions('theme') === 'dark' 
-        ? 'dark' : 'light';
-    }
-    else if (this.getPlatform() === 'standalone') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return systemTheme ? 'dark' : 'light';
-    }
-    return 'light';
+    return utils.getPlatformTheme();
   }
 
   // #endregion

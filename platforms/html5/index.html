@@ -13,6 +13,7 @@
       width: 100svw;
       height: 100svh;
       background-color: #195AAB;
+      font-family: Arial, Helvetica, sans-serif !important;
     }
 
     canvas {
@@ -28,7 +29,6 @@
       left: 0;
       padding: 0.5rem 1rem;
       box-sizing: border-box;
-      z-index: 1;
       display: flex;
       flex-direction: column;
       margin: 1rem;
@@ -72,64 +72,57 @@
   </style>
 </head>
 <body>
-  <div id='swag-wrapper'>
-    <canvas id='game-canvas'></canvas>
-    <div id='game-ui'>
-      <section>
-        <h4>API Methods</h4>
-        <p>
-          <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
-          <button id='btnNavigateToArchives'>Navigate to Archives</button>
-          <button id='btnNavigateToTitle'>Navigate to Title</button>
-        </p>
-      </section>
-      <section>
-        <h4>UI Methods</h4>
-        <p>
-          <button id='btnGameSplashScreen'>Game Splash Screen</button>
-          <button id='btnGameSummaryScreen'>Game Summary Screen</button>
-        </p>
-      </section>
-      <section>
-        <h4>Toolbar Methods</h4>
-        <p>
-          <button id='btnUpdateToolbarItem'>Update Toolbar Item</button>
-          <button id='btnRemoveToolbarItem'>Remove Toolbar Item</button>
-        </p>
-      </section>
-      <section>
-        <h4>User Methods</h4>
-        <p>
-          <strong>Current User</strong>
-          <input id='userInfo' type='text'></input>
-        </p>
-        <p>
-          <button id='btnGetCurrentUser'>Get Current User</button>
-          <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
-          <button id='btnCheckIsSubscriber'>Get User Data</button>
-        </p>
-        <p>
-          <strong>User Cloud Data</strong>
-          <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
-          <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
-          <button id='submitCloudData_submitBtn'>Save User Data</button>
-        </p>
-      </section>
-      <section>
-        <h4>Daily Game Methods</h4>
-        <p>
-          <button id='btnStartDailyGame'>Start Game</button>
-          <button id='btnCompleteDailyGame'>Complete Game</button>
-          <button id='btnGetDailyGameStreak'>Get Game Streak</button>
-          <button id='btnGetDailyGameProgress'>Get Game Progress</button>
-        </p>
-      </section>
-      <section>
-        <h4>Wrapper Methods</h4>
-        <p>
-        </p>
-      </section>
-    </div>
+  <canvas id='game-canvas'></canvas>
+  <div id='game-ui'>
+    <section>
+      <h4>API Methods</h4>
+      <p>
+        <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
+        <button id='btnNavigateToArchives'>Navigate to Archives</button>
+        <button id='btnNavigateToTitle'>Navigate to Title</button>
+      </p>
+    </section>
+    <section>
+      <h4>UI Methods</h4>
+      <p>
+        <button id='btnGameSplashScreen'>Splash Screen</button>
+        <button id='btnGameSummaryScreen'>Summary Screen</button>
+      </p>
+    </section>
+    <section>
+      <h4>Toolbar Methods</h4>
+      <p>
+        <button id='btnUpdateToolbarItem'>Update Toolbar Item</button>
+        <button id='btnRemoveToolbarItem'>Remove Toolbar Item</button>
+      </p>
+    </section>
+    <section>
+      <h4>User Methods</h4>
+      <p>
+        <strong>Current User</strong>
+        <input id='userInfo' type='text'></input>
+      </p>
+      <p>
+        <button id='btnGetCurrentUser'>Get Current User</button>
+        <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
+        <!-- <button id='btnGetUserData'>Get User Data</button> -->
+      </p>
+      <!-- <p>
+        <strong>User Cloud Data</strong>
+        <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
+        <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
+        <button id='submitCloudData_submitBtn'>Save User Data</button>
+      </p> -->
+    </section>
+    <section>
+      <h4>Daily Game Methods</h4>
+      <p>
+        <button id='btnStartDailyGame'>Start Game</button>
+        <button id='btnCompleteDailyGame'>Complete Game</button>
+        <button id='btnGetDailyGameStreak'>Get Game Streak</button>
+        <button id='btnGetDailyGameProgress'>Get Game Progress</button>
+      </p>
+    </section>
   </div>
   <script type='module' src='/src/main.ts'></script>
   <style>
@@ -146,7 +139,6 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const api = SWAGAPI.getInstance({
-        rootElementId: 'swag-wrapper',
         apiKey: '5c6c3c056917a692f96f9651',
         gameTitle: 'SWAG HTML5 SDK Demo',
         debug: true,
@@ -277,7 +269,7 @@
         () => {
           const key = document.getElementById('submitCloudData_keyInput').value;
           const value = document.getElementById('submitCloudData_valueInput').value;
-          api.postDatastore(key, value);
+          api.setUserData(key, value);
         };
 
       document.getElementById('btnGetCurrentUser').onclick = 
@@ -285,6 +277,9 @@
 
       document.getElementById('btnCheckIsSubscriber').onclick = 
         async () => console.log(await api.isSubscriber());
+
+      document.getElementById('btnGetUserData').onclick = 
+        async () => console.log(await api.getUserData());
 
       document.getElementById('btnUpdateToolbarItem').onclick = 
         () => api.updateToolbarItem({ 
