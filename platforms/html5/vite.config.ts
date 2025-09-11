@@ -3,7 +3,6 @@
 import { ResolvedConfig, defineConfig } from 'vite';
 import { resolve } from 'path';
 import preact from '@preact/preset-vite';
-import handlebars from './plugins/handlebars';
 import mkcert from 'vite-plugin-mkcert';
 import vitePluginSVGToFont from '@sumsolution/vite-plugin-svg-to-font';
 
@@ -13,7 +12,6 @@ export default defineConfig({
     preact({
       reactAliasesEnabled: false,
     }),
-    handlebars(),
     mkcert(),
     vitePluginSVGToFont({
       svgPath: resolve(__dirname, 'icons'),
