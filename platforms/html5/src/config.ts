@@ -29,15 +29,14 @@ export interface Config {
       create: string;
     };
   };
-  resourceRoot: string;
-  events: {
-    API_COMMUNICATION_ERROR: string;
-    SESSION_READY: string;
-    DIALOG_CLOSED: string;
-    INVALID_DIALOG_TYPE: string;
-    ERROR: string;
-    INVALID_MESSAGE: string;
-  };
+  // events: {
+  //   API_COMMUNICATION_ERROR: string;
+  //   SESSION_READY: string;
+  //   DIALOG_CLOSED: string;
+  //   INVALID_DIALOG_TYPE: string;
+  //   ERROR: string;
+  //   INVALID_MESSAGE: string;
+  // };
 }
 
 const config: Config = {
@@ -46,19 +45,9 @@ const config: Config = {
     'shockwave': {
       apiRoot: getApiRoot(),
       active: true
-    },
-    'addictinggames': {
-      apiRoot: 'https://swag-services.addictinggames.com'
     }
   },
   providers: {
-    'default': {
-      root: 'https://www.addictinggames.com',
-      current: '/ag-auth/current',
-      login: '/ag-auth/login',
-      logout: '/ag-auth/logout',
-      create: '/ag-auth/create'
-    },
     'shockwave': {
       root: 'https://www.shockwave.com',
       current: '/shockwave-auth/current',
@@ -67,15 +56,14 @@ const config: Config = {
       create: '/shockwave-auth/create'
     }
   },
-  resourceRoot: 'https://swagapi.shockwave.com/dist/',
-  events: {
-    API_COMMUNICATION_ERROR: 'API_COMMUNICATION_ERROR',
-    SESSION_READY: 'SESSION_READY',
-    DIALOG_CLOSED: 'DIALOG_CLOSED',
-    INVALID_DIALOG_TYPE: 'INVALID_DIALOG_TYPE',
-    ERROR: 'ERROR',
-    INVALID_MESSAGE: 'INVALID MESSAGE'
-  }
+  // events: {
+  //   API_COMMUNICATION_ERROR: 'API_COMMUNICATION_ERROR',
+  //   SESSION_READY: 'SESSION_READY',
+  //   DIALOG_CLOSED: 'DIALOG_CLOSED',
+  //   INVALID_DIALOG_TYPE: 'INVALID_DIALOG_TYPE',
+  //   ERROR: 'ERROR',
+  //   INVALID_MESSAGE: 'INVALID MESSAGE'
+  // }
 };
 
 export default config;

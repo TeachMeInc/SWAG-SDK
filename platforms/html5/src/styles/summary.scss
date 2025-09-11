@@ -1,213 +1,304 @@
 $smallScreenHeight: 530px;
+$smallScreenWidth: 468px;
 
-body.swag-summary-open {
-  touch-action: none;
-  overflow: hidden;
-}
+.swag-summary {
+  pointer-events: auto;
 
-#swag-summary-root {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  pointer-events: none;
-  
-  .swag-summary {
+  &.swag-summary__injected {
+    position: relative;
+  }
+
+  &.swag-summary__fullscreen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100svw;
     height: 100svh;
-  }
-
-  .swag-summary__inner {
-    pointer-events: auto;
+    display: flex;
+    text-align: center;
   }
 }
 
-.swag-summary {
-  position: relative;
+.swag-summary__scroll-content {
   display: flex;
-  text-align: center;
+  position: relative;
+  width: 100%;
+
+  &.--is-overflow {
+    display: block;
+    overflow-y: auto;
+  }
 }
 
-.swag-summary__inner {
-  width: 100%;
-  max-width: 600px;
-  padding: 1rem;
-  margin: auto;
+.swag-summary__content {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  gap: 1rem;
+  padding: 1rem;
 
-  h4 {
-    font-size: 125%;
-    font-weight: normal;
-    line-height: 1.4;
+  header {
+    width: 100%;
 
-    strong {
-      font-weight: 600;
+    h4 {
+      font-size: 125%;
+      font-weight: normal;
+      line-height: 1.4;
+
+      strong {
+        font-weight: 600;
+      }
     }
   }
-}
-
-.swag-summary__inner > * + * {
-  margin-top: 1rem;
-
-  @media screen and (min-height: ($smallScreenHeight + 40px)) {
-    margin-top: 1.5rem;
-  }
-}
-
-.swag-summary__inner > header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0;
-  flex-direction: column;
-
-  > * + * {
-    margin-top: 1rem;
-  }
-}
-
-.swag-summary__title {
-  font-size: 1rem !important;
-  text-align: center;
-}
-
-.swag-summary__preview-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.swag-summary__preview {
-  position: relative;
-  margin-top: 0;
 }
 
 .swag-summary__stats {
   display: flex;
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  flex-wrap: wrap;
-  align-items: center;
+  gap: 1rem;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  max-width: 480px;
+  margin: -0.75rem 0;
 
-  li {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: calc(33% - 1rem);
-    margin-left: 1rem;
-
-    &:nth-child(3n - 2){
-      margin-left: 0;
-    }
-
-    &:nth-child(n + 4) {
-      margin-top: 1rem;
-    }
-
-    strong {
-      font-size: 2rem !important;
-      font-weight: bold !important;
-
-      @media screen and (max-height: ($smallScreenHeight + 20px)) {
-        font-size: 1.2rem !important;
-      }
-    }
-
-    span {
-      font-size: 0.75rem !important;
-      font-weight: normal !important;
-    }
-
-    @media (min-width: 768px) {
-      span {
-        font-size: 1rem !important;
-      }
-    }
-  }
-}
-
-.swag-summary__btn {
-  cursor: pointer;
-  border-radius: 100px;
-  padding: 0.6rem 1.4rem;
-  border: none;
-  appearance: none;
-  font-weight: 500;
-  font-size: 0.75rem;
-  flex: 1 1 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 16px;
-
-  img {
-    margin-left: 0.5rem;
-    width: 16px;
-    height: 16px;
-  }
-}
-
-.swag-summary__btn.--noMarginTop {
-  margin-top: 0;
-}
-
-.swag-summary__promo-links {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0;
-  margin-bottom: 0;
-
-  li {
-    box-sizing: border-box;
-    padding: 0 1rem;
-    border-radius: 14px;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    width: 100%;
-    max-width: 320px;
-    height: 67px;
-
-    + li {
-      margin-top: 1rem;
-    }
-  }
-
-  // Hide everything except the first button on small displays
-  @media screen and (max-height: $smallScreenHeight) {
-    li:not(:first-child) {
-      display: none;
-      margin: 0;
-    }
-  }
-
-  img {
-    max-height: 45px;
+  .swag-summary__stat {
+    width: 6rem;
     height: auto;
-    width: 45px;
-    display: block;
-    margin-right: 1rem;
+
+    > canvas {
+      max-width: 6rem;
+    }
   }
 }
 
 .swag-summary__button-container {
-  display: inline-flex;
-  margin-left: auto;
-  margin-right: auto;
+  // grid with 2 columns
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  width: 100%;
+
+  &.--has-favorite {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  > * {
+    &:first-child {
+      grid-column: 1 / -1;
+    }
+    &:nth-child(2),
+    &:nth-child(3) {
+      grid-column: span 1;
+    }
+  }
+
+  .swag-summary__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 3rem;
+
+    cursor: pointer;
+    border-radius: 0.25rem;
+    padding: 0.25rem 1rem;
+    border: none;
+    appearance: none;
+    
+    font-weight: 600;
+    font-size: 1rem;
+
+    transition: opacity 0.1s ease-in-out, color 0.1s ease-in-out, transform 0.1s ease-in-out;
+
+    &.--outline {
+      background-color: transparent;
+    }
+    
+    img {
+      margin-right: 0.5rem;
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      transform: scale(1.025);
+    }
+
+    &:active {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: $smallScreenWidth) {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+.swag-summary__related-games {
   width: 100%;
   max-width: 320px;
 
-  > * + * {
-    margin-left: 1rem;
+  p {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      transition: transform 0.1s ease-in-out;
+      border-radius: 0.25rem;
+
+      width: 4rem;
+      height: 4rem;
+
+      cursor: pointer;
+
+      img {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    width: 100%;
+  }
+}
+
+.swag-summary__upsell {
+  width: 100%;
+
+  > .swag-summary__upsell-banner {
+    display: flex;
+    align-items: center;
+  
+    background: url('./images/upsell-banner.jpg') no-repeat center center;
+    background-size: cover;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1rem;
+  
+    text-decoration: none;
+    text-align: left;
+
+    transition: opacity 0.1s ease-in-out;
+
+    p {
+      line-height: 1.4;
+      margin: 0;
+    }
+    
+    img {
+      margin-left: auto;
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    @media (max-width: $smallScreenWidth) {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+.swag-summary__promo-links-container {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+
+  button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    padding: 0 1.5rem;
+    font-weight: 600;
+    transition: transform 0.1s ease-in-out;
+
+    > img:first-child {
+      display: block;
+      width: 30px;
+      max-height: 30px;
+      height: auto;
+      object-fit: contain;
+      margin-right: 1rem;
+    }
+
+    > img:last-child {
+      margin-left: auto;
+    }
+
+    &:hover {
+      transform: scale(1.025);
+    }
+
+    &:active {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: $smallScreenWidth) {
+      height: 3rem;
+      padding: 0 0.75rem;
+      font-size: 0.85rem;
+    }
+  }
+}
+
+.swag-summary__scroll-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 2rem;
+
+  background: linear-gradient(
+    to top, 
+    rgba(25, 90, 171, 0.7) 0%, 
+    rgba(25, 90, 171, 0) 100%, 
+  );
+
+  outline: none;
+  border: 0;
+
+  img {
+    margin-top: 0.25rem;
   }
 }

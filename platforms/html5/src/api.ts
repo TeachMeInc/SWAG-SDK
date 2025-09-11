@@ -1,65 +1,43 @@
 'use strict';
 
-import Emitter from 'component-emitter';
-import elementResizeEvent from 'element-resize-event';
 import config from './config';
 import session from './session';
 import utils from './utils';
 import data from './data';
-import dialog, { DialogOptions, DialogType } from './dialog';
 import messages from './messages';
 import summary from './summary';
-import summaryV2 from './summaryv2';
-import { PostScoreOptions } from './data';
 import toolbar, { ToolbarItem, ToolbarState } from './toolbar';
 
 export interface SWAGAPIOptions {
   apiKey: string;
   gameTitle: string;
-  wrapper: HTMLElement;
+  rootElementId: string;
+  debug?: boolean;
   summary?: {
-    wrapperId?: string;
+    containerElementId?: string;
   },
   toolbar?: {
-    wrapperId?: string;
+    containerElementId?: string;
     onClickFullScreen?: () => void;
     titleIcon?: string;
     titleIconDark?: string;
     initialToolbarState?: ToolbarState;
   },
-  // Deprecated
-  theme?: 'shockwave';
-  api_key?: string;
 }
 
-export default class SWAGAPI extends Emitter {
+export default class SWAGAPI {
   protected _options: SWAGAPIOptions;
 
   constructor (options: SWAGAPIOptions) {
-    super();
-    Emitter(this);
-
     this._options = options;
 
-    dialog.on('UI_EVENT', (event) => {
-      this.emit(event, { type: event });
-    });
+    // data.on('DATA_EVENT', (event) => {
+    //   this.emit('DATA_EVENT', { type: event });
+    // });
 
-    dialog.on('UI_ERROR', (event) => {
-      this._emitError(event);
-    });
-
-    dialog.on('DATA_ERROR', (event) => {
-      this._emitError(event);
-    });
-
-    data.on('DATA_EVENT', (event) => {
-      this.emit('DATA_EVENT', { type: event });
-    });
-
-    data.on('DATA_ERROR', (event) => {
-      this._emitError(event);
-    });
+    // data.on('DATA_ERROR', (event) => {
+    //   this._emitError(event);
+    // });
 
     this._init();
   }
@@ -72,34 +50,33 @@ export default class SWAGAPI extends Emitter {
 
   protected _init () {
     // Configuration setup
-    const siteMode = this._getSiteMode();
+    const siteMode = 'shockwave';
 
-    session.api_key = this._options.apiKey || this._options.api_key || null;
-    session.wrapper = this._options.wrapper;
+    session.api_key = this._options.apiKey || null;
+    session.wrapper = document.getElementById(this._options.rootElementId);
     session.wrapper!.classList.add('swag-wrapper');
     session.theme = siteMode;
     session.provider = siteMode;
 
     // Summary screen setup
-    if (!this._options.summary?.wrapperId) {
+    if (!this._options.summary?.containerElementId) {
       this._createPreactRoot('swag-summary-root');
     } else {
-      summary.rootElId = this._options.summary.wrapperId;
-      summaryV2.rootElId = this._options.summary.wrapperId;
+      summary.rootElId = this._options.summary.containerElementId;
     }
 
     // Toolbar setup
     if (this._options.toolbar) {
       messages.trySendMessage('swag.toolbar.hide', '', true);
 
-      if (!this._options.toolbar.wrapperId) this._createPreactRoot('swag-toolbar-root');
-      else toolbar.rootElId = this._options.toolbar.wrapperId;
+      if (!this._options.toolbar.containerElementId) this._createPreactRoot('swag-toolbar-root');
+      else toolbar.rootElId = this._options.toolbar.containerElementId;
 
       (async () => {
         toolbar.mountToolbar({ 
           ...this._options.toolbar,
           title: this._options.gameTitle || '',
-          useCustomRootEl: !!this._options.toolbar?.wrapperId,
+          useCustomRootEl: !!this._options.toolbar?.containerElementId,
         });
         
         if (!this._options.gameTitle) {
@@ -114,35 +91,12 @@ export default class SWAGAPI extends Emitter {
     } else {
       messages.trySendMessage('swag.toolbar.show', '', true);
     }
-
-    // Dialog setup (legacy)
-    elementResizeEvent(session.wrapper!, function () {
-      setTimeout(function () {
-        dialog.resize();
-      }, 400);
-    });
-  }
-
-  protected _getSiteMode (): 'shockwave' {
-    return 'shockwave';
-  }
-
-  protected _emitError (errorType: string) {
-    this.emit('ERROR', { type: errorType });
   }
 
   protected _parseUrlOptions (prop: string) {
-    const params: Record<string, string> = {};
-    if(window.location.href.indexOf('?') === -1) {
-      return params;
-    }
-    const search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
-    const definitions = search.split( '&' );
-    definitions.forEach( function (val) {
-      const parts = val.split( '=', 2 );
-      params[ parts[ 0 ] ] = parts[ 1 ];
-    } );
-    return ( prop && prop in params ) ? params[ prop ] : params;
+    const url = new URL(window.location.href);
+    const params = Object.fromEntries(url.searchParams.entries());
+    return prop ? params[ prop ] : params;
   }
 
 
@@ -181,7 +135,7 @@ export default class SWAGAPI extends Emitter {
       // eslint-disable-next-line no-console
       console.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
       utils.debug('session ready');
-      this.emit(config.events.SESSION_READY, { session_ready: true });
+      // this.emit(config.events.SESSION_READY, { session_ready: true });
     };
 
     // Wait for toolbar to be ready
@@ -206,56 +160,8 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.navigateToArchive');
   }
 
-  navigateToGameLanding () {
-    return messages.trySendMessage('swag.navigateToGameLanding');
-  }
-
-  navigateToTitle (slug: string) {
-    return messages.trySendMessage('swag.navigateToTitle', slug);
-  }
-
-  captureEvent (event: string, params: any) {
-    const payload = JSON.stringify({ event, params });
-    return messages.trySendMessage('swag.captureEvent', payload, true);
-  }
-
-  // #endregion
-
-
-
-  // #region Score Methods
-
-  getScoreCategories () {
-    return data.getScoreCategories();
-  }
-
-  getDays (limit: number) {
-    return data.getDays(limit);
-  }
-
-  getScores (options: PostScoreOptions) {
-    return data.getScores(options);
-  }
-
-  postScore (level_key: string, value: string, options: PostScoreOptions) {
-    return data.postScore(level_key, value, options)
-      .then(function () {
-        if(options && options.confirmation === true) {
-          alert(`Your score of ${value} has been submitted!`);
-        }
-      });
-  }
-
-  postDailyScore (day: string, level_key: string, value: string) {
-    return data.postDailyScore(day, level_key, value);
-  }
-
-  hasDailyScore (level_key: any) {
-    return data.hasDailyScore(level_key);
-  }
-
-  getCurrentDay () {
-    return data.getCurrentDay();
+  navigateToTitle (keyword: string) {
+    return messages.trySendMessage('swag.navigateToTitle', keyword);
   }
 
   // #endregion
@@ -264,59 +170,45 @@ export default class SWAGAPI extends Emitter {
 
   // #region Daily Game Methods
 
-  async startDailyGame (day: string) {
+  async startGame (day: string) {
     const result = await data.postDailyGameProgress(day, false);
     messages.trySendMessage('swag.dailyGameProgress.start', day, true);
     return result;
   }
 
-  async completeDailyGame (day: string) {
+  async completeGame (day: string) {
     const result = await data.postDailyGameProgress(day, true);
     messages.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;
   }
 
-  getDailyGameProgress (month: string, year: string) {
+  getCurrentDay () {
+    return data.getCurrentDay();
+  }
+
+  getGameProgress (month: string, year: string) {
     return data.getDailyGameProgress(month, year);
+  }
+  
+  getGameStreak () {
+    return data.getDailyGameStreak();
   }
 
   hasPlayedDay (day: string) {
     return data.hasPlayedDay(day);
   }
-  
-  getDailyGameStreak () {
-    return data.getDailyGameStreak();
-  }
  
-  // #endregion
-
-
-  
-  // #region Achievement Methods
-
-  getAchievementCategories () {
-    return data.getAchievementCategories();
-  }
-
-  postAchievement (achievement_key: string) {
-    return data.postAchievement(achievement_key);
-  }
-
-  getUserAchievements () {
-    return data.getUserAchievements();
-  }
-
   // #endregion
 
 
 
   // #region User Cloud Datastore Methods
 
-  postDatastore (key: string, value: string) {
+  setUserData (key: string, value: string) {
     return data.postDatastore(key, value);
   }
 
-  getUserDatastore () {
+  getUserData () {
     return data.getUserDatastore();
   }
 
@@ -332,20 +224,6 @@ export default class SWAGAPI extends Emitter {
 
   isSubscriber () {
     return data.isSubscriber();
-  }
-
-  getCurrentUser () {
-    // eslint-disable-next-line no-console
-    console.warn('getCurrentUser is deprecated, use getCurrentEntity instead');
-    return data.getCurrentUser();
-  }
-
-  navigateToLogin () {
-    return messages.trySendMessage('swag.navigateToLogin');
-  }
-
-  userLogout () {
-    return messages.trySendMessage('swag.userLogout');
   }
 
   // #endregion
@@ -372,31 +250,7 @@ export default class SWAGAPI extends Emitter {
 
   // #region UI / Dialog Methods
 
-  showShareDialog () {
-    return messages.trySendMessage('swag.displayShareDialog');
-  }
-
   async showSummaryScreen (
-    options: {
-      stats: { key: string, value: string }[], 
-      titleHtml: string, 
-      resultHtml: string, 
-      shareString: string, 
-      onReplay?: () => void,
-      onClose?: () => void,
-    }
-  ) {
-    return summary.showSummary(
-      options.stats, 
-      options.resultHtml, 
-      options.shareString,
-      options?.titleHtml,
-      options?.onReplay,
-      options?.onClose
-    );
-  }
-
-  async showSummaryV2Screen (
     options: {
       stats: { key: string, value: string, lottie: object }[], 
       contentHtml: string, 
@@ -406,7 +260,7 @@ export default class SWAGAPI extends Emitter {
       onClose?: () => void,
     }
   ) {
-    return summaryV2.showSummary(
+    return summary.showSummary(
       options.stats, 
       options.contentHtml,
       options.shareString,
@@ -440,51 +294,4 @@ export default class SWAGAPI extends Emitter {
 
   // #endregion
 
-
-
-  // #region WIP Methods
-
-  startGame () {
-    return Promise.resolve();
-  }
-
-  endGame () {
-    return Promise.resolve();
-  }
-
-  showAd () {
-    return Promise.resolve();
-  }
-
-  // #endregion
-
-
-
-  // #region Legacy Dialog Methods
-
-  showDialog (type: DialogType, options: DialogOptions) {
-    return dialog.renderDialog(type, options);
-  }
-
-  populateLevelSelect (domId: any) {
-    return dialog.populateLevelSelect(domId);
-  }
-
-  populateDaySelect (domId: any, limit: any) {
-    return dialog.populateDaySelect(domId, limit);
-  }
-
-  populateAchievementSelect (domId: any) {
-    return dialog.populateAchievementSelect(domId);
-  }
-  
-  getBrandingLogo () {
-    return dialog.getBrandingLogo();
-  }
-
-  getBrandingLogoUrl () {
-    return dialog.getBrandingLogoUrl();
-  }
-
-  // #endregion
 }

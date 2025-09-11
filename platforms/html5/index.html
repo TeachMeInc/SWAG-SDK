@@ -76,80 +76,18 @@
     <canvas id='game-canvas'></canvas>
     <div id='game-ui'>
       <section>
-        <h4>Score & Achievement Dialogs</h4>
+        <h4>API Methods</h4>
         <p>
-          <button id='btnScoreDialog'>Score Dialog</button>
-          <button id='btnDailyScoreDialog'>Daily Score Dialog</button>
-          <button id='btnAchievementsDialog'>Achievements Dialog</button>
-          <button id='btnWeeklyScoresDialog'>Weekly Scores Dialog</button>
-        </p>
-      </section>
-      <section>
-        <h4>Website & UI Methods</h4>
-        <p>
-          <button id='btnShareDialog'>Share Dialog</button>
-          <button id='btnGameSummaryScreen'>Game Summary Screen (v1)</button>
-          <button id='btnGameSummaryScreen2'>Game Summary Screen (v2)</button>
           <button id='btnToggleFullScreen'>Toggle Full-Screen</button>
           <button id='btnNavigateToArchives'>Navigate to Archives</button>
           <button id='btnNavigateToTitle'>Navigate to Title</button>
         </p>
       </section>
       <section>
-        <h4>Post Methods</h4>
+        <h4>UI Methods</h4>
         <p>
-          <strong>Submit Score</strong>
-          <select id='submitScore_levelSelect'></select>
-          <input id='submitScore_scoreInput' type='number' placeholder='Score' />
-          <button id='submitScore_submitBtn'>Post Score</button>
-        </p>
-        <p>
-          <strong>Submit Daily Score</strong>
-          <select id='submitDailyScore_dateSelect'></select>
-          <select id='submitDailyScore_levelSelect'></select>
-          <input id='submitDailyScore_scoreInput' type='number' placeholder='Score' />
-          <button id='submitDailyScore_submitBtn'>Post Score</button>
-        </p>
-        <p>
-          <strong>Submit Achievement</strong>
-          <select id='submitAchievement_achievementSelect'></select>
-          <button id='submitAchievement_submitBtn'>Post Achievement</button>
-        </p>
-        <p>
-          <strong>Save User Cloud Save Data</strong>
-          <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
-          <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
-          <button id='submitCloudData_submitBtn'>Save Data</button>
-        </p>
-      </section>
-      <section>
-        <h4>Get Methods</h4>
-        <p>
-          <select id='getData_methodSelect'>
-            <option value='top-score-daily'>Top Daily Scores</option>
-            <option value='top-score-weekly'>Top Weekly Scores</option>
-            <option value='top-score-monthly'>Top Montly Scores</option>
-            <option value='top-score-alltime'>Top All Time Scores</option>
-            <option value='top-score-currentuser'>Top Scores - current user</option>
-            <option value='top-score-weekly-currentuser'>Weekly Scores - current user</option>
-            <option value='achievements-currentuser'>Achievements for current user</option>
-            <option value='datastore-currentuser'>Cloud save data for current user</option>
-          </select>
-          <select id='getData_levelSelect'></select>
-          <button id='getData_submitBtn'>Fetch Data (view console)</button>
-        </p>
-      </section>
-      <section>
-        <h4>User Methods</h4>
-        <p>
-          <strong>Current User</strong>
-          <input id='userInfo' type='text'></input>
-        </p>
-        <p>
-          <button id='btnNavigateToLogin'>Navigate to Login</button>
-          <button id='btnLogout'>Logout</button>
-          <button id='btnGetCurrentUser'>Get Current User</button>
-          <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
+          <button id='btnGameSplashScreen'>Game Splash Screen</button>
+          <button id='btnGameSummaryScreen'>Game Summary Screen</button>
         </p>
       </section>
       <section>
@@ -160,18 +98,35 @@
         </p>
       </section>
       <section>
+        <h4>User Methods</h4>
+        <p>
+          <strong>Current User</strong>
+          <input id='userInfo' type='text'></input>
+        </p>
+        <p>
+          <button id='btnGetCurrentUser'>Get Current User</button>
+          <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
+          <button id='btnCheckIsSubscriber'>Get User Data</button>
+        </p>
+        <p>
+          <strong>User Cloud Data</strong>
+          <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
+          <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
+          <button id='submitCloudData_submitBtn'>Save User Data</button>
+        </p>
+      </section>
+      <section>
         <h4>Daily Game Methods</h4>
         <p>
-          <button id='btnStartDailyGame'>Start Daily Game</button>
-          <button id='btnCompleteDailyGame'>Complete Daily Game</button>
-          <button id='btnGetDailyGameStreak'>Get Daily Game Streak</button>
+          <button id='btnStartDailyGame'>Start Game</button>
+          <button id='btnCompleteDailyGame'>Complete Game</button>
+          <button id='btnGetDailyGameStreak'>Get Game Streak</button>
+          <button id='btnGetDailyGameProgress'>Get Game Progress</button>
         </p>
       </section>
       <section>
         <h4>Wrapper Methods</h4>
         <p>
-          <button id='btnShowBrandingAnim'>Show Branding Animation</button>
-          <!-- <button id='btnShowLeaderboards'>Show Leaderboards</button> -->
         </p>
       </section>
     </div>
@@ -191,14 +146,12 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const api = SWAGAPI.getInstance({
-        wrapper: document.getElementById('swag-wrapper'),
+        rootElementId: 'swag-wrapper',
         apiKey: '5c6c3c056917a692f96f9651',
         gameTitle: 'SWAG HTML5 SDK Demo',
-        theme: 'shockwave',
         debug: true,
         summary: {},
         toolbar: {
-          wrapperId: '',
           titleIcon: 'https://new.shockwave.com/images/SW25.svg',
           titleIconDark: 'https://new.shockwave.com/images/SW25_alt.svg',
           initialToolbarState: {
@@ -250,11 +203,6 @@
             },
           });
 
-          api.populateLevelSelect('submitScore_levelSelect');
-          api.populateLevelSelect('submitDailyScore_levelSelect');
-          api.populateLevelSelect('getData_levelSelect');
-          api.populateDaySelect('submitDailyScore_dateSelect');
-          api.populateAchievementSelect('submitAchievement_achievementSelect');
           document.getElementById('userInfo').value = JSON.stringify(api.getCurrentEntity());
 
           let x = 0.5;
@@ -304,37 +252,8 @@
 
       /* --- */
 
-      document.getElementById('btnScoreDialog').onclick = 
-        () => api.showDialog('scores');
-
-      document.getElementById('btnDailyScoreDialog').onclick = 
-        () => api.showDialog('dailyscores');
-
-      document.getElementById('btnAchievementsDialog').onclick = 
-        () => api.showDialog('achievements');
-
-      document.getElementById('btnWeeklyScoresDialog').onclick = 
-        () => api.showDialog('weeklyscores');
-
-      document.getElementById('btnShareDialog').onclick = 
-        () => api.showShareDialog();
-
       document.getElementById('btnGameSummaryScreen').onclick = 
         () => api.showSummaryScreen({
-          stats: [
-            { key: 'Foo', value: '0:00' },
-            { key: 'Bar', value: '9:99' },
-            { key: 'Baz', value: '123' },
-          ], 
-          titleHtml: '<div style="font-size: 120%; font-weight: bold">Well Done!</div>',
-          resultHtml: '<div style="background:#ccc;height:150px;width:200px">Preview</div>',
-          shareString: 'You have completed the game, this is the share string!!',
-          onReplay: () => { alert('replay clicked'); },
-          onClose: () => { alert('share screen closed'); }
-      });
-
-      document.getElementById('btnGameSummaryScreen2').onclick = 
-        () => api.showSummaryV2Screen({
           stats: [
             { key: 'Time', value: '1:00' },
           ], 
@@ -354,101 +273,12 @@
       document.getElementById('btnNavigateToTitle').onclick = 
         () => api.navigateToTitle('jigsawpuzzles');
 
-      document.getElementById('submitScore_submitBtn').onclick = 
-        () => {
-          const level = document.getElementById('submitScore_levelSelect').value;
-          const score = document.getElementById('submitScore_scoreInput').value;
-          api.postScore(level, score);
-        };
-
-      document.getElementById('submitDailyScore_submitBtn').onclick = 
-        () => {
-          const date = document.getElementById('submitDailyScore_dateSelect').value;
-          const level = document.getElementById('submitDailyScore_levelSelect').value;
-          const score = document.getElementById('submitDailyScore_scoreInput').value;
-          api.postDailyScore(date, level, score);
-        };
-
-      document.getElementById('submitAchievement_submitBtn').onclick = 
-        () => {
-          const achievement = document.getElementById('submitAchievement_achievementSelect').value;
-          api.postAchievement(achievement);
-        };
-
       document.getElementById('submitCloudData_submitBtn').onclick = 
         () => {
           const key = document.getElementById('submitCloudData_keyInput').value;
           const value = document.getElementById('submitCloudData_valueInput').value;
           api.postDatastore(key, value);
         };
-
-      document.getElementById('getData_submitBtn').onclick = 
-        async () => {
-          const method = document.getElementById('getData_methodSelect').value;
-          const level = document.getElementById('getData_levelSelect').value;
-
-          switch (method) {
-          case 'top-score-daily': {
-            console.log(await api.getScores({
-              period: 'daily',
-              level_key: level
-            }));
-            return;
-          }
-          case 'top-score-weekly': {
-            console.log(await api.getScores({
-              period: 'weekly',
-              level_key: level
-            }));
-            return;
-          }
-          case 'top-score-monthly': {
-            console.log(await api.getScores({
-              period: 'monthly',
-              level_key: level
-            }));
-            return;
-          }
-          case 'top-score-alltime': {
-            console.log(await api.getScores({
-              period: 'alltime',
-              level_key: level
-            }));
-            return;
-          }
-          case 'top-score-currentuser': {
-            console.log(await api.getScores({
-              period: 'alltime',
-              level_key: level,
-              current_user: true
-            }));
-            return;
-          }
-          case 'top-score-weekly-currentuser': {
-            console.log(await api.getScores({
-              type: 'weekly',
-              level_key: level,
-              current_user: true,
-              target_date: new Date().getTime()
-            }));
-            return;
-          }
-          case 'achievements-currentuser': {
-            console.log(await api.getUserAchievements());
-            return;
-          }
-          case 'datastore-currentuser': {
-            console.log(await api.getUserDatastore());
-            return;
-          }
-          }
-        };
-
-      document.getElementById('btnNavigateToLogin').onclick = 
-        () => api.navigateToLogin();
-
-      document.getElementById('btnLogout').onclick = 
-        () => api.userLogout();
 
       document.getElementById('btnGetCurrentUser').onclick = 
         async () => console.log(await api.getCurrentEntity());
@@ -476,12 +306,6 @@
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());
-
-      document.getElementById('btnShowBrandingAnim').onclick = 
-        () => SWAGAPI.showBrandingAnimation('swag-wrapper', () => alert('Animation complete.'));
-
-      // document.getElementById('btnShowLeaderboards').onclick = 
-      //   () => SWAGAPI.showLeaderboard();
 
       /* --- */
 

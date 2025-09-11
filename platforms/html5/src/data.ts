@@ -144,18 +144,18 @@ const methods = Emitter({
         if(response && !response.error) {
           resolve(response);
         } else {
-          methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
+          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
           reject(response);
         }
       };
       xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 0) {
-          methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
+          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
           reject();
         }
       };
       xhr.onerror = function () {
-        methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
+        // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
         reject();
       };
       xhr.send();
@@ -183,18 +183,18 @@ const methods = Emitter({
         if(response && !response.error) {
           resolve(response);
         } else {
-          methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
+          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
           reject(response);
         }
       };
       xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 0) {
-          methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
+          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
           reject();
         }
       };
       xhr.onerror = function () {
-        methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
+        // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
         reject();
       };
       xhr.send(JSON.stringify(options.body));

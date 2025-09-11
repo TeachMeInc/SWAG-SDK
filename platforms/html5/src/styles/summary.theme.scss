@@ -2,24 +2,41 @@
   color: var(--swag-summary-font-color);
   background-color: var(--swag-summary-bg-color);
   font-family: var(--swag-ui-font-family);
+
+  &.swag-summary__fullscreen {
+    background-color: var(--swag-summary-bg-color) !important;
+  }
 }
 
-.swag-summary__btn {
-  color: var(--swag-btn-font-color);
-  background-color: var(--swag-btn-secondary-color);
-  font-family: var(--swag-ui-font-family);
-}
-
-.swag-summary__btn.--outline {
-  color: var(--swag-btn-border-color);
-  background-color: transparent;
-  box-shadow: 0 0 0 1px var(--swag-btn-border-color) inset;
-}
-
-.swag-summary__promo-links {
-  li {
+.swag-summary__button-container {
+  .swag-summary__btn {
     color: var(--swag-btn-font-color);
-    background-color: #000;
+    background-color: var(--swag-btn-secondary-color);
     font-family: var(--swag-ui-font-family);
+
+    &:hover {
+      opacity: 0.85;
+    }
+
+    &.--outline {
+      box-shadow: 0 0 0 1px var(--swag-btn-secondary-color) inset;
+      color: var(--swag-btn-secondary-color);
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}
+
+.swag-summary__upsell {
+  > .swag-summary__upsell-banner {
+    color: var(--swag-btn-font-color);
+  }
+}
+
+.swag-summary__promo-links-container {
+  button {
+    color: var(--swag-btn-font-color);
   }
 }
