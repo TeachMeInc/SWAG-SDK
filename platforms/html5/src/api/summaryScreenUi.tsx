@@ -1,5 +1,5 @@
-import data, { DailyGameStreak, GamePromoLink } from '@/api/data/data';
-import { loaderUi } from '@/api/loader/loaderUi';
+import data, { DailyGameStreak, GamePromoLink } from '@/api/data';
+import { loaderUi } from '@/api/loaderUi';
 import SummaryScreen from '@/components/features/summaryScreen/SummaryScreen';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import lottieStreak from '@/assets/lottie/streak.json';

@@ -1,5 +1,5 @@
-import messages from '@/api/messages/messages';
-import { ToolbarEventName, ToolbarItem, ToolbarState } from '@/api/toolbar/toolbarState';
+import messages from '@/api/messages';
+import { ToolbarEventName, ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
 import { Toolbar } from '@/components/features/toolbar/Toolbar';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import utils from '@/utils';

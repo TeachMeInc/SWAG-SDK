@@ -2,12 +2,12 @@
 
 import session from '@/session';
 import utils from '@/utils';
-import messages from '@/api/messages/messages';
-import summary from '@/api/summaryScreen/summaryScreenUi';
-import data from '@/api/data/data';
-import { loaderUi } from '@/api/loader/loaderUi';
-import { ToolbarItem, ToolbarState } from '@/api/toolbar/toolbarState';
-import toolbar from '@/api/toolbar/toolbarUi';
+import messages from '@/api/messages';
+import summary from '@/api/summaryScreenUi';
+import data from '@/api/data';
+import { loaderUi } from '@/api/loaderUi';
+import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
+import toolbar from '@/api/toolbarUi';
 
 export interface SWAGAPIOptions {
   apiKey: string;

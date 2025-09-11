@@ -2,7 +2,7 @@ import { faBoltLightning, faBookmark, faCircleHalfStroke, faCircleQuestion, faCl
 import { faCircleQuestion as faCircleQuestionToggled } from '@fortawesome/free-regular-svg-icons';
 import { render } from 'preact';
 import { useEffect, useReducer, useRef, useState } from 'preact/hooks';
-import messages from '../api/messages/messages';
+import messages from '../api/messages';
 import utils from '../utils';
 
 

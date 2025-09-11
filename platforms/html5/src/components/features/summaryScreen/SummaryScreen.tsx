@@ -1,4 +1,4 @@
-import messages from '@/api/messages/messages';
+import messages from '@/api/messages';
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks';
 import utils from '@/utils';
 import arrowIcon from '@/assets/arrow-icon.svg';
