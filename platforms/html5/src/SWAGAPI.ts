@@ -16,7 +16,7 @@ export interface SWAGAPIOptions {
   summary?: {
     containerElementId?: string;
   },
-  toolbar?: {
+  toolbar?: true | {
     containerElementId?: string;
     onClickFullScreen?: () => void;
     titleIcon?: string;
@@ -59,15 +59,18 @@ export default class SWAGAPI {
     if (this._options.toolbar) {
       messages.trySendMessage('swag.toolbar.hide', '', true);
 
-      if (this._options.toolbar.containerElementId) {
-        toolbar.setRootElId(this._options.toolbar.containerElementId);
+      const toolbarOptions = this._options.toolbar === true 
+        ? {} 
+        : this._options.toolbar;
+
+      if (toolbarOptions.containerElementId) {
+        toolbar.setRootElId(toolbarOptions.containerElementId);
       }
 
       (async () => {
         toolbar.show({ 
-          ...this._options.toolbar,
+          ...toolbarOptions,
           title: this._options.gameTitle || '',
-          useCustomRootEl: !!this._options.toolbar?.containerElementId,
         });
         
         if (!this._options.gameTitle) {

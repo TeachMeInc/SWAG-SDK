@@ -93,8 +93,8 @@ interface ToolbarProps {
   titleIcon?: string;
   titleIconDark?: string;
   initialToolbarState?: ToolbarState;
-  useCustomRootEl?: boolean;
   onClickFullScreen?: () => void;
+  isInjected?: boolean;
 }
 
 function parseLocalDate (dateStr: string) {
@@ -209,7 +209,7 @@ export function Toolbar (props: ToolbarProps) {
   }, [ dispatchToolbarState ]);
 
   useEffect(() => {
-    if (props.useCustomRootEl) return;
+    if (props.isInjected) return;
 
     const el = elRef.current;
     if (!el) return;
@@ -218,7 +218,7 @@ export function Toolbar (props: ToolbarProps) {
     const height = rect.height;
 
     document.body.style.marginTop = `${height}px`;
-  }, [ props.useCustomRootEl ]);
+  }, [ props.isInjected ]);
 
 
   /* 

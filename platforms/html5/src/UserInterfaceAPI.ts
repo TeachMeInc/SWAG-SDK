@@ -4,10 +4,12 @@ import { render } from 'preact';
 export default class UserInterfaceAPI {
   protected rootElId: string = '';
   protected rootElClassName: string = '';
+  protected isInjected: boolean = false;
   private timeout: number | null = null;
 
   setRootElId (id: string) {
     this.rootElId = id;
+    this.isInjected = true;
   }
 
   getRootElId () {

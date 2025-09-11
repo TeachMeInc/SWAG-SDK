@@ -9,7 +9,6 @@ class ToolbarUI extends UserInterfaceAPI {
   protected rootElClassName: string = 'swag-toolbar-root';
 
   async show (options: {
-    useCustomRootEl?: boolean;
     onClickFullScreen?: () => void;
     title?: string;
     titleIcon?: string;
@@ -32,7 +31,7 @@ class ToolbarUI extends UserInterfaceAPI {
       titleIcon={options.titleIcon}
       titleIconDark={options.titleIconDark}
       initialToolbarState={options.initialToolbarState}
-      useCustomRootEl={options.useCustomRootEl}
+      isInjected={this.isInjected}
       onClickFullScreen={onClickFullScreen}
     />);
   }

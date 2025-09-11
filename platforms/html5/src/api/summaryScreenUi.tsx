@@ -8,12 +8,6 @@ import lottieTime from '@/assets/lottie/time.json';
 class SummaryUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-summary-root';
   protected rootElClassName: string = 'swag-summary-root';
-  private _isInjected: boolean = false;
-
-  setRootElId (id: string) {
-    super.setRootElId(id);
-    this._isInjected = true;
-  }
 
   async show (
     stats: { key: string, value: string, lottie: object }[], 
@@ -117,7 +111,7 @@ class SummaryUI extends UserInterfaceAPI {
       isMember={isMember}
       isSubscriber={isSubscriber}
       hasPlayedToday={hasPlayedToday}
-      isInjected={this._isInjected}
+      isInjected={this.isInjected}
       onFavorite={onFavorite}
       onReplay={() => {
         loaderUi.hide();
@@ -132,7 +126,7 @@ class SummaryUI extends UserInterfaceAPI {
   }
 
   protected onMount () {
-    if (!this._isInjected) document.body.classList.add('swag-summary-open');
+    if (!this.isInjected) document.body.classList.add('swag-summary-open');
   }
 
   protected onUnmount () {

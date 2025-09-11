@@ -265,12 +265,12 @@
       document.getElementById('btnNavigateToTitle').onclick = 
         () => api.navigateToTitle('jigsawpuzzles');
 
-      document.getElementById('submitCloudData_submitBtn').onclick = 
-        () => {
-          const key = document.getElementById('submitCloudData_keyInput').value;
-          const value = document.getElementById('submitCloudData_valueInput').value;
-          api.setUserData(key, value);
-        };
+      // document.getElementById('submitCloudData_submitBtn').onclick = 
+      //   () => {
+      //     const key = document.getElementById('submitCloudData_keyInput').value;
+      //     const value = document.getElementById('submitCloudData_valueInput').value;
+      //     api.setUserData(key, value);
+      //   };
 
       document.getElementById('btnGetCurrentUser').onclick = 
         async () => console.log(await api.getCurrentEntity());
@@ -278,8 +278,8 @@
       document.getElementById('btnCheckIsSubscriber').onclick = 
         async () => console.log(await api.isSubscriber());
 
-      document.getElementById('btnGetUserData').onclick = 
-        async () => console.log(await api.getUserData());
+      // document.getElementById('btnGetUserData').onclick = 
+      //   async () => console.log(await api.getUserData());
 
       document.getElementById('btnUpdateToolbarItem').onclick = 
         () => api.updateToolbarItem({ 
