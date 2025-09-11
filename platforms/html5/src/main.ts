@@ -1,10 +1,10 @@
 'use strict';
 
-import config from './config';
-import SWAGAPI, { SWAGAPIOptions } from './api';
-
 import './styles/main.scss';
 import 'virtual:svg-to-font.css';
+
+import config from '@/config';
+import SWAGAPI, { SWAGAPIOptions } from '@/api';
 
 // eslint-disable-next-line no-console
 console.log('SWAG HTML5 SDK ' + config.version);

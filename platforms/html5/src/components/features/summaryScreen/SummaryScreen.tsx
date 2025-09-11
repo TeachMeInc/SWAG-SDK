@@ -1,17 +1,12 @@
-import messages from '../messages';
-import data, { DailyGameStreak, GamePromoLink } from '../data';
-import { render } from 'preact';
+import messages from '@/api/messages/messages';
 import { useState, useRef, useEffect, useCallback } from 'preact/hooks';
-import utils from '../utils';
-import lottieStreak from '../assets/lottie/streak.json';
-import lottieTime from '../assets/lottie/time.json';
-import arrowIcon from '../assets/arrow-icon.svg';
-import shareIcon from '../assets/share-icon.svg';
-import replayIcon from '../assets/replay-icon.svg';
-import caretIcon from '../assets/caret-icon.svg';
-import favoriteIcon from '../assets/favorite-icon.svg';
-import LottieComponent from '../components/lottie';
-import { loaderAPI } from '../components/loader';
+import utils from '@/utils';
+import arrowIcon from '@/assets/arrow-icon.svg';
+import shareIcon from '@/assets/share-icon.svg';
+import replayIcon from '@/assets/replay-icon.svg';
+import caretIcon from '@/assets/caret-icon.svg';
+import favoriteIcon from '@/assets/favorite-icon.svg';
+import LottieComponent from '@/components/ui/Lottie';
 
 // #region Shockwave Upsell
 
@@ -150,7 +145,7 @@ interface SummaryProps {
   onReplay?: () => void;
 }
 
-function SummaryComponent (props: SummaryProps) {
+export default function SummaryScreen (props: SummaryProps) {
   const contentRef = useRef<HTMLDivElement | null>(null);
 
   const [ isOverflow, setIsOverflow ] = useState<boolean>(false);
@@ -306,162 +301,3 @@ function SummaryComponent (props: SummaryProps) {
 }
 
 // #endregion
-
-// #region Summary API
-
-class SummaryAPI {
-  private _rootElId: string = 'swag-summary-root';
-  private _isInjected: boolean = false;
-
-  get rootElId () {
-    return this._rootElId;
-  }
-
-  set rootElId (id: string) {
-    this._rootElId = id;
-    this._isInjected = true;
-  }
-
-  getRootEl () {
-    return document.getElementById(this.rootElId)!;
-  }
-
-  async showSummary (
-    stats: { key: string, value: string, lottie: object }[], 
-    contentHtml: string,
-    shareString: string,
-    onFavorite?: () => void,
-    onReplay?: () => void,
-    onClose?: () => void,
-  ) {
-    loaderAPI.showLoader(350);
-
-    const promises = [];
-
-    // Fetch member status
-    promises.push((async () => {
-      try {
-        const getEntity = await data.getEntity();
-        return getEntity.isMember;
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error checking membership status:', e);
-      }
-    })());
-
-    // Fetch subscriber status
-    promises.push((async () => {
-      try {
-        return await data.isSubscriber();
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error checking subscription status:', e);
-      }
-    })());
-
-    // Check if the game has been played today
-    promises.push((async () => {
-      try {
-        const currentDay = await data.getCurrentDay();
-        return await data.hasPlayedDay(currentDay.day);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error checking if game has been played today:', e);
-      }
-    })());
-
-    // Fetch daily game streak
-    promises.push((async () => {
-      let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
-      try {
-        gameStreak = await data.getDailyGameStreak();
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error fetching game streak:', e);
-      }
-      return gameStreak;
-    })());
-
-    // Fetch promo links
-    promises.push((async () => {
-      try {
-        return await data.getGamePromoLinks(6);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error fetching promo links:', e);
-      }
-    })());
-
-    const [ 
-      isMember, 
-      isSubscriber, 
-      hasPlayedToday,
-      gameStreak,
-      promoLinks
-    ] = await Promise.all(promises) as [
-      boolean, 
-      boolean, 
-      boolean, 
-      DailyGameStreak, 
-      GamePromoLink[]
-    ];
-
-    stats.unshift(
-      {
-        key: 'Streak',
-        value: String(gameStreak.streak).padStart(3, '0'),
-        lottie: lottieStreak
-      }
-    );
-    
-    // Add time stat if it exists
-    const timeStat = stats.find(stat => stat.key.toLowerCase() === 'time');
-    if (timeStat) {
-      timeStat.lottie = lottieTime;
-    }
-
-    const showSummary = () => {
-      loaderAPI.hideLoader();
-
-      render(<SummaryComponent 
-        stats={stats} 
-        contentHtml={contentHtml}
-        promoLinks={(isMember && isSubscriber) ? promoLinks : promoLinks.slice(0, 4)}
-        shareString={shareString}
-        isMember={isMember}
-        isSubscriber={isSubscriber}
-        hasPlayedToday={hasPlayedToday}
-        isInjected={this._isInjected}
-        onFavorite={onFavorite}
-        onReplay={unmount}
-      />, this.getRootEl());
-    };
-
-    const unmount = () => {
-      loaderAPI.hideLoader();
-
-      this.unmount();
-      if (onReplay) onReplay();
-      if (onClose) onClose();
-    };
-
-    return new Promise<void>((resolve) => {
-      if (!this._isInjected) document.body.classList.add('swag-summary-open');
-      showSummary();
-      resolve();
-    });
-  }
-
-  protected unmount () {
-    document.body.classList.remove('swag-summary-open');
-    render(null, this.getRootEl());
-    return Promise.resolve();
-  }
-}
-
-// #endregion
-
-
-
-const summary = new SummaryAPI();
-export default summary;

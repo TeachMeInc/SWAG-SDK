@@ -1,11 +1,13 @@
 'use strict';
 
-import session from './session';
-import utils from './utils';
-import data from './data';
-import messages from './messages';
-import summary from './components/summary';
-import toolbar, { ToolbarItem, ToolbarState } from './components/toolbar';
+import session from '@/session';
+import utils from '@/utils';
+import messages from '@/api/messages/messages';
+import summary from '@/api/summaryScreen/summaryScreenUi';
+import data from '@/api/data/data';
+import { loaderUi } from '@/api/loader/loaderUi';
+import { ToolbarItem, ToolbarState } from '@/api/toolbar/toolbarState';
+import toolbar from '@/api/toolbar/toolbarUi';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -40,12 +42,6 @@ export default class SWAGAPI {
     this._init();
   }
 
-  protected _createPreactRoot (id: string) {
-    const root = document.createElement('div');
-    root.setAttribute('id', id);
-    document.body.appendChild(root);
-  }
-
   protected _init () {
     // Configuration setup
     const siteMode = 'shockwave';
@@ -55,21 +51,20 @@ export default class SWAGAPI {
     session.provider = siteMode;
 
     // Summary screen setup
-    if (!this._options.summary?.containerElementId) {
-      this._createPreactRoot('swag-summary-root');
-    } else {
-      summary.rootElId = this._options.summary.containerElementId;
+    if (this._options.summary?.containerElementId) {
+      summary.setRootElId(this._options.summary.containerElementId);
     }
 
     // Toolbar setup
     if (this._options.toolbar) {
       messages.trySendMessage('swag.toolbar.hide', '', true);
 
-      if (!this._options.toolbar.containerElementId) this._createPreactRoot('swag-toolbar-root');
-      else toolbar.rootElId = this._options.toolbar.containerElementId;
+      if (this._options.toolbar.containerElementId) {
+        toolbar.setRootElId(this._options.toolbar.containerElementId);
+      }
 
       (async () => {
-        toolbar.mountToolbar({ 
+        toolbar.show({ 
           ...this._options.toolbar,
           title: this._options.gameTitle || '',
           useCustomRootEl: !!this._options.toolbar?.containerElementId,
@@ -131,7 +126,7 @@ export default class SWAGAPI {
     // Wait for toolbar to be ready
     if (this._options.toolbar) {
       const interval = setInterval(() => {
-        const toolbarEl = document.getElementById(toolbar.rootElId);
+        const toolbarEl = document.getElementById(toolbar.getRootElId());
         if (toolbarEl) {
           clearInterval(interval);
           ready();
@@ -238,7 +233,11 @@ export default class SWAGAPI {
 
 
 
-  // #region UI / Dialog Methods
+  // #region UI
+
+  async showSplashScreen () {
+    throw new Error('Not implemented');
+  }
 
   async showSummaryScreen (
     options: {
@@ -250,7 +249,7 @@ export default class SWAGAPI {
       onClose?: () => void,
     }
   ) {
-    return summary.showSummary(
+    return summary.show(
       options.stats, 
       options.contentHtml,
       options.shareString,
@@ -258,6 +257,14 @@ export default class SWAGAPI {
       options?.onReplay,
       options?.onClose,
     );
+  }
+
+  showLoader (debounce?: number) {
+    return loaderUi.show(debounce);
+  }
+
+  hideLoader () {
+    return loaderUi.hide();
   }
 
   // #endregion

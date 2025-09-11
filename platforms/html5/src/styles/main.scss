@@ -1,11 +1,12 @@
 @import 'variables.scss';
 
 // Preact Components
-@import 'loader.scss';
-@import 'summary.scss';
-@import 'summary.theme.scss';
-@import 'toolbar.scss';
-@import 'toolbar.theme.scss';
+@import '../components/features/Loader/loader.scss';
+@import '../components/features/Loader/loader.theme.scss';
+@import '../components/features/SummaryScreen/summaryScreen.scss';
+@import '../components/features/SummaryScreen/summaryScreen.theme.scss';
+@import '../components/features/Toolbar/toolbar.scss';
+@import '../components/features/Toolbar/toolbar.theme.scss';
 
 body {
   position: relative;

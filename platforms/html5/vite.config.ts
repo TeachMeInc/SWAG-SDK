@@ -8,6 +8,11 @@ import vitePluginSVGToFont from '@sumsolution/vite-plugin-svg-to-font';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   plugins: [
     preact({
       reactAliasesEnabled: false,

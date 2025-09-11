@@ -3,3 +3,4 @@ declare global {
     SWAGAPI: APIWrapper;
   }
 }
+export {};

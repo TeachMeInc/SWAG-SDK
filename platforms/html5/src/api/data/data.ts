@@ -1,9 +1,9 @@
 'use strict';
 
 import Emitter from 'component-emitter';
-import config from './config';
-import session, { Entity } from './session';
-import utils from './utils';
+import config from '@/config';
+import session, { Entity } from '@/session';
+import utils from '@/utils';
 
 export const LEADERBOARD_PERIOD = {
   daily: 'Daily',

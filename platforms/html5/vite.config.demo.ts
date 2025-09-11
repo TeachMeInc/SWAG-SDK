@@ -6,6 +6,11 @@ import preact from '@preact/preset-vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
   plugins: [ 
     preact({
       reactAliasesEnabled: false,
