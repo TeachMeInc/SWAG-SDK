@@ -6,17 +6,24 @@ class SplashScreenUI extends UserInterfaceAPI {
   protected rootElClassName: string = 'swag-splashScreen-root';
 
   async show (options: {
-    isBeta?: boolean
+    isBeta?: boolean,
+    onClickPlay?: () => void,
   }) {
-    this.mount(<SplashScreen isBeta={options.isBeta} />);
+    this.mount(
+      <SplashScreen 
+        isBeta={options.isBeta} 
+        onClickPlay={options.onClickPlay} 
+        showOptions={options}
+      />
+    );
   }
 
   protected onMount () {
-    document.body.classList.add('swag-splashScreen-open');
+    document.body.classList.add('swag-panel--open');
   }
 
   protected onUnmount () {
-    document.body.classList.remove('swag-splashScreen-open');
+    document.body.classList.remove('swag-panel--open');
   }
 }
 

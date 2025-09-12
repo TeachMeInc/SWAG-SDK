@@ -7,12 +7,7 @@
   z-index: 3;
 }
 
-.swag-splashScreen-open {
-  overflow: hidden;
-}
-
 .swag-splashScreen {
-  font-family: var(--swag-ui-font-family);
   padding-top: 11vh;
 }
 
@@ -127,3 +122,12 @@
  * Theme
  */
 
+.swag-splashScreen {
+  font-family: var(--swag-ui-font-family);
+}
+
+.swag-splashScreen__gameTitle {
+  h1 {
+    font-family: var(--swag-title-font-family);
+  }
+}

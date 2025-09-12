@@ -1,3 +1,7 @@
+import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
+import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+import messages from '@/api/messages';
+import splashScreenUi from '@/api/splashScreenUi';
 import Button from '@/components/ui/gameThemed/Button';
 import OutlineButton from '@/components/ui/gameThemed/OutlineButton';
 import Panel from '@/components/ui/gameThemed/Panel';
@@ -6,6 +10,8 @@ import { useEffect, useState } from 'preact/hooks';
 
 interface Props {
   isBeta?: boolean;
+  onClickPlay?: () => void;
+  showOptions?: any;
 }
 
 export default function SplashScreen (props: Props) {
@@ -18,16 +24,43 @@ export default function SplashScreen (props: Props) {
     image.onload = () => {
       setImg(image.src);
     };
-    image.src = 'https://placecats.com/300/200';
+    image.src = session.game!.iconUrl;
 
     return () => {
       image.onload = null;
     };
   }, [ img ]);
 
+  const onClickPlay = () => {
+    splashScreenUi.hide();
+    props.onClickPlay?.();
+  };
+
+  const onClickArchive = () => {
+    messages.trySendMessage('swag.navigateToArchive');
+  };
+
+  const onClickInviteFriends = () => {
+    // splashScreenUi.hide();
+    inviteFriendsScreenUi.show({
+      onClickBack: () => {
+        splashScreenUi.show({ ...props.showOptions });
+      }
+    });
+  };
+
+  const onClickLeaderboard = () => {
+    // splashScreenUi.hide();
+    leaderboardScreenUi.show({
+      onClickBack: () => {
+        splashScreenUi.show({ ...props.showOptions });
+      }
+    });
+  };
+
   return (
     <Panel 
-      bgColor='#FFA801'
+      bgColor={session.game?.hexColor}
       className='swag-splashScreen'
     >
       {
@@ -45,10 +78,10 @@ export default function SplashScreen (props: Props) {
               }
             </div>
             <div className='swag-splashScreen__buttons'>
-              <Button>Play</Button>
-              <Button>Archive</Button>
-              <OutlineButton>Play with Friends</OutlineButton>
-              <OutlineButton>View Scores</OutlineButton>
+              <Button onClick={onClickPlay}>Play</Button>
+              <Button onClick={onClickArchive}>Archive</Button>
+              <OutlineButton onClick={onClickInviteFriends}>Play with Friends</OutlineButton>
+              <OutlineButton onClick={onClickLeaderboard}>View Scores</OutlineButton>
             </div>
           </>
         ) : null

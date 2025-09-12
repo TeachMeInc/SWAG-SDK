@@ -11,6 +11,8 @@ import messagesApi from '@/api/messages';
 import summaryScreenUi from '@/api/summaryScreenUi';
 import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
+import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -19,6 +21,8 @@ export interface SWAGAPIOptions {
   splashScreen?: true | {
     containerElementId?: string;
     isBeta?: boolean;
+    onClickPlay?: () => void;
+    onClose?: () => void;
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -90,11 +94,6 @@ export default class SWAGAPI {
       if (toolbarOptions.containerElementId) {
         toolbarUi.setRootElId(toolbarOptions.containerElementId);
       }
-
-      // no need to wait for game data if we have a title
-      if (this.options.gameTitle) {
-        this.showToolbar();
-      }
     } 
     
     // No toolbar enabled, tell website to show its own
@@ -124,15 +123,18 @@ export default class SWAGAPI {
 
     // Splash screen
     if (this.options.splashScreen) {
-      this.showSplashScreen({
+      splashScreenUi.show({
         isBeta: typeof this.options.splashScreen === 'object' 
           ? this.options.splashScreen.isBeta 
           : false,
+        onClickPlay: () => {
+          // TODO: passed in option
+        }
       });
     }
 
     // Toolbar
-    if (this.options.toolbar && !this.options.gameTitle) {
+    if (this.options.toolbar) {
       this.showToolbar();
     }
 
@@ -190,7 +192,12 @@ export default class SWAGAPI {
   async getGame (): Promise<{ name: string }> {
     if (session.game) return session.game;
     const game = await dataApi.getGame();
-    session.game = game;
+    // session.game = game; // TODO: when we have more info from the API
+    session.game = { 
+      ...game,
+      hexColor: '#FFA801',
+      iconUrl: 'https://placecats.com/300/200',
+    };
     return game;
   }
 
@@ -320,7 +327,7 @@ export default class SWAGAPI {
 
   // #region Toolbar Management Methods
 
-  async showToolbar () {
+  private async showToolbar () {
     const toolbarOptions = this.options.toolbar === true 
       ? {} 
       : this.options.toolbar;
@@ -355,22 +362,14 @@ export default class SWAGAPI {
 
   // #region UI
 
-  showSplashScreen (options: {
-    isBeta?: boolean,
+  showSummaryScreen (options: {
+    stats: { key: string, value: string, lottie: object }[], 
+    contentHtml: string, 
+    shareString: string, 
+    onFavorite?: () => void,
+    onReplay?: () => void,
+    onClose?: () => void,
   }) {
-    return splashScreenUi.show(options);
-  }
-
-  showSummaryScreen (
-    options: {
-      stats: { key: string, value: string, lottie: object }[], 
-      contentHtml: string, 
-      shareString: string, 
-      onFavorite?: () => void,
-      onReplay?: () => void,
-      onClose?: () => void,
-    }
-  ) {
     return summaryScreenUi.show(options);
   }
 
@@ -386,7 +385,7 @@ export default class SWAGAPI {
 
 
 
-  // #region Platform Interface Methods
+  // #region Platform Methods
 
   getPlatform () {
     return utils.getPlatform();
@@ -397,5 +396,7 @@ export default class SWAGAPI {
   }
 
   // #endregion
+
+
 
 }

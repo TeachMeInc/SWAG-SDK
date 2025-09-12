@@ -1,4 +1,4 @@
-.swag-leaderboard-screen-root {
+.swag-leaderboardScreen-root {
   position: fixed;
   top: 0;
   left: 0;
@@ -7,13 +7,30 @@
   z-index: 3;
 }
 
-.swag-leaderboard-screen {
-  width: 100%;
-  height: 100%;
-}
+.swag-leaderboardScreen {
+  @keyframes swag-slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
 
-.swag-leaderboard-screen-open {
-  overflow: hidden;
+  @keyframes swag-slide-out-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  
+  animation: swag-slide-in-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.swag-slide-out-right {
+    animation: swag-slide-out-right 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  }
 }
 
 
@@ -22,7 +39,6 @@
  * Theme
  */
 
-.swag-leaderboard-screen {
-  color: yellow;
-  background: magenta;
+.swag-leaderboardScreen {
+  font-family: var(--swag-ui-font-family);
 }

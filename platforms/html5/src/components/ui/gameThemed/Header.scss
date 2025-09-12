@@ -1,0 +1,31 @@
+.swag-gameThemed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem;
+  padding: 10px;
+  height: 40px;
+  box-sizing: content-box;
+
+  > div {
+    width: 40px;
+  }
+
+  > h4 {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+.swag-gameThemed-header__backButton {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .swag-icon {
+    font-size: 1.25rem;
+  }
+}

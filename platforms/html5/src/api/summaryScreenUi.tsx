@@ -11,14 +11,13 @@ class SummaryScreenUI extends UserInterfaceAPI {
   protected rootElClassName: string = 'swag-summaryScreen-root';
 
   async show (options: {
-      stats: { key: string, value: string, lottie: object }[], 
-      contentHtml: string, 
-      shareString: string, 
-      onFavorite?: () => void,
-      onReplay?: () => void,
-      onClose?: () => void,
-    }
-  ) {
+    stats: { key: string, value: string, lottie: object }[], 
+    contentHtml: string, 
+    shareString: string, 
+    onFavorite?: () => void,
+    onReplay?: () => void,
+    onClose?: () => void,
+  }) {
     loaderUi.show(350);
 
     const promises = [];

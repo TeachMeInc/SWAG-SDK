@@ -1,5 +1,5 @@
 export interface Game {
   name: string;
-  hexColor: string | null;
-  iconUrl: string | null;
+  hexColor: string;
+  iconUrl: string;
 }
