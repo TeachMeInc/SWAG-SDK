@@ -36,8 +36,8 @@ $breakpoints: (
   --swag-l-btn-primary-color: #{$shockwaveBlue};
   --swag-l-btn-secondary-color: #{$shockwaveOrange};
   --swag-l-btn-border-color: #{$shockwaveOrange};
-  --swag-l-summary-bg-color: #{$shockwaveWhite};
-  --swag-l-summary-font-color: #{$shockwaveBlack};
+  --swag-l-panel-bg-color: #{$shockwaveWhite};
+  --swag-l-panel-font-color: #{$shockwaveBlack};
   --swag-l-toolbar-bg-color: #{$shockwaveWhite};
   --swag-l-toolbar-font-color: #{$shockwaveBlack};
   --swag-l-toolbar-border-color: #{$shockwaveLightGrey};
@@ -47,8 +47,8 @@ $breakpoints: (
   --swag-d-btn-primary-color: #{$shockwaveBlue};
   --swag-d-btn-secondary-color: #{$shockwaveOrange};
   --swag-d-btn-border-color: #{$shockwaveWhite};
-  --swag-d-summary-bg-color: #{$shockwaveBlack};
-  --swag-d-summary-font-color: #{$shockwaveWhite};
+  --swag-d-panel-bg-color: #{$shockwaveBlack};
+  --swag-d-panel-font-color: #{$shockwaveWhite};
   --swag-d-toolbar-bg-color: #{$shockwaveBlack};
   --swag-d-toolbar-font-color: #{$shockwaveWhite};
   --swag-d-toolbar-border-color: #{$shockwaveDarkGrey};
@@ -58,8 +58,8 @@ $breakpoints: (
   --swag-btn-primary-color: var(--swag-l-btn-primary-color);
   --swag-btn-secondary-color: var(--swag-l-btn-secondary-color);
   --swag-btn-border-color: var(--swag-l-btn-border-color);
-  --swag-summary-bg-color: var(--swag-l-summary-bg-color);
-  --swag-summary-font-color: var(--swag-l-summary-font-color);
+  --swag-panel-bg-color: var(--swag-l-panel-bg-color);
+  --swag-panel-font-color: var(--swag-l-panel-font-color);
   --swag-toolbar-bg-color: var(--swag-l-toolbar-bg-color);
   --swag-toolbar-font-color: var(--swag-l-toolbar-font-color);
   --swag-toolbar-border-color: var(--swag-l-toolbar-border-color);
@@ -80,8 +80,8 @@ $breakpoints: (
   --swag-btn-primary-color: var(--swag-d-btn-primary-color);
   --swag-btn-secondary-color: var(--swag-d-btn-secondary-color);
   --swag-btn-border-color: var(--swag-d-btn-border-color);
-  --swag-summary-bg-color: var(--swag-d-summary-bg-color);
-  --swag-summary-font-color: var(--swag-d-summary-font-color);
+  --swag-panel-bg-color: var(--swag-d-panel-bg-color);
+  --swag-panel-font-color: var(--swag-d-panel-font-color);
   --swag-toolbar-bg-color: var(--swag-d-toolbar-bg-color);
   --swag-toolbar-font-color: var(--swag-d-toolbar-font-color);
   --swag-toolbar-border-color: var(--swag-d-toolbar-border-color);

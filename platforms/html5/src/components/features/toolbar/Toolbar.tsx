@@ -3,6 +3,7 @@ import { ToolbarEventName, ToolbarItem, ToolbarState, ToolbarStateActionType, us
 import Icon from '@/components/ui/Icon';
 import { DateString } from '@/types/DateString';
 import utils from '@/utils';
+import session from '@/session';
 
 
 
@@ -115,15 +116,17 @@ export function Toolbar (props: ToolbarProps) {
   }, [ dispatchToolbarState ]);
 
   useEffect(() => {
-    if (props.isInjected) return;
-
     const el = elRef.current;
     if (!el) return;
 
     const rect = el.getBoundingClientRect();
     const height = rect.height;
 
-    document.body.style.marginTop = `${height}px`;
+    session.toolbarHeight = height;
+
+    if (!props.isInjected) {
+      document.body.style.marginTop = `${height}px`;
+    }
   }, [ props.isInjected ]);
 
   /* 

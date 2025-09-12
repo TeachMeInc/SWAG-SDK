@@ -1,14 +1,14 @@
 $smallScreenHeight: 530px;
 $smallScreenWidth: 468px;
 
-.swag-summary {
+.swag-summary-screen {
   pointer-events: auto;
 
-  &.swag-summary__injected {
+  &.swag-summary-screen__injected {
     position: relative;
   }
 
-  &.swag-summary__fullscreen {
+  &.swag-summary-screen__fullscreen {
     position: fixed;
     top: 0;
     left: 0;
@@ -20,7 +20,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__scroll-content {
+.swag-summary-screen__scroll-content {
   display: flex;
   position: relative;
   width: 100%;
@@ -31,7 +31,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__content {
+.swag-summary-screen__content {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -58,7 +58,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__stats {
+.swag-summary-screen__stats {
   display: flex;
   gap: 1rem;
   justify-content: center;
@@ -66,7 +66,7 @@ $smallScreenWidth: 468px;
   width: 100%;
   margin: -0.75rem 0;
 
-  .swag-summary__stat {
+  .swag-summary-screen__stat {
     width: 6rem;
     height: auto;
 
@@ -76,7 +76,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__button-container {
+.swag-summary-screen__button-container {
   // grid with 2 columns
   display: grid;
   grid-template-columns: repeat(1, 1fr);
@@ -97,7 +97,7 @@ $smallScreenWidth: 468px;
     }
   }
 
-  .swag-summary__btn {
+  .swag-summary-screen__btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -139,7 +139,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__related-games {
+.swag-summary-screen__related-games {
   width: 100%;
   max-width: 320px;
 
@@ -194,10 +194,10 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__upsell {
+.swag-summary-screen__upsell {
   width: 100%;
 
-  > .swag-summary__upsell-banner {
+  > .swag-summary-screen__upsell-banner {
     display: flex;
     align-items: center;
   
@@ -231,7 +231,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__promo-links-container {
+.swag-summary-screen__promo-links-container {
   display: grid;
   gap: 1rem;
   width: 100%;
@@ -278,7 +278,7 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__scroll-indicator {
+.swag-summary-screen__scroll-indicator {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -310,18 +310,18 @@ $smallScreenWidth: 468px;
  * Theme
  */
 
-.swag-summary {
-  color: var(--swag-summary-font-color);
-  background-color: var(--swag-summary-bg-color);
+.swag-summary-screen {
+  color: var(--swag-panel-font-color);
+  background-color: var(--swag-panel-bg-color);
   font-family: var(--swag-ui-font-family);
 
-  &.swag-summary__fullscreen {
-    background-color: var(--swag-summary-bg-color) !important;
+  &.swag-summary-screen__fullscreen {
+    background-color: var(--swag-panel-bg-color) !important;
   }
 }
 
-.swag-summary__button-container {
-  .swag-summary__btn {
+.swag-summary-screen__button-container {
+  .swag-summary-screen__btn {
     color: var(--swag-btn-font-color);
     background-color: var(--swag-btn-secondary-color);
     font-family: var(--swag-ui-font-family);
@@ -341,13 +341,13 @@ $smallScreenWidth: 468px;
   }
 }
 
-.swag-summary__upsell {
-  > .swag-summary__upsell-banner {
+.swag-summary-screen__upsell {
+  > .swag-summary-screen__upsell-banner {
     color: var(--swag-btn-font-color);
   }
 }
 
-.swag-summary__promo-links-container {
+.swag-summary-screen__promo-links-container {
   button {
     color: var(--swag-btn-font-color);
   }

@@ -128,15 +128,15 @@
   </div>
   <script type='module' src='/src/main.ts'></script>
   <style>
-    :root {
-      /* --swag-l-toolbar-bg-color: #EADAB9;
+    /* :root {
+      --swag-l-toolbar-bg-color: #EADAB9;
       --swag-l-toolbar-font-color: #1f1f1f;
       --swag-l-toolbar-border-color: #313131;
       --swag-title-font-family: 'Roboto Slab', serif;
       --swag-toolbar-height: 63px;
       --swag-toolbar-title-font-size: 18px;
-      --swag-toolbar-border-width: 1; */
-    }
+      --swag-toolbar-border-width: 1;
+    } */
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
@@ -144,7 +144,10 @@
         apiKey: '5c6c3c056917a692f96f9651',
         gameTitle: 'SWAG HTML5 SDK Demo',
         debug: true,
-        summary: {},
+        splashScreen: {
+          showImmediately: true,
+        },
+        summaryScreen: {},
         toolbar: {
           titleIcon: 'https://new.shockwave.com/images/SW25.svg',
           titleIconDark: 'https://new.shockwave.com/images/SW25_alt.svg',
@@ -263,6 +266,9 @@
           onReplay: () => { alert('replay clicked'); },
           onClose: () => { alert('share screen closed'); }
       });
+
+      document.getElementById('btnGameSplashScreen').onclick = 
+        () => api.showSplashScreen();
 
       document.getElementById('btnToggleFullScreen').onclick = 
         () => api.toggleFullScreen();

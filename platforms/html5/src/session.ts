@@ -6,6 +6,7 @@ export interface Session {
   debug: boolean;
   jwt: string | null;
   game: { name: string } | null;
+  toolbarHeight: number;
 }
 
 const session: Session = {
@@ -14,6 +15,7 @@ const session: Session = {
   debug: false,
   jwt: null,
   game: null,
+  toolbarHeight: 48,
 };
 
 export default session;

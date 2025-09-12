@@ -10,12 +10,17 @@ import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
 import summaryScreenUi from '@/api/summaryScreenUi';
 import toolbarUi from '@/api/toolbarUi';
+import splashScreenUi from '@/api/splashScreenUi';
 
 export interface SWAGAPIOptions {
   apiKey: string;
   gameTitle: string;
   debug?: boolean;
-  summary?: {
+  splashScreen?: {
+    containerElementId?: string;
+    showImmediately?: boolean;
+  },
+  summaryScreen?: {
     containerElementId?: string;
   },
   toolbar?: true | {
@@ -56,8 +61,8 @@ export default class SWAGAPI {
      * Summary screen setup
      */
 
-    if (this.options.summary?.containerElementId) {
-      summaryScreenUi.setRootElId(this.options.summary.containerElementId);
+    if (this.options.summaryScreen?.containerElementId) {
+      summaryScreenUi.setRootElId(this.options.summaryScreen.containerElementId);
     }
 
     /*
@@ -310,11 +315,11 @@ export default class SWAGAPI {
 
   // #region UI
 
-  async showSplashScreen () {
-    throw new Error('Not implemented');
+  showSplashScreen () {
+    return splashScreenUi.show();
   }
 
-  async showSummaryScreen (
+  showSummaryScreen (
     options: {
       stats: { key: string, value: string, lottie: object }[], 
       contentHtml: string, 
