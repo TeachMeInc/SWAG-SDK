@@ -18,4 +18,4 @@ class LoaderUI extends UserInterfaceAPI {
   }
 }
 
-export const loaderUi = new LoaderUI();
+export default new LoaderUI();

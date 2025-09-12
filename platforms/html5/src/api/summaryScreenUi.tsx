@@ -1,12 +1,12 @@
-import data, { DailyGameStreak, GamePromoLink } from '@/api/data';
-import { loaderUi } from '@/api/loaderUi';
+import dataApi, { DailyGameStreak, GamePromoLink } from '@/api/data';
 import SummaryScreen from '@/components/features/summaryScreen/SummaryScreen';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import lottieStreak from '@/assets/lottie/streak.json';
 import lottieTime from '@/assets/lottie/time.json';
 import utils from '@/utils';
+import loaderUi from '@/api/loaderUi';
 
-class SummaryUI extends UserInterfaceAPI {
+class SummaryScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-summary-root';
   protected rootElClassName: string = 'swag-summary-root';
 
@@ -25,7 +25,7 @@ class SummaryUI extends UserInterfaceAPI {
     // Fetch member status
     promises.push((async () => {
       try {
-        const getEntity = await data.getEntity();
+        const getEntity = await dataApi.getEntity();
         return getEntity.isMember;
       } catch (e) {
         utils.warn('Error checking membership status:', e);
@@ -35,7 +35,7 @@ class SummaryUI extends UserInterfaceAPI {
     // Fetch subscriber status
     promises.push((async () => {
       try {
-        return await data.isSubscriber();
+        return await dataApi.isSubscriber();
       } catch (e) {
         utils.warn('Error checking subscription status:', e);
       }
@@ -44,8 +44,8 @@ class SummaryUI extends UserInterfaceAPI {
     // Check if the game has been played today
     promises.push((async () => {
       try {
-        const currentDay = await data.getCurrentDay();
-        return await data.hasPlayedDay(currentDay.day);
+        const currentDay = await dataApi.getCurrentDay();
+        return await dataApi.hasPlayedDay(currentDay.day);
       } catch (e) {
         utils.warn('Error checking if game has been played today:', e);
       }
@@ -55,7 +55,7 @@ class SummaryUI extends UserInterfaceAPI {
     promises.push((async () => {
       let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
       try {
-        gameStreak = await data.getDailyGameStreak();
+        gameStreak = await dataApi.getDailyGameStreak();
       } catch (e) {
         utils.warn('Error fetching game streak:', e);
       }
@@ -65,7 +65,7 @@ class SummaryUI extends UserInterfaceAPI {
     // Fetch promo links
     promises.push((async () => {
       try {
-        return await data.getGamePromoLinks(6);
+        return await dataApi.getGamePromoLinks(6);
       } catch (e) {
         utils.warn('Error fetching promo links:', e);
       }
@@ -130,5 +130,4 @@ class SummaryUI extends UserInterfaceAPI {
   }
 }
 
-const summaryUi = new SummaryUI();
-export default summaryUi;
+export default new SummaryScreenUI();

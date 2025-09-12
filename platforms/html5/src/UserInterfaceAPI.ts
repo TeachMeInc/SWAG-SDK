@@ -5,7 +5,7 @@ export default class UserInterfaceAPI {
   protected rootElId: string = '';
   protected rootElClassName: string = '';
   protected isInjected: boolean = false;
-  private timeout: number | null = null;
+  private timeout: NodeJS.Timeout | null = null;
 
   setRootElId (id: string) {
     this.rootElId = id;

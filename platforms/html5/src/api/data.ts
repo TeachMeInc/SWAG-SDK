@@ -1,9 +1,10 @@
 'use strict';
 
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import config from '@/config';
-import session, { Entity } from '@/session';
+import session from '@/session';
 import utils from '@/utils';
+import config from '@/config';
+import { Entity } from '@/types/Entity';
 
 
 
@@ -96,7 +97,7 @@ let axiosInstance: AxiosInstance | null = null;
 function getAxios (): AxiosInstance {
   if (axiosInstance) return axiosInstance;
 
-  const baseURL = config.themes[ session.theme || 'shockwave' ].apiRoot;
+  const baseURL = config.apiRoot;
   axiosInstance = axios.create({
     baseURL,
     withCredentials: !session.jwt, // only send cookies when we don't already have a token
@@ -105,7 +106,7 @@ function getAxios (): AxiosInstance {
 
   axiosInstance.interceptors.request.use((req) => {
     // Always refresh baseURL in case theme changed at runtime
-    req.baseURL = config.themes[ session.theme || 'shockwave' ].apiRoot;
+    req.baseURL = config.apiRoot;
     req.headers = req.headers || {};
     (req.headers as Record<string, string>)[ 'x-local-tz' ] = utils.getTimeZone();
     if (session.jwt) {
@@ -328,30 +329,10 @@ class DataAPI {
     return !!result.subscriber;
   }
 
-  async getCurrentUser () {
-    const provider = this.getProvider();
-    const client = getAxios();
-    // override baseURL for provider root
-    const res = await client.get(provider.current, { baseURL: provider.root });
-    const result = res.data;
-    if (result && !result.error) {
-      return result;
-    }
-    throw new Error('Failed to fetch current user');
-  }
-
   // #endregion
 
 
 
-  // #region Internal API
-
-  private getProvider () {
-    return config.providers[ 'shockwave' ];
-  }
-
-  // #endregion
 }
 
-const dataAPI = new DataAPI();
-export default dataAPI;
+export default new DataAPI();

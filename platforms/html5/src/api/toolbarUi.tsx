@@ -61,5 +61,4 @@ class ToolbarUI extends UserInterfaceAPI {
   }
 }
 
-const toolbar = new ToolbarUI();
-export default toolbar;
+export default new ToolbarUI();

@@ -2,12 +2,14 @@
 
 import session from '@/session';
 import utils from '@/utils';
-import messages from '@/api/messages';
-import summary from '@/api/summaryScreenUi';
-import data, { PostScoreOptions } from '@/api/data';
-import { loaderUi } from '@/api/loaderUi';
 import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
-import toolbar from '@/api/toolbarUi';
+
+// API imports
+import dataApi, { PostScoreOptions } from '@/api/data';
+import loaderUi from '@/api/loaderUi';
+import messagesApi from '@/api/messages';
+import summaryScreenUi from '@/api/summaryScreenUi';
+import toolbarUi from '@/api/toolbarUi';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -47,17 +49,15 @@ export default class SWAGAPI {
      * Session setup
      */
 
-    const siteMode = 'shockwave';
     session.apiKey = this.options.apiKey || null;
-    session.theme = siteMode;
-    session.provider = siteMode;
+    session.debug = !!this.options.debug;
 
     /*
      * Summary screen setup
      */
 
     if (this.options.summary?.containerElementId) {
-      summary.setRootElId(this.options.summary.containerElementId);
+      summaryScreenUi.setRootElId(this.options.summary.containerElementId);
     }
 
     /*
@@ -72,7 +72,7 @@ export default class SWAGAPI {
 
       // custom root element
       if (toolbarOptions.containerElementId) {
-        toolbar.setRootElId(toolbarOptions.containerElementId);
+        toolbarUi.setRootElId(toolbarOptions.containerElementId);
       }
 
       this.showToolbar();
@@ -80,7 +80,7 @@ export default class SWAGAPI {
     
     // No toolbar enabled, tell website to show its own
     else {
-      messages.trySendMessage('swag.toolbar.show', '', true);
+      messagesApi.trySendMessage('swag.toolbar.show', '', true);
     }
   }
 
@@ -120,7 +120,7 @@ export default class SWAGAPI {
     }
 
     // Fetch the current user
-    const entity = await data.getEntity();
+    const entity = await dataApi.getEntity();
 
     /*
      * Ready
@@ -130,15 +130,15 @@ export default class SWAGAPI {
   }
 
   toggleFullScreen () {
-    return messages.trySendMessage('swag.toggleFullScreen');
+    return messagesApi.trySendMessage('swag.toggleFullScreen');
   }
 
   navigateToArchive () {
-    return messages.trySendMessage('swag.navigateToArchive');
+    return messagesApi.trySendMessage('swag.navigateToArchive');
   }
 
   navigateToTitle (keyword: string) {
-    return messages.trySendMessage('swag.navigateToTitle', keyword);
+    return messagesApi.trySendMessage('swag.navigateToTitle', keyword);
   }
 
   // #endregion
@@ -148,31 +148,31 @@ export default class SWAGAPI {
   // #region Daily Game Methods
 
   async startDailyGame (day: string) {
-    const result = await data.postDailyGameProgress(day, false);
-    messages.trySendMessage('swag.dailyGameProgress.start', day, true);
+    const result = await dataApi.postDailyGameProgress(day, false);
+    messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
     return result;
   }
 
   async completeDailyGame (day: string) {
-    const result = await data.postDailyGameProgress(day, true);
-    messages.trySendMessage('swag.dailyGameProgress.complete', day, true);
+    const result = await dataApi.postDailyGameProgress(day, true);
+    messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;
   }
 
   getCurrentDay () {
-    return data.getCurrentDay();
+    return dataApi.getCurrentDay();
   }
 
   getGameProgress (month: string, year: string) {
-    return data.getDailyGameProgress(month, year);
+    return dataApi.getDailyGameProgress(month, year);
   }
   
   getGameStreak () {
-    return data.getDailyGameStreak();
+    return dataApi.getDailyGameStreak();
   }
 
   hasPlayedDay (day: string) {
-    return data.hasPlayedDay(day);
+    return dataApi.hasPlayedDay(day);
   }
  
   // #endregion
@@ -182,19 +182,19 @@ export default class SWAGAPI {
   // #region Score Methods
 
   getScoreCategories () {
-    return data.getScoreCategories();
+    return dataApi.getScoreCategories();
   }
 
   getDays (limit: number) {
-    return data.getDays(limit);
+    return dataApi.getDays(limit);
   }
 
   getScores (options: PostScoreOptions) {
-    return data.getScores(options);
+    return dataApi.getScores(options);
   }
 
   postScore (level_key: string, value: string, options: PostScoreOptions) {
-    return data.postScore(level_key, value, options)
+    return dataApi.postScore(level_key, value, options)
       .then(function () {
         if(options && options.confirmation === true) {
           alert(`Your score of ${value} has been submitted!`);
@@ -203,11 +203,11 @@ export default class SWAGAPI {
   }
 
   postDailyScore (day: string, level_key: string, value: string) {
-    return data.postDailyScore(day, level_key, value);
+    return dataApi.postDailyScore(day, level_key, value);
   }
 
   hasDailyScore (level_key: any) {
-    return data.hasDailyScore(level_key);
+    return dataApi.hasDailyScore(level_key);
   }
 
   // #endregion
@@ -217,15 +217,15 @@ export default class SWAGAPI {
   // #region Achievement Methods
 
   getAchievementCategories () {
-    return data.getAchievementCategories();
+    return dataApi.getAchievementCategories();
   }
 
   postAchievement (achievement_key: string) {
-    return data.postAchievement(achievement_key);
+    return dataApi.postAchievement(achievement_key);
   }
 
   getUserAchievements () {
-    return data.getUserAchievements();
+    return dataApi.getUserAchievements();
   }
 
   // #endregion
@@ -239,15 +239,15 @@ export default class SWAGAPI {
   }
 
   isSubscriber () {
-    return data.isSubscriber();
+    return dataApi.isSubscriber();
   }
 
   setUserData (key: string, value: string) {
-    return data.postDatastore(key, value);
+    return dataApi.postDatastore(key, value);
   }
 
   getUserData () {
-    return data.getUserDatastore();
+    return dataApi.getUserDatastore();
   }
 
   setLocalUserData (key: string, value: string | null) {
@@ -273,35 +273,35 @@ export default class SWAGAPI {
       : this.options.toolbar;
 
     // tell website to hide its toolbar if it has one
-    messages.trySendMessage('swag.toolbar.hide', '', true);
+    messagesApi.trySendMessage('swag.toolbar.hide', '', true);
 
     let title = this.options.gameTitle || '';
     
     if (!this.options.gameTitle) {
-      const game = await data.getGame();
+      const game = await dataApi.getGame();
       if (game && game.name) title = game.name;
     }
 
-    toolbar.show({ 
+    toolbarUi.show({ 
       ...toolbarOptions,
       title,
     });
   }
 
   hideToolbar () {
-    toolbar.hide();
+    toolbarUi.hide();
   }
 
   setToolbarItems (items: ToolbarItem[]) {
-    toolbar.setItems(items);
+    toolbarUi.setItems(items);
   }
 
   updateToolbarItem (item: ToolbarItem) {
-    toolbar.updateItem(item);
+    toolbarUi.updateItem(item);
   }
 
   removeToolbarItem (id: string) {
-    toolbar.removeItem(id);
+    toolbarUi.removeItem(id);
   }
 
   // #endregion
@@ -324,7 +324,7 @@ export default class SWAGAPI {
       onClose?: () => void,
     }
   ) {
-    return summary.show(
+    return summaryScreenUi.show(
       options.stats, 
       options.contentHtml,
       options.shareString,

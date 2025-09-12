@@ -1,6 +1,8 @@
-// #region Utility Functions
-
 import utils from '@/utils';
+
+
+
+// #region Utility Functions
 
 function tryParse <T> (data: string): T | undefined {
   let parsed: MessagePayload;
@@ -25,13 +27,7 @@ export type MessageEventName =
   'swag.toggleFullScreen' |
   'swag.navigateToArchive' |
   'swag.navigateToGameLanding' |
-  'swag.navigateToLogin' |
   'swag.navigateToTitle' | 
-  'swag.displayAd' |
-  'swag.displayShareDialog' |
-  'swag.userLogout' |
-  'swag.getRelatedGames' |
-  'swag.captureEvent' | 
   'swag.dailyGameProgress.start' |
   'swag.dailyGameProgress.complete';
 
@@ -113,16 +109,6 @@ class MessagesAPI {
     window.addEventListener('message', (event: { data: string }) => {
       const parsed = tryParse<MessagePayload>(event.data);
       if (!parsed) return;
-
-      // switch (parsed.eventName) {
-      // case 'swag.toolbar.click': {
-      //   const id = parsed.message;
-      //   if (this.toolbarClickEvents[ id ]) {
-      //     this.toolbarClickEvents[ id ]();
-      //   }
-      //   return;
-      // }
-      // }
     });
   }
 }

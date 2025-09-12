@@ -26,11 +26,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--swag-summary-bg-color);
   z-index: 2;
 }
 
 .swag-loader__inner > * {
   width: 68px;
   height: 89px;
+}
+
+
+
+/*
+ * Theme
+ */
+
+.swag-loader__inner {
+  background-color: var(--swag-summary-bg-color);
 }
