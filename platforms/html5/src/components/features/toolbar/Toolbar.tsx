@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { ToolbarEventName, ToolbarItem, ToolbarState, ToolbarStateActionType, useToolbarState } from '@/components/features/toolbar/toolbarState';
 import Icon from '@/components/ui/Icon';
+import { DateString } from '@/types/DateString';
+import utils from '@/utils';
 
 
 
 // #region Component
 
 interface ToolbarProps {
-  date: string;
+  date: DateString;
   title?: string;
   titleIcon?: string;
   titleIconDark?: string;
@@ -16,20 +18,14 @@ interface ToolbarProps {
   isInjected?: boolean;
 }
 
-function parseLocalDate (dateStr: string) {
-  const [ year, month, day ] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
-
 export function Toolbar (props: ToolbarProps) {
   /*
    * State
    */
 
   const [ toolbarState, dispatchToolbarState ] = useToolbarState(props.initialToolbarState);
-  const [ title, setTitle ] = useState<string>(props.title || '');
   const elRef = useRef<HTMLDivElement>(null);
-  const date = parseLocalDate(props.date);
+  const date = utils.getDateFromDateString(props.date);
 
   // 2025-01-10
   const shortDate = date.toLocaleDateString('en-US', {
@@ -135,7 +131,7 @@ export function Toolbar (props: ToolbarProps) {
    */
 
   return (
-    <header className='swag-toolbar' ref={elRef} style={{ opacity: title ? 1 : 0 }}>
+    <header className='swag-toolbar' ref={elRef} style={{ opacity: props.title ? 1 : 0 }}>
       <div className='swag-toolbar__container'>
         <div className='swag-toolbar__container__inner'>
           <aside className='swag-toolbar__flex --pull-left'>
@@ -149,26 +145,26 @@ export function Toolbar (props: ToolbarProps) {
           <div className='swag-toolbar__flex'>
             <h1>
               {
-                props.titleIcon
+                (props.title && props.titleIcon)
                   ? (
                     <>
                       <img 
                         className='swag-toolbar__title-icon --hide-dark'
                         src={props.titleIcon} 
-                        alt={`${title} logo`} 
+                        alt={`${props.title} logo`} 
                         aria-hidden 
                       />
                       <img 
                         className='swag-toolbar__title-icon --hide-light'
                         src={props.titleIconDark || props.titleIcon} 
-                        alt={`${title} logo`} 
+                        alt={`${props.title} logo`} 
                         aria-hidden 
                       />
                     </>
                   )
                   : null
               }
-              {title}
+              {props.title || ''}
             </h1>
           </div>
           <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>

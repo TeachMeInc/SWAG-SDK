@@ -1,106 +1,63 @@
+import { DateString } from '@/types/DateString';
 import session from './session';
 
-const mediaBreakpoints = [
-  { name: 'phone', value: 400, class:'media-phone' },
-  { name: 'phablet', value: 800, class:'media-phablet' },
-  { name: 'tablet', value: 1200, class:'media-tablet' },
-  { name: 'desktop', value: 1400, class:'media-desktop', default: true }
-];
-
 const methods = {
-  getBreakpoint: function () {
-    throw new Error('getBreakpoint method not implemented');
-  },
 
-  applyBreakpointClass: function () {
-    throw new Error('applyBreakpointClass method not implemented');
-  },
 
-  checkBreakpoint: function (mediaKey: string) {
-    throw new Error('checkBreakpoint method not implemented');
-  },
 
-  formatParam: function (param: string | string[]) {
-    if(!Array.isArray(param)) {
+  /* #region URL Methods */
+
+  formatParam (param: string | string[]) {
+    if (!Array.isArray(param)) {
       return param;
     }
-    const formatted = param.map(function (item) {
-      return '"' + item + '"';
-    }).join('');
-    return '[' + formatted + ']';
+    const formatted = param.map((item) => `"${item}"`).join('');
+    return `[${formatted}]`;
   },
 
-  toParam: function (source: string) {
-    if(source) {
-      return source.toLowerCase()
-        .replace(/[^a-z0-9-\s]/g, '')
-        .replace(/[\s-]+/g, '-');
-    } else {
-      return '';
-    }
+  parseUrlParams () {
+    const params = new URLSearchParams(window.location.search);
+    return Object.fromEntries(params.entries());
   },
 
-  parseUrlParams: function () {
-    const vars: Record<string, string> = {};
-    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (_m: string, key: string, value: string) {
-      vars[ key ] = value;
-      return '';
-    });
-    return vars;
+  parseUrlOptions (prop?: string) {
+    const url = new URL(window.location.href);
+    const params = Object.fromEntries(url.searchParams.entries());
+    return prop ? params[ prop ] : params;
   },
 
-  getDateString: function () {
+  getDateString (): DateString {
     const { date: dateParam } = methods.parseUrlParams();
-    
+
     if (dateParam) {
-      // eslint-disable-next-line prefer-const
-      let [ year, month, day ] = dateParam.split('-');
-      if (year.length === 2) year = '20' + year;
-      return `${year}-${month}-${day}`;
+      const results = dateParam.split('-'); 
+      let [ year ] = results;
+      const [ month, day ] = results;
+      if (year.length === 2) year = `20${year}`;
+
+      return `${year}-${month}-${day}` as DateString;
     }
 
     const date = new Date();
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
 
-    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    return `${year}-${month}-${day}` as DateString;
   },
 
-  getDate: function (day: string) {
-    const parts = day.split('-');
-    return new Date(parseInt(parts[ 0 ]), parseInt(parts[ 1 ]) - 1, parseInt(parts[ 2 ]));
+  getDateFromDateString (dateStr: DateString) {
+    const [ year, month, day ] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
   },
 
-  log: function (...args: any[]) {
-    args.unshift('[SWAG]');
-    // eslint-disable-next-line no-console
-    console.log(...args);
-  },
-  
-  error: function (...args: any[]) {
-    args.unshift('[SWAG error]');
-    // eslint-disable-next-line no-console
-    console.error(...args);
-  },
+  /* #endregion */
 
-  warn: function (...args: any[]) {
-    if (session.debug) {
-      args.unshift('[SWAG debug]');
-      // eslint-disable-next-line no-console
-      console.warn(...args);
-    }
-  },
 
-  debug: function (...args: any[]) {
-    if (session.debug) {
-      args.unshift('[SWAG debug]');
-      // eslint-disable-next-line no-console
-      console.log(...args);
-    }
-  },
 
-  getPlatform: function (): ('embed' | 'app' | 'standalone') {
+  /* #region Platform Methods */
+
+  getPlatform (): 'embed' | 'app' | 'standalone' {
     // @ts-ignore
     if (typeof window.ReactNativeWebView !== 'undefined') {
       return 'app';
@@ -111,55 +68,89 @@ const methods = {
     return 'embed';
   },
 
-  getPlatformTheme: function (): ('light' | 'dark') {
-    if (this.parseUrlOptions('theme')) {
-      return this.parseUrlOptions('theme') === 'dark' 
-        ? 'dark' : 'light';
+  getPlatformTheme (): 'light' | 'dark' {
+    const theme = this.parseUrlOptions('theme');
+    if (theme) {
+      return theme === 'dark' ? 'dark' : 'light';
     }
-    else if (this.getPlatform() === 'standalone') {
+    if (this.getPlatform() === 'standalone') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
       return systemTheme ? 'dark' : 'light';
     }
     return 'light';
   },
 
-  getTimeZone: function (): string {
+  getTimeZone (): string {
     if (
-      typeof window === 'undefined' || 
-      typeof Intl?.DateTimeFormat !== 'function' || 
+      typeof window === 'undefined' ||
+      typeof Intl?.DateTimeFormat !== 'function' ||
       typeof Intl?.DateTimeFormat().resolvedOptions !== 'function'
     ) {
       return import.meta.env.VITE_DEFAULT_TIMEZONE;
     }
 
-    return Intl.DateTimeFormat().resolvedOptions()?.timeZone ?? import.meta.env.VITE_DEFAULT_TIMEZONE;
+    return (
+      Intl.DateTimeFormat().resolvedOptions()?.timeZone 
+      ?? import.meta.env.VITE_DEFAULT_TIMEZONE
+    );
   },
 
-  parseLottie: function (lottie: object, value: string | number): object {
-    let stringifyLottie = '';
+  /* #endregion */
 
+
+
+  /* #region Lottie Methods */
+
+  parseLottie (lottie: object, value: string | number): object {
+    let stringifyLottie = '';
     try {
-      stringifyLottie = JSON
-        .stringify(lottie)
-        .replace('0123456789:%./', value.toString());
+      stringifyLottie = JSON.stringify(lottie).replace(/0123456789:%\./g, value.toString());
     } catch (e) {
-      methods.debug('Error stringifying Lottie animation', e);
+      this.debug('Error stringifying Lottie animation', e);
       return {};
     }
-
     try {
       return JSON.parse(stringifyLottie);
     } catch (e) {
-      methods.debug('Error parsing Lottie animation', e);
+      this.debug('Error parsing Lottie animation', e);
       return {};
     }
   },
 
-  parseUrlOptions: function (prop: string) {
-    const url = new URL(window.location.href);
-    const params = Object.fromEntries(url.searchParams.entries());
-    return prop ? params[ prop ] : params;
-  }
+  /* #endregion */
+
+
+
+  /* #region Logging Methods */
+
+  log (...args: any[]) {
+    // eslint-disable-next-line no-console
+    console.log('[SWAG]', ...args);
+  },
+
+  error (...args: any[]) {
+    // eslint-disable-next-line no-console
+    console.error('[SWAG error]', ...args);
+  },
+
+  warn (...args: any[]) {
+    if (session.debug) {
+      // eslint-disable-next-line no-console
+      console.warn('[SWAG debug]', ...args);
+    }
+  },
+
+  debug (...args: any[]) {
+    if (session.debug) {
+      // eslint-disable-next-line no-console
+      console.log('[SWAG debug]', ...args);
+    }
+  },
+
+  /* #endregion */
+
+
+
 };
 
 export default methods;
