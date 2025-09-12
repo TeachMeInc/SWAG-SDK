@@ -26,10 +26,10 @@ export interface SWAGAPIOptions {
 }
 
 export default class SWAGAPI {
-  protected _options: SWAGAPIOptions;
+  protected options: SWAGAPIOptions;
 
   constructor (options: SWAGAPIOptions) {
-    this._options = options;
+    this.options = options;
 
     // data.on('DATA_EVENT', (event) => {
     //   this.emit('DATA_EVENT', { type: event });
@@ -39,50 +39,47 @@ export default class SWAGAPI {
     //   this._emitError(event);
     // });
 
-    this._init();
+    this.init();
   }
 
-  protected _init () {
-    // Configuration setup
-    const siteMode = 'shockwave';
+  protected init () {
+    /* 
+     * Session setup
+     */
 
-    session.api_key = this._options.apiKey || null;
+    const siteMode = 'shockwave';
+    session.apiKey = this.options.apiKey || null;
     session.theme = siteMode;
     session.provider = siteMode;
 
-    // Summary screen setup
-    if (this._options.summary?.containerElementId) {
-      summary.setRootElId(this._options.summary.containerElementId);
+    /*
+     * Summary screen setup
+     */
+
+    if (this.options.summary?.containerElementId) {
+      summary.setRootElId(this.options.summary.containerElementId);
     }
 
-    // Toolbar setup
-    if (this._options.toolbar) {
-      messages.trySendMessage('swag.toolbar.hide', '', true);
+    /*
+     * Toolbar setup
+     */
 
-      const toolbarOptions = this._options.toolbar === true 
+    // Use the toolbar if configured
+    if (this.options.toolbar) {
+      const toolbarOptions = this.options.toolbar === true 
         ? {} 
-        : this._options.toolbar;
+        : this.options.toolbar;
 
+      // custom root element
       if (toolbarOptions.containerElementId) {
         toolbar.setRootElId(toolbarOptions.containerElementId);
       }
 
-      (async () => {
-        toolbar.show({ 
-          ...toolbarOptions,
-          title: this._options.gameTitle || '',
-        });
-        
-        if (!this._options.gameTitle) {
-          const game = await data.getGame();
-          if (game && game.name) {
-            toolbar.showToolbar({
-              title: game.name,
-            });
-          }
-        }
-      })();
-    } else {
+      this.showToolbar();
+    } 
+    
+    // No toolbar enabled, tell website to show its own
+    else {
       messages.trySendMessage('swag.toolbar.show', '', true);
     }
   }
@@ -92,6 +89,17 @@ export default class SWAGAPI {
   // #region API Methods
 
   async startSession () {
+    /*
+     * Theme
+     */
+
+    const theme = this.getPlatformTheme();
+    if (theme === 'dark') document.body.classList.add('swag-theme--dark');
+
+    /*
+     * Session
+     */
+    
     const passedInToken = utils.parseUrlOptions('jwt') as string;
 
     // External token provided in the URL
@@ -111,33 +119,14 @@ export default class SWAGAPI {
       localStorage.removeItem('swag_token');
     }
 
-    // Theme
-    const theme = this.getPlatformTheme();
-    if (theme === 'dark') document.body.classList.add('swag-theme--dark');
-
     // Fetch the current user
     const entity = await data.getEntity();
 
-    // Ready
-    const ready = () => {
-      // eslint-disable-next-line no-console
-      console.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
-      utils.debug('session ready');
-      // this.emit(config.events.SESSION_READY, { session_ready: true });
-    };
+    /*
+     * Ready
+     */
 
-    // Wait for toolbar to be ready
-    if (this._options.toolbar) {
-      const interval = setInterval(() => {
-        const toolbarEl = document.getElementById(toolbar.getRootElId());
-        if (toolbarEl) {
-          clearInterval(interval);
-          ready();
-        }
-      }, 10);
-    } else {
-      ready();
-    }
+    utils.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
   }
 
   toggleFullScreen () {
@@ -158,13 +147,13 @@ export default class SWAGAPI {
 
   // #region Daily Game Methods
 
-  async startGame (day: string) {
+  async startDailyGame (day: string) {
     const result = await data.postDailyGameProgress(day, false);
     messages.trySendMessage('swag.dailyGameProgress.start', day, true);
     return result;
   }
 
-  async completeGame (day: string) {
+  async completeDailyGame (day: string) {
     const result = await data.postDailyGameProgress(day, true);
     messages.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;
@@ -219,6 +208,31 @@ export default class SWAGAPI {
 
 
   // #region Toolbar Management Methods
+
+  async showToolbar () {
+    const toolbarOptions = this.options.toolbar === true 
+      ? {} 
+      : this.options.toolbar;
+
+    // tell website to hide its toolbar if it has one
+    messages.trySendMessage('swag.toolbar.hide', '', true);
+
+    let title = this.options.gameTitle || '';
+    
+    if (!this.options.gameTitle) {
+      const game = await data.getGame();
+      if (game && game.name) title = game.name;
+    }
+
+    toolbar.show({ 
+      ...toolbarOptions,
+      title,
+    });
+  }
+
+  hideToolbar () {
+    toolbar.hide();
+  }
 
   setToolbarItems (items: ToolbarItem[]) {
     toolbar.setItems(items);

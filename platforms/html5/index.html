@@ -87,6 +87,8 @@
       <p>
         <button id='btnGameSplashScreen'>Splash Screen</button>
         <button id='btnGameSummaryScreen'>Summary Screen</button>
+        <button id='btnShowLoader'>Show Loader</button>
+        <button id='btnHideLoader'>Hide Loader</button>
       </p>
     </section>
     <section>
@@ -243,6 +245,12 @@
       };
 
       /* --- */
+
+      document.getElementById('btnShowLoader').onclick = 
+        () => api.showLoader();
+
+      document.getElementById('btnHideLoader').onclick = 
+        () => api.hideLoader();
 
       document.getElementById('btnGameSummaryScreen').onclick = 
         () => api.showSummaryScreen({

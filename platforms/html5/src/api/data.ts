@@ -216,7 +216,7 @@ const methods = Emitter({
         methods.getAPIData({
           method: methods.apiMethods[ 'getGame' ],
           params: {
-            game: session[ 'api_key' ],
+            game: session[ 'apiKey' ],
           }
         })
           .then(function (game: { name: string }) {
@@ -239,7 +239,7 @@ const methods = Emitter({
       methods.getAPIData({
         method: methods.apiMethods[ 'hasDailyScore' ],
         params: {
-          game: session[ 'api_key' ],
+          game: session[ 'apiKey' ],
           level_key: level_key
         }
       })
@@ -255,7 +255,7 @@ const methods = Emitter({
       methods.getAPIData({
         method: methods.apiMethods[ 'getScoreCategories' ],
         params: {
-          game: session[ 'api_key' ]
+          game: session[ 'apiKey' ]
         }
       })
         .then(function (categories: any) {
@@ -307,7 +307,7 @@ const methods = Emitter({
       methods.getAPIData({
         method: methods.apiMethods[ 'getDays' ],
         params: {
-          game: session[ 'api_key' ],
+          game: session[ 'apiKey' ],
           limit: dayLimit
         }
       })
@@ -321,7 +321,7 @@ const methods = Emitter({
   getScores: function (options: PostScoreOptions) {
     const { day, type, level_key, period, current_user, target_date, value_formatter, use_daily } = options;
     const clean = { day, type, level_key, period, current_user, target_date, value_formatter, use_daily };
-    const params = Object.assign({ game: session[ 'api_key' ] }, clean);
+    const params = Object.assign({ game: session[ 'apiKey' ] }, clean);
 
     const promise = new Promise<LeaderboardData[]>(function (resolve) {
       methods.getAPIData({
@@ -338,7 +338,7 @@ const methods = Emitter({
   getScoresContext: function (options: PostScoreOptions) {
     const { day, type, level_key, period, target_date, value_formatter } = options;
     const clean = { day, type, level_key, period, target_date, value_formatter };
-    const params = Object.assign({ game: session[ 'api_key' ] }, clean);
+    const params = Object.assign({ game: session[ 'apiKey' ] }, clean);
 
     const promise = new Promise<UserBestData>(function (resolve) {
       methods.getAPIData({
@@ -354,7 +354,7 @@ const methods = Emitter({
 
   postScore: function (level_key: string, value: string, options: PostScoreOptions) {
     const body: ScoreBodyData = {
-      game: session.api_key,
+      game: session.apiKey,
       level_key: level_key,
       value: value,
     };
@@ -373,7 +373,7 @@ const methods = Emitter({
 
   postDailyScore: function (day: string, level_key: string, value: string) {
     const body = {
-      game: session.api_key,
+      game: session.apiKey,
       day: day,
       level_key: level_key,
       value: value
@@ -394,7 +394,7 @@ const methods = Emitter({
   
   postDailyGameProgress: function (day: string, complete: boolean) {
     const body = {
-      game: session.api_key,
+      game: session.apiKey,
       day: day,
       complete: complete
     };
@@ -408,7 +408,7 @@ const methods = Emitter({
 
   getDailyGameProgress: function (month: string, year: string) {
     const clean = { month, year };
-    const params = Object.assign({ game: session[ 'api_key' ] }, clean);
+    const params = Object.assign({ game: session[ 'apiKey' ] }, clean);
 
     const promise = new Promise<DailyGameProgress[]>(function (resolve) {
       methods.getAPIData({
@@ -423,7 +423,7 @@ const methods = Emitter({
   },
 
   getDailyGameStreak: function () {
-    const params = { game: session[ 'api_key' ] };
+    const params = { game: session[ 'apiKey' ] };
 
     const promise = new Promise<DailyGameStreak>(function (resolve) {
       methods.getAPIData({
@@ -451,7 +451,7 @@ const methods = Emitter({
   },
 
   getGamePromoLinks: async function (limit: number = 1) {
-    const params = { game: session[ 'api_key' ], n: Number(limit) };
+    const params = { game: session[ 'apiKey' ], n: Number(limit) };
 
     const promise = new Promise<GamePromoLink[]>(function (resolve) {
       methods.getAPIData({
@@ -476,7 +476,7 @@ const methods = Emitter({
       methods.getAPIData({
         method: methods.apiMethods[ 'getAchievementCategories' ],
         params: {
-          game: session[ 'api_key' ]
+          game: session[ 'apiKey' ]
         }
       })
         .then(function (categories: any) {
@@ -491,7 +491,7 @@ const methods = Emitter({
       methods.getAPIData({
         method: methods.apiMethods[ 'getUserAchievements' ],
         params: {
-          game: session[ 'api_key' ]
+          game: session[ 'apiKey' ]
         }
       })
         .then(function (achievements: any) {
@@ -503,7 +503,7 @@ const methods = Emitter({
 
   postAchievement: function (achievement_key: string) {
     const body = {
-      game: session.api_key,
+      game: session.apiKey,
       achievement_key: achievement_key
     };
     const urlParamsString = methods.buildUrlParamString(body);
@@ -525,7 +525,7 @@ const methods = Emitter({
       methods.getAPIData({
         method: methods.apiMethods[ 'getUserDatastore' ],
         params: {
-          game: session[ 'api_key' ]
+          game: session[ 'apiKey' ]
         }
       })
         .then(function (data) {
@@ -537,7 +537,7 @@ const methods = Emitter({
 
   postDatastore: function (key: string, value: string) {
     const body = {
-      game: session.api_key,
+      game: session.apiKey,
       key: key,
       value: value
     };

@@ -4,6 +4,7 @@ import SummaryScreen from '@/components/features/summaryScreen/SummaryScreen';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import lottieStreak from '@/assets/lottie/streak.json';
 import lottieTime from '@/assets/lottie/time.json';
+import utils from '@/utils';
 
 class SummaryUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-summary-root';
@@ -27,8 +28,7 @@ class SummaryUI extends UserInterfaceAPI {
         const getEntity = await data.getEntity();
         return getEntity.isMember;
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error checking membership status:', e);
+        utils.warn('Error checking membership status:', e);
       }
     })());
 
@@ -37,8 +37,7 @@ class SummaryUI extends UserInterfaceAPI {
       try {
         return await data.isSubscriber();
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error checking subscription status:', e);
+        utils.warn('Error checking subscription status:', e);
       }
     })());
 
@@ -48,8 +47,7 @@ class SummaryUI extends UserInterfaceAPI {
         const currentDay = await data.getCurrentDay();
         return await data.hasPlayedDay(currentDay.day);
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error checking if game has been played today:', e);
+        utils.warn('Error checking if game has been played today:', e);
       }
     })());
 
@@ -59,8 +57,7 @@ class SummaryUI extends UserInterfaceAPI {
       try {
         gameStreak = await data.getDailyGameStreak();
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error fetching game streak:', e);
+        utils.warn('Error fetching game streak:', e);
       }
       return gameStreak;
     })());
@@ -70,8 +67,7 @@ class SummaryUI extends UserInterfaceAPI {
       try {
         return await data.getGamePromoLinks(6);
       } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Error fetching promo links:', e);
+        utils.warn('Error fetching promo links:', e);
       }
     })());
 

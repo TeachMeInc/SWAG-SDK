@@ -4,7 +4,6 @@ export enum ToolbarEventName {
   SET_ITEMS = 'swag.toolbar.setItems',
   UPDATE_ITEM = 'swag.toolbar.updateItem',
   REMOVE_ITEM = 'swag.toolbar.removeItem',
-  SHOW_TOOLBAR = 'swag.toolbar.showToolbar',
 }
 
 export interface ToolbarItem {

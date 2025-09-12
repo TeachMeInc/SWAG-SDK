@@ -72,14 +72,31 @@ const methods = {
     return new Date(parseInt(parts[ 0 ]), parseInt(parts[ 1 ]) - 1, parseInt(parts[ 2 ]));
   },
 
-  debug: function (message: string, data?: any) {
+  log: function (...args: any[]) {
+    args.unshift('[SWAG]');
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  },
+  
+  error: function (...args: any[]) {
+    args.unshift('[SWAG error]');
+    // eslint-disable-next-line no-console
+    console.error(...args);
+  },
+
+  warn: function (...args: any[]) {
     if (session.debug) {
+      args.unshift('[SWAG debug]');
       // eslint-disable-next-line no-console
-      console.log('[DEBUG] SWAG API', message);
-      if (data) {
-        // eslint-disable-next-line no-console
-        console.log(data);
-      }
+      console.warn(...args);
+    }
+  },
+
+  debug: function (...args: any[]) {
+    if (session.debug) {
+      args.unshift('[SWAG debug]');
+      // eslint-disable-next-line no-console
+      console.log(...args);
     }
   },
 

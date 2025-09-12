@@ -6,7 +6,7 @@ export interface Entity {
 }
 
 export interface Session {
-  api_key: string | null;
+  apiKey: string | null;
   uid: string | null;
   entity: Entity | null;
   theme: 'shockwave' | null;
@@ -17,7 +17,7 @@ export interface Session {
 }
 
 const session: Session = {
-  api_key: null,
+  apiKey: null,
   uid: null,
   entity: null,
   theme: null,

@@ -36,16 +36,6 @@ class ToolbarUI extends UserInterfaceAPI {
     />);
   }
 
-  showToolbar (options: {
-    title: string;
-  }) {
-    document.dispatchEvent(new CustomEvent(ToolbarEventName.SHOW_TOOLBAR, {
-      detail: {
-        title: options.title,
-      },
-    }));
-  }
-
   setItems (items: ToolbarItem[]) {
     document.dispatchEvent(new CustomEvent(ToolbarEventName.SET_ITEMS, {
       detail: {

@@ -1,5 +1,7 @@
 // #region Utility Functions
 
+import utils from '@/utils';
+
 function tryParse <T> (data: string): T | undefined {
   let parsed: MessagePayload;
 
@@ -45,8 +47,7 @@ class MessagesAPI {
     ignoreResponse: boolean = false
   ): Promise<MessagePayload> {
     if (!window.parent || window.parent === window) {
-      // eslint-disable-next-line no-console
-      console.warn(`Failed to send message for event ${eventName}. Reason: No parent window`);
+      utils.warn(`Failed to send message for event ${eventName}. Reason: No parent window`);
       return Promise.resolve({ eventName: 'noop', message: '' });
     }
 

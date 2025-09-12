@@ -23,6 +23,7 @@ export default class UserInterfaceAPI {
     const newRootEl = document.createElement('div');
     newRootEl.setAttribute('id', this.rootElId);
     newRootEl.classList.add(this.rootElClassName);
+    
     document.body.appendChild(newRootEl);
     
     return newRootEl;
@@ -38,9 +39,7 @@ export default class UserInterfaceAPI {
 
     if (debounce) {
       clearTimeout(this.timeout!);
-      this.timeout = setTimeout(() => {
-        doMount();
-      }, debounce);
+      this.timeout = setTimeout(doMount, debounce);
     } else {
       doMount();
     }
@@ -54,9 +53,12 @@ export default class UserInterfaceAPI {
 
   protected unmount () {
     clearTimeout(this.timeout!);
+
     render(null, this.getRootEl());
+
     const parent = this.getRootEl().parentElement;
     if (parent) parent.removeChild(this.getRootEl());
+
     this.onUnmount();
   }
 

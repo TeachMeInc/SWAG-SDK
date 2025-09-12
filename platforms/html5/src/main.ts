@@ -5,9 +5,10 @@ import 'virtual:svg-to-font.css';
 
 import config from '@/config';
 import SWAGAPI, { SWAGAPIOptions } from '@/SWAGAPI';
+import utils from '@/utils';
 
-// eslint-disable-next-line no-console
-console.log('SWAG HTML5 SDK ' + config.version);
+utils.log('HTML5 SDK v' + config.version);
+utils.log('For documentation, visit https://developers.shockwave.com/');
 
 class APIWrapper {
   getInstance (options: SWAGAPIOptions) {

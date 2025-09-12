@@ -1,87 +1,6 @@
-import { faBoltLightning, faBookmark, faCircleHalfStroke, faCircleQuestion, faClock, faExpand, faFlag, faGamepad, faGear, faHeart, faInfoCircle, faMagnifyingGlass, faMoon, faPause, faPencil, faPlay, faRankingStar, faStar, faStopwatch, faSun, faTrophy, faVolumeHigh, faVolumeLow, faVolumeOff, faVolumeXmark, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { faCircleQuestion as faCircleQuestionToggled } from '@fortawesome/free-regular-svg-icons';
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { ToolbarEventName, ToolbarItem, ToolbarState, ToolbarStateActionType, useToolbarState } from '@/components/features/toolbar/toolbarState';
-
-
-
-// #region Icons
-
-const faIcons: Record<string, IconDefinition> = {
-  faBoltLightning,
-  faBookmark,
-  faCircleHalfStroke,
-  faCircleQuestion,
-  faCircleQuestionToggled,
-  faClock,
-  faExpand,
-  faFlag,
-  faGamepad,
-  faGear,
-  faHeart,
-  faInfoCircle,
-  faMagnifyingGlass,
-  faMoon,
-  faPause,
-  faPencil,
-  faPlay,
-  faRankingStar,
-  faStar,
-  faStopwatch,
-  faSun,
-  faTrophy,
-  faVolumeXmark,
-  faVolumeOff,
-  faVolumeLow,
-  faVolumeHigh,
-};
-
-function FontAwesomeIcon (props: { icon: IconDefinition }) {
-  const icon = props.icon;
-
-  return (
-    <svg 
-      aria-hidden='true' 
-      focusable='false' 
-      data-prefix={icon.prefix}
-      data-icon={icon.iconName}
-      className={`svg-inline--fa fa-${icon.iconName}`} 
-      role='img' 
-      xmlns='http://www.w3.org/2000/svg' 
-      viewBox={`0 0 ${icon.icon[ 0 ]} ${icon.icon[ 1 ]}`}
-    >
-      <path 
-        fill='currentColor' 
-        d={icon.icon[ 4 ] as string}
-      />
-    </svg>
-  );
-}
-
-function SWAGIcon (props: { icon: string, toggled?: boolean }) {
-  const icon = props.icon;
-
-  return (
-    <i 
-      aria-hidden='true'
-      className={`swag-icon ${icon}-${props.toggled ? 'line' : 'fill'}`}
-    />
-  );
-}
-
-function Icon (props: { icon: string, toggled?: boolean }) {
-  if (props.icon.startsWith('fa')) {
-    return (
-      <FontAwesomeIcon icon={faIcons[ props.icon ]} />
-    );
-  } else {
-    return (
-      <SWAGIcon icon={props.icon} toggled={props.toggled} />
-    );
-  }
-}
-
-// #endregion
+import Icon from '@/components/ui/Icon';
 
 
 
@@ -192,19 +111,10 @@ export function Toolbar (props: ToolbarProps) {
     };
     document.addEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
 
-    // Show Toolbar
-    const showToolbarHandler = (evt: CustomEvent<{ title: string }>) => {
-      const title = evt.detail.title;
-      if (!title) throw new Error('Toolbar error: Missing title.');
-      setTitle(title);
-    };
-    document.addEventListener(ToolbarEventName.SHOW_TOOLBAR, showToolbarHandler as EventListener);
-
     return () => {
       document.removeEventListener(ToolbarEventName.SET_ITEMS, setItemsHandler as EventListener);
       document.removeEventListener(ToolbarEventName.UPDATE_ITEM, updateItemHandler as EventListener);
       document.removeEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
-      document.removeEventListener(ToolbarEventName.SHOW_TOOLBAR, showToolbarHandler as EventListener);
     };
   }, [ dispatchToolbarState ]);
 
@@ -219,7 +129,6 @@ export function Toolbar (props: ToolbarProps) {
 
     document.body.style.marginTop = `${height}px`;
   }, [ props.isInjected ]);
-
 
   /* 
    * Layout
