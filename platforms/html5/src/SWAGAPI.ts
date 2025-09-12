@@ -4,7 +4,7 @@ import session from '@/session';
 import utils from '@/utils';
 import messages from '@/api/messages';
 import summary from '@/api/summaryScreenUi';
-import data from '@/api/data';
+import data, { PostScoreOptions } from '@/api/data';
 import { loaderUi } from '@/api/loaderUi';
 import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
 import toolbar from '@/api/toolbarUi';
@@ -178,16 +178,55 @@ export default class SWAGAPI {
   // #endregion
 
 
+  
+  // #region Score Methods
 
-  // #region User Cloud Datastore Methods
+  getScoreCategories () {
+    return data.getScoreCategories();
+  }
 
-  // setUserData (key: string, value: string) {
-  //   return data.postDatastore(key, value);
-  // }
+  getDays (limit: number) {
+    return data.getDays(limit);
+  }
 
-  // getUserData () {
-  //   return data.getUserDatastore();
-  // }
+  getScores (options: PostScoreOptions) {
+    return data.getScores(options);
+  }
+
+  postScore (level_key: string, value: string, options: PostScoreOptions) {
+    return data.postScore(level_key, value, options)
+      .then(function () {
+        if(options && options.confirmation === true) {
+          alert(`Your score of ${value} has been submitted!`);
+        }
+      });
+  }
+
+  postDailyScore (day: string, level_key: string, value: string) {
+    return data.postDailyScore(day, level_key, value);
+  }
+
+  hasDailyScore (level_key: any) {
+    return data.hasDailyScore(level_key);
+  }
+
+  // #endregion
+
+
+
+  // #region Achievement Methods
+
+  getAchievementCategories () {
+    return data.getAchievementCategories();
+  }
+
+  postAchievement (achievement_key: string) {
+    return data.postAchievement(achievement_key);
+  }
+
+  getUserAchievements () {
+    return data.getUserAchievements();
+  }
 
   // #endregion
 
@@ -201,6 +240,25 @@ export default class SWAGAPI {
 
   isSubscriber () {
     return data.isSubscriber();
+  }
+
+  setUserData (key: string, value: string) {
+    return data.postDatastore(key, value);
+  }
+
+  getUserData () {
+    return data.getUserDatastore();
+  }
+
+  setLocalUserData (key: string, value: string | null) {
+    if (value === null) {
+      return localStorage.removeItem(`swag:userData:${key}`);
+    }
+    localStorage.setItem(`swag:userData:${key}`, value);
+  }
+
+  getLocalUserData (key: string) {
+    return localStorage.getItem(`swag:userData:${key}`);
   }
 
   // #endregion

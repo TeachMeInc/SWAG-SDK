@@ -102,7 +102,6 @@ const methods = Emitter({
     'getUserAchievements': '/v1/achievement/user',
     'getUserDatastore': '/v1/datastore/user',
     'getCurrentDay': '/v1/currentday',
-    'getTokenBalance': '/v1/tokenbalance',
     'postScore': '/v1/score',
     'postDailyScore': '/v1/dailyscore',
     'postAchievement': '/v1/achievement',
@@ -585,18 +584,6 @@ const methods = Emitter({
       })
         .then(function (result: any) {
           resolve(!!result.subscriber);
-        });
-    });
-    return promise;
-  },
-
-  getTokenBalance: function () {
-    const promise = new Promise(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getTokenBalance' ]
-      })
-        .then(function (result) {
-          resolve(result);
         });
     });
     return promise;
