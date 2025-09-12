@@ -1,0 +1,28 @@
+.swag-leaderboard-screen-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100svw;
+  height: 100svh;
+  z-index: 3;
+}
+
+.swag-leaderboard-screen {
+  width: 100%;
+  height: 100%;
+}
+
+.swag-leaderboard-screen-open {
+  overflow: hidden;
+}
+
+
+
+/*
+ * Theme
+ */
+
+.swag-leaderboard-screen {
+  color: yellow;
+  background: magenta;
+}

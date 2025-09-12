@@ -1,10 +1,21 @@
 @import 'variables.scss';
 
 // Preact Components
-@import '../components/features/Loader/loader.scss';
-@import '../components/features/SplashScreen/splashScreen.scss';
-@import '../components/features/SummaryScreen/summaryScreen.scss';
-@import '../components/features/Toolbar/toolbar.scss';
+@import '../components/features/JoinLeaderboard.scss';
+@import '../components/features/inviteFriendsScreen/InviteFriendsScreen.scss';
+@import '../components/features/leaderboardScreen/EntityName.scss';
+@import '../components/features/leaderboardScreen/LeaderboardScreen.scss';
+@import '../components/features/leaderboardScreen/LeaderboardTable.scss';
+@import '../components/features/loader/Loader.scss';
+@import '../components/features/splashScreen/SplashScreen.scss';
+@import '../components/features/summaryScreen/SummaryScreen.scss';
+@import '../components/features/toolbar/Toolbar.scss';
+@import '../components/ui/gameThemed/Button.scss';
+@import '../components/ui/gameThemed/gameThemedStyles.scss';
+@import '../components/ui/gameThemed/Header.scss';
+@import '../components/ui/gameThemed/IconButton.scss';
+@import '../components/ui/gameThemed/Select.scss';
+@import '../components/ui/gameThemed/TextInput.scss';
 
 body {
   position: relative;

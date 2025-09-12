@@ -28,7 +28,7 @@ export default function LottieComponent ({ animationData, className, width, heig
         autoResize: false
       }
     });
-  }, [ animationData ]);
+  });
 
   const renderLottieScript = useCallback(() => {
     const scriptElementExists = document.querySelector('script#lottie-js');
