@@ -5,8 +5,10 @@ class SplashScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-splashScreen-root';
   protected rootElClassName: string = 'swag-splashScreen-root';
 
-  async show () {
-    this.mount(<SplashScreen />);
+  async show (options: {
+    isBeta?: boolean
+  }) {
+    this.mount(<SplashScreen isBeta={options.isBeta} />);
   }
 
   protected onMount () {

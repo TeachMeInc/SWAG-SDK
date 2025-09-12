@@ -10,13 +10,14 @@ class SummaryScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-summaryScreen-root';
   protected rootElClassName: string = 'swag-summaryScreen-root';
 
-  async show (
-    stats: { key: string, value: string, lottie: object }[], 
-    contentHtml: string,
-    shareString: string,
-    onFavorite?: () => void,
-    onReplay?: () => void,
-    onClose?: () => void,
+  async show (options: {
+      stats: { key: string, value: string, lottie: object }[], 
+      contentHtml: string, 
+      shareString: string, 
+      onFavorite?: () => void,
+      onReplay?: () => void,
+      onClose?: () => void,
+    }
   ) {
     loaderUi.show(350);
 
@@ -85,7 +86,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
       GamePromoLink[]
     ];
 
-    stats.unshift(
+    options.stats.unshift(
       {
         key: 'Streak',
         value: String(gameStreak.streak).padStart(3, '0'),
@@ -94,27 +95,27 @@ class SummaryScreenUI extends UserInterfaceAPI {
     );
     
     // Add time stat if it exists
-    const timeStat = stats.find(stat => stat.key.toLowerCase() === 'time');
+    const timeStat = options.stats.find(stat => stat.key.toLowerCase() === 'time');
     if (timeStat) {
       timeStat.lottie = lottieTime;
     }
 
     this.mount(<SummaryScreen 
-      stats={stats} 
-      contentHtml={contentHtml}
+      stats={options.stats} 
+      contentHtml={options.contentHtml}
       promoLinks={(isMember && isSubscriber) ? promoLinks : promoLinks.slice(0, 4)}
-      shareString={shareString}
+      shareString={options.shareString}
       isMember={isMember}
       isSubscriber={isSubscriber}
       hasPlayedToday={hasPlayedToday}
       isInjected={this.isInjected}
-      onFavorite={onFavorite}
+      onFavorite={options.onFavorite}
       onReplay={() => {
         loaderUi.hide();
 
         this.unmount();
-        if (onReplay) onReplay();
-        if (onClose) onClose();
+        if (options.onReplay) options.onReplay();
+        if (options.onClose) options.onClose();
       }}
     />);
 

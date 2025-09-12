@@ -18,6 +18,7 @@ export interface SWAGAPIOptions {
   debug?: boolean;
   splashScreen?: true | {
     containerElementId?: string;
+    isBeta?: boolean;
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -123,7 +124,11 @@ export default class SWAGAPI {
 
     // Splash screen
     if (this.options.splashScreen) {
-      this.showSplashScreen();
+      this.showSplashScreen({
+        isBeta: typeof this.options.splashScreen === 'object' 
+          ? this.options.splashScreen.isBeta 
+          : false,
+      });
     }
 
     // Toolbar
@@ -350,8 +355,10 @@ export default class SWAGAPI {
 
   // #region UI
 
-  showSplashScreen () {
-    return splashScreenUi.show();
+  showSplashScreen (options: {
+    isBeta?: boolean,
+  }) {
+    return splashScreenUi.show(options);
   }
 
   showSummaryScreen (
@@ -364,14 +371,7 @@ export default class SWAGAPI {
       onClose?: () => void,
     }
   ) {
-    return summaryScreenUi.show(
-      options.stats, 
-      options.contentHtml,
-      options.shareString,
-      options?.onFavorite,
-      options?.onReplay,
-      options?.onClose,
-    );
+    return summaryScreenUi.show(options);
   }
 
   showLoader (debounce?: number) {
