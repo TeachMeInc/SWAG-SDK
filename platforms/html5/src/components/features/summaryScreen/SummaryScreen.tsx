@@ -20,10 +20,10 @@ function UpsellComponent (props: UpsellProps) {
   const { isMember, isSubscriber } = props;
 
   return (!isMember || !isSubscriber) ? (
-    <div className='swag-summary-screen__upsell'>
+    <div className='swag-summaryScreen__upsell'>
       <a 
         href={`https://shockwave.com${!isSubscriber ? '/unlimited' : '/account/login'}`}
-        className='swag-summary-screen__upsell-banner'
+        className='swag-summaryScreen__upsell-banner'
       >
         {
           (!isSubscriber && isMember) ? (
@@ -72,7 +72,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
   return (
     <button 
-      className='swag-summary-screen__btn'
+      className='swag-summaryScreen__btn'
       onClick={copyToClipboard}
     >
       <img src={shareIcon} alt='icon' aria-hidden />
@@ -98,7 +98,7 @@ function ReplayComponent (props: ReplayProps) {
 
   return (
     <button 
-      className='swag-summary-screen__btn --outline --noMarginTop'
+      className='swag-summaryScreen__btn --outline --noMarginTop'
       onClick={onReplay}
     >
       <img src={replayIcon} alt='icon' aria-hidden />
@@ -120,7 +120,7 @@ function FavoriteComponent (props: FavoriteProps) {
 
   return (
     <button 
-      className='swag-summary-screen__btn --outline --noMarginTop'
+      className='swag-summaryScreen__btn --outline --noMarginTop'
       onClick={onFavorite}
     >
       <img src={favoriteIcon} alt='icon' aria-hidden />
@@ -204,24 +204,24 @@ export default function SummaryScreen (props: SummaryProps) {
   };
   
   return (
-    <div className={`swag-summary-screen ${!props.isInjected ? 'swag-summary-screen__fullscreen' : 'swag-summary-screen__injected'}`}>
-      <div ref={contentRef} className={`swag-summary-screen__scroll-content ${isOverflow ? '--is-overflow' : ''}`} style={{ marginTop: session.toolbarHeight }}>
-        <div ref={contentRef} className='swag-summary-screen__content'>
+    <div className={`swag-summaryScreen ${!props.isInjected ? 'swag-summaryScreen__fullscreen' : 'swag-summaryScreen__injected'}`}>
+      <div ref={contentRef} className={`swag-summaryScreen__scroll-content ${isOverflow ? '--is-overflow' : ''}`} style={{ marginTop: session.toolbarHeight }}>
+        <div ref={contentRef} className='swag-summaryScreen__content'>
           <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
 
-          <div className='swag-summary-screen__stats'>
+          <div className='swag-summaryScreen__stats'>
             {
               props.stats.map(({ key, value, lottie }) => 
                 <LottieComponent 
                   key={key}
-                  className='swag-summary-screen__stat' 
+                  className='swag-summaryScreen__stat' 
                   animationData={utils.parseLottie(lottie, value)} 
                 />
               )
             }
           </div>
 
-          <div className={`swag-summary-screen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
+          <div className={`swag-summaryScreen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
             <ShareStatsComponent shareString={props.shareString} />
             {
               props.onReplay && (
@@ -247,7 +247,7 @@ export default function SummaryScreen (props: SummaryProps) {
           {
             props.promoLinks.length
               ? (
-                <div className='swag-summary-screen__promo-links-container'>
+                <div className='swag-summaryScreen__promo-links-container'>
                   {
                     props.promoLinks.map(({ icon_url, background_color, title, type }) => {
                       return type === 'archive' && (
@@ -266,7 +266,7 @@ export default function SummaryScreen (props: SummaryProps) {
           {
             props.promoLinks.length 
               ? (
-                <div className='swag-summary-screen__related-games'>
+                <div className='swag-summaryScreen__related-games'>
                   <p>More Games:</p>
                   <ul>
                     {
@@ -286,7 +286,7 @@ export default function SummaryScreen (props: SummaryProps) {
 
         {
           (isOverflow && showScrollIndicator) && (
-            <button type='button' className='swag-summary-screen__scroll-indicator' onClick={handleScrollToBottom}>
+            <button type='button' className='swag-summaryScreen__scroll-indicator' onClick={handleScrollToBottom}>
               <img src={caretIcon} alt='scroll down' />
             </button>
           )

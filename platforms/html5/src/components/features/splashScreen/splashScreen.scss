@@ -1,4 +1,4 @@
-.swag-splash-screen-root {
+.swag-splashScreen-root {
   position: fixed;
   top: 0;
   left: 0;
@@ -7,13 +7,118 @@
   z-index: 3;
 }
 
-.swag-splash-screen {
-  width: 100%;
-  height: 100%;
+.swag-splashScreen-open {
+  overflow: hidden;
 }
 
-.swag-splash-screen-open {
-  overflow: hidden;
+.swag-splashScreen {
+  font-family: var(--swag-ui-font-family);
+  padding-top: 11vh;
+}
+
+.swag-splashScreen__gameTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  figure {
+    height: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  img {
+    width: auto;
+    height: 100px;
+    animation: pop-wiggle 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) 1;
+  }
+
+  @keyframes pop-wiggle {
+    0% {
+      transform: scale(0.7) rotate(0deg);
+      opacity: 0.4;
+    }
+    30% {
+      transform: scale(1.15) rotate(-10deg);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(0.95) rotate(8deg);
+    }
+    70% {
+      transform: scale(1.05) rotate(-6deg);
+    }
+    85% {
+      transform: scale(1) rotate(3deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: bold;
+    font-family: var(--swag-title-font-family);
+    margin: 0;
+    animation: fade-in-title 0.1s ease;
+  }
+  
+  @keyframes fade-in-title {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    font-weight: lighter;
+    text-transform: uppercase;
+    margin: 0;
+    animation: fade-in-title 0.1s ease;
+  }
+}
+
+.swag-splashScreen__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  > button {
+    opacity: 0;
+    transform: scale(0.7);
+    animation: fade-zoom-in 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  }
+
+  // Staggered animation delays for up to 8 buttons
+  $button-count: 8;
+  $delay-step: 0.05s;
+  @for $i from 1 through $button-count {
+    > button:nth-child(#{$i}) {
+      animation-delay: 0.1s + (0.05s + ($i - 1) * $delay-step);
+    }
+  }
+
+  @keyframes fade-zoom-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.7);
+    }
+    80% {
+      opacity: 1;
+      transform: scale(1.08);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }
 
 
@@ -22,7 +127,3 @@
  * Theme
  */
 
-.swag-splash-screen {
-  color: yellow;
-  background: magenta;
-}

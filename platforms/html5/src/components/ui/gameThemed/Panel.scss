@@ -1,0 +1,47 @@
+.swag-gameThemed-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.swag-gameThemed-panel__content {
+  display: flex;
+  flex: 1;
+  padding: 1rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1;
+}
+
+.swag-gameThemed-panel__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+
+  + * {
+    padding-top: calc(60px + 1rem);
+  }
+}
+
+
+
+/* 
+ * Theme
+ */
+
+.swag-gameThemed-panel {
+  color: var(--swag-gameThemed-panel-font-color);
+}
+
+.swag-theme__dark {
+  .swag-gameThemed-panel {
+    background-color: var(--swag-gameThemed-panel-bg-color) !important;
+  }
+}

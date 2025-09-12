@@ -38,6 +38,8 @@ $breakpoints: (
   --swag-l-btn-border-color: #{$shockwaveOrange};
   --swag-l-panel-bg-color: #{$shockwaveWhite};
   --swag-l-panel-font-color: #{$shockwaveBlack};
+  --swag-l-gameThemed-panel-bg-color: transparent;
+  --swag-l-gameThemed-panel-font-color: #{$shockwaveWhite};
   --swag-l-toolbar-bg-color: #{$shockwaveWhite};
   --swag-l-toolbar-font-color: #{$shockwaveBlack};
   --swag-l-toolbar-border-color: #{$shockwaveLightGrey};
@@ -49,6 +51,8 @@ $breakpoints: (
   --swag-d-btn-border-color: #{$shockwaveWhite};
   --swag-d-panel-bg-color: #{$shockwaveBlack};
   --swag-d-panel-font-color: #{$shockwaveWhite};
+  --swag-l-gameThemed-panel-bg-color: #{$shockwaveBlack};
+  --swag-l-gameThemed-panel-font-color: #{$shockwaveWhite};
   --swag-d-toolbar-bg-color: #{$shockwaveBlack};
   --swag-d-toolbar-font-color: #{$shockwaveWhite};
   --swag-d-toolbar-border-color: #{$shockwaveDarkGrey};
@@ -60,6 +64,8 @@ $breakpoints: (
   --swag-btn-border-color: var(--swag-l-btn-border-color);
   --swag-panel-bg-color: var(--swag-l-panel-bg-color);
   --swag-panel-font-color: var(--swag-l-panel-font-color);
+  --swag-gameThemed-panel-bg-color: var(--swag-l-gameThemed-panel-bg-color);
+  --swag-gameThemed-panel-font-color: var(--swag-l-gameThemed-panel-font-color);
   --swag-toolbar-bg-color: var(--swag-l-toolbar-bg-color);
   --swag-toolbar-font-color: var(--swag-l-toolbar-font-color);
   --swag-toolbar-border-color: var(--swag-l-toolbar-border-color);
@@ -82,6 +88,8 @@ $breakpoints: (
   --swag-btn-border-color: var(--swag-d-btn-border-color);
   --swag-panel-bg-color: var(--swag-d-panel-bg-color);
   --swag-panel-font-color: var(--swag-d-panel-font-color);
+  --swag-gameThemed-panel-bg-color: var(--swag-d-gameThemed-panel-bg-color);
+  --swag-gameThemed-panel-font-color: var(--swag-d-gameThemed-panel-font-color);
   --swag-toolbar-bg-color: var(--swag-d-toolbar-bg-color);
   --swag-toolbar-font-color: var(--swag-d-toolbar-font-color);
   --swag-toolbar-border-color: var(--swag-d-toolbar-border-color);

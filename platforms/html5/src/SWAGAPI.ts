@@ -16,9 +16,8 @@ export interface SWAGAPIOptions {
   apiKey: string;
   gameTitle: string;
   debug?: boolean;
-  splashScreen?: {
+  splashScreen?: true | {
     containerElementId?: string;
-    showImmediately?: boolean;
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -49,13 +48,24 @@ export default class SWAGAPI {
     this.init();
   }
 
-  protected init () {
+  protected async init () {
     /* 
      * Session setup
      */
 
     session.apiKey = this.options.apiKey || null;
     session.debug = !!this.options.debug;
+    session.gameTitle = this.options.gameTitle || '';
+
+    /* 
+     * Splash screen setup
+     */
+
+    if (typeof this.options.splashScreen === 'object') {
+      if (this.options.splashScreen?.containerElementId) {
+        splashScreenUi.setRootElId(this.options.splashScreen.containerElementId);
+      }
+    }
 
     /*
      * Summary screen setup
@@ -80,7 +90,10 @@ export default class SWAGAPI {
         toolbarUi.setRootElId(toolbarOptions.containerElementId);
       }
 
-      this.showToolbar();
+      // no need to wait for game data if we have a title
+      if (this.options.gameTitle) {
+        this.showToolbar();
+      }
     } 
     
     // No toolbar enabled, tell website to show its own
@@ -95,14 +108,31 @@ export default class SWAGAPI {
 
   async startSession () {
     /*
-     * Theme
+     * Initial setup
      */
 
+    // Theme
     const theme = this.getPlatformTheme();
     if (theme === 'dark') document.body.classList.add('swag-theme--dark');
 
+    // Game info
+    const game = await this.getGame();
+    if (!this.options.gameTitle && game) {
+      session.gameTitle = game.name;
+    }
+
+    // Splash screen
+    if (this.options.splashScreen) {
+      this.showSplashScreen();
+    }
+
+    // Toolbar
+    if (this.options.toolbar && !this.options.gameTitle) {
+      this.showToolbar();
+    }
+
     /*
-     * Session
+     * User session
      */
     
     const passedInToken = utils.parseUrlOptions('jwt') as string;
@@ -144,6 +174,19 @@ export default class SWAGAPI {
 
   navigateToTitle (keyword: string) {
     return messagesApi.trySendMessage('swag.navigateToTitle', keyword);
+  }
+
+  // #endregion
+
+
+
+  // #region Game Methods
+
+  async getGame (): Promise<{ name: string }> {
+    if (session.game) return session.game;
+    const game = await dataApi.getGame();
+    session.game = game;
+    return game;
   }
 
   // #endregion
@@ -280,16 +323,8 @@ export default class SWAGAPI {
     // tell website to hide its toolbar if it has one
     messagesApi.trySendMessage('swag.toolbar.hide', '', true);
 
-    let title = this.options.gameTitle || '';
-    
-    if (!this.options.gameTitle) {
-      const game = await dataApi.getGame();
-      if (game && game.name) title = game.name;
-    }
-
     toolbarUi.show({ 
       ...toolbarOptions,
-      title,
     });
   }
 

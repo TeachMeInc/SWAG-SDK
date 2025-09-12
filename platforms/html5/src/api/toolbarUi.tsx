@@ -10,7 +10,6 @@ class ToolbarUI extends UserInterfaceAPI {
 
   async show (options: {
     onClickFullScreen?: () => void;
-    title?: string;
     titleIcon?: string;
     titleIconDark?: string;
     initialToolbarState?: ToolbarState;
@@ -27,7 +26,6 @@ class ToolbarUI extends UserInterfaceAPI {
 
     this.mount(<Toolbar
       date={utils.getDateString()}
-      title={options.title || ''}
       titleIcon={options.titleIcon}
       titleIconDark={options.titleIconDark}
       initialToolbarState={options.initialToolbarState}

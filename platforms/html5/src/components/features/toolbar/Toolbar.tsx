@@ -11,7 +11,6 @@ import session from '@/session';
 
 interface ToolbarProps {
   date: DateString;
-  title?: string;
   titleIcon?: string;
   titleIconDark?: string;
   initialToolbarState?: ToolbarState;
@@ -134,7 +133,7 @@ export function Toolbar (props: ToolbarProps) {
    */
 
   return (
-    <header className='swag-toolbar' ref={elRef} style={{ opacity: props.title ? 1 : 0 }}>
+    <header className='swag-toolbar' ref={elRef}>
       <div className='swag-toolbar__container'>
         <div className='swag-toolbar__container__inner'>
           <aside className='swag-toolbar__flex --pull-left'>
@@ -148,26 +147,26 @@ export function Toolbar (props: ToolbarProps) {
           <div className='swag-toolbar__flex'>
             <h1>
               {
-                (props.title && props.titleIcon)
+                props.titleIcon
                   ? (
                     <>
                       <img 
                         className='swag-toolbar__title-icon --hide-dark'
                         src={props.titleIcon} 
-                        alt={`${props.title} logo`} 
+                        alt={`${session.gameTitle} logo`} 
                         aria-hidden 
                       />
                       <img 
                         className='swag-toolbar__title-icon --hide-light'
                         src={props.titleIconDark || props.titleIcon} 
-                        alt={`${props.title} logo`} 
+                        alt={`${session.gameTitle} logo`} 
                         aria-hidden 
                       />
                     </>
                   )
                   : null
               }
-              {props.title || ''}
+              {session.gameTitle}
             </h1>
           </div>
           <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>

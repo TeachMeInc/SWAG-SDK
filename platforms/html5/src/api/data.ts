@@ -5,6 +5,7 @@ import session from '@/session';
 import utils from '@/utils';
 import config from '@/config';
 import { Entity } from '@/types/Entity';
+import { Game } from '@/types/Game';
 
 
 
@@ -156,11 +157,8 @@ class DataAPI {
 
   // #region Game Methods
 
-  async getGame (): Promise<{ name: string }> {
-    if (session.game) return session.game;
-    const game = await getJSON<{ name: string }>('/v1/game', { game: session.apiKey });
-    session.game = game;
-    return game;
+  async getGame (): Promise<Game> {
+    return await getJSON<Game>('/v1/game', { game: session.apiKey });
   }
 
   // #endregion

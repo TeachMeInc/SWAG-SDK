@@ -7,8 +7,8 @@ import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
 
 class SummaryScreenUI extends UserInterfaceAPI {
-  protected rootElId: string = 'swag-summary-screen-root';
-  protected rootElClassName: string = 'swag-summary-screen-root';
+  protected rootElId: string = 'swag-summaryScreen-root';
+  protected rootElClassName: string = 'swag-summaryScreen-root';
 
   async show (
     stats: { key: string, value: string, lottie: object }[], 
@@ -122,11 +122,11 @@ class SummaryScreenUI extends UserInterfaceAPI {
   }
 
   protected onMount () {
-    if (!this.isInjected) document.body.classList.add('swag-summary-screen-open');
+    if (!this.isInjected) document.body.classList.add('swag-summaryScreen-open');
   }
 
   protected onUnmount () {
-    document.body.classList.remove('swag-summary-screen-open');
+    document.body.classList.remove('swag-summaryScreen-open');
   }
 }
 
