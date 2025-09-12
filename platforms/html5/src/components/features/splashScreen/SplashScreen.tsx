@@ -4,10 +4,11 @@ import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
 import { useEffect, useState } from 'preact/hooks';
 
-// interface Props {
-// }
+interface Props {
+  isBeta?: boolean;
+}
 
-export default function SplashScreen () {
+export default function SplashScreen (props: Props) {
   const [ img, setImg ] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,7 +38,11 @@ export default function SplashScreen () {
                 <img src={img} alt={session.gameTitle} />
               </figure>
               <h1>{session.gameTitle}</h1>
-              <p>Beta</p>
+              {
+                props.isBeta ? (
+                  <p>Beta</p>
+                ) : null
+              }
             </div>
             <div className='swag-splashScreen__buttons'>
               <Button>Play</Button>
