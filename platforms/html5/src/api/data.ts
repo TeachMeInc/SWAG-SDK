@@ -1,9 +1,13 @@
 'use strict';
 
-import Emitter from 'component-emitter';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import config from '@/config';
 import session, { Entity } from '@/session';
 import utils from '@/utils';
+
+
+
+// #region Types
 
 export const LEADERBOARD_PERIOD = {
   daily: 'Daily',
@@ -34,10 +38,10 @@ export interface GameModeData {
 export interface UserBestData {
   dailyBest?: {
     value: string
-  },
+  }
   scorePosition?: {
     value: number | '-'
-  },
+  }
   totalScores?: {
     value: number | '-'
   }
@@ -81,151 +85,82 @@ interface ScoreBodyData {
   meta?: any;
 }
 
-const methods = Emitter({
-  events: {
-    DATA_EVENT: 'DATA_EVENT',
-    DATA_ERROR: 'DATA_ERROR',
-    USER_LOGIN: 'USER_LOGIN',
-    USER_LOGOUT: 'USER_LOGOUT'
-  },
-
-  apiMethods: {
-    'getEntity': '/v1/user',
-    'getGame': '/v1/game',
-    'getSubscriber': '/v1/subscriber',
-    'getScoreCategories': '/v1/score/categories',
-    'getDays': '/v1/days',
-    'getScores': '/v1/scores',
-    'getScoresContext': '/v1/scores/context',
-    'hasDailyScore': '/v1/scores/hasDailyScore',
-    'getAchievementCategories': '/v1/achievement/categories',
-    'getUserAchievements': '/v1/achievement/user',
-    'getUserDatastore': '/v1/datastore/user',
-    'getCurrentDay': '/v1/currentday',
-    'postScore': '/v1/score',
-    'postDailyScore': '/v1/dailyscore',
-    'postAchievement': '/v1/achievement',
-    'postDatastore': '/v1/datastore',
-    'getDailyGameProgress': '/v1/dailygameprogress',
-    'postDailyGameProgress': '/v1/dailygameprogress',
-    'getDailyGameStreak': '/v1/dailygamestreak',
-    'getGamePromoLinks': '/v1/promolinks',
-  },
-
-  
-
-  // #region API Methods
-
-  buildUrlParamString: function (params: any) {
-    return params && params instanceof Object
-      ? '?' + Object.keys(params).map(function (key) {
-        return key + '=' + utils.formatParam(params[ key ]);
-      }).join('&')
-      : '';
-  },
-
-  getAPIData: function <T = any> (options: { apiRoot?: any; params?: any; method: any; }): Promise<T> {
-    const promise = new Promise(function (resolve, reject) {
-      const xhr = new XMLHttpRequest();
-      const rootUrl = options.apiRoot || config.themes[ session.theme! ].apiRoot;
-      const params = methods.buildUrlParamString(options.params);
-      xhr.open('GET', encodeURI(rootUrl + options.method + params));
-      xhr.setRequestHeader('x-local-tz', utils.getTimeZone());
-      if (session.jwt) {
-        xhr.setRequestHeader('x-member-token', session.jwt);
-      } else {
-        xhr.withCredentials = true;
-      }
-      xhr.onload = function () {
-        const response = xhr.status === 200
-          ? JSON.parse(xhr.response)
-          : null;
-        if(response && !response.error) {
-          resolve(response);
-        } else {
-          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-          reject(response);
-        }
-      };
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 0) {
-          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-          reject();
-        }
-      };
-      xhr.onerror = function () {
-        // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-        reject();
-      };
-      xhr.send();
-    });
-    return promise as Promise<T>;
-  },
-
-  postAPIData: function (options: { apiRoot?: any; contentType?: string; method: any; body: any; params?: string; }) {
-    const promise = new Promise(function (resolve, reject) {
-      const xhr = new XMLHttpRequest();
-      const rootUrl = options.apiRoot || config.themes[ session.theme! ].apiRoot;
-      const contentType = options.contentType || 'application/json;charset=UTF-8';
-      xhr.open('POST', encodeURI(rootUrl + options.method), true);
-      xhr.setRequestHeader('Content-Type', contentType);
-      xhr.setRequestHeader('x-local-tz', utils.getTimeZone());
-      if (session.jwt) {
-        xhr.setRequestHeader('x-member-token', session.jwt);
-      } else {
-        xhr.withCredentials = true;
-      }
-      xhr.onload = function () {
-        const response = xhr.status === 200
-          ? JSON.parse(xhr.response)
-          : null;
-        if(response && !response.error) {
-          resolve(response);
-        } else {
-          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-          reject(response);
-        }
-      };
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 0) {
-          // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-          reject();
-        }
-      };
-      xhr.onerror = function () {
-        // methods.emit(methods.events.DATA_ERROR, config.events.API_COMMUNICATION_ERROR);
-        reject();
-      };
-      xhr.send(JSON.stringify(options.body));
-    });
-    return promise;
-  },
-
-  // #endregion
+// #endregion
 
 
+
+// #region Axios Setup
+
+let axiosInstance: AxiosInstance | null = null;
+
+function getAxios (): AxiosInstance {
+  if (axiosInstance) return axiosInstance;
+
+  const baseURL = config.themes[ session.theme || 'shockwave' ].apiRoot;
+  axiosInstance = axios.create({
+    baseURL,
+    withCredentials: !session.jwt, // only send cookies when we don't already have a token
+    timeout: 15000,
+  });
+
+  axiosInstance.interceptors.request.use((req) => {
+    // Always refresh baseURL in case theme changed at runtime
+    req.baseURL = config.themes[ session.theme || 'shockwave' ].apiRoot;
+    req.headers = req.headers || {};
+    (req.headers as Record<string, string>)[ 'x-local-tz' ] = utils.getTimeZone();
+    if (session.jwt) {
+      (req.headers as Record<string, string>)[ 'x-member-token' ] = session.jwt;
+      req.withCredentials = false; // no need for cookies if token present
+    } else {
+      req.withCredentials = true;
+    }
+    return req;
+  });
+
+  axiosInstance.interceptors.response.use(
+    (res) => res,
+    (error) => {
+      // Central error logging
+      utils.warn('API request failed', error?.response?.status, error?.message);
+      return Promise.reject(error);
+    }
+  );
+
+  return axiosInstance;
+}
+
+async function getJSON<T> (url: string, params?: Record<string, any>, configOverride?: AxiosRequestConfig): Promise<T> {
+  const client = getAxios();
+  const response = await client.get(url, { params, ...configOverride });
+  return response.data as T;
+}
+
+async function postJSON<T> (url: string, body?: any, configOverride?: AxiosRequestConfig): Promise<T> {
+  const client = getAxios();
+  const response = await client.post(url, body, configOverride);
+  return response.data as T;
+}
+
+// #endregion
+
+
+
+class DataAPI {
+  // events: {
+  //   DATA_EVENT: 'DATA_EVENT',
+  //   DATA_ERROR: 'DATA_ERROR',
+  //   USER_LOGIN: 'USER_LOGIN',
+  //   USER_LOGOUT: 'USER_LOGOUT'
+  // }
 
   // #region Game Methods
 
-  getGame: function () {
-    const promise = new Promise<{ name: string }>(function (resolve) {
-      if (session.game) {
-        resolve(session.game);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods[ 'getGame' ],
-          params: {
-            game: session[ 'apiKey' ],
-          }
-        })
-          .then(function (game: { name: string }) {
-            session.game = game;
-            resolve(game);
-          });
-      }
-    });
-    return promise;
-  },
+  async getGame (): Promise<{ name: string }> {
+    if (session.game) return session.game;
+    const game = await getJSON<{ name: string }>('/v1/game', { game: session.apiKey });
+    session.game = game;
+    return game;
+  }
 
   // #endregion
 
@@ -233,157 +168,73 @@ const methods = Emitter({
 
   // #region Score Methods
 
-  hasDailyScore: function (level_key: any) {
-    const promise = new Promise(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'hasDailyScore' ],
-        params: {
-          game: session[ 'apiKey' ],
-          level_key: level_key
-        }
-      })
-        .then(function (result: any) {
-          resolve(!!result.daily_score);
-        });
+  async hasDailyScore (level_key: any): Promise<boolean> {
+    const result = await getJSON<{ daily_score?: any }>('/v1/scores/hasDailyScore', {
+      game: session.apiKey,
+      level_key
     });
-    return promise;
-  },
+    return !!result.daily_score;
+  }
 
-  getScoreCategories: function () {
-    const promise = new Promise<GameModeData[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getScoreCategories' ],
-        params: {
-          game: session[ 'apiKey' ]
-        }
-      })
-        .then(function (categories: any) {
-          resolve(categories);
-        });
-    });
-    return promise;
-  },
+  async getScoreCategories (): Promise<GameModeData[]> {
+    return await getJSON<GameModeData[]>('/v1/score/categories', { game: session.apiKey });
+  }
 
-  getCurrentDay: function () {
+  async getCurrentDay () {
     const padDateDigit = function (number: string | number) {
       if (typeof number === 'number' && number <= 99) { number = ('000' + number).slice(-2); }
       return number;
     };
 
-    const promise = new Promise<{ day: string }>(function (resolve) {
-      const urlParams = utils.parseUrlParams();
-      if (urlParams.day && urlParams.month && urlParams.year) {
-        const yearPart = parseInt(urlParams.year, 10);
-        const dayParts = [
-          (yearPart > 2000 ? yearPart : 2000 + yearPart), // handle both 4 digit and 2 digit years
-          padDateDigit(parseInt (urlParams.month, 10)),
-          padDateDigit(parseInt (urlParams.day, 10))
-        ];
-        resolve({ day: dayParts.join('-') });
-      } 
-      else if (urlParams.date) {
-        const parts = urlParams.date.split('/');
-        parts[ 0 ] = (2000 + parseInt(parts[ 0 ], 10)).toString();
-        resolve({ day: parts.join('-') });
-      }
-      else {
-        methods.getAPIData<{ day: string }>({
-          method: methods.apiMethods[ 'getCurrentDay' ],
-          params: {}
-        })
-          .then(function (data) {
-            resolve(data);
-          });
-      }
-    });
+    const urlParams = utils.parseUrlParams();
 
-    return promise;
-  },
+    if (urlParams.day && urlParams.month && urlParams.year) {
+      const yearPart = parseInt(urlParams.year, 10);
+      const dayParts = [
+        (yearPart > 2000 ? yearPart : 2000 + yearPart), // handle both 4 digit and 2 digit years
+        padDateDigit(parseInt (urlParams.month, 10)),
+        padDateDigit(parseInt (urlParams.day, 10))
+      ];
+      return { day: dayParts.join('-') };
+    } 
 
-  getDays: function (limit?: number) {
-    const dayLimit = limit || 30;
-    const promise = new Promise<any[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getDays' ],
-        params: {
-          game: session[ 'apiKey' ],
-          limit: dayLimit
-        }
-      })
-        .then(function (days: any) {
-          resolve(days);
-        });
-    });
-    return promise;
-  },
-
-  getScores: function (options: PostScoreOptions) {
-    const { day, type, level_key, period, current_user, target_date, value_formatter, use_daily } = options;
-    const clean = { day, type, level_key, period, current_user, target_date, value_formatter, use_daily };
-    const params = Object.assign({ game: session[ 'apiKey' ] }, clean);
-
-    const promise = new Promise<LeaderboardData[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getScores' ],
-        params: params
-      })
-        .then(function (scores: any) {
-          resolve(scores);
-        });
-    });
-    return promise;
-  },
-
-  getScoresContext: function (options: PostScoreOptions) {
-    const { day, type, level_key, period, target_date, value_formatter } = options;
-    const clean = { day, type, level_key, period, target_date, value_formatter };
-    const params = Object.assign({ game: session[ 'apiKey' ] }, clean);
-
-    const promise = new Promise<UserBestData>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getScoresContext' ],
-        params: params
-      })
-        .then(function (scoresContext: any) {
-          resolve(scoresContext);
-        });
-    });
-    return promise;
-  },
-
-  postScore: function (level_key: string, value: string, options: PostScoreOptions) {
-    const body: ScoreBodyData = {
-      game: session.apiKey,
-      level_key: level_key,
-      value: value,
-    };
-
-    if(options && options.meta) {
-      body.meta = options.meta;
+    else if (urlParams.date) {
+      const parts = urlParams.date.split('/');
+      parts[ 0 ] = (2000 + parseInt(parts[ 0 ], 10)).toString();
+      return { day: parts.join('-') };
     }
 
-    const urlParamsString = methods.buildUrlParamString(body);
-    return methods.postAPIData({
-      method: methods.apiMethods[ 'postScore' ],
-      body: body,
-      params: urlParamsString,
-    });
-  },
+    else {
+      return await getJSON<{ day: string }>('/v1/currentday');
+    }
+  }
 
-  postDailyScore: function (day: string, level_key: string, value: string) {
-    const body = {
-      game: session.apiKey,
-      day: day,
-      level_key: level_key,
-      value: value
-    };
-    const urlParamsString = methods.buildUrlParamString(body);
-    return methods.postAPIData({
-      method: methods.apiMethods[ 'postDailyScore' ],
-      body: body,
-      params: urlParamsString
-    });
-  },
+  async getDays (limit: number = 30): Promise<any[]> {
+    return await getJSON<any[]>('/v1/days', { game: session.apiKey, limit });
+  }
+
+  async getScores (options: PostScoreOptions): Promise<LeaderboardData[]> {
+    const { day, type, level_key, period, current_user, target_date, value_formatter, use_daily } = options;
+    const params = { game: session.apiKey, day, type, level_key, period, current_user, target_date, value_formatter, use_daily };
+    return await getJSON<LeaderboardData[]>('/v1/scores', params);
+  }
+
+  async getScoresContext (options: PostScoreOptions): Promise<UserBestData> {
+    const { day, type, level_key, period, target_date, value_formatter } = options;
+    const params = { game: session.apiKey, day, type, level_key, period, target_date, value_formatter };
+    return await getJSON<UserBestData>('/v1/scores/context', params);
+  }
+
+  async postScore (level_key: string, value: string, options: PostScoreOptions) {
+    const body: ScoreBodyData = { game: session.apiKey, level_key, value };
+    if (options?.meta) body.meta = options.meta;
+    return await postJSON('/v1/score', body);
+  }
+
+  async postDailyScore (day: string, level_key: string, value: string) {
+    const body = { game: session.apiKey, day, level_key, value };
+    return await postJSON('/v1/dailyscore', body);
+  }
 
   // #endregion
 
@@ -391,55 +242,23 @@ const methods = Emitter({
 
   // #region Daily Game Methods
   
-  postDailyGameProgress: function (day: string, complete: boolean) {
-    const body = {
-      game: session.apiKey,
-      day: day,
-      complete: complete
-    };
-    const urlParamsString = methods.buildUrlParamString(body);
-    return methods.postAPIData({
-      method: methods.apiMethods[ 'postDailyGameProgress' ],
-      body: body,
-      params: urlParamsString
-    });
-  },
+  async postDailyGameProgress (day: string, complete: boolean) {
+    const body = { game: session.apiKey, day, complete };
+    return await postJSON('/v1/dailygameprogress', body);
+  }
 
-  getDailyGameProgress: function (month: string, year: string) {
-    const clean = { month, year };
-    const params = Object.assign({ game: session[ 'apiKey' ] }, clean);
+  async getDailyGameProgress (month: string, year: string): Promise<DailyGameProgress[]> {
+    return await getJSON<DailyGameProgress[]>('/v1/dailygameprogress', { game: session.apiKey, month, year });
+  }
 
-    const promise = new Promise<DailyGameProgress[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getDailyGameProgress' ],
-        params: params
-      })
-        .then(function (gameprogress: any) {
-          resolve(gameprogress);
-        });
-    });
-    return promise;
-  },
+  async getDailyGameStreak (): Promise<DailyGameStreak> {
+    return await getJSON<DailyGameStreak>('/v1/dailygamestreak', { game: session.apiKey });
+  }
 
-  getDailyGameStreak: function () {
-    const params = { game: session[ 'apiKey' ] };
-
-    const promise = new Promise<DailyGameStreak>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getDailyGameStreak' ],
-        params: params
-      })
-        .then(function (dailygamestreak: any) {
-          resolve(dailygamestreak);
-        });
-    });
-    return promise;
-  },
-
-  hasPlayedDay: async function (day: string) {
+  async hasPlayedDay (day: string): Promise<boolean> {
     const parts = day.split('-');
     const query = { year: parts[ 0 ], month: parts[ 1 ] };
-    const progress = await methods.getDailyGameProgress(query.month, query.year);
+    const progress = await this.getDailyGameProgress(query.month, query.year);
 
     const found = progress.find((item: DailyGameProgress) => item.day === day);
     if (found && found.state === 'complete') {
@@ -447,22 +266,11 @@ const methods = Emitter({
     }
 
     return false;
-  },
+  }
 
-  getGamePromoLinks: async function (limit: number = 1) {
-    const params = { game: session[ 'apiKey' ], n: Number(limit) };
-
-    const promise = new Promise<GamePromoLink[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getGamePromoLinks' ],
-        params: params
-      })
-        .then(function (gamepromolink: any) {
-          resolve(gamepromolink);
-        });
-    });
-    return promise;
-  },
+  async getGamePromoLinks (limit: number = 1): Promise<GamePromoLink[]> {
+    return await getJSON<GamePromoLink[]>('/v1/promolinks', { game: session.apiKey, n: Number(limit) });
+  }
   
   // #endregion
 
@@ -470,48 +278,18 @@ const methods = Emitter({
   
   // #region Achievement Methods
 
-  getAchievementCategories: function () {
-    const promise = new Promise<any[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getAchievementCategories' ],
-        params: {
-          game: session[ 'apiKey' ]
-        }
-      })
-        .then(function (categories: any) {
-          resolve(categories);
-        });
-    });
-    return promise;
-  },
+  async getAchievementCategories (): Promise<any[]> {
+    return await getJSON<any[]>('/v1/achievement/categories', { game: session.apiKey });
+  }
 
-  getUserAchievements: function () {
-    const promise = new Promise<any[]>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getUserAchievements' ],
-        params: {
-          game: session[ 'apiKey' ]
-        }
-      })
-        .then(function (achievements: any) {
-          resolve(achievements);
-        });
-    });
-    return promise;
-  },
+  async getUserAchievements (): Promise<any[]> {
+    return await getJSON<any[]>('/v1/achievement/user', { game: session.apiKey });
+  }
 
-  postAchievement: function (achievement_key: string) {
-    const body = {
-      game: session.apiKey,
-      achievement_key: achievement_key
-    };
-    const urlParamsString = methods.buildUrlParamString(body);
-    return methods.postAPIData({
-      method: methods.apiMethods[ 'postAchievement' ],
-      body: body,
-      params: urlParamsString
-    });
-  },
+  async postAchievement (achievement_key: string) {
+    const body = { game: session.apiKey, achievement_key };
+    return await postJSON('/v1/achievement', body);
+  }
 
   // #endregion
 
@@ -519,36 +297,14 @@ const methods = Emitter({
 
   // #region User Cloud Datastore
 
-  getUserDatastore: function () {
-    const promise = new Promise(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getUserDatastore' ],
-        params: {
-          game: session[ 'apiKey' ]
-        }
-      })
-        .then(function (data) {
-          resolve(data);
-        });
-    });
-    return promise;
-  },
+  async getUserDatastore () {
+    return await getJSON<any>('/v1/datastore/user', { game: session.apiKey });
+  }
 
-  postDatastore: function (key: string, value: string) {
-    const body = {
-      game: session.apiKey,
-      key: key,
-      value: value
-    };
-
-    const urlParamsString = methods.buildUrlParamString(body);
-
-    return methods.postAPIData({
-      method: methods.apiMethods[ 'postDatastore' ],
-      body: body,
-      params: urlParamsString
-    });
-  },
+  async postDatastore (key: string, value: string) {
+    const body = { game: session.apiKey, key, value };
+    return await postJSON('/v1/datastore', body);
+  }
 
   // #endregion
 
@@ -556,56 +312,33 @@ const methods = Emitter({
 
   // #region User Methods
 
-  getEntity: function () {
-    const promise = new Promise<Entity>(function (resolve) {
-      if (session.entity) {
-        resolve(session.entity);
-      } else {
-        methods.getAPIData({
-          method: methods.apiMethods[ 'getEntity' ]
-        })
-          .then(function (entity: Entity) {
-            session.entity = entity;
-            if (utils.getPlatform() === 'standalone') {
-              session.jwt = entity.token;
-              localStorage.setItem('swag_token', entity.token);
-            }
-            resolve(entity);
-          });
-      }
-    });
-    return promise;
-  },
+  async getEntity (): Promise<Entity> {
+    if (session.entity) return session.entity;
+    const entity = await getJSON<Entity>('/v1/user');
+    session.entity = entity;
+    if (utils.getPlatform() === 'standalone') {
+      session.jwt = entity.token;
+      localStorage.setItem('swag_token', entity.token);
+    }
+    return entity;
+  }
 
-  isSubscriber: function () {
-    const promise = new Promise<boolean>(function (resolve) {
-      methods.getAPIData({
-        method: methods.apiMethods[ 'getSubscriber' ]
-      })
-        .then(function (result: any) {
-          resolve(!!result.subscriber);
-        });
-    });
-    return promise;
-  },
+  async isSubscriber (): Promise<boolean> {
+    const result = await getJSON<{ subscriber?: boolean }>('/v1/subscriber');
+    return !!result.subscriber;
+  }
 
-  getCurrentUser: function () {
-    const provider = methods.getProvider();
-    const promise = new Promise(function (resolve, reject) {
-      methods.getAPIData({
-        apiRoot: provider.root,
-        method: provider.current
-      })
-        .then(function (result: any) {
-          if (result && !result.error) {
-            resolve(result);
-          } else {
-            reject();
-          }
-        });
-    });
-    return promise;
-  },
+  async getCurrentUser () {
+    const provider = this.getProvider();
+    const client = getAxios();
+    // override baseURL for provider root
+    const res = await client.get(provider.current, { baseURL: provider.root });
+    const result = res.data;
+    if (result && !result.error) {
+      return result;
+    }
+    throw new Error('Failed to fetch current user');
+  }
 
   // #endregion
 
@@ -613,11 +346,12 @@ const methods = Emitter({
 
   // #region Internal API
 
-  getProvider: function () {
-    return config.providers[ session.provider! ] || config.providers[ 'default' ];
-  },
+  private getProvider () {
+    return config.providers[ 'shockwave' ];
+  }
 
   // #endregion
-});
+}
 
-export default methods;
+const dataAPI = new DataAPI();
+export default dataAPI;

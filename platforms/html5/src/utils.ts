@@ -5,7 +5,7 @@ const methods = {
 
 
 
-  /* #region URL Methods */
+  // #region URL Methods 
 
   formatParam (param: string | string[]) {
     if (!Array.isArray(param)) {
@@ -51,11 +51,11 @@ const methods = {
     return new Date(year, month - 1, day);
   },
 
-  /* #endregion */
+  // #endregion 
 
 
 
-  /* #region Platform Methods */
+  // #region Platform Methods 
 
   getPlatform (): 'embed' | 'app' | 'standalone' {
     // @ts-ignore
@@ -95,11 +95,11 @@ const methods = {
     );
   },
 
-  /* #endregion */
+  // #endregion 
 
 
 
-  /* #region Lottie Methods */
+  // #region Lottie Methods 
 
   parseLottie (lottie: object, value: string | number): object {
     let stringifyLottie = '';
@@ -117,11 +117,11 @@ const methods = {
     }
   },
 
-  /* #endregion */
+  // #endregion 
 
 
 
-  /* #region Logging Methods */
+  // #region Logging Methods 
 
   log (...args: any[]) {
     // eslint-disable-next-line no-console
@@ -147,7 +147,7 @@ const methods = {
     }
   },
 
-  /* #endregion */
+  // #endregion 
 
 
 
