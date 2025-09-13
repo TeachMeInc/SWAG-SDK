@@ -31,9 +31,14 @@ export default function SplashScreen (props: Props) {
     };
   }, [ img ]);
 
+  const [ exiting, setExiting ] = useState(false);
+
   const onClickPlay = () => {
-    splashScreenUi.hide();
-    props.onClickPlay?.();
+    setExiting(true);
+    setTimeout(() => {
+      splashScreenUi.hide();
+      props.onClickPlay?.();
+    }, 400); // match animation duration
   };
 
   const onClickArchive = () => {
@@ -41,7 +46,6 @@ export default function SplashScreen (props: Props) {
   };
 
   const onClickInviteFriends = () => {
-    // splashScreenUi.hide();
     inviteFriendsScreenUi.show({
       onClickBack: () => {
         splashScreenUi.show({ ...props.showOptions });
@@ -50,7 +54,6 @@ export default function SplashScreen (props: Props) {
   };
 
   const onClickLeaderboard = () => {
-    // splashScreenUi.hide();
     leaderboardScreenUi.show({
       onClickBack: () => {
         splashScreenUi.show({ ...props.showOptions });
@@ -61,7 +64,7 @@ export default function SplashScreen (props: Props) {
   return (
     <Panel 
       bgColor={session.game?.hexColor}
-      className='swag-splashScreen'
+      className={`swag-splashScreen ${exiting ? 'swag-slide-out-down' : ''}`}
     >
       {
         img ? (
