@@ -33,6 +33,30 @@
   }
 }
 
+.swag-leaderboardScreen__tableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+  max-width: 330px;
+  margin: 1.25rem auto;
+
+  > div {
+    display: flex;
+    width: 100%;
+    gap: 0.65rem;
+
+    > span {
+      &.--fit {
+        flex: 1;
+        > * {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
 
 
 /*

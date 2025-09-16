@@ -1,0 +1,16 @@
+.swag-gameThemed-entityName {
+  text-align: center;
+  font-size: 12px;
+
+  strong {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .swag-icon {
+      margin-left: 0.25rem;
+    }
+  }
+}

@@ -4,6 +4,9 @@ import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
 import Header from '@/components/ui/gameThemed/Header';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
+import Button from '@/components/ui/gameThemed/Button';
+import JoinLeaderboard from '@/components/features/JoinLeaderboard';
+import InviteFriends from '@/components/features/inviteFriendsScreen/InviteFriends';
 
 interface Props {
   onClickBack?: () => void;
@@ -31,7 +34,26 @@ export default function InviteFriendsScreen (props: Props) {
         />
       }
     >
-      Invite Friends Screen
+      <div>
+        <Button>
+          Play Game
+        </Button>
+      </div>
+
+      <div>
+        <InviteFriends />
+      </div>
+
+      <div className='swag-gameThemed__qrCode'>
+        <strong>QR Code</strong>
+        <figure></figure>
+      </div>
+
+      <hr />
+
+      <div>
+        <JoinLeaderboard />
+      </div>
     </Panel>
   );
 }

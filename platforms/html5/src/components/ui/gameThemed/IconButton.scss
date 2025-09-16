@@ -1,0 +1,21 @@
+.swag-gameThemed-iconButton {
+  border-radius: 5px;
+  position: relative;
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  .swag-icon {
+    pointer-events: none;
+    color: $shockwaveBlack;
+    font-size: 20px;
+  }
+}

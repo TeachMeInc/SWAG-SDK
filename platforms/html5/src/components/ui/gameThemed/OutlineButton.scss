@@ -5,6 +5,10 @@
   font-size: 12px;
   font-weight: bold;
   cursor: pointer;
+
+  &:active {
+    transform: translateY(1px) !important;
+  }
 }
 
 

@@ -1,0 +1,26 @@
+.swag-gameThemed-select {
+  border-radius: 5px;
+  position: relative;
+
+  select {
+    padding: 0 0.5rem;
+    appearance: none;
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .swag-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: $shockwaveBlack;
+    font-size: 14px;
+  }
+}

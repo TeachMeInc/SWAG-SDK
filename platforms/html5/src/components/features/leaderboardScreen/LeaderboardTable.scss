@@ -1,0 +1,60 @@
+.swag-gameThemed-leaderboardTable {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate !important;
+  border: solid 1px magenta;
+  border-radius: 5px;
+  // height: 60px;
+
+  th, td {
+    font-size: 12px;
+    font-weight: normal;
+    height: 24px;
+    padding: 0 0.65rem;
+  }
+
+  tr {
+    &:first-child {
+      th {
+        &:first-child {
+          border-radius: 5px 0 0 0;
+        }
+        &:last-child {
+          border-radius: 0 5px 0 0;
+        }
+      }
+    }
+    &:last-child {
+      td {
+        &:first-child {
+          border-radius: 0 0 0 5px;
+        }
+        &:last-child {
+          border-radius: 0 0 5px 0;
+        }
+        &:only-child {
+          border-radius: 0 0 5px 5px !important;
+        }
+      }
+    }
+  }
+
+  thead {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 5px 5px 0 0;
+    
+    th {
+      text-align: left;
+      height: 34px;
+    }
+  }
+
+  tbody {
+    background: white;
+    border-radius: 0 0 5px 5px;
+  }
+}
+
+.swag-gameThemed-leaderboardTable__loader {
+  text-align: center;
+}

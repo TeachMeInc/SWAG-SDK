@@ -1,9 +1,9 @@
 import TextInput from '@/components/ui/gameThemed/TextInput';
 
-export default function JoinLeaderboard () {
+export default function InviteFriends () {
   return (
-    <div className='swag-gameThemed-joinLeaderboard'>
-      <p>Join Another Leaderboard:</p>
+    <div className='swag-gameThemed-inviteFriends'>
+      <p>Invite Your Friends:</p>
       <div>
         <TextInput />
       </div>
