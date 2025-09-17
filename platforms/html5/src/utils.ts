@@ -46,6 +46,14 @@ const methods = {
     return `${year}-${month}-${day}` as DateString;
   },
 
+  getDateStringFromDate (date: Date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}` as DateString;
+  },
+
   getDateFromDateString (dateStr: DateString) {
     const [ year, month, day ] = dateStr.split('-').map(Number);
     return new Date(year, month - 1, day);
@@ -99,7 +107,7 @@ const methods = {
 
 
 
-  // #region Lottie Methods 
+  // #region UI Methods 
 
   parseLottie (lottie: object, value: string | number): object {
     let stringifyLottie = '';

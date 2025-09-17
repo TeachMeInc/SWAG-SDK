@@ -70,6 +70,7 @@ export interface PostScoreOptions {
   use_daily?: boolean;
   confirmation?: boolean;
   meta?: any;
+  leaderboard?: string;
 }
 
 export interface GamePromoLink {
@@ -158,7 +159,16 @@ class DataAPI {
   // #region Game Methods
 
   async getGame (): Promise<Game> {
-    return await getJSON<Game>('/v1/game', { game: session.apiKey });
+    if (session.game) return session.game;
+    const game = await await getJSON<Game>('/v1/game', { game: session.apiKey });
+    // session.game = game; // TODO: when we have more info from the API
+    session.game = { 
+      ...game,
+      hex_color: '#FFA801',
+      icon_url: 'https://placecats.com/300/200',
+      keyword: 'mixagram'
+    };
+    return game;
   }
 
   // #endregion
@@ -213,8 +223,8 @@ class DataAPI {
   }
 
   async getScores (options: PostScoreOptions): Promise<LeaderboardData[]> {
-    const { day, type, level_key, period, current_user, target_date, value_formatter, use_daily } = options;
-    const params = { game: session.apiKey, day, type, level_key, period, current_user, target_date, value_formatter, use_daily };
+    const { day, type, level_key, period, current_user, target_date, value_formatter, use_daily, leaderboard } = options;
+    const params = { game: session.apiKey, day, type, level_key, period, current_user, target_date, value_formatter, use_daily, leaderboard };
     return await getJSON<LeaderboardData[]>('/v1/scores', params);
   }
 
@@ -233,6 +243,35 @@ class DataAPI {
   async postDailyScore (day: string, level_key: string, value: string) {
     const body = { game: session.apiKey, day, level_key, value };
     return await postJSON('/v1/dailyscore', body);
+  }
+
+  async getLeaderboardCodeStats (code: string) {
+    return await getJSON<any>('/v1/leaderboardcode/stats', { code });
+  }
+
+  async postLeaderboardCodeAllocate () {
+    const result = await postJSON<{ code: string }>('/v1/leaderboardcode/allocate', { game: session.apiKey });
+    if (session.entity) {
+      if (!session.entity.leaderboards) {
+        session.entity.leaderboards = [];
+      }
+      if (!session.entity?.leaderboards.includes(result.code)) {
+        session.entity.leaderboards.push(result.code);
+      }
+    }
+    return result;
+  }
+
+  async postUserLeaderboardName (leaderboard_name: string) {
+    return await postJSON('/v1/user/leaderboard/name', { leaderboard_name });
+  }
+
+  async postUserLeaderboardJoin (leaderboard: string) {
+    return await postJSON('/v1/user/leaderboard/join', { leaderboard });
+  }
+
+  async postUserLeaderboardLeave (leaderboard: string) {
+    return await postJSON('/v1/user/leaderboard/leave', { leaderboard });
   }
 
   // #endregion

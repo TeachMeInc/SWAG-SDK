@@ -189,16 +189,8 @@ export default class SWAGAPI {
 
   // #region Game Methods
 
-  async getGame (): Promise<{ name: string }> {
-    if (session.game) return session.game;
-    const game = await dataApi.getGame();
-    // session.game = game; // TODO: when we have more info from the API
-    session.game = { 
-      ...game,
-      hexColor: '#FFA801',
-      iconUrl: 'https://placecats.com/300/200',
-    };
-    return game;
+  getGame () {
+    return dataApi.getGame();
   }
 
   // #endregion

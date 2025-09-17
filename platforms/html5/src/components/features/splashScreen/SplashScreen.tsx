@@ -24,7 +24,7 @@ export default function SplashScreen (props: Props) {
     image.onload = () => {
       setImg(image.src);
     };
-    image.src = session.game!.iconUrl;
+    image.src = session.game!.icon_url;
 
     return () => {
       image.onload = null;
@@ -63,7 +63,7 @@ export default function SplashScreen (props: Props) {
 
   return (
     <Panel 
-      bgColor={session.game?.hexColor}
+      bgColor={session.game?.hex_color}
       className={`swag-splashScreen ${exiting ? 'swag-slide-out-down' : ''}`}
     >
       {

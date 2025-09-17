@@ -1,5 +1,6 @@
 export interface Game {
   name: string;
-  hexColor: string;
-  iconUrl: string;
+  hex_color: string;
+  icon_url: string;
+  keyword: string | string[];
 }

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
-import { ToolbarEventName, ToolbarItem, ToolbarState, ToolbarStateActionType, useToolbarState } from '@/components/features/toolbar/toolbarState';
+import { useEffect, useRef } from 'preact/hooks';
+import { ToolbarEventName, ToolbarItem, ToolbarState, useToolbarState } from '@/components/features/toolbar/toolbarState';
 import Icon from '@/components/ui/Icon';
 import { DateString } from '@/types/DateString';
 import utils from '@/utils';
@@ -76,7 +76,7 @@ export function Toolbar (props: ToolbarProps) {
       }
 
       dispatchToolbarState({
-        type: ToolbarStateActionType.SET_ITEMS,
+        type: ToolbarEventName.SET_ITEMS,
         payload: items,
       });
     };
@@ -89,7 +89,7 @@ export function Toolbar (props: ToolbarProps) {
       if (!item.id) throw new Error('Toolbar error: Missing ID');
 
       dispatchToolbarState({
-        type: ToolbarStateActionType.ADD_OR_UPDATE_ITEM,
+        type: ToolbarEventName.UPDATE_ITEM,
         payload: item,
       });
     };
@@ -101,7 +101,7 @@ export function Toolbar (props: ToolbarProps) {
       if (!id) throw new Error('Toolbar error: Missing ID.');
 
       dispatchToolbarState({
-        type: ToolbarStateActionType.REMOVE_ITEM,
+        type: ToolbarEventName.REMOVE_ITEM,
         payload: id,
       });
     };

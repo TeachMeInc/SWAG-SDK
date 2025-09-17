@@ -19,27 +19,23 @@ export interface ToolbarState {
   items: ToolbarItem[];
 }
 
-export interface ToolbarStateAction {
-  type: ToolbarStateActionType
-  payload: any
-}
-
-export enum ToolbarStateActionType {
-  SET_ITEMS,
-  ADD_OR_UPDATE_ITEM,
-  REMOVE_ITEM,
-}
+export type ToolbarStateAction =
+  | { type: ToolbarEventName.SET_ITEMS, payload: ToolbarItem[] }
+  | { type: ToolbarEventName.UPDATE_ITEM, payload: ToolbarItem }
+  | { type: ToolbarEventName.REMOVE_ITEM, payload: string }
 
 export function useToolbarState (initialState?: ToolbarState) {
   return useReducer<ToolbarState, ToolbarStateAction>((state, action) => {
     switch (action.type) {
-    case ToolbarStateActionType.SET_ITEMS: {
+
+    case ToolbarEventName.SET_ITEMS: {
       return {
         ...state,
-        items: action.payload as ToolbarItem[],
+        items: action.payload,
       };
     }
-    case ToolbarStateActionType.ADD_OR_UPDATE_ITEM: {
+
+    case ToolbarEventName.UPDATE_ITEM: {
       return {
         ...state,
         items: (
@@ -48,29 +44,32 @@ export function useToolbarState (initialState?: ToolbarState) {
               if (item.id === action.payload.id) {
                 return {
                   ...item,
-                  ...(action.payload as ToolbarItem),
+                  ...action.payload,
                 };
               }
               return item;
             })
             : [
               ...state.items,
-              action.payload as ToolbarItem,
+              action.payload,
             ]
         )
       };
     }
-    case ToolbarStateActionType.REMOVE_ITEM: {
+
+    case ToolbarEventName.REMOVE_ITEM: {
       return {
         ...state,
         items: state.items.filter(item => item.id !== (action.payload as string)),
       };
     }
+
     default: {
       return {
         ...state,
       };
     }
+    
     }
   }, initialState || { items: [] });
 }

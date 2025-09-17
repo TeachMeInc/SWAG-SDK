@@ -1,11 +1,18 @@
 import TextInput from '@/components/ui/gameThemed/TextInput';
 
-export default function InviteFriends () {
+interface Props {
+  value: string;
+}
+
+export default function InviteFriends (props: Props) {
   return (
     <div className='swag-gameThemed-inviteFriends'>
       <p>Invite Your Friends:</p>
       <div>
-        <TextInput />
+        <TextInput 
+          value={props.value} 
+          readOnly 
+        />
       </div>
     </div>
   );

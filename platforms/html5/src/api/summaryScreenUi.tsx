@@ -25,8 +25,8 @@ class SummaryScreenUI extends UserInterfaceAPI {
     // Fetch member status
     promises.push((async () => {
       try {
-        const getEntity = await dataApi.getEntity();
-        return getEntity.isMember;
+        const entity = await dataApi.getEntity();
+        return !!entity.member;
       } catch (e) {
         utils.warn('Error checking membership status:', e);
       }

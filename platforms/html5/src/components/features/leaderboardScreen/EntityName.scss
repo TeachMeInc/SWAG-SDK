@@ -12,5 +12,11 @@
     .swag-icon {
       margin-left: 0.25rem;
     }
+
+    &.--noName {
+      span {
+        opacity: 0.65;
+      }
+    }
   }
 }

@@ -54,11 +54,13 @@
     margin-bottom: 0.65rem;
   }
 
-  figure {
+  .swag-qrCode {
     width: 210px;
     height: 210px;
     margin: 0;
-    background: magenta;
+    border-radius: 5px;
+    overflow: hidden;
+    background: white;
 
     > img {
       width: 100%;

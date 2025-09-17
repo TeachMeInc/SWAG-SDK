@@ -2,25 +2,16 @@ import Icon from '@/components/ui/Icon';
 
 interface Props {
   name: string;
-  isGuest?: boolean;
 }
 
 export default function EntityName (props: Props) {
   return (
     <div className='swag-gameThemed-entityName'>
-      <div>Name</div>
-      {
-        props.isGuest ? (
-          <strong>
-            {props.name}
-          </strong>
-        ) : (
-          <strong>
-            {props.name}
-            <Icon icon='settings' />
-          </strong>
-        )
-      }
+      <div>Hello,</div>
+      <strong className={props.name ? '' : '--noName'}>
+        <span>{props.name || 'Pick a Name'}</span>
+        <Icon icon='settings' />
+      </strong>
     </div>
   );
 }
