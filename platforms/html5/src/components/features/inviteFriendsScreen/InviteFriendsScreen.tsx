@@ -8,11 +8,12 @@ import Button from '@/components/ui/gameThemed/Button';
 import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import InviteFriends from '@/components/features/inviteFriendsScreen/InviteFriends';
 import { QRCode } from '@/components/ui/QRCode';
-import utils from '@/utils';
+// import utils from '@/utils';
 
 interface Props {
   roomCode: string;
   onClickBack?: () => void;
+  onClickPlay?: () => void;
 }
 
 export default function InviteFriendsScreen (props: Props) {
@@ -25,27 +26,40 @@ export default function InviteFriendsScreen (props: Props) {
     const url = new URL(`https://shockwave.com/gamelanding/${keyword}`);
     url.searchParams.set('play', 'true');
     url.searchParams.set('leaderboard', props.roomCode);
-    url.searchParams.set('utm_platform', utils.getPlatform());
+    // url.searchParams.set('utm_source_platform', utils.getPlatform());
     // url.searchParams.set('utm_source', 'invite_friends_screen');
 
     return url.toString();
   })());
 
   // Animation state
-  const [ exiting, setExiting ] = useState(false);
+  const [ exitingRight, setExitingRight ] = useState(false);
+  const [ exitingDown, setExitingDown ] = useState(false);
 
   const handleBack = () => {
-    setExiting(true);
+    if (props.onClickBack) {
+      setExitingRight(true);
+    } else {
+      setExitingDown(true);
+    }
+    props.onClickBack?.();
     setTimeout(() => {
       inviteFriendsScreenUi.hide();
-      props.onClickBack?.();
+    }, 400); // match animation duration
+  };
+
+  const handleOnClickPlay = () => {
+    setExitingDown(true);
+    props.onClickPlay?.();
+    setTimeout(() => {
+      inviteFriendsScreenUi.hide();
     }, 400); // match animation duration
   };
 
   return (
     <Panel
       bgColor={session.game?.hex_color}
-      className={`swag-inviteFriendsScreen ${exiting ? 'swag-slide-out-right' : ''}`}
+      className={`swag-inviteFriendsScreen ${exitingRight ? 'swag-slide-out-right' : ''} ${exitingDown ? 'swag-slide-out-down' : ''}`}
       header={
         <Header
           title='Play With Friends'
@@ -54,7 +68,7 @@ export default function InviteFriendsScreen (props: Props) {
       }
     >
       <div>
-        <Button>
+        <Button onClick={handleOnClickPlay}>
           Play Game
         </Button>
       </div>

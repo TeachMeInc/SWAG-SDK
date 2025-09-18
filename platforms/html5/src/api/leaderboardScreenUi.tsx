@@ -8,6 +8,11 @@ import session from '@/session';
 class LeaderboardScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-leaderboardScreen-root';
   protected rootElClassName: string = 'swag-leaderboardScreen-root';
+  private levelKey: string = 'daily';
+
+  setLevelKey (levelKey: string) {
+    this.levelKey = levelKey;
+  }
 
   async show (options: {
     onClickBack?: () => void;
@@ -23,8 +28,9 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
     }
     if (roomCode) {
       leaderboardData = await dataApi.getScores({
-        level_key: 'daily',
+        level_key: this.levelKey,
         leaderboard: roomCode,
+        target_date: utils.getDateString(),
       });
     }
 
@@ -32,6 +38,7 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
 
     this.mount(
       <LeaderboardScreen
+        levelKey={this.levelKey}
         initialRoomCode={roomCode || null}
         initialLeaderboardData={leaderboardData}
         onClickBack={options.onClickBack}

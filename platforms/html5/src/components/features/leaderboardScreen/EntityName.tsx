@@ -1,16 +1,93 @@
+import TextInput from '@/components/ui/gameThemed/TextInput';
 import Icon from '@/components/ui/Icon';
+import session from '@/session';
+import utils from '@/utils';
+import { useRef, useState } from 'preact/hooks';
+import dataApi from '@/api/data';
 
-interface Props {
-  name: string;
-}
+export default function EntityName () {
+  const [ editing, setEditing ] = useState(false);
+  const [ name, setName ] = useState(session.entity!.leaderboard_name);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-export default function EntityName (props: Props) {
+  const finishEditing = async (newName?: string) => {
+    try {
+      newName = newName || containerRef.current?.querySelector('input')?.value || '';
+      if (!newName) {
+        cancelEditing();
+        return;
+      }
+      await dataApi.postUserLeaderboardName(newName);
+      session.entity!.leaderboard_name = newName;
+      setName(newName);
+      setEditing(false);
+    } catch (err) {
+      cancelEditing();
+      utils.error('Error updating leaderboard name', err);
+    }
+  };
+
+  const cancelEditing = () => {
+    setName(session.entity!.leaderboard_name);
+    setEditing(false);
+  };
+
+  const onClickBeginEditing = () => {
+    if (utils.getPlatform() !== 'app') {
+      const newName = prompt('Pick a Name', name || '') || '';
+      finishEditing(newName);
+      return;
+    }
+
+    setEditing(true);
+
+    const inputEl = containerRef.current?.querySelector('input');
+    if (inputEl) {
+      setTimeout(() => {
+        inputEl.focus();
+        inputEl.select();
+      }, 0);
+    }
+  };
+
+  const onClickFinishEditing = () => {
+    finishEditing();
+  };
+
+  const onClickCancelEditing = () => {
+    cancelEditing();
+  };
+
   return (
     <div className='swag-gameThemed-entityName'>
       <div>Hello,</div>
-      <strong className={props.name ? '' : '--noName'}>
-        <span>{props.name || 'Pick a Name'}</span>
-        <Icon icon='settings' />
+      <strong ref={containerRef} className={(name || editing) ? '' : '--noName'}>
+        <TextInput
+          value={name}
+          style={{ display: editing ? 'inline-block' : 'none' }}
+          button={(
+            <>
+              <Icon icon='settings'
+                onClick={onClickFinishEditing}
+              />
+              <Icon icon='settings'
+                onClick={onClickCancelEditing}
+              />
+            </>
+          )}
+        />
+        {
+          !editing ? (
+            <>
+              <span onClick={onClickBeginEditing}>
+                {name || 'Pick a Name'}
+              </span>
+              <Icon icon='settings'
+                onClick={onClickBeginEditing}
+              />
+            </>
+          ) : null
+        }
       </strong>
     </div>
   );

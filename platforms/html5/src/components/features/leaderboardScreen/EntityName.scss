@@ -9,8 +9,17 @@
     align-items: center;
     justify-content: center;
 
+    > span {
+      min-width: 1rem;
+    }
+
     .swag-icon {
+      cursor: pointer;
       margin-left: 0.25rem;
+
+      &:active {
+        transform: translateY(1px);
+      }
     }
 
     &.--noName {
@@ -18,5 +27,9 @@
         opacity: 0.65;
       }
     }
+  }
+
+  .swag-gameThemed-textInput {
+    width: 214px;
   }
 }

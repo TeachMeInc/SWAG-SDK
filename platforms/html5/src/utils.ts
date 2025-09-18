@@ -137,8 +137,10 @@ const methods = {
   },
 
   error (...args: any[]) {
-    // eslint-disable-next-line no-console
-    console.error('[SWAG error]', ...args);
+    if (session.debug) {
+      // eslint-disable-next-line no-console
+      console.error('[SWAG error]', ...args);
+    }
   },
 
   warn (...args: any[]) {

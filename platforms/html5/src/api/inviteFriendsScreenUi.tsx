@@ -1,7 +1,6 @@
 import InviteFriendsScreen from '@/components/features/inviteFriendsScreen/InviteFriendsScreen';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import dataApi from '@/api/data';
-import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
 
 class InviteFriendsScreenUI extends UserInterfaceAPI {
@@ -9,9 +8,11 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
   protected rootElClassName: string = 'swag-inviteFriendsScreen-root';
 
   async show (options: {
+    roomCode?: string;
     onClickBack?: () => void;
+    onClickPlay?: () => void;
   }) {
-    let roomCode = utils.parseUrlOptions('leaderboard') as string;
+    let roomCode = options.roomCode;
     if (!roomCode) {
       loaderUi.show(350);
       roomCode = (await dataApi.postLeaderboardCodeAllocate()).code;
@@ -27,6 +28,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
       <InviteFriendsScreen 
         roomCode={roomCode}
         onClickBack={options.onClickBack}
+        onClickPlay={options.onClickPlay}
       />
     );
   }

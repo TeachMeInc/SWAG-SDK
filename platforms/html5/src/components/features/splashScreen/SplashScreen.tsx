@@ -11,7 +11,6 @@ import { useEffect, useState } from 'preact/hooks';
 interface Props {
   isBeta?: boolean;
   onClickPlay?: () => void;
-  showOptions?: any;
 }
 
 export default function SplashScreen (props: Props) {
@@ -47,17 +46,17 @@ export default function SplashScreen (props: Props) {
 
   const onClickInviteFriends = () => {
     inviteFriendsScreenUi.show({
-      onClickBack: () => {
-        splashScreenUi.show({ ...props.showOptions });
+      onClickBack: () => {},
+      onClickPlay: () => {
+        splashScreenUi.hide();
+        props.onClickPlay?.();
       }
     });
   };
 
   const onClickLeaderboard = () => {
     leaderboardScreenUi.show({
-      onClickBack: () => {
-        splashScreenUi.show({ ...props.showOptions });
-      }
+      onClickBack: () => {}
     });
   };
 

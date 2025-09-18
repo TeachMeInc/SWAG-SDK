@@ -1,5 +1,6 @@
 .swag-gameThemed-textInput {
   border-radius: 5px;
+  position: relative;
 
   input {
     appearance: none;
@@ -9,5 +10,28 @@
     border-radius: 4px;
     width: 100%;
     height: 32px;
+  }
+}
+
+.swag-gameThemed-textInput__button {
+  color: magenta;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  padding-left: 1rem;
+  padding-right: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(90deg, transparent 0%, yellow 25%, yellow 100%);
+  border-radius: 0 5px 5px 0;
+
+  > .swag-icon {
+    cursor: pointer;
+
+    &:active {
+      transform: translateY(1px);
+    }
   }
 }

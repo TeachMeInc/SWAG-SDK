@@ -13,7 +13,6 @@ class SplashScreenUI extends UserInterfaceAPI {
       <SplashScreen 
         isBeta={options.isBeta} 
         onClickPlay={options.onClickPlay} 
-        showOptions={options}
       />
     );
   }

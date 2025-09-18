@@ -13,12 +13,15 @@ function formatDate (date: Date) {
   };
 
   if (isSameDate(date, today)) {
-    return 'Today';
+    return date.toLocaleDateString(
+      undefined, 
+      { month: 'long', day: 'numeric' }
+    ) + ' (Today)';
   }
 
   return date.toLocaleDateString(
     undefined, 
-    { month: 'short', day: 'numeric' }
+    { month: 'long', day: 'numeric' }
   );
 }
 
@@ -86,13 +89,15 @@ export interface LeaderboardScreenState {
   currentRoom: { key: string, label: string } | null;
   days: { key: DateString, label: string }[];
   currentDay: { key: DateString, label: string };
-  leaderboardData: any | null;
+  leaderboardData: LeaderboardData[] | null;
 }
 
 export type LeaderboardScreenStateAction =
   | { type: 'setUserDisplayName', payload: string }
   | { type: 'setCurrentRoom', payload: string }
   | { type: 'setCurrentDay', payload: DateString }
+  | { type: 'setLeaderboardData', payload: LeaderboardData[] | null }
+  | { type: 'leaveRoom', payload: string }
 
 export function useLeaderboardScreenState (initialState: LeaderboardScreenState) {
   return useReducer<LeaderboardScreenState, LeaderboardScreenStateAction>((state, action) => {
@@ -118,6 +123,20 @@ export function useLeaderboardScreenState (initialState: LeaderboardScreenState)
       return {
         ...state,
         currentDay: day || { key: action.payload, label: `Day: ${action.payload}` },
+      };
+    }
+
+    case 'leaveRoom': {
+      return {
+        ...state,
+        rooms: state.rooms.filter(r => r.key !== action.payload),
+        currentRoom: (state.currentRoom?.key === action.payload)
+          ? (
+            state.rooms.length > 1
+              ? state.rooms.find(r => r.key !== action.payload) || null
+              : null
+          )
+          : state.currentRoom,
       };
     }
 

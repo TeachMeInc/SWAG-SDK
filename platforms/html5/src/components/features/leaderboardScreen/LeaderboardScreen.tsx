@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import Header from '@/components/ui/gameThemed/Header';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
-import LeaderboardTable from '@/components/features/leaderboardScreen/LeaderboardTable';
+import LeaderboardTable, { LeaderboardTableEmpty, LeaderboardTableLoader } from '@/components/features/leaderboardScreen/LeaderboardTable';
 import EntityName from '@/components/features/leaderboardScreen/EntityName';
 import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import Select from '@/components/ui/gameThemed/Select';
 import IconButton from '@/components/ui/gameThemed/IconButton';
 import { makeDefaultState, useLeaderboardScreenState } from '@/components/features/leaderboardScreen/leaderboardScreenState';
 import { LeaderboardData } from '@/api/data';
+import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
+import splashScreenUi from '@/api/splashScreenUi';
+import dataApi from '@/api/data';
+import utils from '@/utils';
+import { DateString } from '@/types/DateString';
+import loaderUi from '@/api/loaderUi';
 
 interface Props {
   onClickBack?: () => void;
+  levelKey: string;
   initialRoomCode: string | null;
   initialLeaderboardData: LeaderboardData[] | null;
 }
@@ -28,8 +35,58 @@ export default function LeaderboardScreen (props: Props) {
     })
   );
 
-  useEffect(() => {
-  }, []);
+  const onClickLeaveLeaderboard = async () => {
+    try {
+      await dataApi.postUserLeaderboardLeave(state.currentRoom!.key);
+      session.entity!.leaderboards = session.entity!.leaderboards?.filter(r => r !== state.currentRoom!.key);
+      dispatch({ type: 'leaveRoom', payload: state.currentRoom!.key });
+    } catch (err: any) {
+      utils.error('Error leaving leaderboard room:', err.message || err);
+    }
+  };
+
+  const onClickShareLeaderboard = async () => {
+    inviteFriendsScreenUi.show({
+      roomCode: state.currentRoom?.key,
+      onClickBack: () => {},
+      onClickPlay: () => {
+        splashScreenUi.hide();
+        leaderboardScreenUi.hide();
+      }
+    });
+  };
+
+  const onChangeRoom = async (roomKey: string) => {
+    try {
+      loaderUi.show(350);
+      const leaderboardData = await dataApi.getScores({
+        level_key: props.levelKey,
+        leaderboard: roomKey,
+        target_date: state.currentDay.key,
+      });
+      loaderUi.hide();
+      dispatch({ type: 'setCurrentRoom', payload: roomKey });
+      dispatch({ type: 'setLeaderboardData', payload: leaderboardData });
+    } catch (err: any) {
+      utils.error('Error changing leaderboard room:', err);
+    }
+  };
+
+  const onChangeDay = async (day: string) => {
+    try {
+      loaderUi.show(350);
+      const leaderboardData = await dataApi.getScores({
+        level_key: props.levelKey,
+        leaderboard: state.currentRoom!.key,
+        target_date: day as DateString,
+      });
+      loaderUi.hide();
+      dispatch({ type: 'setCurrentDay', payload: day as DateString });
+      dispatch({ type: 'setLeaderboardData', payload: leaderboardData });
+    } catch (err: any) {
+      utils.error('Error changing leaderboard day:', err);
+    }
+  };
 
   // Animation state
   const [ exiting, setExiting ] = useState(false);
@@ -54,9 +111,7 @@ export default function LeaderboardScreen (props: Props) {
       }
     >
       <div>
-        <EntityName 
-          name={state.userDisplayName}
-        />
+        <EntityName />
       </div>
 
       <div className='swag-leaderboardScreen__tableContainer'>
@@ -64,16 +119,20 @@ export default function LeaderboardScreen (props: Props) {
           <span className='--fit'>
             <Select
               options={state.rooms}
+              value={state.currentRoom?.key}
+              onChange={onChangeRoom}
             />
           </span>
           <span>
             <IconButton 
               icon='settings' 
+              onClick={onClickLeaveLeaderboard}
             />
           </span>
           <span>
             <IconButton 
-              icon='settings' 
+              icon='settings'
+              onClick={onClickShareLeaderboard}
             />
           </span>
         </div>
@@ -81,12 +140,32 @@ export default function LeaderboardScreen (props: Props) {
           <span className='--fit'>
             <Select
               options={state.days}
+              value={state.currentDay.key}
+              onChange={onChangeDay}
             />
           </span>
         </div>
         <div>
           <span className='--fit'>
-            <LeaderboardTable />
+            <LeaderboardTable>
+              {
+                state.leaderboardData ? (
+                  state.leaderboardData.length ? (
+                    state.leaderboardData?.map((item, i) => (
+                      <tr key={i}>
+                        <td>{i + 1}</td>
+                        <td>{item.screen_name}</td>
+                        <td>{item.value}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <LeaderboardTableEmpty />
+                  )
+                ) : (
+                  <LeaderboardTableLoader />
+                )
+              }
+            </LeaderboardTable>
           </span>
         </div>
       </div>

@@ -12,12 +12,14 @@ import summaryScreenUi from '@/api/summaryScreenUi';
 import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
-import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
 
 export interface SWAGAPIOptions {
   apiKey: string;
   gameTitle: string;
   debug?: boolean;
+  leaderboardScreen?: {
+    levelKey?: string;
+  },
   splashScreen?: true | {
     containerElementId?: string;
     isBeta?: boolean;
@@ -61,6 +63,14 @@ export default class SWAGAPI {
     session.apiKey = this.options.apiKey || null;
     session.debug = !!this.options.debug;
     session.gameTitle = this.options.gameTitle || '';
+
+    /*
+     * Leaderboard screen setup
+     */
+
+    if (this.options.leaderboardScreen?.levelKey) {
+      leaderboardScreenUi.setLevelKey(this.options.leaderboardScreen.levelKey);
+    }
 
     /* 
      * Splash screen setup

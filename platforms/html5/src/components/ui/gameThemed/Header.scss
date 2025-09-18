@@ -26,6 +26,10 @@
   align-items: center;
   justify-content: center;
 
+  &:active {
+    transform: translateY(1px);
+  }
+
   .swag-icon {
     font-size: 1.25rem;
   }

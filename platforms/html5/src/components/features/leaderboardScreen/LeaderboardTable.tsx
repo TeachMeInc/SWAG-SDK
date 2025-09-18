@@ -1,5 +1,5 @@
 interface Props {
-
+  children?: preact.ComponentChildren;
 }
 
 export default function LeaderboardTable (props: Props) {
@@ -13,27 +13,28 @@ export default function LeaderboardTable (props: Props) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colSpan={3} className='swag-gameThemed-leaderboardTable__loader'>
-            Loading...
-          </td>
-        </tr>
-        {/* <tr>
-          <td>1</td>
-          <td>Player1</td>
-          <td>00:45</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>Player2</td>
-          <td>00:50</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>Player3</td>
-          <td>01:00</td>
-        </tr> */}
+        {props.children}
       </tbody>
     </table>
+  );
+}
+
+export function LeaderboardTableLoader () {
+  return (
+    <tr>
+      <td colSpan={3} className='swag-gameThemed-leaderboardTable__loader'>
+        Loading...
+      </td>
+    </tr>
+  );
+}
+
+export function LeaderboardTableEmpty () {
+  return (
+    <tr>
+      <td colSpan={3} className='swag-gameThemed-leaderboardTable__empty'>
+        No scores have been posted yet.
+      </td>
+    </tr>
   );
 }

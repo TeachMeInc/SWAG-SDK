@@ -34,7 +34,20 @@
     }
   }
 
+  @keyframes swag-slide-out-down {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
   animation: swag-slide-in-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &.swag-slide-out-down {
+    animation: swag-slide-out-down 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  }
 
   &.swag-slide-out-right {
     animation: swag-slide-out-right 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
