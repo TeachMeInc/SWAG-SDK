@@ -9,6 +9,7 @@ interface Props {
   onClick?: (evt: MouseEvent) => void;
   onReturn?: () => void;
   style?: preact.JSX.CSSProperties;
+  customClassName?: string;
 }
 
 export default function TextInput (props: Props) {
@@ -19,7 +20,7 @@ export default function TextInput (props: Props) {
   };
 
   return (
-    <div className='swag-gameThemed-input swag-gameThemed-textInput' style={props.style}>
+    <div className={props.customClassName || 'swag-gameThemed-input swag-gameThemed-textInput'} style={props.style}>
       <input 
         type='text' 
         value={props.value} 

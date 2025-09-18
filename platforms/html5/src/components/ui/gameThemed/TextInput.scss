@@ -10,11 +10,11 @@
     border-radius: 4px;
     width: 100%;
     height: 32px;
+    font-size: var(--swag-gameThemed-panel-font-size-sm);
   }
 }
 
 .swag-gameThemed-textInput__button {
-  color: magenta;
   position: absolute;
   top: 1px;
   right: 1px;
@@ -24,14 +24,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: linear-gradient(90deg, transparent 0%, yellow 25%, yellow 100%);
   border-radius: 0 5px 5px 0;
 
   > .swag-icon {
     cursor: pointer;
+    font-size: 1.25rem;
 
     &:active {
       transform: translateY(1px);
     }
   }
+}
+
+
+
+/*
+ * Theme
+ */
+
+.swag-gameThemed-textInput__button {
+  background-image: linear-gradient(90deg, transparent 0%, var(--swag-gameThemed-input-bg-color) 25%, var(--swag-gameThemed-input-bg-color) 100%);
 }

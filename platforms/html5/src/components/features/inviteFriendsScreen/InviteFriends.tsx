@@ -44,7 +44,7 @@ export default function InviteFriends (props: Props) {
           onFocus={() => onCopyToClipboard()}
           onClick={() => onCopyToClipboard()}
           button={(
-            <Icon icon='settings' onClick={() => onCopyToClipboard()} />
+            <Icon icon='copy' iconStyle='line' onClick={() => onCopyToClipboard()} />
           )}
         />
       </div>

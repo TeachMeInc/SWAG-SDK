@@ -196,7 +196,7 @@ export function Toolbar (props: ToolbarProps) {
                     item.icon 
                       ? (
                         <span className='swag-toolbar__icon'>
-                          <Icon icon={item.icon} toggled={item.toggled} />
+                          <Icon icon={item.icon} iconStyle={item.toggled ? 'line' : 'fill'} />
                         </span>
                       )
                       : null 

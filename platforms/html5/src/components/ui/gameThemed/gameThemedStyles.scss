@@ -1,4 +1,12 @@
+.swag-gameThemed-input {
+  box-sizing: border-box;
+  border: none;
+  appearance: none;
 
+  * {
+    appearance: none;
+  }
+}
 
 
 /* 
@@ -6,7 +14,7 @@
  */
 
 .swag-gameThemed-input {
-  border: 1px solid var(--Untyped-Text, #A4A4A4);
-  background: #FFF;
-  box-sizing: border-box;
+  color: var(--swag-gameThemed-input-font-color);
+  box-shadow: 0 0 0 1px var(--swag-gameThemed-input-border-color);
+  background: var(--swag-gameThemed-input-bg-color);
 }

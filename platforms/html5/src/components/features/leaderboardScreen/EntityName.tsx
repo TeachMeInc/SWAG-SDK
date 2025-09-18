@@ -21,9 +21,9 @@ export default function EntityName () {
       session.entity!.leaderboard_name = newName;
       setName(newName);
       setEditing(false);
-    } catch (err) {
+    } catch (err: any) {
       cancelEditing();
-      utils.error('Error updating leaderboard name', err);
+      utils.error('Error updating leaderboard name', err.message || err);
     }
   };
 
@@ -33,7 +33,7 @@ export default function EntityName () {
   };
 
   const onClickBeginEditing = () => {
-    if (utils.getPlatform() !== 'app') {
+    if (utils.getPlatform() === 'app') {
       const newName = prompt('Pick a Name', name || '') || '';
       finishEditing(newName);
       return;
@@ -65,12 +65,17 @@ export default function EntityName () {
         <TextInput
           value={name}
           style={{ display: editing ? 'inline-block' : 'none' }}
+          placeholder='Pick a Name'
           button={(
             <>
-              <Icon icon='settings'
+              <Icon 
+                icon='check'
+                iconStyle='line'
                 onClick={onClickFinishEditing}
               />
-              <Icon icon='settings'
+              <Icon 
+                icon='close'
+                iconStyle='line'
                 onClick={onClickCancelEditing}
               />
             </>
@@ -82,7 +87,7 @@ export default function EntityName () {
               <span onClick={onClickBeginEditing}>
                 {name || 'Pick a Name'}
               </span>
-              <Icon icon='settings'
+              <Icon icon='pencil'
                 onClick={onClickBeginEditing}
               />
             </>

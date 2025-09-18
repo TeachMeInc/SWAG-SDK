@@ -97,6 +97,7 @@ export type LeaderboardScreenStateAction =
   | { type: 'setCurrentRoom', payload: string }
   | { type: 'setCurrentDay', payload: DateString }
   | { type: 'setLeaderboardData', payload: LeaderboardData[] | null }
+  | { type: 'addRoom', payload: string }
   | { type: 'leaveRoom', payload: string }
 
 export function useLeaderboardScreenState (initialState: LeaderboardScreenState) {
@@ -123,6 +124,26 @@ export function useLeaderboardScreenState (initialState: LeaderboardScreenState)
       return {
         ...state,
         currentDay: day || { key: action.payload, label: `Day: ${action.payload}` },
+      };
+    }
+
+    case 'setLeaderboardData': {
+      return {
+        ...state,
+        leaderboardData: action.payload,
+      };
+    }
+
+    case 'addRoom': {
+      if (state.rooms.find(r => r.key === action.payload)) {
+        return state;
+      }
+      return {
+        ...state,
+        rooms: [
+          ...state.rooms,
+          { key: action.payload, label: `Room: ${action.payload}` },
+        ],
       };
     }
 

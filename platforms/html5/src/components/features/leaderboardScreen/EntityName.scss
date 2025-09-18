@@ -1,9 +1,9 @@
 .swag-gameThemed-entityName {
   text-align: center;
-  font-size: 12px;
+  font-size: var(--swag-gameThemed-panel-font-size-sm);
 
   strong {
-    font-size: 18px;
+    font-size: var(--swag-gameThemed-panel-font-size-md);
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -16,6 +16,7 @@
     .swag-icon {
       cursor: pointer;
       margin-left: 0.25rem;
+      font-size: 1.25rem;
 
       &:active {
         transform: translateY(1px);

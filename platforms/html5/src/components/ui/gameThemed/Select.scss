@@ -9,18 +9,18 @@
     height: 40px;
     background: transparent;
     border: none;
-    font-size: 18px;
+    font-size: var(--swag-gameThemed-panel-font-size-md);
     font-weight: bold;
     cursor: pointer;
   }
 
   .swag-icon {
     position: absolute;
-    right: 0.75rem;
+    right: 0.625rem;
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
     color: $shockwaveBlack;
-    font-size: 14px;
+    font-size: 1.5rem;
   }
 }

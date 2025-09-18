@@ -20,7 +20,7 @@ export default function Select (props: Props) {
           </option>
         ))}
       </select>
-      <Icon icon='back' />
+      <Icon icon='chevron-down' iconStyle='line' />
     </div>
   );
 }

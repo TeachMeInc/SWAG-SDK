@@ -2,12 +2,10 @@
   width: 100%;
   border-spacing: 0;
   border-collapse: separate !important;
-  border: solid 1px magenta;
   border-radius: 5px;
-  // height: 60px;
 
   th, td {
-    font-size: 12px;
+    font-size: var(--swag-gameThemed-panel-font-size-sm);
     font-weight: normal;
     height: 24px;
     padding: 0 0.65rem;
@@ -17,23 +15,23 @@
     &:first-child {
       th {
         &:first-child {
-          border-radius: 5px 0 0 0;
+          border-radius: 4px 0 0 0;
         }
         &:last-child {
-          border-radius: 0 5px 0 0;
+          border-radius: 0 4px 0 0;
         }
       }
     }
     &:last-child {
       td {
         &:first-child {
-          border-radius: 0 0 0 5px;
+          border-radius: 0 0 0 4px;
         }
         &:last-child {
-          border-radius: 0 0 5px 0;
+          border-radius: 0 0 4px 0;
         }
         &:only-child {
-          border-radius: 0 0 5px 5px !important;
+          border-radius: 0 0 4px 4px !important;
         }
       }
     }
@@ -41,7 +39,7 @@
 
   thead {
     background: rgba(255, 255, 255, 0.5);
-    border-radius: 5px 5px 0 0;
+    border-radius: 4px 4px 0 0;
     
     th {
       text-align: left;
@@ -50,8 +48,7 @@
   }
 
   tbody {
-    background: white;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 4px 4px;
   }
 }
 
@@ -59,4 +56,19 @@
 .swag-gameThemed-leaderboardTable__loader {
   text-align: center;
   font-style: italic;
+}
+
+
+
+/*
+ * Theme
+ */
+
+.swag-gameThemed-leaderboardTable {
+  color: var(--swag-gameThemed-input-font-color);
+  border: solid 1px var(--swag-gameThemed-input-border-color);
+
+  tbody {
+    background: var(--swag-gameThemed-input-bg-color);
+  }
 }

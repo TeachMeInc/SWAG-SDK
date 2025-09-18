@@ -56,19 +56,19 @@ export default function LeaderboardScreen (props: Props) {
     });
   };
 
-  const onChangeRoom = async (roomKey: string) => {
+  const onChangeRoom = async (roomCode: string) => {
     try {
       loaderUi.show(350);
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
-        leaderboard: roomKey,
+        leaderboard: roomCode,
         target_date: state.currentDay.key,
       });
       loaderUi.hide();
-      dispatch({ type: 'setCurrentRoom', payload: roomKey });
+      dispatch({ type: 'setCurrentRoom', payload: roomCode });
       dispatch({ type: 'setLeaderboardData', payload: leaderboardData });
     } catch (err: any) {
-      utils.error('Error changing leaderboard room:', err);
+      utils.error('Error changing leaderboard room:', err.message || err);
     }
   };
 
@@ -84,8 +84,13 @@ export default function LeaderboardScreen (props: Props) {
       dispatch({ type: 'setCurrentDay', payload: day as DateString });
       dispatch({ type: 'setLeaderboardData', payload: leaderboardData });
     } catch (err: any) {
-      utils.error('Error changing leaderboard day:', err);
+      utils.error('Error changing leaderboard day:', err.message || err);
     }
+  };
+
+  const onJoinedLeaderboard = (roomCode: string) => {
+    dispatch({ type: 'addRoom', payload: roomCode });
+    onChangeRoom(roomCode);
   };
 
   // Animation state
@@ -125,13 +130,16 @@ export default function LeaderboardScreen (props: Props) {
           </span>
           <span>
             <IconButton 
-              icon='settings' 
+              icon='delete'
+              iconStyle='line' 
               onClick={onClickLeaveLeaderboard}
+              delete
             />
           </span>
           <span>
             <IconButton 
-              icon='settings'
+              icon='share'
+              iconStyle='line' 
               onClick={onClickShareLeaderboard}
             />
           </span>
@@ -171,7 +179,9 @@ export default function LeaderboardScreen (props: Props) {
       </div>
 
       <div>
-        <JoinLeaderboard />
+        <JoinLeaderboard 
+          onJoined={onJoinedLeaderboard}
+        />
       </div>
     </Panel>
   );

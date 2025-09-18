@@ -1,3 +1,5 @@
+import utils from '@/utils';
+
 interface Props {
   bgColor?: string;
   header?: preact.ComponentChildren;
@@ -6,6 +8,8 @@ interface Props {
 }
 
 export default function Panel (props: Props) {
+  const theme = utils.getPlatformTheme();
+
   const className = [
     'swag-gameThemed-panel',
     props.className || '',
@@ -14,7 +18,7 @@ export default function Panel (props: Props) {
   return (
     <div 
       className={className}
-      style={{ backgroundColor: props.bgColor }}
+      style={theme === 'light' ? { backgroundColor: props.bgColor } : {}}
     >
       {
         props.header ? (

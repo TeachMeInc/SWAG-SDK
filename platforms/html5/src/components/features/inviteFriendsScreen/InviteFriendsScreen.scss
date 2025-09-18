@@ -13,7 +13,6 @@
     margin: 1rem auto;
     border: 0;
     height: 1px;
-    background: magenta;
   }
 
   @keyframes swag-slide-in-right {
@@ -63,7 +62,7 @@
   strong {
     display: block;
     font-weight: bold;
-    font-size: 18px;
+    font-size: var(--swag-gameThemed-panel-font-size-md);
     margin-bottom: 0.65rem;
   }
 
@@ -90,4 +89,8 @@
 
 .swag-inviteFriendsScreen {
   font-family: var(--swag-ui-font-family);
+
+  hr {
+    background: var(--swag-gameThemed-panel-font-color);
+  }
 }
