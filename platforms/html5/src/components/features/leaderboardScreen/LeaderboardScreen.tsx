@@ -57,6 +57,10 @@ export default function LeaderboardScreen (props: Props) {
   };
 
   const onChangeRoom = async (roomCode: string) => {
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('leaderboard', roomCode);
+    window.history.replaceState({}, '', newUrl.toString());
+
     try {
       loaderUi.show(350);
       const leaderboardData = await dataApi.getScores({

@@ -20,9 +20,11 @@ export default function JoinLeaderboard (props: Props) {
 
     try {
       await dataApi.postUserLeaderboardJoin(roomCode);
+
       if (session.entity!.leaderboards.indexOf(roomCode) === -1) {
         session.entity!.leaderboards.push(roomCode);
       }
+
       props.onJoined?.(roomCode);
     } catch (err: any) {
       utils.error('Error joining leaderboard room:', err.message || err);

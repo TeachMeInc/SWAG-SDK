@@ -8,6 +8,7 @@ import Button from '@/components/ui/gameThemed/Button';
 import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import InviteFriends from '@/components/features/inviteFriendsScreen/InviteFriends';
 import { QRCode } from '@/components/ui/QRCode';
+import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 // import utils from '@/utils';
 
 interface Props {
@@ -56,6 +57,19 @@ export default function InviteFriendsScreen (props: Props) {
     }, 400); // match animation duration
   };
 
+  const handleJoined = (roomCode: string) => {
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('leaderboard', roomCode);
+    window.history.replaceState({}, '', newUrl.toString());
+
+    leaderboardScreenUi.show({
+      onClickBack: () => {},
+    });
+    setTimeout(() => {
+      inviteFriendsScreenUi.hide();
+    }, 400); // match animation duration
+  };
+
   return (
     <Panel
       bgColor={session.game?.hex_color}
@@ -87,7 +101,9 @@ export default function InviteFriendsScreen (props: Props) {
       <hr />
 
       <div>
-        <JoinLeaderboard />
+        <JoinLeaderboard 
+          onJoined={handleJoined}
+        />
       </div>
     </Panel>
   );
