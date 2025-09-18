@@ -160,13 +160,12 @@ class DataAPI {
 
   async getGame (): Promise<Game> {
     if (session.game) return session.game;
-    const game = await await getJSON<Game>('/v1/game', { game: session.apiKey });
-    // session.game = game; // TODO: when we have more info from the API
-    session.game = { 
+    const game = await getJSON<Game>('/v1/game', { game: session.apiKey });
+    session.game = {
       ...game,
-      hex_color: '#FFA801',
-      icon_url: 'https://placecats.com/300/200',
-      keyword: 'mixagram'
+      shockwave_keyword: Array.isArray(game.shockwave_keyword)
+        ? game.shockwave_keyword[ 0 ]
+        : game.shockwave_keyword
     };
     return game;
   }

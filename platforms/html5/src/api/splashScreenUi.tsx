@@ -1,4 +1,6 @@
+import drupalApi from '@/api/drupal';
 import SplashScreen from '@/components/features/splashScreen/SplashScreen';
+import session from '@/session';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 
 class SplashScreenUI extends UserInterfaceAPI {
@@ -9,6 +11,8 @@ class SplashScreenUI extends UserInterfaceAPI {
     isBeta?: boolean,
     onClickPlay?: () => void,
   }) {
+    await drupalApi.getGame(session.game!.shockwave_keyword);
+
     this.mount(
       <SplashScreen 
         isBeta={options.isBeta} 

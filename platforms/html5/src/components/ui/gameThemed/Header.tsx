@@ -1,4 +1,4 @@
-import Icon from '@/components/ui/Icon';
+import backIcon from '@/assets/back-icon.svg';
 
 interface Props {
   title: preact.ComponentChildren;
@@ -14,7 +14,7 @@ export default function Header (props: Props) {
             className='swag-gameThemed-header__backButton' 
             onClick={props.onClickBack}
           >
-            <Icon icon='back' />
+            <img src={backIcon} alt='Back' width={40} height={40} />
           </div>
         ) : <div />
       }

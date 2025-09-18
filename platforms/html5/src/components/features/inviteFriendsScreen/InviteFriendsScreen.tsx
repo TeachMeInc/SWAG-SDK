@@ -20,9 +20,9 @@ interface Props {
 export default function InviteFriendsScreen (props: Props) {
   // Screen state
   const shareUrlRef = useRef((() => {
-    const keyword = Array.isArray(session.game?.keyword) 
-      ? session.game?.keyword[ 0 ] 
-      : session.game?.keyword;
+    const keyword = Array.isArray(session.game?.shockwave_keyword) 
+      ? session.game?.shockwave_keyword[ 0 ] 
+      : session.game?.shockwave_keyword;
 
     const url = new URL(`https://shockwave.com/gamelanding/${keyword}`);
     url.searchParams.set('play', 'true');
