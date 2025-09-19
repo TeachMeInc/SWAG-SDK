@@ -6,8 +6,10 @@ import shareIcon from '@/assets/share-icon.svg';
 import replayIcon from '@/assets/replay-icon.svg';
 import caretIcon from '@/assets/caret-icon.svg';
 import favoriteIcon from '@/assets/favorite-icon.svg';
+import trophyIcon from '@/assets/trophy-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
+import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
 
 // #region Shockwave Upsell
 
@@ -72,7 +74,7 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
   return (
     <button 
-      className='swag-summaryScreen__btn'
+      className='swag-summaryScreen__btn --fullWidth'
       onClick={copyToClipboard}
     >
       <img src={shareIcon} alt='icon' aria-hidden />
@@ -81,6 +83,26 @@ function ShareStatsComponent (props: ShareStatsProps) {
           ? <>Copied!</> 
           : <>Share with Friends</>
       }
+    </button>
+  );
+}
+
+// #endregion
+
+// #region Play With Friends Component
+
+function PlayWithFriendsComponent () {
+  const onClickInviteFriends = () => {
+    inviteFriendsScreenUi.show({});
+  };
+
+  return (
+    <button 
+      className='swag-summaryScreen__btn --fullWidth'
+      onClick={onClickInviteFriends}
+    >
+      <img src={trophyIcon} alt='icon' aria-hidden />
+      Challenge Your Friends
     </button>
   );
 }
@@ -202,9 +224,19 @@ export default function SummaryScreen (props: SummaryProps) {
       behavior: 'smooth'
     });
   };
+
+  const [ exiting, setExiting ] = useState(false);
+  const handleReplay = () => {
+    setExiting(true);
+    setTimeout(() => {
+      if (props.onReplay) props.onReplay();
+    }, 400);
+  };
   
   return (
-    <div className={`swag-summaryScreen ${!props.isInjected ? 'swag-summaryScreen__fullscreen' : 'swag-summaryScreen__injected'}`}>
+    <div
+      className={`swag-summaryScreen ${!props.isInjected ? 'swag-summaryScreen__fullscreen' : 'swag-summaryScreen__injected'} ${exiting ? 'swag-slide-out-down' : ''}`}
+    >
       <div ref={contentRef} className={`swag-summaryScreen__scroll-content ${isOverflow ? '--is-overflow' : ''}`} style={{ marginTop: session.toolbarHeight }}>
         <div ref={contentRef} className='swag-summaryScreen__content'>
           <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
@@ -216,6 +248,7 @@ export default function SummaryScreen (props: SummaryProps) {
                   key={key}
                   className='swag-summaryScreen__stat' 
                   animationData={utils.parseLottie(lottie, value)} 
+                  delay={300} // screen transition is 400ms
                 />
               )
             }
@@ -223,10 +256,11 @@ export default function SummaryScreen (props: SummaryProps) {
 
           <div className={`swag-summaryScreen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
             <ShareStatsComponent shareString={props.shareString} />
+            <PlayWithFriendsComponent />
             {
               props.onReplay && (
                 <ReplayComponent 
-                  onReplay={props.onReplay} 
+                  onReplay={handleReplay} 
                 />
               )
             }

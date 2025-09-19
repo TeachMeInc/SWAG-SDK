@@ -17,4 +17,9 @@
   color: var(--swag-gameThemed-input-font-color);
   box-shadow: 0 0 0 1px var(--swag-gameThemed-input-border-color);
   background: var(--swag-gameThemed-input-bg-color);
+  font-family: var(--swag-ui-font-family);
+
+  input, select, button, textarea {
+    font-family: var(--swag-ui-font-family);
+  }
 }

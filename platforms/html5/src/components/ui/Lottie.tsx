@@ -7,11 +7,13 @@ interface LottieProps {
   width?: number;
   height?: number;
   loop?: boolean;
+  delay?: number;
 }
 
-export default function LottieComponent ({ animationData, className, width, height, loop }: LottieProps) {
+export default function LottieComponent ({ animationData, className, width, height, loop, delay }: LottieProps) {
   const lottieCanvas = useRef<HTMLCanvasElement | null>(null);
   const lottieAnimation = useRef<DotLottie | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
     if (lottieAnimation.current) return;
@@ -20,7 +22,7 @@ export default function LottieComponent ({ animationData, className, width, heig
     assignLottieCanvas();
 
     lottieAnimation.current = new DotLottie({
-      autoplay: true,
+      autoplay: delay ? false : true,
       loop,
       canvas: lottieCanvas.current as HTMLCanvasElement,
       data: JSON.stringify(animationData),
@@ -28,6 +30,23 @@ export default function LottieComponent ({ animationData, className, width, heig
         autoResize: false
       }
     });
+
+    if (delay) {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        lottieAnimation.current?.play();
+      }, delay);
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      lottieAnimation.current?.destroy();
+      lottieAnimation.current = null;
+    };
   });
 
   const renderLottieScript = useCallback(() => {

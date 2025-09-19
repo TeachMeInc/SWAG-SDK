@@ -40,7 +40,7 @@ $breakpoints: (
   --swag-l-panel-bg-color: #{$shockwaveWhite};
   --swag-l-panel-font-color: #{$shockwaveBlack};
   --swag-l-gameThemed-panel-bg-color: transparent;
-  --swag-l-gameThemed-input-border-color: rgba(0,0,0,0.25);
+  --swag-l-gameThemed-input-border-color: rgba(25,25,25,0.25);
   --swag-l-toolbar-bg-color: #{$shockwaveWhite};
   --swag-l-toolbar-font-color: #{$shockwaveBlack};
   --swag-l-toolbar-border-color: #{$shockwaveLightGrey};
@@ -78,7 +78,7 @@ $breakpoints: (
   // Typography
   --swag-ui-font-family: 'Roboto', sans-serif;
   --swag-title-font-family: 'Roboto', sans-serif;
-  --swag-gameThemed-panel-font-size-sm: 14px;
+  --swag-gameThemed-panel-font-size-sm: 13px;
   --swag-gameThemed-panel-font-size-md: 18px;
 
   // Toolbar

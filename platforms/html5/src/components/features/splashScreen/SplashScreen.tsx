@@ -14,6 +14,7 @@ interface Props {
 }
 
 export default function SplashScreen (props: Props) {
+  // State
   const [ img, setImg ] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function SplashScreen (props: Props) {
     const image = new Image();
     image.onload = () => {
       setImg(image.src);
+      document.body.classList.remove('swag-splashScreen--open'); // show toolbar
     };
     image.src = session.game!.icon_url;
 
@@ -30,6 +32,7 @@ export default function SplashScreen (props: Props) {
     };
   }, [ img ]);
 
+  // Animation state
   const [ exiting, setExiting ] = useState(false);
 
   const onClickPlay = () => {
@@ -46,6 +49,7 @@ export default function SplashScreen (props: Props) {
 
   const onClickInviteFriends = () => {
     inviteFriendsScreenUi.show({
+      exitDown: true,
       onClickBack: () => {},
       onClickPlay: () => {
         splashScreenUi.hide();

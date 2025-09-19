@@ -6,6 +6,6 @@
   cursor: pointer;
 
   &:active {
-    transform: translateY(1px) !important;
+    transform: scale(1) translateY(1px) !important;
   }
 }

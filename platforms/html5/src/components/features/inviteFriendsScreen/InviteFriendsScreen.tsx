@@ -13,6 +13,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 
 interface Props {
   roomCode: string;
+  exitDown?: boolean;
   onClickBack?: () => void;
   onClickPlay?: () => void;
 }
@@ -38,11 +39,7 @@ export default function InviteFriendsScreen (props: Props) {
   const [ exitingDown, setExitingDown ] = useState(false);
 
   const handleBack = () => {
-    if (props.onClickBack) {
-      setExitingRight(true);
-    } else {
-      setExitingDown(true);
-    }
+    setExitingRight(true);
     props.onClickBack?.();
     setTimeout(() => {
       inviteFriendsScreenUi.hide();
@@ -50,7 +47,8 @@ export default function InviteFriendsScreen (props: Props) {
   };
 
   const handleOnClickPlay = () => {
-    setExitingDown(true);
+    if (props.exitDown) setExitingDown(true);
+    else setExitingRight(true);
     props.onClickPlay?.();
     setTimeout(() => {
       inviteFriendsScreenUi.hide();
@@ -83,7 +81,7 @@ export default function InviteFriendsScreen (props: Props) {
     >
       <div>
         <Button onClick={handleOnClickPlay}>
-          Play Game
+          {props.onClickPlay ? 'Play Game' : 'Close'}
         </Button>
       </div>
 

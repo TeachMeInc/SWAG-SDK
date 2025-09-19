@@ -24,7 +24,6 @@ export interface SWAGAPIOptions {
     containerElementId?: string;
     isBeta?: boolean;
     onClickPlay?: () => void;
-    onClose?: () => void;
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -133,13 +132,13 @@ export default class SWAGAPI {
 
     // Splash screen
     if (this.options.splashScreen) {
+      document.body.classList.add('swag-splashScreen--open'); // hide toolbar
+      const opts = typeof this.options.splashScreen === 'object' 
+        ? this.options.splashScreen 
+        : {};
       splashScreenUi.show({
-        isBeta: typeof this.options.splashScreen === 'object' 
-          ? this.options.splashScreen.isBeta 
-          : false,
-        onClickPlay: () => {
-          // TODO: passed in option
-        }
+        isBeta: opts.isBeta || false,
+        onClickPlay: opts.onClickPlay,
       });
     }
 

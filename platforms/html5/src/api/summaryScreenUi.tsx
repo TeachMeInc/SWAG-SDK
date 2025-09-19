@@ -110,9 +110,6 @@ class SummaryScreenUI extends UserInterfaceAPI {
       isInjected={this.isInjected}
       onFavorite={options.onFavorite}
       onReplay={() => {
-        loaderUi.hide();
-
-        this.unmount();
         if (options.onReplay) options.onReplay();
         if (options.onClose) options.onClose();
       }}

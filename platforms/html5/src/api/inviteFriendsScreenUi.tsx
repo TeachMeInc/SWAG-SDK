@@ -9,6 +9,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
 
   async show (options: {
     roomCode?: string;
+    exitDown?: boolean;
     onClickBack?: () => void;
     onClickPlay?: () => void;
   }) {
@@ -27,6 +28,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
     this.mount(
       <InviteFriendsScreen 
         roomCode={roomCode}
+        exitDown={options.exitDown}
         onClickBack={options.onClickBack}
         onClickPlay={options.onClickPlay}
       />

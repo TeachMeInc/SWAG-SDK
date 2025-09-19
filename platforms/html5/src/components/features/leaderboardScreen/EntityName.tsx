@@ -7,7 +7,7 @@ import dataApi from '@/api/data';
 
 export default function EntityName () {
   const [ editing, setEditing ] = useState(false);
-  const [ name, setName ] = useState(session.entity!.leaderboard_name);
+  const [ name, setName ] = useState(session.entity!.leaderboard_name || session.entity!.member?.shockwave.screen_name || '');
   const containerRef = useRef<HTMLDivElement>(null);
 
   const finishEditing = async (newName?: string) => {
@@ -63,6 +63,7 @@ export default function EntityName () {
       <div>Hello,</div>
       <strong ref={containerRef} className={(name || editing) ? '' : '--noName'}>
         <TextInput
+          customClassName='swag-gameThemed-entityName__textInput'
           value={name}
           style={{ display: editing ? 'inline-block' : 'none' }}
           placeholder='Pick a Name'

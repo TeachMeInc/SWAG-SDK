@@ -85,7 +85,6 @@
     <section>
       <h4>UI Methods</h4>
       <p>
-        <button id='btnGameSplashScreen'>Splash Screen</button>
         <button id='btnGameSummaryScreen'>Summary Screen</button>
         <button id='btnShowLoader'>Show Loader</button>
         <button id='btnHideLoader'>Hide Loader</button>
@@ -267,9 +266,6 @@
           onReplay: () => { alert('replay clicked'); },
           onClose: () => { alert('share screen closed'); }
       });
-
-      document.getElementById('btnGameSplashScreen').onclick = 
-        () => api.showSplashScreen();
 
       document.getElementById('btnToggleFullScreen').onclick = 
         () => api.toggleFullScreen();
