@@ -3,6 +3,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import preact from '@preact/preset-vite';
+import vitePluginSVGToFont from '@sumsolution/vite-plugin-svg-to-font';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,7 +16,14 @@ export default defineConfig({
     preact({
       reactAliasesEnabled: false,
     }),
+    vitePluginSVGToFont({
+      svgPath: resolve(__dirname, 'icons'),
+      fontName: 'swag-icon',
+    }),
   ],
-  base: 'https://content.shockwave.com/qa/swag-demo/',
-  // base: '/dist/',
+  build: {
+    outDir: './dist/qa/swag-demo/',
+    emptyOutDir: true,
+  },
+  base: '/qa/swag-demo/',
 });

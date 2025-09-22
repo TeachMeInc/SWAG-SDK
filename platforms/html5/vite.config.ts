@@ -35,8 +35,6 @@ export default defineConfig({
     port: process.env.PORT || 8888
   },
   build: {
-    // sourcemap: false,
-    // modulePreload: { polyfill: false },
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
       name: 'SWAGSDK',
@@ -44,9 +42,6 @@ export default defineConfig({
       formats: [ 'iife' ],
     },
     rollupOptions: {
-      // external: [
-      //   'source-map'
-      // ],
       output: {
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') return 'swag-api.css';
