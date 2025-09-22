@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import Header from '@/components/ui/gameThemed/Header';
 import Panel from '@/components/ui/gameThemed/Panel';

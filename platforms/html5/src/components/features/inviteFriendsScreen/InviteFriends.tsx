@@ -1,4 +1,3 @@
-import IconButton from '@/components/ui/gameThemed/IconButton';
 import TextInput from '@/components/ui/gameThemed/TextInput';
 import Icon from '@/components/ui/Icon';
 import { useRef, useState } from 'preact/hooks';

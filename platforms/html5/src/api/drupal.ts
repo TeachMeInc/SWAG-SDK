@@ -188,11 +188,11 @@ async function getJSON<T> (url: string, params?: Record<string, any>, configOver
   return response.data as T;
 }
 
-async function postJSON<T> (url: string, body?: any, configOverride?: AxiosRequestConfig): Promise<T> {
-  const client = getAxios();
-  const response = await client.post(url, body, configOverride);
-  return response.data as T;
-}
+// async function postJSON<T> (url: string, body?: any, configOverride?: AxiosRequestConfig): Promise<T> {
+//   const client = getAxios();
+//   const response = await client.post(url, body, configOverride);
+//   return response.data as T;
+// }
 
 // #endregion
 
