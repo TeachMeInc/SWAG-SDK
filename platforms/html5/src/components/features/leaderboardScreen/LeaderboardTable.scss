@@ -1,61 +1,119 @@
 .swag-gameThemed-leaderboardTable {
   width: 100%;
-  border-spacing: 0;
-  border-collapse: separate !important;
   border-radius: 5px;
+  position: relative;
 
-  th, td {
-    font-size: var(--swag-gameThemed-panel-font-size-sm);
-    font-weight: normal;
-    height: 24px;
-    padding: 0 0.65rem;
+  .swag-gameThemed-leaderboardTable__row {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    min-width: 100%;
+
+    > div {
+      font-size: var(--swag-gameThemed-panel-font-size-sm);
+      font-weight: normal;
+      padding: 0 0.65rem;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      white-space: nowrap;
+
+      &:first-child {
+        width: 10%;
+        max-width: 10%;
+        min-width: 10%;
+      }
+
+      &:last-child {
+        width: 30%;
+        max-width: 30%;
+        min-width: 30%;
+      }
+    }
   }
 
-  tr {
-    &:first-child {
-      th {
-        &:first-child {
-          border-radius: 4px 0 0 0;
-        }
-        &:last-child {
-          border-radius: 0 4px 0 0;
+  .swag-gameThemed-leaderboardTable__header {
+    > div {
+      &:first-child {
+        > div {
+          &:first-child {
+            border-radius: 4px 0 0 0;
+          }
+          &:last-child {
+            border-radius: 0 4px 0 0;
+          }
         }
       }
     }
-    &:last-child {
-      td {
-        &:first-child {
-          border-radius: 0 0 0 4px;
-        }
-        &:last-child {
-          border-radius: 0 0 4px 0;
-        }
-        &:only-child {
-          border-radius: 0 0 4px 4px !important;
+  }
+
+  .swag-gameThemed-leaderboardTable__body {
+    display: flex;
+    flex-direction: column;
+    height: 24px * 10; 
+    min-height: 24px * 10; 
+    max-height: 24px * 10; /* 10 rows visible */
+
+    > div {
+      &:last-child {
+        > div {
+          &:first-child {
+            border-radius: 0 0 0 4px;
+          }
+          &:last-child {
+            border-radius: 0 0 4px 0;
+          }
+          &:only-child {
+            border-radius: 0 0 4px 4px !important;
+          }
         }
       }
     }
   }
 
-  thead {
+  .swag-gameThemed-leaderboardTable__header {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px 4px 0 0;
     
-    th {
+    > div > div {
       text-align: left;
       height: 34px;
     }
   }
 
-  tbody {
+  .swag-gameThemed-leaderboardTable__body {
     border-radius: 0 0 4px 4px;
+    max-height: 24px * 10; /* 10 rows visible */
+    height: 24px * 10; /* 10 rows visible */
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    > div, > div > div {
+      height: 24px;
+      max-height: 24px;
+    }
   }
 }
 
 .swag-gameThemed-leaderboardTable__empty,
 .swag-gameThemed-leaderboardTable__loader {
   text-align: center;
-  font-style: italic;
+  height: 100% !important;
+  max-height: 100% !important;
+
+  > div {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    justify-content: center;
+    align-items: center;
+    white-space: normal !important;
+    line-height: 1.4;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+  }
 }
 
 
@@ -68,7 +126,7 @@
   color: var(--swag-gameThemed-input-font-color);
   border: solid 1px var(--swag-gameThemed-input-border-color);
 
-  tbody {
+  .swag-gameThemed-leaderboardTable__body {
     background: var(--swag-gameThemed-input-bg-color);
   }
 }

@@ -130,23 +130,6 @@ export default class SWAGAPI {
       session.gameTitle = game.name;
     }
 
-    // Splash screen
-    if (this.options.splashScreen) {
-      document.body.classList.add('swag-splashScreen--open'); // hide toolbar
-      const opts = typeof this.options.splashScreen === 'object' 
-        ? this.options.splashScreen 
-        : {};
-      splashScreenUi.show({
-        isBeta: opts.isBeta || false,
-        onClickPlay: opts.onClickPlay,
-      });
-    }
-
-    // Toolbar
-    if (this.options.toolbar) {
-      this.showToolbar();
-    }
-
     /*
      * User session
      */
@@ -172,6 +155,42 @@ export default class SWAGAPI {
 
     // Fetch the current user
     const entity = await dataApi.getEntity();
+
+    // Have the user join a leaderboard if the code is present in the URL
+    const roomCode = utils.parseUrlOptions('leaderboard') as string;
+    if (
+      roomCode && 
+      session.entity && 
+      !session.entity.leaderboards.includes(roomCode)
+    ) {
+      try {
+        await dataApi.postUserLeaderboardJoin(roomCode);
+        session.entity.leaderboards.push(roomCode);
+      } catch (e) {
+        utils.error('Error joining leaderboard with code', roomCode, e);
+      }
+    }
+
+    /*
+     * UI setup
+     */
+
+    // Splash screen
+    if (this.options.splashScreen) {
+      document.body.classList.add('swag-splashScreen--open'); // hide toolbar
+      const opts = typeof this.options.splashScreen === 'object' 
+        ? this.options.splashScreen 
+        : {};
+      splashScreenUi.show({
+        isBeta: opts.isBeta || false,
+        onClickPlay: opts.onClickPlay,
+      });
+    }
+
+    // Toolbar
+    if (this.options.toolbar) {
+      this.showToolbar();
+    }
 
     /*
      * Ready

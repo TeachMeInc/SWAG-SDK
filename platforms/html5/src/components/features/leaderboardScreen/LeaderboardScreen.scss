@@ -55,6 +55,11 @@
       }
     }
   }
+
+  > .--disabled {
+    opacity: 0.65;
+    pointer-events: none;
+  }
 }
 
 

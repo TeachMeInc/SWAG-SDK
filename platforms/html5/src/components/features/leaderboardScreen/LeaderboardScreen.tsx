@@ -3,7 +3,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import Header from '@/components/ui/gameThemed/Header';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
-import LeaderboardTable, { LeaderboardTableEmpty, LeaderboardTableLoader } from '@/components/features/leaderboardScreen/LeaderboardTable';
+import LeaderboardTable, { LeaderboardTableEmpty } from '@/components/features/leaderboardScreen/LeaderboardTable';
 import EntityName from '@/components/features/leaderboardScreen/EntityName';
 import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import Select from '@/components/ui/gameThemed/Select';
@@ -124,13 +124,21 @@ export default function LeaderboardScreen (props: Props) {
       </div>
 
       <div className='swag-leaderboardScreen__tableContainer'>
-        <div>
+        <div className={state.currentRoom ? '' : '--disabled'}>
           <span className='--fit'>
-            <Select
-              options={state.rooms}
-              value={state.currentRoom?.key}
-              onChange={onChangeRoom}
-            />
+            {
+              state.rooms.length ? (
+                <Select
+                  options={state.rooms}
+                  value={state.currentRoom?.key}
+                  onChange={onChangeRoom}
+                />
+              ) : (
+                <Select
+                  options={[ { key: '', label: 'No leaderboards' } ]}
+                />
+              )
+            }
           </span>
           <span>
             <IconButton 
@@ -148,7 +156,7 @@ export default function LeaderboardScreen (props: Props) {
             />
           </span>
         </div>
-        <div>
+        <div className={state.currentRoom ? '' : '--disabled'}>
           <span className='--fit'>
             <Select
               options={state.days}
@@ -171,10 +179,24 @@ export default function LeaderboardScreen (props: Props) {
                       </tr>
                     ))
                   ) : (
-                    <LeaderboardTableEmpty />
+                    <LeaderboardTableEmpty>
+                      No scores have been posted yet.
+                    </LeaderboardTableEmpty>
                   )
                 ) : (
-                  <LeaderboardTableLoader />
+                  <>
+                    {
+                      state.rooms.length ? (
+                        <LeaderboardTableEmpty>
+                          Loading scores...
+                        </LeaderboardTableEmpty>
+                      ) : (
+                        <LeaderboardTableEmpty>
+                          No Leaderboards found, join a leaderboard to start tracking scores and playing with friends!
+                        </LeaderboardTableEmpty>
+                      )
+                    }
+                  </>
                 )
               }
             </LeaderboardTable>

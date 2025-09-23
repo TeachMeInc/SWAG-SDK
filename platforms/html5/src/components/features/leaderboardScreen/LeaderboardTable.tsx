@@ -4,37 +4,27 @@ interface Props {
 
 export default function LeaderboardTable (props: Props) {
   return (
-    <table className='swag-gameThemed-leaderboardTable'>
-      <thead>
-        <tr>
-          <th>Pos</th>
-          <th>Name</th>
-          <th>Time</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div className='swag-gameThemed-leaderboardTable'>
+      <div className='swag-gameThemed-leaderboardTable__header'>
+        <div className='swag-gameThemed-leaderboardTable__row'>
+          <div>Pos</div>
+          <div>Name</div>
+          <div>Time</div>
+        </div>
+      </div>
+      <div className='swag-gameThemed-leaderboardTable__body'>
         {props.children}
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 }
 
-export function LeaderboardTableLoader () {
+export function LeaderboardTableEmpty (props: { children?: preact.ComponentChildren }) {
   return (
-    <tr>
-      <td colSpan={3} className='swag-gameThemed-leaderboardTable__loader'>
-        Loading...
-      </td>
-    </tr>
-  );
-}
-
-export function LeaderboardTableEmpty () {
-  return (
-    <tr>
-      <td colSpan={3} className='swag-gameThemed-leaderboardTable__empty'>
-        No scores have been posted yet.
-      </td>
-    </tr>
+    <div className='swag-gameThemed-leaderboardTable__row swag-gameThemed-leaderboardTable__empty'>
+      <div>
+        {props.children}
+      </div>
+    </div>
   );
 }
