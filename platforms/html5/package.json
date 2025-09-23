@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build && node scripts/fix-icon-paths.js",
     "build-staging": "tsc && vite build --mode staging && node scripts/fix-icon-paths.js",
-    "build-demo": "tsc && vite build --config vite.config.demo.ts",
+    "build-demo": "tsc && vite build --config vite.config.demo.ts && node scripts/fix-icon-paths.demo.js",
     "build-types": "tsc && vite build --config vite.config.types.ts",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
