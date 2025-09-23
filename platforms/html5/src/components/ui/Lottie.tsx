@@ -1,5 +1,6 @@
 import { DotLottie } from '@lottiefiles/dotlottie-web';
-import { useRef, useEffect, useCallback } from 'preact/hooks';
+import { useRef, useEffect } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 
 interface LottieProps {
   animationData: object;
@@ -11,20 +12,32 @@ interface LottieProps {
 }
 
 export default function LottieComponent ({ animationData, className, width, height, loop, delay }: LottieProps) {
-  const lottieCanvas = useRef<HTMLCanvasElement | null>(null);
-  const lottieAnimation = useRef<DotLottie | null>(null);
+  const hasStartedMountingRef = useRef(false);
+  const lottieAnimationRef = useRef<DotLottie | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const canvasIdRef = useRef((Date.now() + Math.random()).toString());
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [ lottiePlayerReady, setLottiePlayerReady ] = useState(false);
   
   useEffect(() => {
-    if (lottieAnimation.current) return;
+    if (hasStartedMountingRef.current) return;
 
-    renderLottieScript();
-    assignLottieCanvas();
+    hasStartedMountingRef.current = true;
 
-    lottieAnimation.current = new DotLottie({
+    (async () => {
+      await import('@lottielab/lottie-player/web');
+      setLottiePlayerReady(true);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (!lottiePlayerReady) return;
+    if (lottieAnimationRef.current) return;
+
+    lottieAnimationRef.current = new DotLottie({
       autoplay: delay ? false : true,
       loop,
-      canvas: lottieCanvas.current as HTMLCanvasElement,
+      canvas: canvasRef.current!,
       data: JSON.stringify(animationData),
       renderConfig: {
         autoResize: false
@@ -36,7 +49,7 @@ export default function LottieComponent ({ animationData, className, width, heig
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
-        lottieAnimation.current?.play();
+        lottieAnimationRef.current?.play();
       }, delay);
     }
 
@@ -44,38 +57,23 @@ export default function LottieComponent ({ animationData, className, width, heig
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      lottieAnimation.current?.destroy();
-      lottieAnimation.current = null;
+      lottieAnimationRef.current?.destroy();
+      lottieAnimationRef.current = null;
     };
-  });
-
-  const renderLottieScript = useCallback(() => {
-    const scriptElementExists = document.querySelector('script#lottie-js');
-    if (scriptElementExists) return;
-
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@lottielab/lottie-player@latest/dist/lottie-player.js';
-    script.id = 'lottie-js';
-
-    document.body.appendChild(script);
-  }, []);
-
-  const assignLottieCanvas = useCallback(() => {
-    if (!lottieCanvas.current) return;
-
-    const dateNow = Date.now();
-    const canvasId = `dotlottie-canvas-${dateNow}`;
-    lottieCanvas.current.id = canvasId;
-  }, []);
+  }, [ lottiePlayerReady, animationData, delay, loop ]);
 
   return (
     <div className={className}>
-      <canvas 
-        ref={lottieCanvas} 
-        id='dotlottie-canvas' 
-        width={width ?? 90} 
-        height={height ?? 90}
-      />
+      {lottiePlayerReady ? (
+        <canvas 
+          ref={canvasRef} 
+          id={canvasIdRef.current}
+          width={width ?? 96} 
+          height={height ?? 96}
+        />
+      ) : (
+        <div />
+      )}
     </div>
   );
 }

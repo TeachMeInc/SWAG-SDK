@@ -12,6 +12,7 @@ import summaryScreenUi from '@/api/summaryScreenUi';
 import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+import drupalApi from '@/api/drupal';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -126,6 +127,7 @@ export default class SWAGAPI {
 
     // Game info
     const game = await this.getGame();
+    await drupalApi.getGame(session.game!.shockwave_keyword);
     if (!this.options.gameTitle && game) {
       session.gameTitle = game.name;
     }
@@ -174,6 +176,15 @@ export default class SWAGAPI {
     /*
      * UI setup
      */
+
+    // Set OS theme color
+    if (theme === 'dark') {
+      utils.setOsThemeColor('#1f1f1f');
+    } else {
+      if (session.game?.hex_color) {
+        utils.setOsThemeColor(session.game?.hex_color);
+      }
+    }
 
     // Splash screen
     if (this.options.splashScreen) {

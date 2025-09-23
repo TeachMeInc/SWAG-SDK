@@ -25,6 +25,7 @@ function UpsellComponent (props: UpsellProps) {
     <div className='swag-summaryScreen__upsell'>
       <a 
         href={`https://shockwave.com${!isSubscriber ? '/unlimited' : '/account/login'}`}
+        target='_blank'
         className='swag-summaryScreen__upsell-banner'
       >
         {

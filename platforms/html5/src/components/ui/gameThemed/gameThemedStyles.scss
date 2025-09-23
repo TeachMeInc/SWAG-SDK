@@ -2,11 +2,14 @@
   box-sizing: border-box;
   border: none;
   appearance: none;
+  -webkit-tap-highlight-color: transparent;
 
   * {
     appearance: none;
+    -webkit-tap-highlight-color: transparent;
   }
 }
+
 
 
 /* 
@@ -21,5 +24,6 @@
 
   input, select, button, textarea {
     font-family: var(--swag-ui-font-family);
+    color: var(--swag-gameThemed-input-font-color);
   }
 }
