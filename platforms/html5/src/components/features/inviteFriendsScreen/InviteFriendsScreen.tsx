@@ -92,7 +92,7 @@ export default function InviteFriendsScreen (props: Props) {
       </div>
 
       <div className='swag-gameThemed__qrCode'>
-        <strong>QR Code</strong>
+        <strong><code>{props.roomCode}</code></strong>
         <QRCode value={shareUrlRef.current} />
       </div>
 

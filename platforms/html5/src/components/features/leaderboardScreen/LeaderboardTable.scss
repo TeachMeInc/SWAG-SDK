@@ -96,8 +96,7 @@
   }
 }
 
-.swag-gameThemed-leaderboardTable__empty,
-.swag-gameThemed-leaderboardTable__loader {
+.swag-gameThemed-leaderboardTable__empty {
   text-align: center;
   height: 100% !important;
   max-height: 100% !important;
@@ -113,6 +112,11 @@
     min-height: 0 !important;
     max-height: none !important;
     height: auto !important;
+    flex-direction: column;
+
+    .swag-gameThemed-input {
+      margin-top: 1rem;
+    }
   }
 }
 

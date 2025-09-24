@@ -5,7 +5,7 @@ import session from '@/session';
 import utils from '@/utils';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-interface DrupalGame {
+export interface DrupalGame {
   nid: string;
   type: string;
   created: string;
@@ -209,6 +209,13 @@ class DrupalAPI {
   // #region Game Methods
 
   async getGame (keyword: string): Promise<DrupalGame> {
+    if (
+      session.drupalGame && 
+      session.drupalGame.field_keyword === keyword
+    ) {
+      return session.drupalGame;
+    }
+
     const games = await getJSON<DrupalGame[]>('/api/node/game/entity/alias?route=/gamelanding/' + keyword);
     const game = games[ 0 ];
 

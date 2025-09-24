@@ -88,6 +88,30 @@ const methods = {
     return 'light';
   },
 
+  isMobileDevice () {
+    const platform = this.getPlatform();
+    if (platform === 'app') return true;
+    
+    const toMatch = [
+      /Android/i,
+      /webOS/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+    const isMobileUA = toMatch.some((toMatchItem) => {
+      return navigator.userAgent.match(toMatchItem);
+    });
+    if (isMobileUA) return true;
+
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (hasTouch) return true;
+
+    return false;
+  },
+
   getTimeZone (): string {
     if (
       typeof window === 'undefined' ||

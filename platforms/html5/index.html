@@ -85,6 +85,7 @@
     <section>
       <h4>UI Methods</h4>
       <p>
+        <button id='btnSubmitPrivateLeaderboardScore'>Submit Score</button>
         <button id='btnGameSummaryScreen'>Summary Screen</button>
         <button id='btnShowLoader'>Show Loader</button>
         <button id='btnHideLoader'>Hide Loader</button>
@@ -254,6 +255,13 @@
 
       document.getElementById('btnHideLoader').onclick = 
         () => api.hideLoader();
+
+      document.getElementById('btnSubmitPrivateLeaderboardScore').onclick = 
+        () => {
+          const value = Math.floor(Math.random() * 1000);
+          const displayValue = value + ' seconds';
+          api.postPrivateLeaderboardScore(value, displayValue);
+        };
 
       document.getElementById('btnGameSummaryScreen').onclick = 
         () => api.showSummaryScreen({

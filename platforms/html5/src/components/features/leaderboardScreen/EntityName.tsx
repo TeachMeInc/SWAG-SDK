@@ -7,7 +7,11 @@ import dataApi from '@/api/data';
 
 export default function EntityName () {
   const [ editing, setEditing ] = useState(false);
-  const [ name, setName ] = useState(session.entity!.leaderboard_name || session.entity!.member?.shockwave.screen_name || '');
+  const [ name, setName ] = useState(
+    session.entity!.leaderboard_name || 
+    session.entity!.memberName || 
+    ''
+  );
   const containerRef = useRef<HTMLDivElement>(null);
 
   const finishEditing = async (newName?: string) => {
@@ -33,7 +37,7 @@ export default function EntityName () {
   };
 
   const onClickBeginEditing = () => {
-    if (utils.getPlatform() === 'app') {
+    if (utils.isMobileDevice()) {
       const newName = prompt('Pick a Name', name || '') || '';
       finishEditing(newName);
       return;

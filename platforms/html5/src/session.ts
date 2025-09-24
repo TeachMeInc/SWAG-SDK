@@ -1,3 +1,4 @@
+import { DrupalGame } from '@/api/drupal';
 import { Entity } from '@/types/Entity';
 import { Game } from '@/types/Game';
 
@@ -6,8 +7,9 @@ export interface Session {
   entity: Entity | null;
   debug: boolean;
   jwt: string | null;
-  game: Game | null;
   gameTitle: string;
+  game: Game | null;
+  drupalGame: DrupalGame | null;
   toolbarHeight: number;
 }
 
@@ -16,8 +18,9 @@ const session: Session = {
   entity: null,
   debug: false,
   jwt: null,
-  game: null,
   gameTitle: '',
+  game: null,
+  drupalGame: null,
   toolbarHeight: 48,
 };
 

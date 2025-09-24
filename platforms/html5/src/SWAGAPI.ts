@@ -13,6 +13,7 @@ import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import drupalApi from '@/api/drupal';
+import privateLeaderboardApi from '@/api/privateLeaderboard';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -63,6 +64,12 @@ export default class SWAGAPI {
     session.apiKey = this.options.apiKey || null;
     session.debug = !!this.options.debug;
     session.gameTitle = this.options.gameTitle || '';
+
+    /*
+     * Private leaderboard setup
+     */
+
+    privateLeaderboardApi.setLevelKey(this.options.leaderboardScreen?.levelKey || 'daily');
 
     /*
      * Leaderboard screen setup
@@ -299,6 +306,22 @@ export default class SWAGAPI {
 
   hasDailyScore (level_key: any) {
     return dataApi.hasDailyScore(level_key);
+  }
+
+  async postPrivateLeaderboardScore (value: string, displayValue?: string) {
+    const roomCode = utils.parseUrlOptions('leaderboard') as string;
+    // already in the room, post immediately
+    if (roomCode) {
+      await dataApi.postScore(
+        this.options.leaderboardScreen?.levelKey || 'daily', 
+        value, 
+        {
+          leaderboard: roomCode,
+        }
+      );
+      return;
+    }
+    privateLeaderboardApi.queueScore(value, displayValue);
   }
 
   // #endregion

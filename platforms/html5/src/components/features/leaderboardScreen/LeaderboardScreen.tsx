@@ -16,6 +16,8 @@ import dataApi from '@/api/data';
 import utils from '@/utils';
 import { DateString } from '@/types/DateString';
 import loaderUi from '@/api/loaderUi';
+import Button from '@/components/ui/gameThemed/Button';
+import privateLeaderboardApi from '@/api/privateLeaderboard';
 
 interface Props {
   onClickBack?: () => void;
@@ -52,6 +54,20 @@ export default function LeaderboardScreen (props: Props) {
       onClickPlay: () => {
         splashScreenUi.hide();
         leaderboardScreenUi.hide();
+      }
+    });
+  };
+
+  const onClickCreateLeaderboard = async () => {
+    inviteFriendsScreenUi.show({
+      onClickBack: () => {},
+      onClickPlay: () => {
+        splashScreenUi.hide();
+        leaderboardScreenUi.hide();
+      },
+      onRoomCodeAllocated: async (code: string) => {
+        await privateLeaderboardApi.submitPendingScore(code);
+        onJoinedLeaderboard(code);
       }
     });
   };
@@ -192,7 +208,25 @@ export default function LeaderboardScreen (props: Props) {
                         </LeaderboardTableEmpty>
                       ) : (
                         <LeaderboardTableEmpty>
-                          No Leaderboards found, join a leaderboard to start tracking scores and playing with friends!
+                          {
+                            privateLeaderboardApi.getPendingScore() ? (
+                              <>
+                                <p style={{ marginBottom: '0.25rem' }}>
+                                  You completed this puzzle in <strong>{privateLeaderboardApi.getPendingScore()?.displayValue || privateLeaderboardApi.getPendingScore()?.value || '--'}</strong>! 
+                                </p>
+                                <p style={{ marginTop: '0.25rem' }}>
+                                  Create or join a leaderboard to submit your score and share it with friends.
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                Join a leaderboard to start tracking your scores and playing with friends!
+                              </>
+                            )
+                          }
+                          <Button onClick={onClickCreateLeaderboard}>
+                            Challenge Friends
+                          </Button>
                         </LeaderboardTableEmpty>
                       )
                     }

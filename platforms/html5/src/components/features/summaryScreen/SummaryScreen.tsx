@@ -10,6 +10,7 @@ import trophyIcon from '@/assets/trophy-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
 import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
+import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 
 // #region Shockwave Upsell
 
@@ -93,14 +94,14 @@ function ShareStatsComponent (props: ShareStatsProps) {
 // #region Play With Friends Component
 
 function PlayWithFriendsComponent () {
-  const onClickInviteFriends = () => {
-    inviteFriendsScreenUi.show({});
+  const onClickChallengeFriends = () => {
+    leaderboardScreenUi.show({});
   };
 
   return (
     <button 
       className='swag-summaryScreen__btn --fullWidth'
-      onClick={onClickInviteFriends}
+      onClick={onClickChallengeFriends}
     >
       <img src={trophyIcon} alt='icon' aria-hidden />
       Challenge Your Friends

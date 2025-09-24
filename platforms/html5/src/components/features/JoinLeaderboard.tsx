@@ -11,7 +11,7 @@ interface Props {
 
 export default function JoinLeaderboard (props: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const platform = utils.getPlatform();
+  const isMobileDevice = utils.isMobileDevice();
   const [ errorMessage, setErrorMessage ] = useState<string>('');
   const errorMessageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -45,7 +45,7 @@ export default function JoinLeaderboard (props: Props) {
   };
 
   const promptJoinLeaderboard = () => {
-    if (platform !== 'app') return;
+    if (!isMobileDevice) return;
 
     const code = prompt('Enter Leaderboard Code:');
     joinLeaderboard(code?.trim() || '');
@@ -70,9 +70,9 @@ export default function JoinLeaderboard (props: Props) {
           placeholder='Enter Code'
           textAlign='center'
           onClick={promptJoinLeaderboard}
-          readOnly={platform === 'app'}
+          readOnly={isMobileDevice}
           onReturn={() => onClickJoinLeaderboard()}
-          button={platform !== 'app' ? (
+          button={!isMobileDevice ? (
             <Icon icon='check' iconStyle='line' onClick={() => onClickJoinLeaderboard()} />
           ) : null}
         />

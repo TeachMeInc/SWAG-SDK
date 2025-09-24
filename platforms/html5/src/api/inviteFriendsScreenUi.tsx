@@ -12,6 +12,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
     exitDown?: boolean;
     onClickBack?: () => void;
     onClickPlay?: () => void;
+    onRoomCodeAllocated?: (code: string) => void;
   }) {
     let roomCode = options.roomCode;
     if (!roomCode) {
@@ -21,6 +22,8 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.set('leaderboard', roomCode);
       window.history.replaceState({}, '', newUrl.toString());
+
+      options.onRoomCodeAllocated?.(roomCode);
 
       loaderUi.hide();
     }
