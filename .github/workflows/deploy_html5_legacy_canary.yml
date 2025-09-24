@@ -1,11 +1,5 @@
 name: HTML5 - Canary Deployment (Legacy)
 
-on:
-  push:
-    branches:
-      - canary
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest

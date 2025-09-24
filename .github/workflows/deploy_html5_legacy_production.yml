@@ -1,11 +1,5 @@
 name: HTML5 - Legacy Production Deployment
 
-on:
-  push:
-    branches:
-      - legacy-main
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest

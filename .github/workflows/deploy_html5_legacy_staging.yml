@@ -1,11 +1,5 @@
 name: HTML5 - Legacy Staging Deployment
 
-on:
-  push:
-    branches:
-      - legacy-staging
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
