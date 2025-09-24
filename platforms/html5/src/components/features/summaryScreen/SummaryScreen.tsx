@@ -9,7 +9,6 @@ import favoriteIcon from '@/assets/favorite-icon.svg';
 import trophyIcon from '@/assets/trophy-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
-import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 
 // #region Shockwave Upsell

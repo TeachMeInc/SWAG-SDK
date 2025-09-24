@@ -30,7 +30,7 @@ export function makeDefaultState (initialState: Partial<LeaderboardScreenState> 
     return (session.entity?.member
       ? (
         session.entity?.leaderboard_name ||
-        session.entity?.member.shockwave.screen_name ||
+        session.entity?.member?.shockwave?.screen_name ||
         ''
       )
       : (
