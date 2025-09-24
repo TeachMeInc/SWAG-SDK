@@ -9,7 +9,7 @@ export default function EntityName () {
   const [ editing, setEditing ] = useState(false);
   const [ name, setName ] = useState(
     session.entity!.leaderboard_name || 
-    session.entity!.memberName || 
+    session.entity!.member?.shockwave?.screen_name || 
     ''
   );
   const containerRef = useRef<HTMLDivElement>(null);
