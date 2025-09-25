@@ -136,7 +136,42 @@ const methods = {
       methods.debug('Error parsing Lottie animation', e);
       return {};
     }
-  }
+  },
+
+  getCssVariableValue: function (variableName: string, output: 'string' | 'number' = 'string') {
+    const computedStyles = window.getComputedStyle(document.documentElement);
+    const value = computedStyles.getPropertyValue(variableName);
+
+    if (output === 'number') {
+      const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+      return isNaN(numericValue) ? 0 : numericValue;
+    }
+
+    return value;
+  },
+
+  getToolbarHeight: function () {
+    return new Promise((resolve) => {
+      // First try to get from CSS variable
+      const headerHeight = this.getCssVariableValue('--swag-toolbar-height', 'number') as number;
+      if (headerHeight) {
+        resolve(headerHeight);
+        return;
+      }
+
+      // Then try to get from DOM
+      window.requestAnimationFrame(() => {
+        const header = document.querySelector('.swag-toolbar');
+        if (!header) {
+          resolve(48); // default header height
+          return;
+        }
+        
+        const bRect = header.getBoundingClientRect();
+        resolve(bRect.height);
+      });
+    });
+  },
 };
 
 export default methods;

@@ -164,7 +164,7 @@ function LottieComponent ({ animationData, className }: LottieProps) {
     if (scriptElementExists) return;
 
     const script = document.createElement('script');
-    script.src = 'https://unpkg.com/@lottielab/lottie-player@latest/dist/lottie-player.js';
+    script.src = 'https://cdn.lottielab.com/s/lottie-player@1.1.3/player-web.min.js';
     script.id = 'lottie-js';
 
     document.body.appendChild(script);
@@ -217,14 +217,11 @@ function SummaryComponent (props: SummaryProps) {
     messages.trySendMessage('swag.navigateToArchive');
   };
 
-  const handleHeaderPadding = useCallback(() => {
+  const handleHeaderPadding = useCallback(async () => {
     if (!contentRef.current) return;
 
-    const header = document.querySelector('header.swag-toolbar');
-    if (!header) return;
-
-    const headerHeight = header.clientHeight;
-    contentRef.current!.style.marginTop = `${headerHeight}px`;
+    const toolbarHeight = await utils.getToolbarHeight();
+    contentRef.current!.style.marginTop = `${toolbarHeight}px`;
   }, []);
 
   const handleResize = useCallback(() => {
@@ -235,6 +232,7 @@ function SummaryComponent (props: SummaryProps) {
 
     setIsOverflow(isScrollable);
     handleScroll();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ contentRef.current ]);
 
   const handleScroll = useCallback(() => {
@@ -242,6 +240,7 @@ function SummaryComponent (props: SummaryProps) {
     const isAtBottom = (scrollTop + clientHeight) >= (scrollHeight - 10); // Small buffer
     
     setShowScrollIndicator(!isAtBottom);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ contentRef.current ]);
 
   useEffect(() => {
@@ -254,6 +253,7 @@ function SummaryComponent (props: SummaryProps) {
     contentRef.current.addEventListener('scroll', handleScroll);
 
     handleHeaderPadding();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ contentRef.current, props.isInjected ]);
 
   const handleScrollToBottom = () => {
@@ -263,7 +263,7 @@ function SummaryComponent (props: SummaryProps) {
       top: contentRef.current.scrollHeight,
       behavior: 'smooth'
     });
-  }
+  };
   
   return (
     <div className={`swag-summary-v2 ${!props.isInjected ? 'swag-summary-v2__fullscreen' : 'swag-summary-v2__injected'}`}>

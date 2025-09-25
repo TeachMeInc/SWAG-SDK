@@ -288,14 +288,12 @@ export function Toolbar (props: ToolbarProps) {
   useEffect(() => {
     if (props.useCustomRootEl) return;
 
-    const el = elRef.current;
-    if (!el) return;
-
-    const rect = el.getBoundingClientRect();
-    const height = rect.height;
-
-    document.body.style.marginTop = `${height}px`;
+    (async () => {
+      const toolbarHeight = await utils.getToolbarHeight();
+      document.body.style.marginTop = `${toolbarHeight}px`;
+    })();
   }, [ props.useCustomRootEl ]);
+
 
 
   /* 
