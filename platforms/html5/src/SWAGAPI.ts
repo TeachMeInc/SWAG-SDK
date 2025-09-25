@@ -291,37 +291,24 @@ export default class SWAGAPI {
     return dataApi.getScores(options);
   }
 
-  postScore (level_key: string, value: string, options: PostScoreOptions) {
-    return dataApi.postScore(level_key, value, options)
-      .then(function () {
-        if(options && options.confirmation === true) {
-          alert(`Your score of ${value} has been submitted!`);
-        }
-      });
+  postScore (levelKey: string, value: string, options: PostScoreOptions) {
+    return dataApi.postScore(levelKey, value, options);
   }
 
-  postDailyScore (day: string, level_key: string, value: string) {
-    return dataApi.postDailyScore(day, level_key, value);
-  }
-
-  hasDailyScore (level_key: any) {
-    return dataApi.hasDailyScore(level_key);
-  }
-
-  async postPrivateLeaderboardScore (value: string, displayValue?: string) {
+  async postDailyScore (value: string, displayValue?: string) {
+    const day = utils.getDateString();
     const roomCode = utils.parseUrlOptions('leaderboard') as string;
-    // already in the room, post immediately
-    if (roomCode) {
-      await dataApi.postScore(
-        this.options.leaderboardScreen?.levelKey || 'daily', 
-        value, 
-        {
-          leaderboard: roomCode,
-        }
-      );
-      return;
+
+    if (roomCode || !session.entity?.leaderboards?.length) {
+      return dataApi.postDailyScore(day, privateLeaderboardApi.getLevelKey()!, value);
     }
-    privateLeaderboardApi.queueScore(value, displayValue);
+
+    privateLeaderboardApi.queueScore(day, value, displayValue);
+    return Promise.resolve();
+  }
+
+  hasDailyScore (levelKey: any) {
+    return dataApi.hasDailyScore(levelKey);
   }
 
   // #endregion

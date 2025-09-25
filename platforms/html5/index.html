@@ -85,7 +85,6 @@
     <section>
       <h4>UI Methods</h4>
       <p>
-        <button id='btnSubmitPrivateLeaderboardScore'>Submit Score</button>
         <button id='btnGameSummaryScreen'>Summary Screen</button>
         <button id='btnShowLoader'>Show Loader</button>
         <button id='btnHideLoader'>Hide Loader</button>
@@ -123,6 +122,7 @@
         <button id='btnCompleteDailyGame'>Complete Game</button>
         <button id='btnGetDailyGameStreak'>Get Game Streak</button>
         <button id='btnGetDailyGameProgress'>Get Game Progress</button>
+        <button id='btnPostDailyScore'>Submit Daily Score</button>
       </p>
     </section>
   </div>
@@ -256,11 +256,11 @@
       document.getElementById('btnHideLoader').onclick = 
         () => api.hideLoader();
 
-      document.getElementById('btnSubmitPrivateLeaderboardScore').onclick = 
+      document.getElementById('btnPostDailyScore').onclick = 
         () => {
           const value = Math.floor(Math.random() * 1000);
           const displayValue = value + ' seconds';
-          api.postPrivateLeaderboardScore(value, displayValue);
+          api.postDailyScore(value, displayValue);
         };
 
       document.getElementById('btnGameSummaryScreen').onclick = 

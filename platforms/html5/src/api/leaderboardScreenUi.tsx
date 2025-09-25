@@ -4,11 +4,12 @@ import dataApi from '@/api/data';
 import loaderUi from '@/api/loaderUi';
 import utils from '@/utils';
 import session from '@/session';
+import privateLeaderboardApi from '@/api/privateLeaderboard';
 
 class LeaderboardScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-leaderboardScreen-root';
   protected rootElClassName: string = 'swag-leaderboardScreen-root';
-  private levelKey: string = 'daily';
+  protected levelKey: string = 'daily';
 
   setLevelKey (levelKey: string) {
     this.levelKey = levelKey;

@@ -66,7 +66,7 @@ export default function LeaderboardScreen (props: Props) {
         leaderboardScreenUi.hide();
       },
       onRoomCodeAllocated: async (code: string) => {
-        await privateLeaderboardApi.submitPendingScore(code);
+        await privateLeaderboardApi.submitPendingScore();
         onJoinedLeaderboard(code);
       }
     });

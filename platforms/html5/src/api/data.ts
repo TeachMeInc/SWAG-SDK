@@ -221,21 +221,29 @@ class DataAPI {
     return await getJSON<any[]>('/v1/days', { game: session.apiKey, limit });
   }
 
-  async getScores (options: PostScoreOptions): Promise<LeaderboardData[]> {
-    const { day, type, level_key, period, current_user, target_date, value_formatter, use_daily, leaderboard } = options;
-    const params = { game: session.apiKey, day, type, level_key, period, current_user, target_date, value_formatter, use_daily, leaderboard };
+  async getScores (options: PostScoreOptions = {}): Promise<LeaderboardData[]> {
+    const params = { 
+      ...options,
+      game: session.apiKey
+    };
     return await getJSON<LeaderboardData[]>('/v1/scores', params);
   }
 
-  async getScoresContext (options: PostScoreOptions): Promise<UserBestData> {
-    const { day, type, level_key, period, target_date, value_formatter } = options;
-    const params = { game: session.apiKey, day, type, level_key, period, target_date, value_formatter };
+  async getScoresContext (options: PostScoreOptions = {}): Promise<UserBestData> {
+    const params = { 
+      ...options,
+      game: session.apiKey, 
+    };
     return await getJSON<UserBestData>('/v1/scores/context', params);
   }
 
-  async postScore (level_key: string, value: string, options: PostScoreOptions) {
-    const body: ScoreBodyData = { game: session.apiKey, level_key, value };
-    if (options?.meta) body.meta = options.meta;
+  async postScore (level_key: string, value: string, options: PostScoreOptions = {}) {
+    const body: ScoreBodyData = { 
+      ...options,
+      game: session.apiKey, 
+      level_key, 
+      value 
+    };
     return await postJSON('/v1/score', body);
   }
 
