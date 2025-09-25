@@ -44,3 +44,4 @@ jobs:
                 -H "Authorization: Bearer ${CF_TOKEN}" \
                 -H "Content-Type: application/json" \
                 --data '{"files":["https://swagapi.shockwave.com/v5/dist/swag-api.js", "https://swagapi.shockwave.com/v5/dist/swag-api.css"]}'
+
