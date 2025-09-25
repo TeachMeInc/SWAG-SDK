@@ -24,9 +24,9 @@
     /* Third-Party modules */
     "baseUrl": ".",
     "paths": {
-      "component-emitter": ["src/types/component-emitter.ts"],
+      "@/*": ["./src/*"],
     }
   },
-  "include": ["src", "plugins"],
+  "include": ["src", "src/types/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

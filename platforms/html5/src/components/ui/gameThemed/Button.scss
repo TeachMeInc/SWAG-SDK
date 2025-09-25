@@ -1,0 +1,11 @@
+.swag-gameThemed-button {
+  width: calc(128px + var(--swag-gameThemed-panel-font-size-sm));
+  height: 35px;
+  border-radius: 76px;
+  font-size: var(--swag-gameThemed-panel-font-size-sm);
+  cursor: pointer;
+
+  &:active {
+    transform: scale(1) translateY(1px) !important;
+  }
+}

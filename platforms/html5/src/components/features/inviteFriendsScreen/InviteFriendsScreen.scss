@@ -1,0 +1,96 @@
+.swag-inviteFriendsScreen-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100svw;
+  height: 100svh;
+  z-index: 3;
+}
+
+.swag-inviteFriendsScreen {
+  hr {
+    width: 330px;
+    margin: 1rem auto;
+    border: 0;
+    height: 1px;
+  }
+
+  @keyframes swag-slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes swag-slide-out-right {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes swag-slide-out-down {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  animation: swag-slide-in-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.swag-slide-out-right {
+    animation: swag-slide-out-right 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  }
+
+  &.swag-slide-out-down {
+    animation: swag-slide-out-down 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  }
+}
+
+.swag-gameThemed__qrCode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  strong {
+    display: block;
+    font-weight: bold;
+    font-size: var(--swag-gameThemed-panel-font-size-md);
+    margin-bottom: 0.65rem;
+  }
+
+  .swag-qrCode {
+    width: 210px;
+    height: 210px;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+    background: white;
+
+    > img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+
+
+/*
+ * Theme
+ */
+
+.swag-inviteFriendsScreen {
+  font-family: var(--swag-ui-font-family);
+
+  hr {
+    background: var(--swag-gameThemed-panel-font-color);
+  }
+}

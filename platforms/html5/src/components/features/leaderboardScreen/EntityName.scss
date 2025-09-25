@@ -1,0 +1,67 @@
+.swag-gameThemed-entityName {
+  text-align: center;
+  font-size: var(--swag-gameThemed-panel-font-size-sm);
+
+  strong {
+    font-size: var(--swag-gameThemed-panel-font-size-md);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > span {
+      min-width: 1rem;
+      line-height: 28px;
+    }
+
+    .swag-icon {
+      cursor: pointer;
+      margin-left: 0.25rem;
+      font-size: 1.25rem;
+
+      &:active {
+        transform: translateY(1px);
+      }
+    }
+
+    &.--noName {
+      span {
+        opacity: 0.65;
+      }
+    }
+  }
+}
+
+.swag-gameThemed-entityName__textInput {
+  position: relative;
+  width: 214px;
+
+  input {
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    padding: 0 0.25rem;
+    width: 100%;
+    height: 28px;
+    font-size: var(--swag-gameThemed-panel-font-size-md);
+    font-weight: bold;
+  }
+}
+
+
+
+/*
+ * Theme
+ */
+
+.swag-gameThemed-entityName__textInput {
+  input {
+    color: var(--swag-gameThemed-font-color);
+    font-family: var(--swag-ui-font-family);
+
+    &::placeholder {
+      color: var(--swag-gameThemed-font-color);
+      opacity: 0.65;
+    }
+  }
+}

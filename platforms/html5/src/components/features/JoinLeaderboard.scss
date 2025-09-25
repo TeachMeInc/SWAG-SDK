@@ -1,0 +1,19 @@
+.swag-gameThemed-joinLeaderboard {
+  font-weight: bold;
+  font-size: var(--swag-gameThemed-panel-font-size-md);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    margin: 0;
+    margin-bottom: 0.65rem;
+  }
+
+  .swag-gameThemed-textInput {
+    width: 216px;
+    margin: 0 auto;
+  }
+}

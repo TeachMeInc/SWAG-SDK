@@ -1,32 +1,27 @@
-export interface Entity {
-  _id: string;
-  memberName: string;
-  isMember: boolean;
-  token: string;
-}
+import { DrupalGame } from '@/api/drupal';
+import { Entity } from '@/types/Entity';
+import { Game } from '@/types/Game';
 
 export interface Session {
-  api_key: string | null;
-  uid: string | null;
+  apiKey: string | null;
   entity: Entity | null;
-  wrapper: HTMLElement | null;
-  theme: 'shockwave' | null;
   debug: boolean;
-  provider: 'shockwave' | null;
   jwt: string | null;
-  game: { name: string } | null;
+  gameTitle: string;
+  game: Game | null;
+  drupalGame: DrupalGame | null;
+  toolbarHeight: number;
 }
 
 const session: Session = {
-  api_key: null,
-  uid: null,
+  apiKey: null,
   entity: null,
-  wrapper: null,
-  theme: null,
   debug: false,
-  provider: null,
   jwt: null,
+  gameTitle: '',
   game: null,
+  drupalGame: null,
+  toolbarHeight: 48,
 };
 
 export default session;
