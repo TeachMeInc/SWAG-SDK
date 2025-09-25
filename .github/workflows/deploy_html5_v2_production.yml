@@ -1,5 +1,8 @@
 name: HTML5 - v2 Production Deployment
 
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
