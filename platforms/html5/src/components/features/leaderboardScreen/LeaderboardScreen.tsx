@@ -3,7 +3,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import Header from '@/components/ui/gameThemed/Header';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
-import LeaderboardTable, { LeaderboardTableEmpty } from '@/components/features/leaderboardScreen/LeaderboardTable';
+import LeaderboardTable, { LeaderboardTableEmpty, LeaderboardTableRow } from '@/components/features/leaderboardScreen/LeaderboardTable';
 import EntityName from '@/components/features/leaderboardScreen/EntityName';
 import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import Select from '@/components/ui/gameThemed/Select';
@@ -82,7 +82,8 @@ export default function LeaderboardScreen (props: Props) {
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
         leaderboard: roomCode,
-        target_date: state.currentDay.key,
+        day: state.currentDay.key,
+        type: 'daily',
       });
       loaderUi.hide();
       dispatch({ type: 'setCurrentRoom', payload: roomCode });
@@ -98,7 +99,8 @@ export default function LeaderboardScreen (props: Props) {
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
         leaderboard: state.currentRoom!.key,
-        target_date: day as DateString,
+        day: day as DateString,
+        type: 'daily',
       });
       loaderUi.hide();
       dispatch({ type: 'setCurrentDay', payload: day as DateString });
@@ -188,11 +190,11 @@ export default function LeaderboardScreen (props: Props) {
                 state.leaderboardData ? (
                   state.leaderboardData.length ? (
                     state.leaderboardData?.map((item, i) => (
-                      <tr key={i}>
-                        <td>{i + 1}</td>
-                        <td>{item.screen_name}</td>
-                        <td>{item.value}</td>
-                      </tr>
+                      <LeaderboardTableRow key={i}>
+                        <div>{i + 1}</div>
+                        <div>{item.leaderboard_name || item.screen_name || 'Guest'}</div>
+                        <div>{item.value}</div>
+                      </LeaderboardTableRow>
                     ))
                   ) : (
                     <LeaderboardTableEmpty>

@@ -19,6 +19,14 @@ export default function LeaderboardTable (props: Props) {
   );
 }
 
+export function LeaderboardTableRow (props: { children?: preact.ComponentChildren }) {
+  return (
+    <div className='swag-gameThemed-leaderboardTable__row'>
+      {props.children}
+    </div>
+  );
+}
+
 export function LeaderboardTableEmpty (props: { children?: preact.ComponentChildren }) {
   return (
     <div className='swag-gameThemed-leaderboardTable__row swag-gameThemed-leaderboardTable__empty'>

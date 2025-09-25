@@ -159,6 +159,46 @@ const methods = {
     meta.setAttribute('content', color);
   },
 
+  getCssVariableValue: function (variableName: string, output: 'string' | 'number' = 'string') {
+    const computedStyles = window.getComputedStyle(document.documentElement);
+    const value = computedStyles.getPropertyValue(variableName);
+
+    if (output === 'number') {
+      const numericValue = parseFloat(value.replace(/[^0-9.-]+/g, ''));
+      return isNaN(numericValue) ? 0 : numericValue;
+    }
+
+    return value;
+  },
+
+  getToolbarHeight: function (): Promise<number> {
+    return new Promise((resolve) => {
+      // First try to get from CSS variable
+      const headerHeight = this.getCssVariableValue('--swag-toolbar-height', 'number') as number;
+      if (headerHeight && headerHeight !== 48) { // 48 is the default value
+        resolve(headerHeight);
+        return;
+      }
+
+      // Then try to get from DOM
+      window.requestAnimationFrame(() => {
+        const header = document.querySelector('.swag-toolbar');
+        if (!header) {
+          resolve(48); // default header height
+          return;
+        }
+        
+        const bRect = header.getBoundingClientRect();
+        if (!bRect.height) {
+          resolve(48); // default header height
+          return;
+        }
+
+        resolve(bRect.height);
+      });
+    });
+  },
+
   // #endregion 
 
 
@@ -171,10 +211,8 @@ const methods = {
   },
 
   error (...args: any[]) {
-    if (session.debug) {
-      // eslint-disable-next-line no-console
-      console.error('[SWAG error]', ...args);
-    }
+    // eslint-disable-next-line no-console
+    console.error('[SWAG error]', ...args);
   },
 
   warn (...args: any[]) {

@@ -21,12 +21,11 @@ export default function LottieComponent ({ animationData, className, width, heig
   
   useEffect(() => {
     if (hasStartedMountingRef.current) return;
-
     hasStartedMountingRef.current = true;
 
     (async () => {
       await import('@lottielab/lottie-player/web');
-      setLottiePlayerReady(true);
+      window.requestAnimationFrame(() => setLottiePlayerReady(true));
     })();
   }, []);
 

@@ -115,17 +115,13 @@ export function Toolbar (props: ToolbarProps) {
   }, [ dispatchToolbarState ]);
 
   useEffect(() => {
-    const el = elRef.current;
-    if (!el) return;
+    if (props.isInjected) return;
 
-    const rect = el.getBoundingClientRect();
-    const height = rect.height;
-
-    session.toolbarHeight = height;
-
-    if (!props.isInjected) {
-      document.body.style.marginTop = `${height}px`;
-    }
+    (async () => {
+      const toolbarHeight = await utils.getToolbarHeight();
+      session.toolbarHeight = toolbarHeight;
+      document.body.style.marginTop = `${toolbarHeight}px`;
+    })();
   }, [ props.isInjected ]);
 
   /* 

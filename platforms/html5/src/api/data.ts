@@ -24,6 +24,7 @@ export interface LeaderboardData {
   value: string
   date_created: string
   screen_name: string
+  leaderboard_name?: string
   avatarUrl: string
 }
 

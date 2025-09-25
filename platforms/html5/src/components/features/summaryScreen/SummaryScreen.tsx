@@ -249,7 +249,7 @@ export default function SummaryScreen (props: SummaryProps) {
                   key={key}
                   className='swag-summaryScreen__stat' 
                   animationData={utils.parseLottie(lottie, value)} 
-                  delay={300} // screen transition is 400ms
+                  delay={200} // screen transition is 400ms
                 />
               )
             }

@@ -31,7 +31,8 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
       leaderboardData = await dataApi.getScores({
         level_key: this.levelKey,
         leaderboard: roomCode,
-        target_date: utils.getDateString(),
+        day: utils.getDateString(),
+        type: 'daily',
       });
     }
 

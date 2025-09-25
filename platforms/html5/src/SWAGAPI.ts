@@ -299,7 +299,7 @@ export default class SWAGAPI {
     const day = utils.getDateString();
     const roomCode = utils.parseUrlOptions('leaderboard') as string;
 
-    if (roomCode || !session.entity?.leaderboards?.length) {
+    if (roomCode || session.entity?.leaderboards?.length) {
       return dataApi.postDailyScore(day, privateLeaderboardApi.getLevelKey()!, value);
     }
 
