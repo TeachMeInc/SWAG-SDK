@@ -4,7 +4,6 @@ import dataApi from '@/api/data';
 import loaderUi from '@/api/loaderUi';
 import utils from '@/utils';
 import session from '@/session';
-import privateLeaderboardApi from '@/api/privateLeaderboard';
 
 class LeaderboardScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-leaderboardScreen-root';
