@@ -1,5 +1,8 @@
 name: HTML5 - Daily Production Deployment
 
+on:
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
