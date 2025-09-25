@@ -8,10 +8,11 @@ import utils from './utils';
 import data from './data';
 import dialog, { DialogOptions, DialogType } from './dialog';
 import messages from './messages';
-import summary from './summary';
-import summaryV2 from './summaryv2';
+import summary from './components/summary';
+import summaryV2 from './components/summaryv2';
+import { loaderAPI as loader } from './components/loader';
 import { PostScoreOptions } from './data';
-import toolbar, { ToolbarItem, ToolbarState } from './toolbar';
+import toolbar, { ToolbarItem, ToolbarState } from './components/toolbar';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -131,26 +132,12 @@ export default class SWAGAPI extends Emitter {
     this.emit('ERROR', { type: errorType });
   }
 
-  protected _parseUrlOptions (prop: string) {
-    const params: Record<string, string> = {};
-    if(window.location.href.indexOf('?') === -1) {
-      return params;
-    }
-    const search = decodeURIComponent( window.location.href.slice( window.location.href.indexOf( '?' ) + 1 ) );
-    const definitions = search.split( '&' );
-    definitions.forEach( function (val) {
-      const parts = val.split( '=', 2 );
-      params[ parts[ 0 ] ] = parts[ 1 ];
-    } );
-    return ( prop && prop in params ) ? params[ prop ] : params;
-  }
-
 
 
   // #region API Methods
 
   async startSession () {
-    const passedInToken = this._parseUrlOptions('jwt') as string;
+    const passedInToken = utils.parseUrlOptions('jwt') as string;
 
     // External token provided in the URL
     if (typeof passedInToken === 'string' && passedInToken.length > 0) {
@@ -376,6 +363,14 @@ export default class SWAGAPI extends Emitter {
     return messages.trySendMessage('swag.displayShareDialog');
   }
 
+  showLoader () {
+    loader.showLoader(300);
+  }
+
+  hideLoader () {
+    loader.hideLoader();
+  }
+
   async showSummaryScreen (
     options: {
       stats: { key: string, value: string }[], 
@@ -426,16 +421,8 @@ export default class SWAGAPI extends Emitter {
     return utils.getPlatform();
   }
 
-  getPlatformTheme (): ('light' | 'dark') {
-    if (this._parseUrlOptions('theme')) {
-      return this._parseUrlOptions('theme') === 'dark' 
-        ? 'dark' : 'light';
-    }
-    else if (this.getPlatform() === 'standalone') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return systemTheme ? 'dark' : 'light';
-    }
-    return 'light';
+  getPlatformTheme () {
+    return utils.getPlatformTheme();
   }
 
   // #endregion

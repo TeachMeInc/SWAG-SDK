@@ -1,9 +1,10 @@
-import messages from './messages';
-import data, { DailyGameStreak, GamePromoLink } from './data';
+import messages from '../messages';
+import data, { DailyGameStreak, GamePromoLink } from '../data';
 import { render } from 'preact';
 import { useState, useRef } from 'preact/hooks';
-import shareIcon from './assets/share-icon.svg';
-import replayIcon from './assets/replay-icon.svg';
+import shareIcon from '../assets/share-icon.svg';
+import replayIcon from '../assets/replay-icon.svg';
+import { loaderAPI } from '../components/loader';
 
 
 
@@ -178,21 +179,52 @@ class SummaryAPI {
     onReplay?: () => void,
     onClose?: () => void
   ) {
-    let isSubscriber = false;
-    try {
-      isSubscriber = await data.isSubscriber();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error checking subscription status:', e);
-    }
+    loaderAPI.showLoader(350);
 
-    let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
-    try {
-      gameStreak = await data.getDailyGameStreak();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error fetching game streak:', e);
-    }
+    const promises = [];
+
+    // let isSubscriber = false;
+    
+    promises.push((async () => {
+      try {
+        return await data.isSubscriber();
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error checking subscription status:', e);
+      }
+    })());
+
+    promises.push((async () => {
+      let gameStreak: DailyGameStreak = { streak: 0, maxStreak: 0 };
+      try {
+        gameStreak = await data.getDailyGameStreak();
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error fetching game streak:', e);
+      }
+      return gameStreak;
+    })());
+
+    // let promoLinks: GamePromoLink[] = [];
+    promises.push((async () => {
+      try {
+        return await data.getGamePromoLinks();
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Error fetching promo links:', e);
+      }
+    })());
+
+    const [ 
+      isSubscriber, 
+      gameStreak, 
+      promoLinks 
+    ] = await Promise.all(promises) as [
+      boolean, 
+      DailyGameStreak, 
+      GamePromoLink[]
+    ];
+
     stats.unshift(
       {
         key: 'Current Streak',
@@ -204,28 +236,14 @@ class SummaryAPI {
       }
     );
 
-    let promoLinks: GamePromoLink[] = [];
-    try {
-      promoLinks = await data.getGamePromoLinks();
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.warn('Error fetching promo links:', e);
-    }
-
-    let relatedGames = [];
-    try {
-      const event = await messages.trySendMessage('swag.getRelatedGames');
-      if (event.message) relatedGames = JSON.parse(event.message);
-    } catch (e) {
-      relatedGames = [];
-    }
-
     const showSummary = () => {
+      loaderAPI.hideLoader();
+
       render(<SummaryComponent 
         stats={stats} 
         titleHtml={titleHtml}
         resultHtml={resultHtml}
-        relatedGames={relatedGames}
+        relatedGames={[]}
         promoLinks={promoLinks}
         shareString={shareString}
         isSubscriber={isSubscriber}
@@ -234,6 +252,8 @@ class SummaryAPI {
     };
 
     const unmount = () => {
+      loaderAPI.hideLoader();
+      
       this.unmount();
       if (onReplay) onReplay();
       if (onClose) onClose();
