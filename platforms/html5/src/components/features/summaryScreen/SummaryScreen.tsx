@@ -10,6 +10,7 @@ import trophyIcon from '@/assets/trophy-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+import summaryScreenUi from '@/api/summaryScreenUi';
 
 // #region Shockwave Upsell
 
@@ -231,6 +232,7 @@ export default function SummaryScreen (props: SummaryProps) {
     setExiting(true);
     setTimeout(() => {
       if (props.onReplay) props.onReplay();
+      summaryScreenUi.hide();
     }, 400);
   };
   
