@@ -288,8 +288,8 @@ class DataAPI {
 
   // #region Daily Game Methods
   
-  async postDailyGameProgress (day: string, complete: boolean) {
-    const body = { game: session.apiKey, day, complete };
+  async postDailyGameProgress (day: string, complete: boolean, properties: Record<string, any> = {}) {
+    const body = { game: session.apiKey, day, complete, properties };
     return await postJSON('/v1/dailygameprogress', body);
   }
 
@@ -374,9 +374,16 @@ class DataAPI {
     return !!result.subscriber;
   }
 
+  async postTag (tagName: string, properties: Record<string, any> = {}) {
+    const body = {
+      ...properties,
+      id: session.apiKey,
+      tag_name: tagName,
+    };
+    return await postJSON('/v1/user/tag', body);
+  }
+
   // #endregion
-
-
 
 }
 

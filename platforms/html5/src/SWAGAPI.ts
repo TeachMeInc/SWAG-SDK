@@ -245,14 +245,14 @@ export default class SWAGAPI {
 
   // #region Daily Game Methods
 
-  async startDailyGame (day: string) {
-    const result = await dataApi.postDailyGameProgress(day, false);
+  async startDailyGame (day: string, properties: Record<string, any> = {}) {
+    const result = await dataApi.postDailyGameProgress(day, false, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
     return result;
   }
 
-  async completeDailyGame (day: string) {
-    const result = await dataApi.postDailyGameProgress(day, true);
+  async completeDailyGame (day: string, properties: Record<string, any> = {}) {
+    const result = await dataApi.postDailyGameProgress(day, true, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;
   }
