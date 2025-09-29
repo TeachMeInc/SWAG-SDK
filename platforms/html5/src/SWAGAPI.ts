@@ -15,6 +15,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import drupalApi from '@/api/drupal';
 import privateLeaderboardApi from '@/api/privateLeaderboard';
 import abandonDailyGameApi from '@/api/abandonDailyGame';
+import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -173,7 +174,12 @@ export default class SWAGAPI {
     }
 
     // Fetch the current user
-    const entity = await dataApi.getEntity();
+    let entity;
+    try {
+      entity = await dataApi.getEntity();
+    } catch (error) {
+      utils.error('Error fetching entity', error);
+    }
 
     // Have the user join a leaderboard if the code is present in the URL
     const roomCode = utils.parseUrlOptions('leaderboard') as string;
@@ -225,6 +231,7 @@ export default class SWAGAPI {
      */
 
     utils.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
+    globalEventHandler.dispatchEvent(new CustomEvent('SWAGAPI_READY', { detail: { session_ready: true } }));
   }
 
   toggleFullScreen () {
@@ -451,4 +458,16 @@ export default class SWAGAPI {
 
 
 
+  // #region Global Events
+
+  on (type: GlobalEventType, listener: EventListenerOrEventListenerObject) {
+    globalEventHandler.addEventListener(type, listener);
+  }
+
+  off (type: GlobalEventType, listener: EventListenerOrEventListenerObject) {
+    globalEventHandler.removeEventListener(type, listener);
+  }
+
+  // #endregion
+  
 }

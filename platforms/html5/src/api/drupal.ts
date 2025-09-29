@@ -1,5 +1,6 @@
 // https://dev.shockwave.com/api/node/game/entity/alias?route=/gamelanding/mixagram
 
+import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 import config from '@/config';
 import session from '@/session';
 import utils from '@/utils';
@@ -173,7 +174,7 @@ function getAxios (): AxiosInstance {
   axiosInstance.interceptors.response.use(
     (res) => res,
     (error) => {
-      // Central error logging
+      globalEventHandlerApi.dispatchEvent(new CustomEvent(GlobalEventType.API_COMMUNICATION_ERROR, { detail: error }));
       utils.warn('API request failed', error?.response?.status, error?.message);
       return Promise.reject(error);
     }

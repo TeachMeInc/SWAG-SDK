@@ -1,5 +1,6 @@
 import { DateString } from '@/types/DateString';
 import session from './session';
+import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 
 const methods = {
 
@@ -211,6 +212,7 @@ const methods = {
   },
 
   error (...args: any[]) {
+    globalEventHandlerApi.dispatchEvent(new CustomEvent(GlobalEventType.ERROR, { detail: args }));
     // eslint-disable-next-line no-console
     console.error('[SWAG error]', ...args);
   },

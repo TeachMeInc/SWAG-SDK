@@ -6,6 +6,7 @@ import utils from '@/utils';
 import config from '@/config';
 import { Entity } from '@/types/Entity';
 import { Game } from '@/types/Game';
+import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 
 
 
@@ -124,8 +125,8 @@ function getAxios (): AxiosInstance {
   axiosInstance.interceptors.response.use(
     (res) => res,
     (error) => {
-      // Central error logging
-      utils.warn('API request failed', error?.response?.status, error?.message);
+      globalEventHandlerApi.dispatchEvent(new CustomEvent(GlobalEventType.API_COMMUNICATION_ERROR, { detail: error }));
+      utils.error('API request failed', error?.response?.status, error?.message);
       return Promise.reject(error);
     }
   );
