@@ -14,14 +14,18 @@ import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import drupalApi from '@/api/drupal';
 import privateLeaderboardApi from '@/api/privateLeaderboard';
+import abandonDailyGameApi from '@/api/abandonDailyGame';
 
 export interface SWAGAPIOptions {
   apiKey: string;
-  gameTitle: string;
   debug?: boolean;
-  leaderboardScreen?: {
-    levelKey?: string;
+  gameTitle: string;
+  leaderboards?: {
+    dailyScoreLevelKey?: string;
   },
+  leaderboardScreen?: {
+  },
+  onAbandonDailyGame?: () => Record<string, any>,
   splashScreen?: true | {
     containerElementId?: string;
     isBeta?: boolean;
@@ -32,10 +36,10 @@ export interface SWAGAPIOptions {
   },
   toolbar?: true | {
     containerElementId?: string;
+    initialToolbarState?: ToolbarState;
     onClickFullScreen?: () => void;
     titleIcon?: string;
     titleIconDark?: string;
-    initialToolbarState?: ToolbarState;
   },
 }
 
@@ -65,19 +69,25 @@ export default class SWAGAPI {
     session.debug = !!this.options.debug;
     session.gameTitle = this.options.gameTitle || '';
 
-    /*
-     * Private leaderboard setup
-     */
+    // Abandon daily game setup
 
-    privateLeaderboardApi.setLevelKey(this.options.leaderboardScreen?.levelKey || 'daily');
-
-    /*
-     * Leaderboard screen setup
-     */
-
-    if (this.options.leaderboardScreen?.levelKey) {
-      leaderboardScreenUi.setLevelKey(this.options.leaderboardScreen.levelKey);
+    if (this.options.onAbandonDailyGame) {
+      abandonDailyGameApi.queueEvent(this.options.onAbandonDailyGame);
     }
+
+    /*
+     * Leaderboard setup
+     */
+
+    const dailyScoreLevelKey = this.options.leaderboards?.dailyScoreLevelKey || 'daily';
+
+    // Private leaderboard setup
+
+    privateLeaderboardApi.setLevelKey(dailyScoreLevelKey);
+
+    // Leaderboard screen setup
+
+    leaderboardScreenUi.setLevelKey(dailyScoreLevelKey);
 
     /* 
      * Splash screen setup
@@ -252,6 +262,7 @@ export default class SWAGAPI {
   }
 
   async completeDailyGame (day: string, properties: Record<string, any> = {}) {
+    abandonDailyGameApi.emptyQueue();
     const result = await dataApi.postDailyGameProgress(day, true, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;

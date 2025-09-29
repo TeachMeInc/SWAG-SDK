@@ -182,7 +182,7 @@ function getAxios (): AxiosInstance {
   return axiosInstance;
 }
 
-async function getJSON<T> (url: string, params?: Record<string, any>, configOverride?: AxiosRequestConfig): Promise<T> {
+async function getJSON <T> (url: string, params?: Record<string, any>, configOverride?: AxiosRequestConfig): Promise<T> {
   const client = getAxios();
   const response = await client.get(url, { params, ...configOverride });
   return response.data as T;

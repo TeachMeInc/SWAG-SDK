@@ -133,13 +133,13 @@ function getAxios (): AxiosInstance {
   return axiosInstance;
 }
 
-async function getJSON<T> (url: string, params?: Record<string, any>, configOverride?: AxiosRequestConfig): Promise<T> {
+async function getJSON <T> (url: string, params?: Record<string, any>, configOverride?: AxiosRequestConfig): Promise<T> {
   const client = getAxios();
   const response = await client.get(url, { params, ...configOverride });
   return response.data as T;
 }
 
-async function postJSON<T> (url: string, body?: any, configOverride?: AxiosRequestConfig): Promise<T> {
+async function postJSON <T> (url: string, body?: any, configOverride?: AxiosRequestConfig): Promise<T> {
   const client = getAxios();
   const response = await client.post(url, body, configOverride);
   return response.data as T;
@@ -289,6 +289,11 @@ class DataAPI {
   // #region Daily Game Methods
   
   async postDailyGameProgress (day: string, complete: boolean, properties: Record<string, any> = {}) {
+    properties = {
+      ...properties,
+      sdk_version: config.version,
+      platform: utils.getPlatform(),
+    };
     const body = { game: session.apiKey, day, complete, properties };
     return await postJSON('/v1/dailygameprogress', body);
   }
@@ -376,9 +381,13 @@ class DataAPI {
 
   async postTag (tagName: string, properties: Record<string, any> = {}) {
     const body = {
-      ...properties,
-      id: session.apiKey,
-      tag_name: tagName,
+      game: session.game?.shockwave_keyword,
+      properties: {
+        ...properties,
+        tag_name: tagName,
+        sdk_version: config.version,
+        platform: utils.getPlatform(),
+      },
     };
     return await postJSON('/v1/user/tag', body);
   }

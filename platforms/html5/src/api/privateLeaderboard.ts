@@ -5,7 +5,7 @@ import { DateString } from '@/types/DateString';
 import utils from '@/utils';
 
 class PrivateLeaderboardAPI {
-  protected levelKey: string | null = null;
+  protected levelKey: string = '';
   protected pendingScore: { day: DateString, value: string, displayValue?: string } | null = null;
   protected eventListener: (() => void) | null = null;
 

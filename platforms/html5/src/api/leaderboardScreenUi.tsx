@@ -8,7 +8,7 @@ import session from '@/session';
 class LeaderboardScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-leaderboardScreen-root';
   protected rootElClassName: string = 'swag-leaderboardScreen-root';
-  protected levelKey: string = 'daily';
+  protected levelKey: string = '';
 
   setLevelKey (levelKey: string) {
     this.levelKey = levelKey;
