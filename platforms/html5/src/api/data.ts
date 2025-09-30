@@ -151,12 +151,8 @@ async function postJSON <T> (url: string, body?: any, configOverride?: AxiosRequ
 
 
 class DataAPI {
-  // events: {
-  //   DATA_EVENT: 'DATA_EVENT',
-  //   DATA_ERROR: 'DATA_ERROR',
-  //   USER_LOGIN: 'USER_LOGIN',
-  //   USER_LOGOUT: 'USER_LOGOUT'
-  // }
+
+
 
   // #region Game Methods
 
@@ -395,6 +391,8 @@ class DataAPI {
 
   // #endregion
 
+
+  
 }
 
 export default new DataAPI();

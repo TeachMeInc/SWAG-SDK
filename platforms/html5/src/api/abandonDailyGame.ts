@@ -3,17 +3,17 @@ import session from '@/session';
 import utils from '@/utils';
 
 class AbandonDailyGameAPI {
-  protected cancelSendBeacon: (() => void) | null = null;
+  protected cancelSend: (() => void) | null = null;
 
   queueEvent (getProperties: () => Record<string, any>) {
-    if (this.cancelSendBeacon) {
-      this.cancelSendBeacon();
-      this.cancelSendBeacon = null;
+    if (this.cancelSend) {
+      this.cancelSend();
+      this.cancelSend = null;
     }
     
-    this.cancelSendBeacon = utils.sendBeacon(() => {
+    this.cancelSend = utils.sendOnWindowClose(() => {
       const payload = {
-        game: session.game?.shockwave_keyword,
+        game: session.apiKey,
         properties: {
           ...getProperties(),
           tag_name: 'level_abandoned',
@@ -27,9 +27,9 @@ class AbandonDailyGameAPI {
   }
 
   emptyQueue () {
-    if (this.cancelSendBeacon) {
-      this.cancelSendBeacon();
-      this.cancelSendBeacon = null;
+    if (this.cancelSend) {
+      this.cancelSend();
+      this.cancelSend = null;
     }
   }
 }

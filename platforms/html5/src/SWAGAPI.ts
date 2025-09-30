@@ -13,8 +13,7 @@ import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import drupalApi from '@/api/drupal';
-import privateLeaderboardApi from '@/api/privateLeaderboard';
-import abandonDailyGameApi from '@/api/abandonDailyGame';
+// import abandonDailyGameApi from '@/api/abandonDailyGame';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 
 export interface SWAGAPIOptions {
@@ -26,7 +25,7 @@ export interface SWAGAPIOptions {
   },
   leaderboardScreen?: true | {
   },
-  onAbandonDailyGame?: () => Record<string, any>,
+  // onAbandonDailyGame?: () => Record<string, any>,
   splashScreen?: true | {
     containerElementId?: string;
     isBeta?: boolean;
@@ -70,21 +69,17 @@ export default class SWAGAPI {
     session.debug = !!this.options.debug;
     session.gameTitle = this.options.gameTitle || '';
 
-    // Abandon daily game setup
+    // // Abandon daily game setup
 
-    if (this.options.onAbandonDailyGame) {
-      abandonDailyGameApi.queueEvent(this.options.onAbandonDailyGame);
-    }
+    // if (this.options.onAbandonDailyGame) {
+    //   abandonDailyGameApi.queueEvent(this.options.onAbandonDailyGame);
+    // }
 
     /*
      * Leaderboard setup
      */
 
     const dailyScoreLevelKey = this.options.leaderboards?.dailyScoreLevelKey || 'daily';
-
-    // Private leaderboard setup
-
-    privateLeaderboardApi.setLevelKey(dailyScoreLevelKey);
 
     // Leaderboard screen setup
 
@@ -270,7 +265,7 @@ export default class SWAGAPI {
   }
 
   async completeDailyGame (day: string, properties: Record<string, any> = {}) {
-    abandonDailyGameApi.emptyQueue();
+    // abandonDailyGameApi.emptyQueue();
     const result = await dataApi.postDailyGameProgress(day, true, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;
@@ -314,16 +309,11 @@ export default class SWAGAPI {
     return dataApi.postScore(levelKey, value, options);
   }
 
-  async postDailyScore (value: string, displayValue?: string) {
+  postDailyScore (value: string) {
     const day = utils.getDateString();
-    const roomCode = utils.parseUrlOptions('leaderboard') as string;
+    const levelKey = this.options?.leaderboards?.dailyScoreLevelKey || 'daily';
 
-    if (roomCode || session.entity?.leaderboards?.length) {
-      return dataApi.postDailyScore(day, privateLeaderboardApi.getLevelKey()!, value);
-    }
-
-    privateLeaderboardApi.queueScore(day, value, displayValue);
-    return Promise.resolve();
+    return dataApi.postDailyScore(day, levelKey, value);
   }
 
   hasDailyScore (levelKey: any) {

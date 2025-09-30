@@ -200,7 +200,7 @@ const methods = {
     });
   },
 
-  sendBeacon (callback: () => { url: string, payload: Record<string, any> }) {
+  sendOnWindowClose (callback: () => { url: string, payload: Record<string, any> }) {
     let sent = false;
 
     const sendOnce = () => {
@@ -208,42 +208,20 @@ const methods = {
       sent = true;
 
       const { url, payload } = callback();
+      const blob = new Blob([ JSON.stringify([ payload, ]) ], { type: 'application/json' });
+      navigator.sendBeacon(url, blob);
+    };
 
-      // Prefer sendBeacon for reliability during unload
-      const beaconPayload = new Blob([ JSON.stringify(payload) ], { type: 'application/json' });
-      const ok = navigator.sendBeacon(url, beaconPayload);
-
-      // Fallback if sendBeacon missing or returns false
-      if (!ok) {
-        try {
-          fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(payload),
-            headers: { 'Content-Type': 'application/json' },
-            keepalive: true
-          });
-        } catch (err: any) {
-          this.error('Error sending data', err);
-        }
+    const handler = () => {
+      if (document.visibilityState === 'hidden') {
+        sendOnce();
       }
     };
-
-    // Fire on any pagehide, including bfcache (back/forward navigation)
-    const pageHideHandler = () => {
-      sendOnce();
-    };
-    window.addEventListener('pagehide', pageHideHandler, { capture: true });
-
-    // Extremely old fallback
-    const beforeUnloadHandler = () => {
-      sendOnce();
-    };
-    window.addEventListener('beforeunload', beforeUnloadHandler);
+    window.addEventListener('visibilitychange', handler);
 
     return () => {
       sent = true;
-      window.removeEventListener('pagehide', pageHideHandler, { capture: true });
-      window.removeEventListener('beforeunload', beforeUnloadHandler);
+      window.removeEventListener('visibilitychange', handler);
     };
   },
 

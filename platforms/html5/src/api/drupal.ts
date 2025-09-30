@@ -1,5 +1,3 @@
-// https://dev.shockwave.com/api/node/game/entity/alias?route=/gamelanding/mixagram
-
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 import config from '@/config';
 import session from '@/session';
@@ -189,23 +187,13 @@ async function getJSON <T> (url: string, params?: Record<string, any>, configOve
   return response.data as T;
 }
 
-// async function postJSON<T> (url: string, body?: any, configOverride?: AxiosRequestConfig): Promise<T> {
-//   const client = getAxios();
-//   const response = await client.post(url, body, configOverride);
-//   return response.data as T;
-// }
-
 // #endregion
 
 
 
 class DrupalAPI {
-  // events: {
-  //   DATA_EVENT: 'DATA_EVENT',
-  //   DATA_ERROR: 'DATA_ERROR',
-  //   USER_LOGIN: 'USER_LOGIN',
-  //   USER_LOGOUT: 'USER_LOGOUT'
-  // }
+
+
 
   // #region Game Methods
 
@@ -225,10 +213,15 @@ class DrupalAPI {
       hex_color: game.field_highlight_color!,
       icon_url: config.drupalRoot + game.field_mobile_icon!,
     };
+    session.drupalGame = game;
+    
     return game;
   }
 
   // #endregion
+
+
+
 }
 
 export default new DrupalAPI();

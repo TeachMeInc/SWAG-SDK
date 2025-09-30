@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import Header from '@/components/ui/gameThemed/Header';
 import Panel from '@/components/ui/gameThemed/Panel';
@@ -17,7 +17,6 @@ import utils from '@/utils';
 import { DateString } from '@/types/DateString';
 import loaderUi from '@/api/loaderUi';
 import Button from '@/components/ui/gameThemed/Button';
-import privateLeaderboardApi from '@/api/privateLeaderboard';
 
 interface Props {
   onClickBack?: () => void;
@@ -77,7 +76,6 @@ export default function LeaderboardScreen (props: Props) {
         leaderboardScreenUi.hide();
       },
       onRoomCodeAllocated: async (code: string) => {
-        await privateLeaderboardApi.submitPendingScore();
         onJoinedLeaderboard(code);
       }
     });
@@ -224,22 +222,7 @@ export default function LeaderboardScreen (props: Props) {
                   </>
                 ) : (
                   <LeaderboardTableEmpty>
-                    {
-                      privateLeaderboardApi.getPendingScore() ? (
-                        <>
-                          <p style={{ marginBottom: '0.25rem' }}>
-                            You completed this puzzle in <strong>{privateLeaderboardApi.getPendingScore()?.displayValue || privateLeaderboardApi.getPendingScore()?.value || '--'}</strong>! 
-                          </p>
-                          <p style={{ marginTop: '0.25rem' }}>
-                            Create or join a leaderboard to submit your score and share it with friends.
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          Join a leaderboard to start tracking your scores and playing with friends!
-                        </>
-                      )
-                    }
+                    Join a leaderboard to start tracking your scores and playing with friends!
                     <Button onClick={onClickCreateLeaderboard}>
                       Challenge Friends
                     </Button>
