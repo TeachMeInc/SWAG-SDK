@@ -3,43 +3,34 @@ import session from '@/session';
 import utils from '@/utils';
 
 class AbandonDailyGameAPI {
-  protected getProperties: (() => Record<string, any>) | null = null;
-  protected eventListener: (() => void) | null = null;
+  protected cancelSendBeacon: (() => void) | null = null;
 
   queueEvent (getProperties: () => Record<string, any>) {
-    this.getProperties = getProperties;
-
-    if (this.eventListener) {
-      document.removeEventListener('visibilitychange', this.eventListener);
+    if (this.cancelSendBeacon) {
+      this.cancelSendBeacon();
+      this.cancelSendBeacon = null;
     }
+    
+    this.cancelSendBeacon = utils.sendBeacon(() => {
+      const payload = {
+        game: session.game?.shockwave_keyword,
+        properties: {
+          ...getProperties(),
+          tag_name: 'level_abandoned',
+          sdk_version: config.version,
+          platform: utils.getPlatform(),
+        },
+      };
 
-    this.eventListener = () => {
-      if (document.visibilityState === 'hidden') {
-        const payload = {
-          game: session.game?.shockwave_keyword,
-          properties: {
-            ...getProperties(),
-            tag_name: 'level_abandoned',
-            sdk_version: config.version,
-            platform: utils.getPlatform(),
-          },
-        };
-        navigator.sendBeacon(
-          `${config.apiRoot}/v1/user/tag`, 
-          new Blob([ JSON.stringify(payload) ], { type: 'application/json' })
-        );
-      }
-    };
-
-    document.addEventListener('visibilitychange', this.eventListener);
+      return { url: `${config.apiRoot}/v1/user/tag`, payload };
+    });
   }
 
   emptyQueue () {
-    if (this.eventListener) {
-      document.removeEventListener('visibilitychange', this.eventListener);
-      this.eventListener = null;
+    if (this.cancelSendBeacon) {
+      this.cancelSendBeacon();
+      this.cancelSendBeacon = null;
     }
-    this.getProperties = null;
   }
 }
 

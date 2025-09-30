@@ -168,6 +168,7 @@ interface SummaryProps {
   isInjected?: boolean;
   onFavorite?: () => void;
   onReplay?: () => void;
+  hasLeaderboard?: boolean;
 }
 
 export default function SummaryScreen (props: SummaryProps) {
@@ -259,7 +260,9 @@ export default function SummaryScreen (props: SummaryProps) {
 
           <div className={`swag-summaryScreen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
             <ShareStatsComponent shareString={props.shareString} />
-            <PlayWithFriendsComponent />
+            {
+              props.hasLeaderboard ? <PlayWithFriendsComponent /> : null
+            }
             {
               props.onReplay && (
                 <ReplayComponent 

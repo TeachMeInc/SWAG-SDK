@@ -12,7 +12,7 @@ const methods = {
     if (!Array.isArray(param)) {
       return param;
     }
-    const formatted = param.map((item) => `"${item}"`).join('');
+    const formatted = param.map((item) => `'${item}'`).join('');
     return `[${formatted}]`;
   },
 
@@ -151,7 +151,7 @@ const methods = {
   },
 
   setOsThemeColor (color: string) {
-    let meta = document.querySelector('meta[name="theme-color"]');
+    let meta = document.querySelector('meta[name=\'theme-color\']');
     if (!meta) {
       meta = document.createElement('meta');
       meta.setAttribute('name', 'theme-color');
@@ -198,6 +198,53 @@ const methods = {
         resolve(bRect.height);
       });
     });
+  },
+
+  sendBeacon (callback: () => { url: string, payload: Record<string, any> }) {
+    let sent = false;
+
+    const sendOnce = () => {
+      if (sent) return;
+      sent = true;
+
+      const { url, payload } = callback();
+
+      // Prefer sendBeacon for reliability during unload
+      const beaconPayload = new Blob([ JSON.stringify(payload) ], { type: 'application/json' });
+      const ok = navigator.sendBeacon(url, beaconPayload);
+
+      // Fallback if sendBeacon missing or returns false
+      if (!ok) {
+        try {
+          fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true
+          });
+        } catch (err: any) {
+          this.error('Error sending data', err);
+        }
+      }
+    };
+
+    // Fire on any pagehide, including bfcache (back/forward navigation)
+    const pageHideHandler = () => {
+      sendOnce();
+    };
+    window.addEventListener('pagehide', pageHideHandler, { capture: true });
+
+    // Extremely old fallback
+    const beforeUnloadHandler = () => {
+      sendOnce();
+    };
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    return () => {
+      sent = true;
+      window.removeEventListener('pagehide', pageHideHandler, { capture: true });
+      window.removeEventListener('beforeunload', beforeUnloadHandler);
+    };
   },
 
   // #endregion 

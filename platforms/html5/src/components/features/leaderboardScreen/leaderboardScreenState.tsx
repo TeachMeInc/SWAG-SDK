@@ -25,6 +25,16 @@ function formatDate (date: Date) {
   );
 }
 
+export function getNextCurrentRoom (state: LeaderboardScreenState, payload: string) {
+  return (state.currentRoom?.key === payload)
+    ? (
+      state.rooms.length > 1
+        ? state.rooms.find(r => r.key !== payload) || null
+        : null
+    )
+    : state.currentRoom;
+}
+
 export function makeDefaultState (initialState: Partial<LeaderboardScreenState> = {}): LeaderboardScreenState {
   const userDisplayName = (() => {
     return (session.entity?.member
@@ -155,13 +165,7 @@ export function useLeaderboardScreenState (initialState: LeaderboardScreenState)
       return {
         ...state,
         rooms: state.rooms.filter(r => r.key !== action.payload),
-        currentRoom: (state.currentRoom?.key === action.payload)
-          ? (
-            state.rooms.length > 1
-              ? state.rooms.find(r => r.key !== action.payload) || null
-              : null
-          )
-          : state.currentRoom,
+        currentRoom: getNextCurrentRoom(state, action.payload),
       };
     }
 

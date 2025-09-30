@@ -17,6 +17,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
     onFavorite?: () => void,
     onReplay?: () => void,
     onClose?: () => void,
+    hasLeaderboard?: boolean,
   }) {
     loaderUi.show(350);
 
@@ -113,6 +114,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
         if (options.onReplay) options.onReplay();
         if (options.onClose) options.onClose();
       }}
+      hasLeaderboard={options.hasLeaderboard}
     />);
 
     loaderUi.hide();

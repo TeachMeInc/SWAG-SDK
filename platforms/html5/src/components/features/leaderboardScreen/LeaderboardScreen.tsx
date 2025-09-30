@@ -8,7 +8,7 @@ import EntityName from '@/components/features/leaderboardScreen/EntityName';
 import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import Select from '@/components/ui/gameThemed/Select';
 import IconButton from '@/components/ui/gameThemed/IconButton';
-import { makeDefaultState, useLeaderboardScreenState } from '@/components/features/leaderboardScreen/leaderboardScreenState';
+import { getNextCurrentRoom, makeDefaultState, useLeaderboardScreenState } from '@/components/features/leaderboardScreen/leaderboardScreenState';
 import { LeaderboardData } from '@/api/data';
 import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
 import splashScreenUi from '@/api/splashScreenUi';
@@ -41,7 +41,18 @@ export default function LeaderboardScreen (props: Props) {
     try {
       await dataApi.postUserLeaderboardLeave(state.currentRoom!.key);
       session.entity!.leaderboards = session.entity!.leaderboards?.filter(r => r !== state.currentRoom!.key);
+      
+      const nextCurrentRoom = getNextCurrentRoom(state, state.currentRoom!.key);
+
       dispatch({ type: 'leaveRoom', payload: state.currentRoom!.key });
+
+      const newUrl = new URL(window.location.href);
+      if (nextCurrentRoom) {
+        newUrl.searchParams.set('leaderboard', nextCurrentRoom.key);
+      } else {
+        newUrl.searchParams.delete('leaderboard');
+      }
+      window.history.replaceState({}, '', newUrl.toString());
     } catch (err: any) {
       utils.error('Error leaving leaderboard room:', err.message || err);
     }
@@ -187,52 +198,52 @@ export default function LeaderboardScreen (props: Props) {
           <span className='--fit'>
             <LeaderboardTable>
               {
-                state.leaderboardData ? (
-                  state.leaderboardData.length ? (
-                    state.leaderboardData?.map((item, i) => (
-                      <LeaderboardTableRow key={i}>
-                        <div>{i + 1}</div>
-                        <div>{item.leaderboard_name || item.screen_name || 'Guest'}</div>
-                        <div>{item.value}</div>
-                      </LeaderboardTableRow>
-                    ))
-                  ) : (
-                    <LeaderboardTableEmpty>
-                      No scores have been posted yet.
-                    </LeaderboardTableEmpty>
-                  )
-                ) : (
+                state.rooms.length ? (
                   <>
                     {
-                      state.rooms.length ? (
-                        <LeaderboardTableEmpty>
-                          Loading scores...
-                        </LeaderboardTableEmpty>
+                      state.leaderboardData ? (
+                        state.leaderboardData.length ? (
+                          state.leaderboardData?.map((item, i) => (
+                            <LeaderboardTableRow key={i}>
+                              <div>{i + 1}</div>
+                              <div>{item.leaderboard_name || item.screen_name || 'Guest'}</div>
+                              <div>{item.value}</div>
+                            </LeaderboardTableRow>
+                          ))
+                        ) : (
+                          <LeaderboardTableEmpty>
+                            No scores have been posted yet.
+                          </LeaderboardTableEmpty>
+                        )
                       ) : (
                         <LeaderboardTableEmpty>
-                          {
-                            privateLeaderboardApi.getPendingScore() ? (
-                              <>
-                                <p style={{ marginBottom: '0.25rem' }}>
-                                  You completed this puzzle in <strong>{privateLeaderboardApi.getPendingScore()?.displayValue || privateLeaderboardApi.getPendingScore()?.value || '--'}</strong>! 
-                                </p>
-                                <p style={{ marginTop: '0.25rem' }}>
-                                  Create or join a leaderboard to submit your score and share it with friends.
-                                </p>
-                              </>
-                            ) : (
-                              <>
-                                Join a leaderboard to start tracking your scores and playing with friends!
-                              </>
-                            )
-                          }
-                          <Button onClick={onClickCreateLeaderboard}>
-                            Challenge Friends
-                          </Button>
+                          Loading scores...
                         </LeaderboardTableEmpty>
                       )
                     }
                   </>
+                ) : (
+                  <LeaderboardTableEmpty>
+                    {
+                      privateLeaderboardApi.getPendingScore() ? (
+                        <>
+                          <p style={{ marginBottom: '0.25rem' }}>
+                            You completed this puzzle in <strong>{privateLeaderboardApi.getPendingScore()?.displayValue || privateLeaderboardApi.getPendingScore()?.value || '--'}</strong>! 
+                          </p>
+                          <p style={{ marginTop: '0.25rem' }}>
+                            Create or join a leaderboard to submit your score and share it with friends.
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          Join a leaderboard to start tracking your scores and playing with friends!
+                        </>
+                      )
+                    }
+                    <Button onClick={onClickCreateLeaderboard}>
+                      Challenge Friends
+                    </Button>
+                  </LeaderboardTableEmpty>
                 )
               }
             </LeaderboardTable>

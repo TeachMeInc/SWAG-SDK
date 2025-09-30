@@ -24,7 +24,7 @@ export interface SWAGAPIOptions {
   leaderboards?: {
     dailyScoreLevelKey?: string;
   },
-  leaderboardScreen?: {
+  leaderboardScreen?: true | {
   },
   onAbandonDailyGame?: () => Record<string, any>,
   splashScreen?: true | {
@@ -218,6 +218,7 @@ export default class SWAGAPI {
       splashScreenUi.show({
         isBeta: opts.isBeta || false,
         onClickPlay: opts.onClickPlay,
+        hasLeaderboard: !!this.options.leaderboardScreen,
       });
     }
 
@@ -429,7 +430,10 @@ export default class SWAGAPI {
     onReplay?: () => void,
     onClose?: () => void,
   }) {
-    return summaryScreenUi.show(options);
+    return summaryScreenUi.show({
+      ...options,
+      hasLeaderboard: !!this.options.leaderboardScreen,
+    });
   }
 
   showLoader (debounce?: number) {

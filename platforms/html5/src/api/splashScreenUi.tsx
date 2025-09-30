@@ -10,6 +10,7 @@ class SplashScreenUI extends UserInterfaceAPI {
   async show (options: {
     isBeta?: boolean,
     onClickPlay?: () => void,
+    hasLeaderboard?: boolean,
   }) {
     await drupalApi.getGame(session.game!.shockwave_keyword);
 
@@ -17,6 +18,7 @@ class SplashScreenUI extends UserInterfaceAPI {
       <SplashScreen 
         isBeta={options.isBeta} 
         onClickPlay={options.onClickPlay} 
+        hasLeaderboard={options.hasLeaderboard} 
       />
     );
   }

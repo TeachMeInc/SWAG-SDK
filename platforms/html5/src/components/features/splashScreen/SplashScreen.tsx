@@ -11,6 +11,7 @@ import { useEffect, useState } from 'preact/hooks';
 interface Props {
   isBeta?: boolean;
   onClickPlay?: () => void;
+  hasLeaderboard?: boolean;
 }
 
 export default function SplashScreen (props: Props) {
@@ -86,8 +87,12 @@ export default function SplashScreen (props: Props) {
             <div className='swag-splashScreen__buttons'>
               <Button onClick={onClickPlay}>Play</Button>
               <Button onClick={onClickArchive}>Archive</Button>
-              <OutlineButton onClick={onClickInviteFriends}>Play with Friends</OutlineButton>
-              <OutlineButton onClick={onClickLeaderboard}>View Scores</OutlineButton>
+              {
+                props.hasLeaderboard ? (<>
+                  <OutlineButton onClick={onClickInviteFriends}>Play with Friends</OutlineButton>
+                  <OutlineButton onClick={onClickLeaderboard}>View Scores</OutlineButton>
+                </>) : null
+              }
             </div>
           </>
         ) : null
