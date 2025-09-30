@@ -149,11 +149,6 @@
           dailyScoreLevelKey: 'daily',
         },
         leaderboardScreen: true,
-        onAbandonDailyGame: () => {
-          return {
-            foo: 'bar',
-          }
-        },
         splashScreen: {
           isBeta: true,
         },
@@ -322,10 +317,10 @@
       const today = new Date().toISOString().split('T')[0];
 
       document.getElementById('btnStartDailyGame').onclick = 
-        () => api.startDailyGame(today);
+        () => api.startDailyGame(today, { foo: 'bar' });
 
       document.getElementById('btnCompleteDailyGame').onclick = 
-        () => api.completeDailyGame(today);
+        () => api.completeDailyGame(today, { bar: 'baz' });
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());
