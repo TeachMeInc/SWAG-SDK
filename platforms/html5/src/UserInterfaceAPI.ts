@@ -5,7 +5,7 @@ export default class UserInterfaceAPI {
   protected rootElId: string = '';
   protected rootElClassName: string = '';
   protected isInjected: boolean = false;
-  private timeout: NodeJS.Timeout | null = null;
+  private timeout: number | null = null;
 
   setRootElId (id: string) {
     this.rootElId = id;
@@ -39,7 +39,7 @@ export default class UserInterfaceAPI {
 
     if (debounce) {
       clearTimeout(this.timeout!);
-      this.timeout = setTimeout(doMount, debounce);
+      this.timeout = setTimeout(doMount, debounce) as unknown as number;
     } else {
       doMount();
     }

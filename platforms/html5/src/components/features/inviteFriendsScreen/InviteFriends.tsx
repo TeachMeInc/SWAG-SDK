@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function InviteFriends (props: Props) {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [ hasCopied, setHasCopied ] = useState(false);
 
@@ -24,7 +24,7 @@ export default function InviteFriends (props: Props) {
     }
     timeoutRef.current = setTimeout(() => {
       setHasCopied(false);
-    }, 2000);
+    }, 2000) as unknown as number;
   };
 
   return (

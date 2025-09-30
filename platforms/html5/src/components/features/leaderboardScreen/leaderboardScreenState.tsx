@@ -81,7 +81,7 @@ export function makeDefaultState (initialState: Partial<LeaderboardScreenState> 
     label: `Room: ${room}`,
   }));
 
-  const currentRoom = initialState.currentRoom || rooms.at(-1) || null;
+  const currentRoom = initialState.currentRoom || (rooms.length > 0 ? rooms[ rooms.length - 1 ] : null);
 
   if (currentRoom && !rooms.find(r => r.key === currentRoom.key)) {
     rooms.push(currentRoom);

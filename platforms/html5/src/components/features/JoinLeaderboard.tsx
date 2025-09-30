@@ -13,7 +13,7 @@ export default function JoinLeaderboard (props: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isMobileDevice = utils.isMobileDevice();
   const [ errorMessage, setErrorMessage ] = useState<string>('');
-  const errorMessageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const errorMessageTimeoutRef = useRef<number | null>(null);
 
   const joinLeaderboard = async (roomCode: string) => {
     if (!roomCode) return;
@@ -35,7 +35,7 @@ export default function JoinLeaderboard (props: Props) {
       }
       errorMessageTimeoutRef.current = setTimeout(() => {
         setErrorMessage('');
-      }, 3000);
+      }, 3000) as unknown as number;
     } finally {
       const inputEl = containerRef.current?.querySelector('input') as HTMLInputElement;
       if (inputEl) {

@@ -14,7 +14,7 @@ interface LottieProps {
 export default function LottieComponent ({ animationData, className, width, height, loop, delay }: LottieProps) {
   const hasStartedMountingRef = useRef(false);
   const lottieAnimationRef = useRef<DotLottie | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<number | null>(null);
   const canvasIdRef = useRef((Date.now() + Math.random()).toString());
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ lottiePlayerReady, setLottiePlayerReady ] = useState(false);
@@ -49,7 +49,7 @@ export default function LottieComponent ({ animationData, className, width, heig
       }
       timeoutRef.current = setTimeout(() => {
         lottieAnimationRef.current?.play();
-      }, delay);
+      }, delay) as unknown as number;
     }
 
     return () => {
