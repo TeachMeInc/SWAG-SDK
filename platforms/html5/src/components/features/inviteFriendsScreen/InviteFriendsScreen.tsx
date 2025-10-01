@@ -70,7 +70,6 @@ export default function InviteFriendsScreen (props: Props) {
 
   return (
     <Panel
-      bgColor={session.game?.hex_color}
       className={`swag-inviteFriendsScreen ${exitingRight ? 'swag-slide-out-right' : ''} ${exitingDown ? 'swag-slide-out-down' : ''}`}
       header={
         <Header

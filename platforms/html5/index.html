@@ -85,6 +85,7 @@
     <section>
       <h4>UI Methods</h4>
       <p>
+        <button id='btnGameSplashScreen'>Splash Screen</button>
         <button id='btnGameSummaryScreen'>Summary Screen</button>
         <button id='btnShowLoader'>Show Loader</button>
         <button id='btnHideLoader'>Hide Loader</button>
@@ -151,6 +152,7 @@
         leaderboardScreen: true,
         splashScreen: {
           isBeta: true,
+          showOnLoad: true,
         },
         // summaryScreen: {},
         toolbar: {
@@ -177,14 +179,18 @@
                 icon: 'info',
                 toggled: true,
               },
+              {
+                id: 'fullScreen',
+                icon: 'expand',
+                onClick: () => {
+                  if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                  } else {
+                    document.body.requestFullscreen();
+                  }
+                }
+              },
             ]
-          },
-          onClickFullScreen: () => {
-            if (document.fullscreenElement) {
-              document.exitFullscreen();
-            } else {
-              document.body.requestFullscreen();
-            }
           },
         },
       });
@@ -263,9 +269,13 @@
       document.getElementById('btnPostDailyScore').onclick = 
         () => {
           const value = Math.floor(Math.random() * 1000);
-          const displayValue = value + ' seconds';
-          api.postDailyScore(value, displayValue);
+          api.postDailyScore(value);
         };
+
+      document.getElementById('btnGameSplashScreen').onclick = 
+        () => api.showSplashScreen({
+          onClickPlay: () => { alert('Play clicked.'); },
+        });
 
       document.getElementById('btnGameSummaryScreen').onclick = 
         () => api.showSummaryScreen({

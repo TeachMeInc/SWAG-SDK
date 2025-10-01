@@ -6,6 +6,7 @@
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  user-select: none;
 }
 
 .swag-gameThemed-panel__content {
@@ -37,11 +38,6 @@
  */
 
 .swag-gameThemed-panel {
+  background-color: var(--swag-game-accent-color);
   color: var(--swag-gameThemed-panel-font-color);
-}
-
-.swag-theme--dark {
-  .swag-gameThemed-panel {
-    background-color: var(--swag-gameThemed-panel-bg-color) !important;
-  }
 }

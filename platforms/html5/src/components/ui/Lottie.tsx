@@ -51,14 +51,6 @@ export default function LottieComponent ({ animationData, className, width, heig
         lottieAnimationRef.current?.play();
       }, delay) as unknown as number;
     }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      lottieAnimationRef.current?.destroy();
-      lottieAnimationRef.current = null;
-    };
   }, [ lottiePlayerReady, animationData, delay, loop ]);
 
   return (

@@ -137,7 +137,6 @@ export default function LeaderboardScreen (props: Props) {
 
   return (
     <Panel
-      bgColor={session.game?.hex_color}
       className={`swag-leaderboardScreen ${exiting ? 'swag-slide-out-right' : ''}`}
       header={
         <Header

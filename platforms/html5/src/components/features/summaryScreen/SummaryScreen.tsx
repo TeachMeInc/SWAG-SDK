@@ -236,12 +236,16 @@ export default function SummaryScreen (props: SummaryProps) {
       summaryScreenUi.hide();
     }, 400);
   };
+
+  const style = props.isInjected 
+    ? {} 
+    : { marginTop: session.toolbarHeight };
   
   return (
     <div
       className={`swag-summaryScreen ${!props.isInjected ? 'swag-summaryScreen__fullscreen' : 'swag-summaryScreen__injected'} ${exiting ? 'swag-slide-out-down' : ''}`}
     >
-      <div ref={contentRef} className={`swag-summaryScreen__scroll-content ${isOverflow ? '--is-overflow' : ''}`} style={{ marginTop: session.toolbarHeight }}>
+      <div ref={contentRef} className={`swag-summaryScreen__scroll-content ${isOverflow ? '--is-overflow' : ''}`} style={style}>
         <div ref={contentRef} className='swag-summaryScreen__content'>
           <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
 

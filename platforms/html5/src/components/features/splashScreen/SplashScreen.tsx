@@ -67,7 +67,6 @@ export default function SplashScreen (props: Props) {
 
   return (
     <Panel 
-      bgColor={session.game?.hex_color}
       className={`swag-splashScreen ${exiting ? 'swag-slide-out-down' : ''}`}
     >
       {

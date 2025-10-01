@@ -27,9 +27,9 @@ export interface SWAGAPIOptions {
   },
   // onAbandonDailyGame?: () => Record<string, any>,
   splashScreen?: true | {
+    showOnLoad?: boolean,
     containerElementId?: string;
     isBeta?: boolean;
-    onClickPlay?: () => void;
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -37,7 +37,6 @@ export interface SWAGAPIOptions {
   toolbar?: true | {
     containerElementId?: string;
     initialToolbarState?: ToolbarState;
-    onClickFullScreen?: () => void;
     titleIcon?: string;
     titleIconDark?: string;
   },
@@ -48,15 +47,6 @@ export default class SWAGAPI {
 
   constructor (options: SWAGAPIOptions) {
     this.options = options;
-
-    // data.on('DATA_EVENT', (event) => {
-    //   this.emit('DATA_EVENT', { type: event });
-    // });
-
-    // data.on('DATA_ERROR', (event) => {
-    //   this._emitError(event);
-    // });
-
     this.init();
   }
 
@@ -141,9 +131,13 @@ export default class SWAGAPI {
     // Game info
     const game = await this.getGame();
     await drupalApi.getGame(session.game!.shockwave_keyword);
+
     if (!this.options.gameTitle && game) {
       session.gameTitle = game.name;
     }
+
+    // Game CSS Variables
+    document.documentElement.style.setProperty('--swag-l-game-accent-color', session.game?.hex_color || '#3377cc');
 
     /*
      * User session
@@ -206,15 +200,16 @@ export default class SWAGAPI {
 
     // Splash screen
     if (this.options.splashScreen) {
-      document.body.classList.add('swag-splashScreen--open'); // hide toolbar
       const opts = typeof this.options.splashScreen === 'object' 
         ? this.options.splashScreen 
         : {};
-      splashScreenUi.show({
-        isBeta: opts.isBeta || false,
-        onClickPlay: opts.onClickPlay,
-        hasLeaderboard: !!this.options.leaderboardScreen,
-      });
+      if (opts.showOnLoad) {
+        document.body.classList.add('swag-splashScreen--open'); // hide toolbar
+        splashScreenUi.show({
+          isBeta: opts.isBeta || false,
+          hasLeaderboard: !!this.options.leaderboardScreen,
+        });
+      }
     }
 
     // Toolbar
@@ -411,6 +406,26 @@ export default class SWAGAPI {
 
 
   // #region UI
+
+  showSplashScreen (options: {
+    isBeta?: boolean,
+    onClickPlay?: () => void,
+  } = {}) {
+    const opts = {
+      ...(
+        typeof this.options.splashScreen === 'object' 
+          ? this.options.splashScreen 
+          : {}
+      ),
+      ...options,
+    };
+
+    return splashScreenUi.show({
+      isBeta: opts.isBeta || false,
+      onClickPlay: opts.onClickPlay,
+      hasLeaderboard: !!this.options.leaderboardScreen,
+    });
+  }
 
   showSummaryScreen (options: {
     stats: { key: string, value: string, lottie: object }[], 

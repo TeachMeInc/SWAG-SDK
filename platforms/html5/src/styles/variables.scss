@@ -39,33 +39,32 @@ $breakpoints: (
   --swag-l-btn-border-color: #{$shockwaveOrange};
   --swag-l-panel-bg-color: #{$shockwaveWhite};
   --swag-l-panel-font-color: #{$shockwaveBlack};
-  --swag-l-gameThemed-panel-bg-color: transparent;
   --swag-l-gameThemed-input-border-color: rgba(25,25,25,0.25);
   --swag-l-toolbar-bg-color: #{$shockwaveWhite};
   --swag-l-toolbar-font-color: #{$shockwaveBlack};
   --swag-l-toolbar-border-color: #{$shockwaveLightGrey};
 
   // Dark theme
+  --swag-d-game-accent-color: #121212;
   --swag-d-btn-font-color: #{$shockwaveWhite};
   --swag-d-btn-primary-color: #{$shockwaveBlue};
   --swag-d-btn-secondary-color: #{$shockwaveOrange};
   --swag-d-btn-border-color: #{$shockwaveWhite};
   --swag-d-panel-bg-color: #{$shockwaveBlack};
   --swag-d-panel-font-color: #{$shockwaveWhite};
-  --swag-d-gameThemed-panel-bg-color: #{$shockwaveBlack};
   --swag-d-gameThemed-input-border-color: #000;
   --swag-d-toolbar-bg-color: #{$shockwaveBlack};
   --swag-d-toolbar-font-color: #{$shockwaveWhite};
   --swag-d-toolbar-border-color: #{$shockwaveDarkGrey};
 
   // Palette
+  --swag-game-accent-color: var(--swag-l-game-accent-color);
   --swag-btn-font-color: var(--swag-l-btn-font-color);
   --swag-btn-primary-color: var(--swag-l-btn-primary-color);
   --swag-btn-secondary-color: var(--swag-l-btn-secondary-color);
   --swag-btn-border-color: var(--swag-l-btn-border-color);
   --swag-panel-bg-color: var(--swag-l-panel-bg-color);
   --swag-panel-font-color: var(--swag-l-panel-font-color);
-  --swag-gameThemed-panel-bg-color: #{$shockwaveBlack};
   --swag-gameThemed-panel-font-color: #{$shockwaveWhite};
   --swag-gameThemed-input-bg-color: #{$shockwaveWhite};
   --swag-gameThemed-input-font-color: #{$shockwaveBlack};
@@ -89,6 +88,7 @@ $breakpoints: (
 
 // Dark theme
 .swag-theme--dark {
+  --swag-game-accent-color: var(--swag-d-game-accent-color);
   --swag-btn-font-color: var(--swag-d-btn-font-color);
   --swag-btn-primary-color: var(--swag-d-btn-primary-color);
   --swag-btn-secondary-color: var(--swag-d-btn-secondary-color);

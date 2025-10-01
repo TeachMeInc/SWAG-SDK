@@ -66,6 +66,10 @@
     margin-bottom: 0.65rem;
   }
 
+  code {
+    user-select: all;
+  }
+
   .swag-qrCode {
     width: 210px;
     height: 210px;
@@ -74,9 +78,10 @@
     overflow: hidden;
     background: white;
 
-    > img {
-      width: 100%;
-      height: auto;
+    > img, 
+    > canvas {
+      width: 100% !important;
+      height: auto !important;
     }
   }
 }

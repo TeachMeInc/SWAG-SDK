@@ -3,6 +3,7 @@ $smallScreenWidth: 468px;
 
 .swag-summaryScreen {
   pointer-events: auto;
+  user-select: none;
 
   @keyframes swag-slide-in-up {
     from {
