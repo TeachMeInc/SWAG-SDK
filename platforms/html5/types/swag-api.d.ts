@@ -91,7 +91,7 @@ declare enum GlobalEventType {
 interface SWAGAPIOptions {
     apiKey: string;
     debug?: boolean;
-    gameTitle: string;
+    gameTitle?: string;
     analytics?: {
         gameId?: string;
     };
