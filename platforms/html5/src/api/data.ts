@@ -1,5 +1,3 @@
-'use strict';
-
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import session from '@/session';
 import utils from '@/utils';

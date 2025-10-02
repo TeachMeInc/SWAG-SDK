@@ -6,9 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && node scripts/fix-icon-paths.js",
-    "build-staging": "tsc && vite build --mode staging && node scripts/fix-icon-paths.js",
-    "build-demo": "tsc && vite build --config vite.config.demo.ts && node scripts/fix-icon-paths.demo.js",
-    "build-types": "tsc && vite build --config vite.config.types.ts",
+    "build:staging": "tsc && vite build --mode staging && node scripts/fix-icon-paths.js",
+    "build:demo": "tsc && vite build --config vite.config.demo.ts && node scripts/fix-icon-paths.demo.js",
+    "build:types:bundle": "rollup -c rollup.dts.config.js",
+    "build:types:global": "node scripts/make-global-dts.js",
+    "build:types": "npm run build:types:bundle && npm run build:types:global",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -26,6 +28,8 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "rollup": "^4.52.3",
+    "rollup-plugin-dts": "^6.2.3",
     "sass": "^1.77.5",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",

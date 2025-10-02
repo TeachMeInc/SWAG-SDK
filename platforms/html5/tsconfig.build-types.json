@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "@/*": ["src/*"] },
+    "types": []            // avoid auto-including @types and project-wide d.ts
+  },
+  "include": [
+    "src/swag-api.types.ts"   // only the entry you want
+  ],
+  "exclude": [
+    "src/types/shims.d.ts"      // explicitly exclude asset shims
+  ]
+}

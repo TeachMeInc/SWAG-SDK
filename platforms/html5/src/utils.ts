@@ -119,12 +119,13 @@ const methods = {
       typeof Intl?.DateTimeFormat !== 'function' ||
       typeof Intl?.DateTimeFormat().resolvedOptions !== 'function'
     ) {
-      return import.meta.env.VITE_DEFAULT_TIMEZONE;
+      return import.meta.env.VITE_DEFAULT_TIMEZONE ?? '';
     }
 
     return (
       Intl.DateTimeFormat().resolvedOptions()?.timeZone 
-      ?? import.meta.env.VITE_DEFAULT_TIMEZONE
+        ?? import.meta.env.VITE_DEFAULT_TIMEZONE 
+        ?? ''
     );
   },
 

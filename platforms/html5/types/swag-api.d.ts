@@ -1,61 +1,37 @@
-declare class APIWrapper {
-    getInstance(options: SWAGAPIOptions): SWAGAPI;
-    getInstanceAsync(options: SWAGAPIOptions): Promise<unknown>;
-    showBrandingAnimation(element: string, callback: () => {}): Promise<void>;
-    showLeaderboard(): Promise<void>;
-}
-export default APIWrapper;
+/* eslint-disable */
+// This file is generated from swag-api module typings. Visit https://developers.shockwave.com for more information.
 
-declare interface DailyGameProgress {
-    day: string;
-    state: string;
-}
-
-declare interface DailyGameStreak {
-    streak: number;
-    maxStreak: number;
-}
-
-declare interface DialogOptions {
-    theme?: string;
-    title?: string;
-    level_key?: string;
-    period?: string;
-    header?: {
-        backButton: boolean;
-    };
-}
-
-declare type DialogType = 'scores' | 'dailyscores' | 'scoreconfirmation' | 'achievements' | 'weeklyscores' | 'userlogin' | 'usercreate';
-
-declare type Emitter = {
-    on(event: string, listener: (...arguments_: any[]) => void): Emitter;
-    once(event: string, listener: (...arguments_: any[]) => void): Emitter;
-    off(event: string, listener: (...arguments_: any[]) => void): Emitter;
-    off(): Emitter;
-    emit(event: string, ...arguments_: any[]): Emitter;
-    listeners(event: string): Array<(...arguments_: any[]) => void>;
-    listenerCount(event: string): number;
-    listenerCount(): number;
-    hasListeners(): boolean;
-};
-
-declare const emitter: EmitterConstructor;
-
-declare type EmitterConstructor = {
-    prototype: Emitter;
-    new (object?: object): Emitter;
-    <T extends object>(object: T): T & Emitter;
-};
-
-declare interface Entity {
+interface Entity {
     _id: string;
-    memberName: string;
-    isMember: boolean;
     token: string;
+    member?: {
+        shockwave?: {
+            screen_name: string;
+            site_member_id: number;
+            source: string;
+            shockwave_logged_in: number;
+        };
+    };
+    leaderboard_name: string;
+    leaderboards: string[];
 }
 
-declare interface GameModeData {
+interface Game {
+    name: string;
+    hex_color: string;
+    icon_url: string;
+    shockwave_keyword: string;
+}
+
+interface LeaderboardData {
+    level_key: string;
+    value: string;
+    date_created: string;
+    screen_name: string;
+    leaderboard_name?: string;
+    avatarUrl: string;
+}
+interface GameModeData {
     game: string;
     name: string;
     level_key: string;
@@ -64,23 +40,15 @@ declare interface GameModeData {
     reverse: boolean;
     order: number;
 }
-
-declare interface LeaderboardData {
-    level_key: string;
-    value: string;
-    date_created: string;
-    screen_name: string;
-    avatarUrl: string;
+interface DailyGameProgress {
+    day: string;
+    state: string;
 }
-
-declare type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToLogin' | 'swag.navigateToTitle' | 'swag.displayAd' | 'swag.displayShareDialog' | 'swag.userLogout' | 'swag.getRelatedGames' | 'swag.captureEvent' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete';
-
-declare interface MessagePayload {
-    eventName: MessageEventName;
-    message: string;
+interface DailyGameStreak {
+    streak: number;
+    maxStreak: number;
 }
-
-declare interface PostScoreOptions {
+interface PostScoreOptions {
     day?: string;
     type?: string;
     level_key?: string;
@@ -91,62 +59,104 @@ declare interface PostScoreOptions {
     use_daily?: boolean;
     confirmation?: boolean;
     meta?: any;
+    leaderboard?: string;
 }
 
-declare class SWAGAPI extends emitter {
-    protected _options: SWAGAPIOptions;
+type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete';
+interface MessagePayload {
+    eventName: MessageEventName;
+    message: string;
+}
+
+interface ToolbarItem {
+    id: string;
+    label?: string;
+    icon?: string;
+    disabled?: boolean;
+    toggled?: boolean;
+    onClick?: () => void;
+}
+interface ToolbarState {
+    items: ToolbarItem[];
+}
+
+declare enum GlobalEventType {
+    API_COMMUNICATION_ERROR = "API_COMMUNICATION_ERROR",
+    ERROR = "ERROR",
+    SESSION_READY = "SESSION_READY",
+    SPLASH_SCREEN_CLICK_PLAY = "SPLASH_SCREEN_CLICK_PLAY",
+    TOOLBAR_CLICK_FULL_SCREEN = "TOOLBAR_CLICK_FULL_SCREEN"
+}
+
+interface SWAGAPIOptions {
+    apiKey: string;
+    debug?: boolean;
+    gameTitle: string;
+    analytics?: {
+        gameId?: string;
+    };
+    leaderboards?: {
+        dailyScoreLevelKey?: string;
+    };
+    leaderboardScreen?: true | {};
+    splashScreen?: true | {
+        showOnLoad?: boolean;
+        containerElementId?: string;
+        isBeta?: boolean;
+    };
+    summaryScreen?: {
+        containerElementId?: string;
+    };
+    toolbar?: true | {
+        containerElementId?: string;
+        initialToolbarState?: ToolbarState;
+        titleIcon?: string;
+        titleIconDark?: string;
+    };
+}
+declare class SWAGAPI {
+    protected options: SWAGAPIOptions;
+    private ready;
     constructor(options: SWAGAPIOptions);
-    protected _createPreactRoot(id: string): void;
-    protected _init(): void;
-    protected _getSiteMode(): 'shockwave';
-    protected _emitError(errorType: string): void;
-    protected _parseUrlOptions(prop: string): string | Record<string, string>;
+    protected init(): Promise<void>;
     startSession(): Promise<void>;
     toggleFullScreen(): Promise<MessagePayload>;
     navigateToArchive(): Promise<MessagePayload>;
-    navigateToGameLanding(): Promise<MessagePayload>;
-    navigateToTitle(slug: string): Promise<MessagePayload>;
-    captureEvent(event: string, params: any): Promise<MessagePayload>;
-    getScoreCategories(): Promise<GameModeData[]>;
-    getDays(limit: number): Promise<any[]>;
-    getScores(options: PostScoreOptions): Promise<LeaderboardData[]>;
-    postScore(level_key: string, value: string, options: PostScoreOptions): Promise<void>;
-    postDailyScore(day: string, level_key: string, value: string): Promise<unknown>;
-    hasDailyScore(level_key: any): Promise<unknown>;
+    navigateToTitle(keyword: string): Promise<MessagePayload>;
+    getGame(): Promise<Game>;
+    startDailyGame(day: string, properties?: Record<string, any>): Promise<unknown>;
+    completeDailyGame(day: string, properties?: Record<string, any>): Promise<unknown>;
     getCurrentDay(): Promise<{
         day: string;
     }>;
-    startDailyGame(day: string): Promise<unknown>;
-    completeDailyGame(day: string): Promise<unknown>;
-    getDailyGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
+    getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
+    getGameStreak(): Promise<DailyGameStreak>;
     hasPlayedDay(day: string): Promise<boolean>;
-    getDailyGameStreak(): Promise<DailyGameStreak>;
+    getScoreCategories(): Promise<GameModeData[]>;
+    getDays(limit: number): Promise<any[]>;
+    getScores(options: PostScoreOptions): Promise<LeaderboardData[]>;
+    postScore(levelKey: string, value: string, options: PostScoreOptions): Promise<unknown>;
+    postDailyScore(value: string): Promise<unknown>;
+    hasDailyScore(levelKey: any): Promise<boolean>;
     getAchievementCategories(): Promise<any[]>;
     postAchievement(achievement_key: string): Promise<unknown>;
     getUserAchievements(): Promise<any[]>;
-    postDatastore(key: string, value: string): Promise<unknown>;
-    getUserDatastore(): Promise<unknown>;
     getCurrentEntity(): Entity | null;
     isSubscriber(): Promise<boolean>;
-    getCurrentUser(): Promise<unknown>;
-    navigateToLogin(): Promise<MessagePayload>;
-    userLogout(): Promise<MessagePayload>;
+    setUserData(key: string, value: string): Promise<unknown>;
+    getUserData(): Promise<any>;
+    setLocalUserData(key: string, value: string | null): void;
+    getLocalUserData(key: string): string | null;
+    private showToolbar;
+    hideToolbar(): void;
     setToolbarItems(items: ToolbarItem[]): void;
     updateToolbarItem(item: ToolbarItem): void;
     removeToolbarItem(id: string): void;
-    showShareDialog(): Promise<MessagePayload>;
-    showSummaryScreen(options: {
-        stats: {
-            key: string;
-            value: string;
-        }[];
-        titleHtml: string;
-        resultHtml: string;
-        shareString: string;
-        onReplay?: () => void;
-        onClose?: () => void;
+    showSplashScreen(options?: {
+        isBeta?: boolean;
+        onClickPlay?: () => void;
     }): Promise<void>;
-    showSummaryV2Screen(options: {
+    showSummaryScreen(options: {
         stats: {
             key: string;
             value: string;
@@ -158,57 +168,21 @@ declare class SWAGAPI extends emitter {
         onReplay?: () => void;
         onClose?: () => void;
     }): Promise<void>;
+    showLoader(debounce?: number): Promise<void>;
+    hideLoader(): Promise<void>;
     getPlatform(): "embed" | "app" | "standalone";
     getPlatformTheme(): ('light' | 'dark');
-    startGame(): Promise<void>;
-    endGame(): Promise<void>;
-    showAd(): Promise<void>;
-    showDialog(type: DialogType, options: DialogOptions): void;
-    populateLevelSelect(domId: any): Promise<void>;
-    populateDaySelect(domId: any, limit: any): Promise<void>;
-    populateAchievementSelect(domId: any): Promise<void>;
-    getBrandingLogo(): Promise<HTMLImageElement>;
-    getBrandingLogoUrl(): Promise<string>;
+    on(type: GlobalEventType, listener: EventListenerOrEventListenerObject): void;
+    off(type: GlobalEventType, listener: EventListenerOrEventListenerObject): void;
 }
 
-declare interface SWAGAPIOptions {
-    apiKey: string;
-    gameTitle: string;
-    wrapper: HTMLElement;
-    summary?: {
-        wrapperId?: string;
-    };
-    toolbar?: {
-        wrapperId?: string;
-        onClickFullScreen?: () => void;
-        titleIcon?: string;
-        titleIconDark?: string;
-        initialToolbarState?: ToolbarState;
-    };
-    theme?: 'shockwave';
-    api_key?: string;
+declare class APIWrapper {
+    getInstance(options: SWAGAPIOptions): SWAGAPI;
 }
-
-declare interface ToolbarItem {
-    id: string;
-    label?: string;
-    icon?: string;
-    disabled?: boolean;
-    toggled?: boolean;
-    onClick?: () => void;
-}
-
-declare interface ToolbarState {
-    items: ToolbarItem[];
-}
-
-export { }
-
 
 declare global {
-    interface Window {
-        SWAGTHEME: string;
-        SWAGAPI: APIWrapper;
-    }
+  interface Window {
+    SWAGAPI: APIWrapper;
+  }
 }
 

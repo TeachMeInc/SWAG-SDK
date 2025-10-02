@@ -1,5 +1,3 @@
-'use strict';
-
 import session from '@/session';
 import utils from '@/utils';
 import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
