@@ -23,7 +23,7 @@ class GlobalEventHandlerAPI {
     this.eventTarget.removeEventListener(type, listener);
   }
 
-  public dispatchEvent (event: Event): boolean {
+  public dispatchEvent (event: CustomEvent): boolean {
     return this.eventTarget.dispatchEvent(event);
   }
 }

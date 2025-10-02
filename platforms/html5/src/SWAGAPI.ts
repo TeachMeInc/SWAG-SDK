@@ -20,6 +20,9 @@ export interface SWAGAPIOptions {
   apiKey: string;
   debug?: boolean;
   gameTitle: string;
+  analytics?: {
+    gameId?: string,
+  },
   leaderboards?: {
     dailyScoreLevelKey?: string;
   },
@@ -42,8 +45,13 @@ export interface SWAGAPIOptions {
   },
 }
 
+function sessionReadyError () {
+  return new Error('Session not ready. Please call startSession() and wait for the promise to resolve or listen for the SESSION_READY event before using this method.');
+}
+
 export default class SWAGAPI {
   protected options: SWAGAPIOptions;
+  private ready = false;
 
   constructor (options: SWAGAPIOptions) {
     this.options = options;
@@ -58,6 +66,7 @@ export default class SWAGAPI {
     session.apiKey = this.options.apiKey || null;
     session.debug = !!this.options.debug;
     session.gameTitle = this.options.gameTitle || '';
+    session.analyticsId = this.options.analytics?.gameId || null;
 
     // // Abandon daily game setup
 
@@ -120,6 +129,10 @@ export default class SWAGAPI {
   // #region API Methods
 
   async startSession () {
+    if (this.ready) {
+      throw new Error('Cannot start session; session already started.');
+    }
+
     /*
      * Initial setup
      */
@@ -221,8 +234,9 @@ export default class SWAGAPI {
      * Ready
      */
 
-    utils.log('Session Ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
-    globalEventHandler.dispatchEvent(new CustomEvent('SWAGAPI_READY', { detail: { session_ready: true } }));
+    this.ready = true;
+    utils.log('Session ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
+    globalEventHandler.dispatchEvent(new CustomEvent(GlobalEventType.SESSION_READY, { detail: { session_ready: true } }));
   }
 
   toggleFullScreen () {
@@ -254,12 +268,16 @@ export default class SWAGAPI {
   // #region Daily Game Methods
 
   async startDailyGame (day: string, properties: Record<string, any> = {}) {
+    if (!this.ready) throw sessionReadyError();
+
     const result = await dataApi.postDailyGameProgress(day, false, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
     return result;
   }
 
   async completeDailyGame (day: string, properties: Record<string, any> = {}) {
+    if (!this.ready) throw sessionReadyError();
+    
     // abandonDailyGameApi.emptyQueue();
     const result = await dataApi.postDailyGameProgress(day, true, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
@@ -267,18 +285,26 @@ export default class SWAGAPI {
   }
 
   getCurrentDay () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getCurrentDay();
   }
 
   getGameProgress (month: string, year: string) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getDailyGameProgress(month, year);
   }
   
   getGameStreak () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getDailyGameStreak();
   }
 
   hasPlayedDay (day: string) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.hasPlayedDay(day);
   }
  
@@ -289,22 +315,32 @@ export default class SWAGAPI {
   // #region Score Methods
 
   getScoreCategories () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getScoreCategories();
   }
 
   getDays (limit: number) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getDays(limit);
   }
 
   getScores (options: PostScoreOptions) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getScores(options);
   }
 
   postScore (levelKey: string, value: string, options: PostScoreOptions) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.postScore(levelKey, value, options);
   }
 
   postDailyScore (value: string) {
+    if (!this.ready) throw sessionReadyError();
+    
     const day = utils.getDateString();
     const levelKey = this.options?.leaderboards?.dailyScoreLevelKey || 'daily';
 
@@ -312,6 +348,8 @@ export default class SWAGAPI {
   }
 
   hasDailyScore (levelKey: any) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.hasDailyScore(levelKey);
   }
 
@@ -322,14 +360,20 @@ export default class SWAGAPI {
   // #region Achievement Methods
 
   getAchievementCategories () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getAchievementCategories();
   }
 
   postAchievement (achievement_key: string) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.postAchievement(achievement_key);
   }
 
   getUserAchievements () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getUserAchievements();
   }
 
@@ -340,18 +384,26 @@ export default class SWAGAPI {
   // #region User Methods
 
   getCurrentEntity () {
+    if (!this.ready) throw sessionReadyError();
+    
     return session.entity;
   }
 
   isSubscriber () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.isSubscriber();
   }
 
   setUserData (key: string, value: string) {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.postDatastore(key, value);
   }
 
   getUserData () {
+    if (!this.ready) throw sessionReadyError();
+    
     return dataApi.getUserDatastore();
   }
 
@@ -386,18 +438,26 @@ export default class SWAGAPI {
   }
 
   hideToolbar () {
+    if (!this.ready) throw sessionReadyError();
+    
     toolbarUi.hide();
   }
 
   setToolbarItems (items: ToolbarItem[]) {
+    if (!this.ready) throw sessionReadyError();
+    
     toolbarUi.setItems(items);
   }
 
   updateToolbarItem (item: ToolbarItem) {
+    if (!this.ready) throw sessionReadyError();
+    
     toolbarUi.updateItem(item);
   }
 
   removeToolbarItem (id: string) {
+    if (!this.ready) throw sessionReadyError();
+    
     toolbarUi.removeItem(id);
   }
 
@@ -411,6 +471,8 @@ export default class SWAGAPI {
     isBeta?: boolean,
     onClickPlay?: () => void,
   } = {}) {
+    if (!this.ready) throw sessionReadyError();
+    
     const opts = {
       ...(
         typeof this.options.splashScreen === 'object' 
@@ -435,6 +497,8 @@ export default class SWAGAPI {
     onReplay?: () => void,
     onClose?: () => void,
   }) {
+    if (!this.ready) throw sessionReadyError();
+    
     return summaryScreenUi.show({
       ...options,
       hasLeaderboard: !!this.options.leaderboardScreen,
@@ -479,4 +543,6 @@ export default class SWAGAPI {
 
   // #endregion
   
+
+
 }

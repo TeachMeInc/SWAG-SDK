@@ -291,6 +291,9 @@ class DataAPI {
       sdk_version: config.version,
       platform: utils.getPlatform(),
     };
+    if (session.analyticsId) {
+      properties.id = session.analyticsId;
+    }
     const body = { game: session.apiKey, day, complete, properties };
     return await postJSON('/v1/dailygameprogress', body);
   }
@@ -377,6 +380,9 @@ class DataAPI {
   }
 
   async postTag (tagName: string, properties: Record<string, any> = {}) {
+    if (session.analyticsId) {
+      properties.id = session.analyticsId;
+    }
     const body = {
       game: session.game?.shockwave_keyword,
       properties: {

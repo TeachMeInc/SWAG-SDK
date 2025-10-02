@@ -145,6 +145,9 @@
         // apiKey: '5c6c3c056917a692f96f9651',
         // gameTitle: 'SWAG HTML5 SDK',
         apiKey: '66b3cbb9e2843f375e830980',
+        // analytics: {
+        //   gameId: 'foobarbaz',
+        // },
         debug: true,
         leaderboards: {
           dailyScoreLevelKey: 'daily',
@@ -193,6 +196,9 @@
             ]
           },
         },
+      });
+      api.on('SESSION_READY', () => {
+        console.log('>> Session ready event fired');
       });
 
       const game = {

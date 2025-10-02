@@ -11,6 +11,7 @@ export interface Session {
   game: Game | null;
   drupalGame: DrupalGame | null;
   toolbarHeight: number;
+  analyticsId: string | null;
 }
 
 const session: Session = {
@@ -22,6 +23,7 @@ const session: Session = {
   game: null,
   drupalGame: null,
   toolbarHeight: 48,
+  analyticsId: null,
 };
 
 export default session;
