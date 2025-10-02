@@ -46,6 +46,7 @@ export default defineConfig({
           { text: 'Installation', link: '/html5/version-5/installation' },
           { text: 'Usage & Examples', link: '/html5/version-5/usage-and-examples' },
           { text: 'Customization', link: '/html5/version-5/customization-css-variables' },
+          { text: 'Toolbar Icons', link: '/html5/version-5/toolbar-icons' },
           {
             text: 'Script Reference',
             items: [
