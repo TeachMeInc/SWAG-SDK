@@ -1,5 +1,5 @@
 /* eslint-disable */
-// This file is generated from swag-api module typings. Visit https://developers.shockwave.com for more information.
+// This file is generated from Shockwave SDK module typings. Visit https://developers.shockwave.com for more information.
 
 interface Entity {
     _id: string;
