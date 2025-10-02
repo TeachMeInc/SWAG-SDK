@@ -25,7 +25,7 @@ export default defineConfig({
 
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Documentation', link: '/unity/installation' },
+      { text: 'Documentation', link: '/html5/version-5/installation' },
       { text: 'Submit Your Game', link: 'https://shockwavehelp.zendesk.com/hc/en-us/requests/new' }
     ],
 
@@ -41,10 +41,37 @@ export default defineConfig({
       //   ]
       // },
       { 
-        text: 'HTML5', 
+        text: 'HTML5 v5', 
         items: [
-          { text: 'Installation', link: '/html5/installation' },
-          { text: 'Usage & Examples', link: '/html5/usage-and-examples' },
+          { text: 'Installation', link: '/html5/version-5/installation' },
+          { text: 'Usage & Examples', link: '/html5/version-5/usage-and-examples' },
+          {
+            text: 'Script Reference',
+            items: [
+              { text: 'APIWrapper', link: '/html5/version-5/script-reference/APIWrapper' },
+              { text: 'DailyGameProgress', link: '/html5/version-5/script-reference/DailyGameProgress' },
+              { text: 'DailyGameStreak', link: '/html5/version-5/script-reference/DailyGameStreak' },
+              { text: 'Entity', link: '/html5/version-5/script-reference/Entity' },
+              { text: 'Game', link: '/html5/version-5/script-reference/Game' },
+              { text: 'GameModeData', link: '/html5/version-5/script-reference/GameModeData' },
+              { text: 'GlobalEventType', link: '/html5/version-5/script-reference/GlobalEventType' },
+              { text: 'LeaderboardData', link: '/html5/version-5/script-reference/LeaderboardData' },
+              { text: 'MessageEventName', link: '/html5/version-5/script-reference/MessageEventName' },
+              { text: 'MessagePayload', link: '/html5/version-5/script-reference/MessagePayload' },
+              { text: 'PostScoreOptions', link: '/html5/version-5/script-reference/PostScoreOptions' },
+              { text: 'SWAGAPI', link: '/html5/version-5/script-reference/SWAGAPI' },
+              { text: 'SWAGAPIOptions', link: '/html5/version-5/script-reference/SWAGAPIOptions' },
+              { text: 'ToolbarItem', link: '/html5/version-5/script-reference/ToolbarItem' },
+              { text: 'ToolbarState', link: '/html5/version-5/script-reference/ToolbarState' },
+            ]
+          },
+        ]
+      },
+      { 
+        text: 'HTML5 (legacy)', 
+        items: [
+          { text: 'Installation', link: '/html5/legacy/installation' },
+          { text: 'Usage & Examples', link: '/html5/legacy/usage-and-examples' },
         ]
       },
       { 

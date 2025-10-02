@@ -23,7 +23,6 @@ In order to test SWAG API integration in your built game locally, you will need 
 
 ```
 127.0.0.1 local.shockwave.com
-127.0.0.1 local.shockwave.com
 ```
 
 ::: info
@@ -47,4 +46,4 @@ npx http-server ./ -p 8888
 
 Now that you've installed the SDK you're ready to start using it. 
 
-For a quick overview of the available features (with examples), check out our [Usage & Examples](/html5/usage-and-examples) guide.
+For a quick overview of the available features (with examples), check out our [Usage & Examples](/html5/legacy/usage-and-examples) guide.

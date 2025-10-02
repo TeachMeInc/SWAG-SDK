@@ -115,10 +115,10 @@ interface SWAGAPIOptions {
     };
 }
 declare class SWAGAPI {
-    protected options: SWAGAPIOptions;
+    private options;
     private ready;
     constructor(options: SWAGAPIOptions);
-    protected init(): Promise<void>;
+    private init;
     startSession(): Promise<void>;
     toggleFullScreen(): Promise<MessagePayload>;
     navigateToArchive(): Promise<MessagePayload>;
@@ -148,7 +148,6 @@ declare class SWAGAPI {
     setLocalUserData(key: string, value: string | null): void;
     getLocalUserData(key: string): string | null;
     private showToolbar;
-    hideToolbar(): void;
     setToolbarItems(items: ToolbarItem[]): void;
     updateToolbarItem(item: ToolbarItem): void;
     removeToolbarItem(id: string): void;

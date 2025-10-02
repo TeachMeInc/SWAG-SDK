@@ -48,7 +48,7 @@ function sessionReadyError () {
 }
 
 export default class SWAGAPI {
-  protected options: SWAGAPIOptions;
+  private options: SWAGAPIOptions;
   private ready = false;
 
   constructor (options: SWAGAPIOptions) {
@@ -56,7 +56,7 @@ export default class SWAGAPI {
     this.init();
   }
 
-  protected async init () {
+  private async init () {
     /* 
      * Session setup
      */
@@ -433,12 +433,6 @@ export default class SWAGAPI {
     toolbarUi.show({ 
       ...toolbarOptions,
     });
-  }
-
-  hideToolbar () {
-    if (!this.ready) throw sessionReadyError();
-    
-    toolbarUi.hide();
   }
 
   setToolbarItems (items: ToolbarItem[]) {

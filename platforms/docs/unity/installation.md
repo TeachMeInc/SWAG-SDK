@@ -134,7 +134,6 @@ In order to test SWAG API integration in your built game locally, you will need 
 
 ```
 127.0.0.1 local.shockwave.com
-127.0.0.1 local.shockwave.com
 ```
 
 ::: info
