@@ -45,6 +45,7 @@ export default defineConfig({
         items: [
           { text: 'Installation', link: '/html5/version-5/installation' },
           { text: 'Usage & Examples', link: '/html5/version-5/usage-and-examples' },
+          { text: 'Customization', link: '/html5/version-5/customization-css-variables' },
           {
             text: 'Script Reference',
             items: [
