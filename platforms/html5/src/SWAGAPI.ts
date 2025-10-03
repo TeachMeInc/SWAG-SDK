@@ -145,6 +145,7 @@ export default class SWAGAPI {
     try {
       await drupalApi.getGame(session.game!.shockwave_keyword);
     } catch {
+      utils.error('Error fetching Drupal game record for keyword:', session.game!.shockwave_keyword);
       session.game = { 
         ...(session.game!),
         hex_color: '#3377cc',
