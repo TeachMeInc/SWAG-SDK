@@ -33,7 +33,7 @@ const methods = {
     if (dateParam) {
       const results = dateParam.split('-'); 
       let [ year ] = results;
-      const [ month, day ] = results;
+      const [ _, month, day ] = results;
       if (year.length === 2) year = `20${year}`;
 
       return `${year}-${month}-${day}` as DateString;

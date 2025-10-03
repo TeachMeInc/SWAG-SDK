@@ -184,35 +184,6 @@ class DataAPI {
     return await getJSON<GameModeData[]>('/v1/score/categories', { game: session.apiKey });
   }
 
-  async getCurrentDay () {
-    const padDateDigit = function (number: string | number) {
-      if (typeof number === 'number' && number <= 99) { number = ('000' + number).slice(-2); }
-      return number;
-    };
-
-    const urlParams = utils.parseUrlParams();
-
-    if (urlParams.day && urlParams.month && urlParams.year) {
-      const yearPart = parseInt(urlParams.year, 10);
-      const dayParts = [
-        (yearPart > 2000 ? yearPart : 2000 + yearPart), // handle both 4 digit and 2 digit years
-        padDateDigit(parseInt (urlParams.month, 10)),
-        padDateDigit(parseInt (urlParams.day, 10))
-      ];
-      return { day: dayParts.join('-') };
-    } 
-
-    else if (urlParams.date) {
-      const parts = urlParams.date.split('/');
-      parts[ 0 ] = (2000 + parseInt(parts[ 0 ], 10)).toString();
-      return { day: parts.join('-') };
-    }
-
-    else {
-      return await getJSON<{ day: string }>('/v1/currentday');
-    }
-  }
-
   async getDays (limit: number = 30): Promise<any[]> {
     return await getJSON<any[]>('/v1/days', { game: session.apiKey, limit });
   }

@@ -224,7 +224,7 @@ export default class SWAGAPI {
       const opts = typeof this.options.splashScreen === 'object' 
         ? this.options.splashScreen 
         : {};
-      if (opts.showOnLoad) {
+      if (this.options.splashScreen === true || opts.showOnLoad) {
         document.body.classList.add('swag-splashScreen--open'); // hide toolbar
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
@@ -243,7 +243,7 @@ export default class SWAGAPI {
      */
 
     this.ready = true;
-    utils.log('Session ready for user', entity?._id, 'on', utils.getPlatform(), 'platform');
+    utils.log('Session ready for user', entity?._id, 'on date', utils.getDateString(), 'on', utils.getPlatform(), 'platform');
     globalEventHandler.dispatchEvent(new CustomEvent(GlobalEventType.SESSION_READY, { detail: { session_ready: true } }));
   }
 
@@ -293,9 +293,7 @@ export default class SWAGAPI {
   }
 
   getCurrentDay () {
-    if (!this.ready) throw sessionReadyError();
-    
-    return dataApi.getCurrentDay();
+    return utils.getDateString();
   }
 
   getGameProgress (month: string, year: string) {
