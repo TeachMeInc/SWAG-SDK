@@ -45,8 +45,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
     // Check if the game has been played today
     promises.push((async () => {
       try {
-        const currentDay = await dataApi.getCurrentDay();
-        return await dataApi.hasPlayedDay(currentDay.day);
+        return await dataApi.hasPlayedDay(utils.getDateString());
       } catch (e) {
         utils.warn('Error checking if game has been played today:', e);
       }
