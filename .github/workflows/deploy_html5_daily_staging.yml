@@ -21,7 +21,7 @@ jobs:
         working-directory: ./platforms/html5
 
       - name: Build project
-        run: npm run build-staging
+        run: npm run build:staging
         working-directory: ./platforms/html5
 
       - name: Upload to DigitalOcean Spaces
