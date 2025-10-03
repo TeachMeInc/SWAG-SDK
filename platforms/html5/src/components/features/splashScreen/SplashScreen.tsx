@@ -7,6 +7,8 @@ import OutlineButton from '@/components/ui/gameThemed/OutlineButton';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
 import { useEffect, useState } from 'preact/hooks';
+import swStampWhite from '@/assets/sw-stamp-white.svg';
+import utils from '@/utils';
 
 interface Props {
   isBeta?: boolean;
@@ -25,6 +27,10 @@ export default function SplashScreen (props: Props) {
     image.onload = () => {
       setImg(image.src);
       document.body.classList.remove('swag-splashScreen--open'); // show toolbar
+    };
+    image.onerror = () => {
+      utils.error('Failed to load game icon:', session.game!.icon_url);
+      image.src = swStampWhite; // fallback
     };
     image.src = session.game!.icon_url;
 

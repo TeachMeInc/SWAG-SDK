@@ -1,6 +1,7 @@
 import session from '@/session';
 import utils from '@/utils';
 import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
+import swStampWhite from '@/assets/sw-stamp-white.svg';
 
 // API imports
 import dataApi, { PostScoreOptions } from '@/api/data';
@@ -141,14 +142,22 @@ export default class SWAGAPI {
 
     // Game info
     const game = await this.getGame();
-    await drupalApi.getGame(session.game!.shockwave_keyword);
+    try {
+      await drupalApi.getGame(session.game!.shockwave_keyword);
+    } catch {
+      session.game = { 
+        ...(session.game!),
+        hex_color: '#3377cc',
+        icon_url: swStampWhite,
+      };
+    }
 
     if (!this.options.gameTitle && game) {
       session.gameTitle = game.name;
     }
 
     // Game CSS Variables
-    document.documentElement.style.setProperty('--swag-l-game-accent-color', session.game?.hex_color || '#3377cc');
+    document.documentElement.style.setProperty('--swag-l-game-accent-color', session.game!.hex_color);
 
     /*
      * User session
