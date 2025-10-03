@@ -141,7 +141,7 @@ export default class SWAGAPI {
     if (theme === 'dark') document.body.classList.add('swag-theme--dark');
 
     // Game info
-    const game = await this.getGame();
+    const game = await dataApi.getGame(); 
     try {
       await drupalApi.getGame(session.game!.shockwave_keyword);
     } catch {

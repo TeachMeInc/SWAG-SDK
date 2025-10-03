@@ -1,7 +1,5 @@
-import drupalApi from '@/api/drupal';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 import SplashScreen from '@/components/features/splashScreen/SplashScreen';
-import session from '@/session';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 
 class SplashScreenUI extends UserInterfaceAPI {
@@ -13,8 +11,6 @@ class SplashScreenUI extends UserInterfaceAPI {
     onClickPlay?: () => void,
     hasLeaderboard?: boolean,
   }) {
-    await drupalApi.getGame(session.game!.shockwave_keyword);
-
     const onClickPlay = () => {
       globalEventHandler.dispatchEvent(new CustomEvent(GlobalEventType.SPLASH_SCREEN_CLICK_PLAY));
       options.onClickPlay?.();

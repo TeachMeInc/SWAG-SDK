@@ -206,6 +206,11 @@ class DrupalAPI {
     }
 
     const games = await getJSON<DrupalGame[]>('/api/node/game/entity/alias?route=/gamelanding/' + keyword);
+
+    if (games.length === 0) {
+      throw new Error('Drupal record not found for keyword: ' + keyword);
+    }
+
     const game = games[ 0 ];
 
     session.game = { 
