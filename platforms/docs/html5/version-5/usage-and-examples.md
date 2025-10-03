@@ -7,17 +7,10 @@ The SWAGAPI is available globally after including the SDK script. Initialize the
 ```js
 const api = SWAGAPI.getInstance({
 	apiKey: 'YOUR_API_KEY',
-	gameTitle: 'My Game',
 	debug: true,
-	leaderboards: {
-		dailyScoreLevelKey: 'level_1'
-	},
+	leaderboardScreen: true,
 	splashScreen: true,
-	summaryScreen: true,
 	toolbar: true,
-	analytics: {
-		gameId: 'my_game_id'
-	}
 });
 ```
 
@@ -33,7 +26,7 @@ Or listen for the event:
 
 ```js
 api.on('SESSION_READY', () => {
-	// Session is ready
+	// Session is ready, safe to use other methods
 });
 ```
 
@@ -41,45 +34,99 @@ api.on('SESSION_READY', () => {
 
 | Option         | Type      | Description |
 | -------------- | --------- | ----------- |
-| apiKey         | string    | Unique identifier for your game |
-| gameTitle      | string    | Displayed in UI screens |
-| debug          | boolean   | Enable debug logging |
-| leaderboards   | object    | Leaderboard config (see below) |
-| splashScreen   | true/object | Enable splash screen UI |
-| summaryScreen  | true/object | Enable summary screen UI |
-| toolbar        | true/object | Enable toolbar UI |
-| analytics      | object    | Analytics config |
+| apiKey         | string    | SWAG API key |
+| gameTitle      | string?   | Custom game title |
+| debug          | boolean?  | Enable debug logging |
+| leaderboards   | object?   | Leaderboard configuration |
+| splashScreen   | true/object | Enable splash screen |
+| summaryScreen  | true/object | Enable summary screen |
+| toolbar        | true/object | Enable toolbar |
+| analytics      | object?     | Analytics config |
+
+A full list of API options can be found on the [SWAGAPIOptions](./script-reference/SWAGAPIOptions.md) reference page.
 
 ## Toolbar
 
-The toolbar provides navigation, branding, and quick actions. It is customizable via CSS variables and API options.
+The toolbar displays the current puzzle date, game title, and branding. It also includes a customizable section where developers can add icons and text. Developers can configure the toolbar by passing a `toolbar` options object (see [SWAGAPIOptions](./script-reference/SWAGAPIOptions.md)) in the SDK configuration and further customize its appearance using CSS variables (see [Customization](./customization-css-variables.md)).
 
 - Appears at the top of the game UI.
-- Can display a title, icons, and custom items.
-- Supports theme switching (light/dark).
+- Can display the date, title, icons, and custom items.
 - Use `setToolbarItems`, `updateToolbarItem`, and `removeToolbarItem` to manage items programmatically.
+
+Enable with:
+
+```js
+toolbar: true
+```
+
+Or customize:
+
+```js
+toolbar: {
+	containerElementId: 'CUSTOM_CONTAINER_ID',
+	initialToolbarState: { ... },
+	titleIcon: '/path/to/light-icon.png',
+	titleIconDark: '/path/to/dark-icon.png',
+}
+```
+
+### Toolbar Item State
+
+Toolbar items can have the following states:
+
+- **Default**: Normal state, fully interactive.
+- **Toggled**: Indicates an active state, often used for buttons that can be switched on/off.
+- **Disabled**: Non-interactive state, visually indicated as inactive.
+
+See the [Toolbar Item State](./script-reference/ToolbarItem.md) page for more details.
 
 Example:
 
 ```js
 api.setToolbarItems([
-	{ id: 'button', icon: 'trophy', onClick: () => {} }
+	{ id: 'item_hint', icon: 'magGlass', onClick: () => {} },
+	{ id: 'item_help', icon: 'question', toggled: true },
+	{ id: 'item_timer', icon: 'stopwatch', label: '0:00' },
 ]);
+
+api.updateToolbarItem(
+	{ id: 'item_timer', icon: 'stopwatch', label: currentTime }
+);
+
+api.removeToolbarItem('item_timer');
 ```
+
+You can also set toolbar items when initializing the API:
+
+```js
+const api = SWAGAPI.getInstance({
+	...
+	toolbar: {
+		initialToolbarState: {
+			items: [
+				{ id: 'item_hint', icon: 'magGlass', onClick: () => {} },
+				{ id: 'item_help', icon: 'question', toggled: true },
+				{ id: 'item_timer', icon: 'stopwatch', label: '0:00' },
+			]
+		}
+	},
+	...
+});
+```
+
+### Toolbar Icons
 
 A list of available toolbar icons can be found in the [Toolbar Icons](./toolbar-icons.md) guide.
 
-Customize appearance using CSS variables (see [Customization Guide](./customization-css-variables.md)).
-
 ## Splash Screen
 
-The splash screen is shown on game load and provides entry points to play, view archives, invite friends, and view scores.
+The splash screen is shown on game load and provides entry points to play the game, view the archives, and manage leaderboards.
 
 - Displays game title and icon.
-- "Play" button starts the game.
-- "Archive" navigates to past games.
-- "Play with Friends" opens the invite friends screen (room code leaderboards).
-- "View Scores" opens the leaderboard screen.
+- "Play" button dismisses the splash screen.
+- "Archive" signals the host to navigate to past games.
+- "Play with Friends" opens the invite friends screen.
+- "View Scores" opens the view leaderboard screen.
 
 Enable with:
 
@@ -94,6 +141,36 @@ splashScreen: {
 	showOnLoad: true,
 	isBeta: true
 }
+```
+
+### Play Clicked Event
+
+To handle when the user clicks "Play", listen for the `SPLASH_SCREEN_CLICK_PLAY` event:
+
+```js
+api.on('SPLASH_SCREEN_CLICK_PLAY', () => {
+	// User clicked "Play"
+});
+```
+
+Or manually show the splash screen:
+
+```js
+const api = SWAGAPI.getInstance({
+	...
+	splashScreen: {
+		showOnLoad: false,
+	},
+	...
+});
+
+await api.startSession();
+
+api.showSplashScreen({
+	onClickPlay: () => {
+		// User clicked "Play"
+	}
+});
 ```
 
 ## Summary Screen
@@ -113,80 +190,58 @@ api.showSummaryScreen({
 	stats: [{ key: 'Score', value: '123', lottie: {} }],
 	contentHtml: '<p>Great job!</p>',
 	shareString: 'MyGame 123pts',
-	onReplay: () => { /* replay logic */ },
-	onFavorite: () => { /* favorite logic */ }
+	onReplay: () => {},
+	onFavorite: () => {},
+	onClose: () => {}
 });
 ```
 
-## Leaderboards (Room Code / Play With Friends)
+Customize:
 
-SWAG v5 supports frictionless, room code-based leaderboards for social play.
+```js
+summaryScreen: {
+	containerElementId: 'CUSTOM_CONTAINER_ID',;
+},
+```
+
+## Leaderboards
+
+SWAG v5 supports frictionless, room code-based leaderboards for social play. When enabled, buttons to view leaderboards and invite friends are added to the splash and summary screens.
 
 - Users can create or join leaderboard rooms using a code.
 - "Invite Friends" generates a shareable URL and QR code.
 - Leaderboard data is scoped to the room code.
 - Users can leave or switch rooms at any time.
 
-Workflow:
-
-1. User clicks "Play with Friends" or "View Scores".
-2. Invite screen shows a room code and share options.
-3. Friends join using the code or link.
-4. Leaderboard screen displays scores for the current room.
-5. Users can leave or switch rooms.
-
-Example to show invite friends screen:
+Enable with:
 
 ```js
-inviteFriendsScreenUi.show({
-	roomCode: 'ABC123',
-	onClickPlay: () => { /* start game */ }
-});
+leaderboardScreen: true
 ```
 
-Example to show leaderboard screen:
+### Level Key
+
+By default, leaderboards post scores to the `daily` level key. To change which level key is used, pass a custom key in the options:
 
 ```js
-leaderboardScreenUi.show({
-	levelKey: 'level_1',
-	initialRoomCode: 'ABC123'
-});
+leaderboards: {
+	dailyScoreLevelKey: 'time'
+}
 ```
 
 ## Analytics
 
-The SDK supports basic analytics integration.
-
-- Pass `analytics: { gameId: 'your_game_id' }` in options.
-- Tracks session starts, game play, and other events.
-- For advanced analytics, integrate with your own tracking in event handlers.
-
-## UI Workflow
-
-1. **Splash Screen**: Shown on load, user chooses to play, view archives, invite friends, or view scores.
-2. **Toolbar**: Persistent at the top, provides navigation and branding.
-3. **Game Session**: User plays the game.
-4. **Summary Screen**: Shown after game ends, displays stats, sharing, and social options.
-5. **Leaderboards**: Users can view scores, join/leave rooms, and invite friends for social competition.
-
-## Example: Full Integration
+The SDK supports basic analytics integration, tracking when a game session starts and is finished. To add custom data to start and finish events, pass in a properties object to `startDailyGame` and `completeDailyGame`:
 
 ```js
-const api = SWAGAPI.getInstance({
-	apiKey: 'YOUR_API_KEY',
-	gameTitle: 'My Game',
-	leaderboards: { dailyScoreLevelKey: 'level_1' },
-	splashScreen: true,
-	summaryScreen: true,
-	toolbar: true,
-	analytics: { gameId: 'my_game_id' }
-});
-
-api.startSession().then(() => {
-	// Show splash screen, then start game
-	// After game ends, show summary screen
-	// Users can view leaderboards and invite friends
+api.completeDailyGame({ 
+	time_played: 120, 
+	todays_letters: 'abcdef' 
 });
 ```
 
----
+By default, game events are tracked under your games keyword. To track events under a different game, pass in a `gameId` in the `analytics` options:
+
+```js
+analytics: { gameId: 'your_game_id' }
+```
