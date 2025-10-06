@@ -124,11 +124,9 @@ declare class SWAGAPI {
     navigateToArchive(): Promise<MessagePayload>;
     navigateToTitle(keyword: string): Promise<MessagePayload>;
     getGame(): Promise<Game>;
-    startDailyGame(day: string, properties?: Record<string, any>): Promise<unknown>;
-    completeDailyGame(day: string, properties?: Record<string, any>): Promise<unknown>;
-    getCurrentDay(): Promise<{
-        day: string;
-    }>;
+    startDailyGame(properties?: Record<string, any>): Promise<unknown>;
+    completeDailyGame(properties?: Record<string, any>): Promise<unknown>;
+    getCurrentDay(): `${number}-${number}-${number}`;
     getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
     getGameStreak(): Promise<DailyGameStreak>;
     hasPlayedDay(day: string): Promise<boolean>;
