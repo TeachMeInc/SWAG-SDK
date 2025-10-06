@@ -119,7 +119,6 @@ const { frontmatter: fm } = useData()
         </div>
         <aside>
           <div class="Grid --3x">
-            
             <a 
               href="/html5/version-5/installation" 
               class="LogoPod"
@@ -130,42 +129,6 @@ const { frontmatter: fm } = useData()
                 />
               </figure>
             </a>
-            <a 
-              href="https://github.com/TeachMeInc/swag-api-construct-3" 
-              class="LogoPod"
-              target="_blank"
-            >
-              <figure>
-                <img 
-                  src="/home/constructLogo.svg" alt="Construct 3"
-                />
-              </figure>
-            </a>
-            <a href="/unity/installation" class="LogoPod">
-              <figure>
-                <img 
-                  src="/home/unityLogo.svg" alt="Unity"
-                  class="--light"
-                />
-                <img 
-                  src="/home/unityLogoDark.svg" alt="Unity (dark logo)"
-                  class="--dark"
-                />
-              </figure>
-            </a>
-            <div class="LogoPod">
-              <div>
-                Using another engine you don't see here? Let us know!
-                <br />
-                <a 
-                  class="Button --brand"
-                  :href="fm.supportHref"
-                  target="_blank"
-                >
-                  Contact Us
-                </a>
-              </div>
-            </div>
           </div>  
         </aside>
       </div>
