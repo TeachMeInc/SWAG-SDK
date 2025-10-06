@@ -52,7 +52,6 @@ whySubmit:
       numUsers: 1
       numPlays: 1
 
-
 mobile:
   title: Shockwave Mobile
   list:
@@ -78,7 +77,7 @@ faq:
     - question: What is required to submit my game?
       answer: Include our SDK in your game, and you'll be good to go. We give you a testing ground to make sure your game is fully compatible with our site's features, along with some QA support to make sure everything is ready for game time.
     - question: What development platforms does the Shockwave SDK support?
-      answer: We currently have plug-ins for HTML5, Unity, and Construct 3, as well as a RESTful API interface, with more coming soon.
+      answer: We currently have plug-ins for HTML5, as well as a RESTful API interface.
  
 questions:
   title: Got Questions?
