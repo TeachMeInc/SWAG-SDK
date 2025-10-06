@@ -330,13 +330,11 @@
       document.getElementById('btnRemoveToolbarItem').onclick = 
         () => api.removeToolbarItem('btn1');
 
-      const today = new Date().toISOString().split('T')[0];
-
       document.getElementById('btnStartDailyGame').onclick = 
-        () => api.startDailyGame(today, { foo: 'bar' });
+        () => api.startDailyGame({ foo: 'bar' });
 
       document.getElementById('btnCompleteDailyGame').onclick = 
-        () => api.completeDailyGame(today, { bar: 'baz' });
+        () => api.completeDailyGame({ bar: 'baz' });
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());
