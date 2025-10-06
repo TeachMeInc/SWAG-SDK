@@ -240,7 +240,7 @@ api.completeDailyGame({
 });
 ```
 
-By default, game events are tracked under your games keyword. To track events under a different game, pass in a `gameId` in the `analytics` options:
+By default, game events are tracked under your game's keyword. To track events under a different game, pass in a `gameId` in the `analytics` options:
 
 ```js
 analytics: { gameId: 'your_game_id' }

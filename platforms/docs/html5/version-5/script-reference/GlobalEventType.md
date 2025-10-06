@@ -15,3 +15,11 @@ The `GlobalEventType` enum defines global event types that can be listened for i
 ## Usage
 
 Used to subscribe to global events in the SDK using the `on` and `off` methods.
+
+Example:
+
+```javascript
+swag.on('SESSION_READY', () => {
+    console.log('Session is ready!');
+});
+```

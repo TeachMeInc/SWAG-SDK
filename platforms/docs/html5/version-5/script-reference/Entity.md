@@ -14,8 +14,8 @@ The `Entity` interface represents a user or player entity in the SWAG HTML5 SDK.
 | `member.shockwave.site_member_id` | number | The user's site member ID.                                               |
 | `member.shockwave.source` | string | Source of the member account.                                              |
 | `member.shockwave.shockwave_logged_in` | number | Indicates if the user is logged in to Shockwave.                      |
-| `leaderboard_name`   | string   | Name of the leaderboard associated with the entity.                         |
-| `leaderboards`       | string[] | List of leaderboard names the entity is associated with.                    |
+| `leaderboard_name`   | string   | The user's display name for private leaderboards.                         |
+| `leaderboards`       | string[] | List of leaderboards the entity is associated with.                    |
 
 ## Usage
 

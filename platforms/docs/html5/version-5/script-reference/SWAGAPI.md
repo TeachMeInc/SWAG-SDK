@@ -13,12 +13,12 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | Method                          | Description                                                        |
 |----------------------------------|--------------------------------------------------------------------|
 | `startSession()`                 | Starts a new session. Returns a promise.                           |
-| `toggleFullScreen()`             | Toggles fullscreen mode. Returns a promise with a message payload. |
+| `toggleFullScreen()`             | Toggles fullscreen mode in the host application. Returns a promise with a message payload. |
 | `navigateToArchive()`            | Navigates to the archive screen. Returns a promise with a message payload. |
 | `navigateToTitle(keyword)`       | Navigates to the game title screen. Returns a promise with a message payload. |
 | `getGame()`                      | Retrieves game information. Returns a promise with a `Game` object.|
-| `startDailyGame(day, properties?)`| Starts a daily game challenge. Returns a promise.                 |
-| `completeDailyGame(day, properties?)`| Completes a daily game challenge. Returns a promise.         |
+| `startDailyGame(properties?)`| Starts a daily game challenge. Returns a promise.                 |
+| `completeDailyGame(properties?)`| Completes a daily game challenge. Returns a promise.         |
 | `getCurrentDay()`                | Gets the current day for daily challenges. Returns a promise.      |
 | `getGameProgress(month, year)`   | Retrieves daily game progress. Returns a promise with an array of `DailyGameProgress`. |
 | `getGameStreak()`                | Retrieves the user's daily game streak. Returns a promise with a `DailyGameStreak`. |
@@ -27,7 +27,7 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `getDays(limit)`                 | Gets a list of days for daily challenges. Returns a promise.       |
 | `getScores(options)`             | Retrieves leaderboard scores. Returns a promise with an array of `LeaderboardData`. |
 | `postScore(levelKey, value, options)` | Posts a score to a leaderboard. Returns a promise.         |
-| `postDailyScore(value)`          | Posts a daily score. Returns a promise.                            |
+| `postDailyScore(value)`          | Posts a daily score for private leaderboards. Returns a promise.                            |
 | `hasDailyScore(levelKey)`        | Checks if a daily score exists. Returns a promise.                 |
 | `getAchievementCategories()`     | Retrieves achievement categories. Returns a promise.               |
 | `postAchievement(achievement_key)` | Posts an achievement. Returns a promise.                      |
@@ -43,10 +43,10 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `removeToolbarItem(id)`          | Removes a toolbar item by ID.                                      |
 | `showSplashScreen(options?)`     | Shows the splash screen. Returns a promise.                        |
 | `showSummaryScreen(options)`     | Shows the summary screen. Returns a promise.                       |
-| `showLoader(debounce?)`          | Shows a loading indicator. Returns a promise.                      |
+| `showLoader(debounce?)`          | Shows a loading indicator after a delay. Returns a promise.                      |
 | `hideLoader()`                   | Hides the loading indicator. Returns a promise.                    |
-| `getPlatform()`                  | Gets the platform type. Returns a string.                          |
-| `getPlatformTheme()`             | Gets the platform theme (light/dark). Returns a string.            |
+| `getPlatform()`                  | Gets the host platform type, either `embed` (for Shockwave.com), `app` (for the mobile app), or `standalone`.                          |
+| `getPlatformTheme()`             | Gets the host platform theme (`light`/`dark`)            |
 | `on(type, listener)`             | Subscribes to a global event.                                      |
 | `off(type, listener)`            | Unsubscribes from a global event.                                  |
 

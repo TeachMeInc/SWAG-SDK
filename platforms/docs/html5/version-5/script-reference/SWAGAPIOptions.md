@@ -8,7 +8,7 @@ The `SWAGAPIOptions` interface defines configuration options for initializing th
 |--------------------|-----------|-----------------------------------------------------|
 | `apiKey`           | string    | API key for authentication.                         |
 | `debug`            | boolean?  | Enable debug mode.                                  |
-| `gameTitle`        | string?   | Title of the game.                                  |
+| `gameTitle`        | string?   | Override the title of the game.                                  |
 | `analytics`        | object?   | Analytics configuration.                            |
 | `analytics.gameId` | string?   | Game ID for analytics.                              |
 | `leaderboards`     | object?   | Leaderboard configuration.                          |

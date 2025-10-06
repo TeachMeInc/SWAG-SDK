@@ -32,21 +32,14 @@ export default defineConfig({
     outline: [2, 3],
 
     sidebar: [
-      // {
-      //   text: 'Documentation',
-      //   items: [
-      //     // { text: 'Markdown Examples', link: '/markdown-examples' },
-      //     // { text: 'Runtime API Examples', link: '/api-examples' },
-      //     // { text: 'Getting Started', link: '/getting-started' },
-      //   ]
-      // },
       { 
-        text: 'HTML5 v5', 
+        text: 'HTML5 (version 5)', 
         items: [
           { text: 'Installation', link: '/html5/version-5/installation' },
           { text: 'Usage & Examples', link: '/html5/version-5/usage-and-examples' },
-          { text: 'Customization', link: '/html5/version-5/customization-css-variables' },
           { text: 'Toolbar Icons', link: '/html5/version-5/toolbar-icons' },
+          { text: 'Customization', link: '/html5/version-5/customization-css-variables' },
+          { text: 'Score Configuration', link: '/html5/version-5/score-config-and-formatting' },
           {
             text: 'Script Reference',
             items: [
@@ -76,49 +69,6 @@ export default defineConfig({
           { text: 'Usage & Examples', link: '/html5/legacy/usage-and-examples' },
         ]
       },
-      { 
-        text: 'Unity', 
-        items: [
-          { text: 'Installation', link: '/unity/installation' },
-          { text: 'Usage & Examples', link: '/unity/usage-and-examples' },
-          {
-            text: 'Script Reference',
-            items: [
-              {
-                text: 'Achievements',
-                items: [
-                  { text: 'Achievement (Struct)', link: '/unity/script-reference/Shockwave/Achievements/Achievement' },
-                  { text: 'Achievements (Class)', link: '/unity/script-reference/Shockwave/Achievements/Achievements' },
-                  { text: 'AchievementsCurrentUser (Class)', link: '/unity/script-reference/Shockwave/Achievements/AchievementsCurrentUser' },
-                ]
-              },
-              {
-                text: 'Scores',
-                items: [
-                  { text: 'Daily Best (Struct)', link: '/unity/script-reference/Shockwave/Scores/DailyBest' },
-                  { text: 'Score (Struct)', link: '/unity/script-reference/Shockwave/Scores/Score' },
-                  { text: 'ScorePeriod (Enum)', link: '/unity/script-reference/Shockwave/Scores/ScorePeriod' },
-                  { text: 'Scores (Class)', link: '/unity/script-reference/Shockwave/Scores/Scores' },
-                  { text: 'ScoresCurrentUser (Class)', link: '/unity/script-reference/Shockwave/Scores/ScoresCurrentUser' },
-                ]
-              },
-              {
-                text: 'User',
-                items: [
-                  { text: 'UserData (Struct)', link: '/unity/script-reference/Shockwave/User/UserData' },
-                  { text: 'User (Class)', link: '/unity/script-reference/Shockwave/User/User' },
-                ]
-              },
-              { text: 'AsyncHandler<T> (Class)', link: '/unity/script-reference/Shockwave/AsyncHandler' },
-              { text: 'JSONListHelper (Class)', link: '/unity/script-reference/Shockwave/JSONListHelper' },
-              { text: 'Provider (Enum)', link: '/unity/script-reference/Shockwave/Provider' },
-              { text: 'SWAG (Class)', link: '/unity/script-reference/Shockwave/SWAG' },
-              { text: 'SWAGConfig (Class)', link: '/unity/script-reference/Shockwave/SWAGConfig' },
-              { text: 'ViewMode (Enum)', link: '/unity/script-reference/Shockwave/ViewMode' },
-            ]
-          },
-        ]
-      }
     ],
 
     socialLinks: [

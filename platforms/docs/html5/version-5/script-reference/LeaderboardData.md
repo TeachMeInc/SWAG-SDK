@@ -10,8 +10,7 @@ The `LeaderboardData` interface represents a single entry or score in a leaderbo
 | `value`            | string   | The score or value achieved.                |
 | `date_created`     | string   | Date the score was recorded.                |
 | `screen_name`      | string   | The player's display name.                  |
-| `leaderboard_name` | string?  | Optional name of the leaderboard.           |
-| `avatarUrl`        | string   | URL to the player's avatar image.           |
+| `leaderboard_name` | string?  | The player's private leaderboard display name.           |
 
 ## Usage
 
