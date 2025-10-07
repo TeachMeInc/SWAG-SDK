@@ -13,7 +13,6 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 
 interface Props {
   roomCode: string;
-  exitDown?: boolean;
   onClickBack?: () => void;
   onClickPlay?: () => void;
 }
@@ -47,8 +46,7 @@ export default function InviteFriendsScreen (props: Props) {
   };
 
   const handleOnClickPlay = () => {
-    if (props.exitDown) setExitingDown(true);
-    else setExitingRight(true);
+    setExitingDown(true);
     props.onClickPlay?.();
     setTimeout(() => {
       inviteFriendsScreenUi.hide();

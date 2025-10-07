@@ -3,4 +3,5 @@ export interface Game {
   hex_color: string;
   icon_url: string;
   shockwave_keyword: string;
+  drupal_nid: number;
 }

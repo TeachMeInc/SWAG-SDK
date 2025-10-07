@@ -39,10 +39,17 @@ const methods = {
       return `${year}-${month}-${day}` as DateString;
     }
 
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: methods.getTimeZone(),
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  
+    const parts = formatter.formatToParts(new Date());
+    const year = parts.find(p => p.type === 'year')?.value;
+    const month = parts.find(p => p.type === 'month')?.value;
+    const day = parts.find(p => p.type === 'day')?.value;
 
     return `${year}-${month}-${day}` as DateString;
   },
@@ -87,6 +94,17 @@ const methods = {
       return systemTheme ? 'dark' : 'light';
     }
     return 'light';
+  },
+
+  getPlatformUrl (): string {
+    const platform = this.getPlatform();
+    if (platform === 'app') {
+      return `shockwave-app://game/${session.game?.drupal_nid}`;
+    }
+    if (platform === 'embed') {
+      return window.top?.location.href || window.location.href;
+    }
+    return window.location.href;
   },
 
   isMobileDevice () {

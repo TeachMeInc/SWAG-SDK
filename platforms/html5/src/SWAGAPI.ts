@@ -278,6 +278,8 @@ export default class SWAGAPI {
   async startDailyGame (properties: Record<string, any> = {}) {
     if (!this.ready) throw sessionReadyError();
 
+    properties[ '$current_url' ] = utils.getPlatformUrl();
+
     const day = utils.getDateString();
     const result = await dataApi.postDailyGameProgress(day, false, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
@@ -286,9 +288,12 @@ export default class SWAGAPI {
 
   async completeDailyGame (properties: Record<string, any> = {}) {
     if (!this.ready) throw sessionReadyError();
+
+    // abandonDailyGameApi.emptyQueue();
+
+    properties[ '$current_url' ] = utils.getPlatformUrl();
     
     const day = utils.getDateString();
-    // abandonDailyGameApi.emptyQueue();
     const result = await dataApi.postDailyGameProgress(day, true, properties);
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
     return result;

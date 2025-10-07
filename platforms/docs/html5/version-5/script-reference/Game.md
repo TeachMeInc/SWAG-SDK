@@ -10,6 +10,7 @@ The `Game` interface describes the basic properties of a game registered on the 
 | `hex_color`        | string   | The primary color of the game (hex format). |
 | `icon_url`         | string   | URL to the game's icon image.               |
 | `shockwave_keyword`| string   | Keyword used for Shockwave integration.     |
+| `drupal_nid`       | number   | Drupal node ID associated with the game.    |
 
 ## Usage
 

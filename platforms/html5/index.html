@@ -197,8 +197,13 @@
           },
         },
       });
+
       api.on('SESSION_READY', () => {
         console.log('>> Session ready event fired');
+      });
+
+      api.on('SPLASH_SCREEN_CLICK_PLAY', () => {
+        console.log('>> Splash screen play clicked event fired');
       });
 
       const game = {

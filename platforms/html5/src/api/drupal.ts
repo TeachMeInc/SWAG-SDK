@@ -205,18 +205,19 @@ class DrupalAPI {
       return session.drupalGame;
     }
 
-    const games = await getJSON<DrupalGame[]>('/api/node/game/entity/alias?route=/gamelanding/' + keyword);
+    const result = await getJSON<{ rows: DrupalGame[] }>('/api/games-by-keyword?keyword=' + keyword);
 
-    if (games.length === 0) {
+    if (result.rows.length === 0) {
       throw new Error('Drupal record not found for keyword: ' + keyword);
     }
 
-    const game = games[ 0 ];
+    const game = result.rows[ 0 ];
 
     session.game = { 
       ...(session.game!),
       hex_color: game.field_highlight_color!,
       icon_url: config.drupalRoot + game.field_mobile_icon!,
+      drupal_nid: Number(game.nid)
     };
     session.drupalGame = game;
     

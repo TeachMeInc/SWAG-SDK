@@ -20,6 +20,7 @@ import Button from '@/components/ui/gameThemed/Button';
 
 interface Props {
   onClickBack?: () => void;
+  onClickPlay?: () => void;
   levelKey: string;
   initialRoomCode: string | null;
   initialLeaderboardData: LeaderboardData[] | null;
@@ -64,6 +65,7 @@ export default function LeaderboardScreen (props: Props) {
       onClickPlay: () => {
         splashScreenUi.hide();
         leaderboardScreenUi.hide();
+        props.onClickPlay?.();
       }
     });
   };
@@ -74,6 +76,7 @@ export default function LeaderboardScreen (props: Props) {
       onClickPlay: () => {
         splashScreenUi.hide();
         leaderboardScreenUi.hide();
+        props.onClickPlay?.();
       },
       onRoomCodeAllocated: async (code: string) => {
         onJoinedLeaderboard(code);

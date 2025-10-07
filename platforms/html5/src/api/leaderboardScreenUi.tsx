@@ -16,6 +16,7 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
 
   async show (options: {
     onClickBack?: () => void;
+    onClickPlay?: () => void;
   }) {
     loaderUi.show(350);
     
@@ -43,6 +44,7 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
         initialRoomCode={roomCode || null}
         initialLeaderboardData={leaderboardData}
         onClickBack={options.onClickBack}
+        onClickPlay={options.onClickPlay}
       />
     );
   }

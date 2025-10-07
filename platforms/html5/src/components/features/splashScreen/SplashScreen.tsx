@@ -56,7 +56,6 @@ export default function SplashScreen (props: Props) {
 
   const onClickInviteFriends = () => {
     inviteFriendsScreenUi.show({
-      exitDown: true,
       onClickBack: () => {},
       onClickPlay: () => {
         splashScreenUi.hide();
@@ -67,7 +66,10 @@ export default function SplashScreen (props: Props) {
 
   const onClickLeaderboard = () => {
     leaderboardScreenUi.show({
-      onClickBack: () => {}
+      onClickBack: () => {},
+      onClickPlay: () => {
+        props.onClickPlay?.();
+      }
     });
   };
 

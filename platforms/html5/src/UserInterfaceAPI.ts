@@ -55,7 +55,6 @@ export default class UserInterfaceAPI {
     clearTimeout(this.timeout!);
 
     render(null, this.getRootEl());
-
     const parent = this.getRootEl().parentElement;
     if (parent) parent.removeChild(this.getRootEl());
 
