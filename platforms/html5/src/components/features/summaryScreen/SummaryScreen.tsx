@@ -95,7 +95,9 @@ function ShareStatsComponent (props: ShareStatsProps) {
 
 function PlayWithFriendsComponent () {
   const onClickChallengeFriends = () => {
-    leaderboardScreenUi.show({});
+    leaderboardScreenUi.show({
+      source: 'summaryScreen',
+    });
   };
 
   return (

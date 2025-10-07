@@ -17,6 +17,7 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
   async show (options: {
     onClickBack?: () => void;
     onClickPlay?: () => void;
+    source?: 'splashScreen' | 'summaryScreen';
   }) {
     loaderUi.show(350);
     
@@ -45,6 +46,7 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
         initialLeaderboardData={leaderboardData}
         onClickBack={options.onClickBack}
         onClickPlay={options.onClickPlay}
+        source={options.source}
       />
     );
   }

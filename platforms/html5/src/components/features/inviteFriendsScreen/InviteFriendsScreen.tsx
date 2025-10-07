@@ -9,10 +9,12 @@ import JoinLeaderboard from '@/components/features/JoinLeaderboard';
 import InviteFriends from '@/components/features/inviteFriendsScreen/InviteFriends';
 import { QRCode } from '@/components/ui/QRCode';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+import messagesApi from '@/api/messages';
 // import utils from '@/utils';
 
 interface Props {
   roomCode: string;
+  source?: 'splashScreen' | 'summaryScreen';
   onClickBack?: () => void;
   onClickPlay?: () => void;
 }
@@ -58,6 +60,8 @@ export default function InviteFriendsScreen (props: Props) {
     newUrl.searchParams.set('leaderboard', roomCode);
     window.history.replaceState({}, '', newUrl.toString());
 
+    messagesApi.trySendMessage('swag.setLeaderboardCode', roomCode, true);
+
     leaderboardScreenUi.show({
       onClickBack: () => {},
     });
@@ -78,7 +82,7 @@ export default function InviteFriendsScreen (props: Props) {
     >
       <div>
         <Button onClick={handleOnClickPlay}>
-          {props.onClickPlay ? 'Play Game' : 'Close'}
+          {props.source === 'summaryScreen' ? 'Close' : 'Play Game'}
         </Button>
       </div>
 

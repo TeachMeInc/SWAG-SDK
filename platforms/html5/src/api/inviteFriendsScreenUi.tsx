@@ -2,6 +2,7 @@ import InviteFriendsScreen from '@/components/features/inviteFriendsScreen/Invit
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import dataApi from '@/api/data';
 import loaderUi from '@/api/loaderUi';
+import messagesApi from '@/api/messages';
 
 class InviteFriendsScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-inviteFriendsScreen-root';
@@ -9,6 +10,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
 
   async show (options: {
     roomCode?: string;
+    source?: 'splashScreen' | 'summaryScreen';
     onClickBack?: () => void;
     onClickPlay?: () => void;
     onRoomCodeAllocated?: (code: string) => void;
@@ -17,11 +19,12 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
     if (!roomCode) {
       loaderUi.show(350);
       roomCode = (await dataApi.postLeaderboardCodeAllocate()).code;
-
+      
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.set('leaderboard', roomCode);
       window.history.replaceState({}, '', newUrl.toString());
-
+      
+      messagesApi.trySendMessage('swag.setLeaderboardCode', roomCode, true);
       options.onRoomCodeAllocated?.(roomCode);
 
       loaderUi.hide();
@@ -30,6 +33,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
     this.mount(
       <InviteFriendsScreen 
         roomCode={roomCode}
+        source={options.source}
         onClickBack={options.onClickBack}
         onClickPlay={options.onClickPlay}
       />

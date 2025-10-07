@@ -44,9 +44,9 @@ export default function SplashScreen (props: Props) {
 
   const onClickPlay = () => {
     setExiting(true);
+    props.onClickPlay?.();
     setTimeout(() => {
       splashScreenUi.hide();
-      props.onClickPlay?.();
     }, 400); // match animation duration
   };
 
@@ -56,6 +56,7 @@ export default function SplashScreen (props: Props) {
 
   const onClickInviteFriends = () => {
     inviteFriendsScreenUi.show({
+      source: 'splashScreen',
       onClickBack: () => {},
       onClickPlay: () => {
         splashScreenUi.hide();

@@ -17,10 +17,12 @@ import utils from '@/utils';
 import { DateString } from '@/types/DateString';
 import loaderUi from '@/api/loaderUi';
 import Button from '@/components/ui/gameThemed/Button';
+import messagesApi from '@/api/messages';
 
 interface Props {
   onClickBack?: () => void;
   onClickPlay?: () => void;
+  source?: 'splashScreen' | 'summaryScreen';
   levelKey: string;
   initialRoomCode: string | null;
   initialLeaderboardData: LeaderboardData[] | null;
@@ -53,6 +55,12 @@ export default function LeaderboardScreen (props: Props) {
         newUrl.searchParams.delete('leaderboard');
       }
       window.history.replaceState({}, '', newUrl.toString());
+
+      if (nextCurrentRoom) {
+        messagesApi.trySendMessage('swag.setLeaderboardCode', nextCurrentRoom.key, true);
+      } else {
+        messagesApi.trySendMessage('swag.setLeaderboardCode', '', true);
+      }
     } catch (err: any) {
       utils.error('Error leaving leaderboard room:', err.message || err);
     }
@@ -61,6 +69,7 @@ export default function LeaderboardScreen (props: Props) {
   const onClickShareLeaderboard = async () => {
     inviteFriendsScreenUi.show({
       roomCode: state.currentRoom?.key,
+      source: props.source,
       onClickBack: () => {},
       onClickPlay: () => {
         splashScreenUi.hide();
@@ -72,6 +81,7 @@ export default function LeaderboardScreen (props: Props) {
 
   const onClickCreateLeaderboard = async () => {
     inviteFriendsScreenUi.show({
+      source: props.source,
       onClickBack: () => {},
       onClickPlay: () => {
         splashScreenUi.hide();
@@ -88,6 +98,8 @@ export default function LeaderboardScreen (props: Props) {
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set('leaderboard', roomCode);
     window.history.replaceState({}, '', newUrl.toString());
+
+    messagesApi.trySendMessage('swag.setLeaderboardCode', roomCode, true);
 
     try {
       loaderUi.show(350);
