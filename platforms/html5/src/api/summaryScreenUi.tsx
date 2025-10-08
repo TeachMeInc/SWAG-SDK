@@ -5,21 +5,44 @@ import lottieStreak from '@/assets/lottie/streak.json';
 import lottieTime from '@/assets/lottie/time.json';
 import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
+import messagesApi from '@/api/messages';
+import config from '@/config';
+
+export type ShowSummaryScreenOptions = {
+  stats: { key: string, value: string, lottie: object }[], 
+  contentHtml: string, 
+  shareString: string, 
+  onFavorite?: () => void,
+  onReplay?: () => void,
+  onClose?: () => void,
+  hasLeaderboard?: boolean,
+  eventProperties?: Record<string, any>,
+  score?: {
+    levelKey: string,
+    value: string | number
+  }
+}
 
 class SummaryScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-summaryScreen-root';
   protected rootElClassName: string = 'swag-summaryScreen-root';
 
-  async show (options: {
-    stats: { key: string, value: string, lottie: object }[], 
-    contentHtml: string, 
-    shareString: string, 
-    onFavorite?: () => void,
-    onReplay?: () => void,
-    onClose?: () => void,
-    hasLeaderboard?: boolean,
-  }) {
-    loaderUi.show(350);
+  async show (options: ShowSummaryScreenOptions) {
+    loaderUi.show(config.loaderDelay);
+
+    const day = utils.getDateString();
+    const eventProperties = options.eventProperties || {};
+    eventProperties[ '$current_url' ] = utils.getPlatformUrl();
+    try {
+      await dataApi.postDailyGameProgress(day, true, eventProperties);
+    } catch (err) {
+      utils.error('Error posting daily game progress:', err);
+    }
+    messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
+
+    /*
+     * Collect batch calls
+     */
 
     const promises = [];
 
@@ -70,6 +93,18 @@ class SummaryScreenUI extends UserInterfaceAPI {
         utils.warn('Error fetching promo links:', e);
       }
     })());
+
+    // Post score
+    if (options.score) {
+      const postDailyScoreFn = async () => {
+        try {
+          return await dataApi.postDailyScore(day, options.score!.levelKey, options.score!.value);
+        } catch (e) {
+          utils.warn('Error posting daily score:', e);
+        }
+      };
+      promises.push(postDailyScoreFn());
+    }
 
     const [ 
       isMember, 

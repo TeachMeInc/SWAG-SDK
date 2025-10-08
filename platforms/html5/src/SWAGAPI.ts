@@ -7,13 +7,14 @@ import swStampWhite from '@/assets/sw-stamp-white.svg';
 import dataApi, { PostScoreOptions } from '@/api/data';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
-import summaryScreenUi from '@/api/summaryScreenUi';
+import summaryScreenUi, { ShowSummaryScreenOptions } from '@/api/summaryScreenUi';
 import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import drupalApi from '@/api/drupal';
 // import abandonDailyGameApi from '@/api/abandonDailyGame';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
+import config from '@/config';
 
 export interface SWAGAPIOptions {
   apiKey: string;
@@ -66,6 +67,15 @@ export default class SWAGAPI {
     session.debug = !!this.options.debug;
     session.gameTitle = this.options.gameTitle || '';
     session.analyticsId = this.options.analytics?.gameId || null;
+
+    // Measure network latency
+    (async () => {
+      const latency = await dataApi.measureNetworkLatency();
+      if (latency >= config.loaderDelay) {
+        config.loaderDelay = 0;
+      }
+      utils.debug('Network latency:', latency, 'ms');
+    })();
 
     // // Abandon daily game setup
 
@@ -286,19 +296,6 @@ export default class SWAGAPI {
     return result;
   }
 
-  async completeDailyGame (properties: Record<string, any> = {}) {
-    if (!this.ready) throw sessionReadyError();
-
-    // abandonDailyGameApi.emptyQueue();
-
-    properties[ '$current_url' ] = utils.getPlatformUrl();
-    
-    const day = utils.getDateString();
-    const result = await dataApi.postDailyGameProgress(day, true, properties);
-    messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
-    return result;
-  }
-
   getCurrentDay () {
     return utils.getDateString();
   }
@@ -349,15 +346,6 @@ export default class SWAGAPI {
     if (!this.ready) throw sessionReadyError();
     
     return dataApi.postScore(levelKey, value, options);
-  }
-
-  postDailyScore (value: string) {
-    if (!this.ready) throw sessionReadyError();
-    
-    const day = utils.getDateString();
-    const levelKey = this.options?.leaderboards?.dailyScoreLevelKey || 'daily';
-
-    return dataApi.postDailyScore(day, levelKey, value);
   }
 
   hasDailyScore (levelKey: any) {
@@ -500,16 +488,36 @@ export default class SWAGAPI {
     stats: { key: string, value: string, lottie: object }[], 
     contentHtml: string, 
     shareString: string, 
+    eventProperties?: Record<string, any>,
+    score?: string | number,
     onFavorite?: () => void,
     onReplay?: () => void,
     onClose?: () => void,
   }) {
     if (!this.ready) throw sessionReadyError();
-    
-    return summaryScreenUi.show({
-      ...options,
+
+    const { score, ...restOfOpts } = options;
+    const summaryScreenOpts: ShowSummaryScreenOptions = {
+      ...restOfOpts,
       hasLeaderboard: !!this.options.leaderboardScreen,
-    });
+    };
+    
+    if (this.options.leaderboardScreen) {
+      if (score) {
+        summaryScreenOpts.score = {
+          levelKey: this.options.leaderboards?.dailyScoreLevelKey || 'daily',
+          value: score
+        };
+      } else {
+        throw new Error('`score` value must be provided when leaderboardScreen is enabled.');
+      }
+    } else {
+      if (score) {
+        utils.warn('`score` value is ignored when leaderboardScreen is not enabled.');
+      }
+    }
+    
+    return summaryScreenUi.show(summaryScreenOpts);
   }
 
   showLoader (debounce?: number) {

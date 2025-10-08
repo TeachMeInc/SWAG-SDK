@@ -1,6 +1,9 @@
 import { DateString } from '@/types/DateString';
 import session from './session';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
+import swStampWhite from '@/assets/sw-stamp-white.svg';
+import { resolve } from 'path';
+import dataApi from '@/api/data';
 
 const methods = {
 

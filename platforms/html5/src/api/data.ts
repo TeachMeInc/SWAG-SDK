@@ -152,6 +152,21 @@ class DataAPI {
 
 
 
+  // #region Server Health
+
+  async measureNetworkLatency (): Promise<number> {
+    const startTime = Date.now();
+    await getAxios().get(
+      `/v1/server/uptime?t=${Date.now()}`,
+      { responseType: 'arraybuffer' }
+    );
+    return Date.now() - startTime;
+  }
+
+  // #endregion
+
+
+
   // #region Game Methods
 
   async getGame (): Promise<Game> {
@@ -214,7 +229,7 @@ class DataAPI {
     return await postJSON('/v1/score', body);
   }
 
-  async postDailyScore (day: string, level_key: string, value: string) {
+  async postDailyScore (day: string, level_key: string, value: string | number) {
     const body = { game: session.apiKey, day, level_key, value };
     return await postJSON('/v1/dailyscore', body);
   }

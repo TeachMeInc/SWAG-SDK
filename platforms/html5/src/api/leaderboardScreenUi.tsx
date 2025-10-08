@@ -4,6 +4,7 @@ import dataApi from '@/api/data';
 import loaderUi from '@/api/loaderUi';
 import utils from '@/utils';
 import session from '@/session';
+import config from '@/config';
 
 class LeaderboardScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-leaderboardScreen-root';
@@ -19,7 +20,7 @@ class LeaderboardScreenUI extends UserInterfaceAPI {
     onClickPlay?: () => void;
     source?: 'splashScreen' | 'summaryScreen';
   }) {
-    loaderUi.show(350);
+    loaderUi.show(config.loaderDelay);
     
     await dataApi.getEntity(); // ensure entity is loaded
 

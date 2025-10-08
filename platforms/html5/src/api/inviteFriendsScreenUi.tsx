@@ -3,6 +3,7 @@ import UserInterfaceAPI from '@/UserInterfaceAPI';
 import dataApi from '@/api/data';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
+import config from '@/config';
 
 class InviteFriendsScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-inviteFriendsScreen-root';
@@ -17,7 +18,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
   }) {
     let roomCode = options.roomCode;
     if (!roomCode) {
-      loaderUi.show(350);
+      loaderUi.show(config.loaderDelay);
       roomCode = (await dataApi.postLeaderboardCodeAllocate()).code;
       
       const newUrl = new URL(window.location.href);
