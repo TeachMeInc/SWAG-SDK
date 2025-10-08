@@ -1,7 +1,7 @@
 {
   "name": "html5",
   "private": true,
-  "version": "5.3.3",
+  "version": "5.4.3",
   "type": "module",
   "scripts": {
     "dev": "vite",

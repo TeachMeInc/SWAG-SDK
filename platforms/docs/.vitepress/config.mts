@@ -40,6 +40,7 @@ export default defineConfig({
           { text: 'Toolbar Icons', link: '/html5/version-5/toolbar-icons' },
           { text: 'Customization', link: '/html5/version-5/customization-css-variables' },
           { text: 'Score Configuration', link: '/html5/version-5/score-config-and-formatting' },
+          { text: 'TypeScript Support', link: '/html5/version-5/typescript-support' },
           {
             text: 'Script Reference',
             items: [

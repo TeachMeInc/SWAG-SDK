@@ -107,23 +107,14 @@
       <p>
         <button id='btnGetCurrentUser'>Get Current User</button>
         <button id='btnCheckIsSubscriber'>Check Is Subscriber</button>
-        <!-- <button id='btnGetUserData'>Get User Data</button> -->
       </p>
-      <!-- <p>
-        <strong>User Cloud Data</strong>
-        <input id='submitCloudData_keyInput' type='text' placeholder='Key' />
-        <input id='submitCloudData_valueInput' type='text' placeholder='Value' />
-        <button id='submitCloudData_submitBtn'>Save User Data</button>
-      </p> -->
     </section>
     <section>
       <h4>Daily Game Methods</h4>
       <p>
         <button id='btnStartDailyGame'>Start Game</button>
-        <button id='btnCompleteDailyGame'>Complete Game</button>
         <button id='btnGetDailyGameStreak'>Get Game Streak</button>
         <button id='btnGetDailyGameProgress'>Get Game Progress</button>
-        <button id='btnPostDailyScore'>Submit Daily Score</button>
       </p>
     </section>
   </div>
@@ -142,13 +133,12 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const api = SWAGAPI.getInstance({
-        // apiKey: '5c6c3c056917a692f96f9651',
-        // gameTitle: 'SWAG HTML5 SDK',
-        apiKey: '66b3cbb9e2843f375e830980',
-        // analytics: {
-        //   gameId: 'foobarbaz',
-        // },
+        apiKey: '5c6c3c056917a692f96f9651',
+        analytics: {
+          gameId: 'shockwave_demo_game',
+        },
         debug: true,
+        gameTitle: 'SWAG SDK',
         leaderboards: {
           dailyScoreLevelKey: 'daily',
         },
@@ -157,7 +147,6 @@
           isBeta: true,
           showOnLoad: true,
         },
-        // summaryScreen: {},
         toolbar: {
           titleIcon: 'https://new.shockwave.com/images/SW25.svg',
           titleIconDark: 'https://new.shockwave.com/images/SW25_alt.svg',
@@ -277,12 +266,6 @@
       document.getElementById('btnHideLoader').onclick = 
         () => api.hideLoader();
 
-      document.getElementById('btnPostDailyScore').onclick = 
-        () => {
-          const value = Math.floor(Math.random() * 1000);
-          api.postDailyScore(value);
-        };
-
       document.getElementById('btnGameSplashScreen').onclick = 
         () => api.showSplashScreen({
           onClickPlay: () => { alert('Play clicked.'); },
@@ -294,7 +277,9 @@
             { key: 'Time', value: '1:00' },
           ], 
           contentHtml: '<div style="background:#ccc;width:100%;height:100px;">Preview</div>',
-          shareString: 'You have completed the game, this is the share string!!',
+          shareString: 'You have completed the game, share this text with your friends!',
+          eventProperties: { foo: 'bar' },
+          score: Math.floor(Math.random() * 1000),
           onFavorite: () => { alert('favorite clicked'); },
           onReplay: () => { alert('replay clicked'); },
           onClose: () => { alert('share screen closed'); }
@@ -309,21 +294,11 @@
       document.getElementById('btnNavigateToTitle').onclick = 
         () => api.navigateToTitle('jigsawpuzzles');
 
-      // document.getElementById('submitCloudData_submitBtn').onclick = 
-      //   () => {
-      //     const key = document.getElementById('submitCloudData_keyInput').value;
-      //     const value = document.getElementById('submitCloudData_valueInput').value;
-      //     api.setUserData(key, value);
-      //   };
-
       document.getElementById('btnGetCurrentUser').onclick = 
         async () => console.log(await api.getCurrentEntity());
 
       document.getElementById('btnCheckIsSubscriber').onclick = 
         async () => console.log(await api.isSubscriber());
-
-      // document.getElementById('btnGetUserData').onclick = 
-      //   async () => console.log(await api.getUserData());
 
       document.getElementById('btnUpdateToolbarItem').onclick = 
         () => api.updateToolbarItem({ 
@@ -337,9 +312,6 @@
 
       document.getElementById('btnStartDailyGame').onclick = 
         () => api.startDailyGame({ foo: 'bar' });
-
-      document.getElementById('btnCompleteDailyGame').onclick = 
-        () => api.completeDailyGame({ bar: 'baz' });
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());

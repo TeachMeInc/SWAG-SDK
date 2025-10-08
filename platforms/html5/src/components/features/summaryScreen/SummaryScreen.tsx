@@ -11,6 +11,7 @@ import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import summaryScreenUi from '@/api/summaryScreenUi';
+import config from '@/config';
 
 // #region Shockwave Upsell
 
@@ -258,7 +259,7 @@ export default function SummaryScreen (props: SummaryProps) {
                   key={key}
                   className='swag-summaryScreen__stat' 
                   animationData={utils.parseLottie(lottie, value)} 
-                  delay={200} // screen transition is 400ms
+                  delay={config.loaderDelay ? 200 : 0} // screen transition is 400ms
                 />
               )
             }

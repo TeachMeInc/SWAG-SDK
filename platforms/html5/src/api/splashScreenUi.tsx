@@ -1,5 +1,7 @@
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
+import loaderUi from '@/api/loaderUi';
 import SplashScreen from '@/components/features/splashScreen/SplashScreen';
+import config from '@/config';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 
 class SplashScreenUI extends UserInterfaceAPI {

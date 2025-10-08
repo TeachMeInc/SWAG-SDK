@@ -18,6 +18,7 @@ import { DateString } from '@/types/DateString';
 import loaderUi from '@/api/loaderUi';
 import Button from '@/components/ui/gameThemed/Button';
 import messagesApi from '@/api/messages';
+import config from '@/config';
 
 interface Props {
   onClickBack?: () => void;
@@ -102,7 +103,7 @@ export default function LeaderboardScreen (props: Props) {
     messagesApi.trySendMessage('swag.setLeaderboardCode', roomCode, true);
 
     try {
-      loaderUi.show(350);
+      loaderUi.show(config.loaderDelay);
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
         leaderboard: roomCode,
@@ -119,7 +120,7 @@ export default function LeaderboardScreen (props: Props) {
 
   const onChangeDay = async (day: string) => {
     try {
-      loaderUi.show(350);
+      loaderUi.show(config.loaderDelay);
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
         leaderboard: state.currentRoom!.key,

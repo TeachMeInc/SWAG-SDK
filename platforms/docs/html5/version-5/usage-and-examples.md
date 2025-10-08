@@ -175,9 +175,9 @@ api.showSplashScreen({
 
 ## Summary Screen
 
-The summary screen appears after a game session ends, showing stats, share options, and social features.
+The summary screen appears after a game session ends, showing stats, share options, and social features. The summary screen method is also used to submit daily scores to leaderboards and track game completion analytics.
 
-- Displays game stats and achievements.
+- Displays game stats.
 - "Share" button copies a share string to clipboard.
 - "Challenge Your Friends" opens the leaderboard invite screen.
 - "Replay" and "Add to Favorites" buttons for user actions.
@@ -188,11 +188,13 @@ Show the summary screen:
 ```js
 api.showSummaryScreen({
 	stats: [{ key: 'Score', value: '123', lottie: {} }],
-	contentHtml: '<p>Great job!</p>',
-	shareString: 'MyGame 123pts',
+	contentHtml: '<p>Great job!</p>', // content to display in summary screen results
+	shareString: 'Share this game with your friends!',
+	eventProperties: { foo: 'bar' }, // analytics properties
+	score: 1234, // daily leaderboard score
 	onReplay: () => {},
 	onFavorite: () => {},
-	onClose: () => {}
+	onClose: () => {},
 });
 ```
 
@@ -219,6 +221,16 @@ Enable with:
 leaderboardScreen: true
 ```
 
+Submit scores with:
+
+```js
+api.showSummaryScreen({ 
+	...
+	score: 1000,
+	...
+});
+```
+
 ### Level Key
 
 By default, leaderboards post scores to the `daily` level key. To change which level key is used, pass a custom key in the options:
@@ -231,12 +243,21 @@ leaderboards: {
 
 ## Analytics
 
-The SDK supports basic analytics integration, tracking when a game session starts and is finished. To add custom data to start and finish events, pass in a properties object to `startDailyGame` and `completeDailyGame`:
+The SDK supports basic analytics integration, tracking when a game session starts and is finished. To add custom data to start and finish events, pass in an event properties object to `startDailyGame` and `showSummaryScreen`:
 
 ```js
-api.completeDailyGame({ 
+api.startDailyGame({ 
 	time_played: 120, 
 	todays_letters: 'abcdef' 
+});
+
+api.showSummaryScreen({ 
+	...
+	eventProperties: {
+		time_played: 120, 
+		todays_letters: 'abcdef' 
+	}
+	...
 });
 ```
 

@@ -24,12 +24,14 @@ export interface Config {
   version: string;
   apiRoot: string;
   drupalRoot: string;
+  loaderDelay: number;
 }
 
 const config: Config = {
   version,
   apiRoot: getApiRoot(),
   drupalRoot: getDrupalRoot(),
+  loaderDelay: Number(import.meta.env.VITE_LOADER_DELAY),
 };
 
 export default config;

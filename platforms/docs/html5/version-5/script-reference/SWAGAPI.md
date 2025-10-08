@@ -18,7 +18,6 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `navigateToTitle(keyword)`       | Navigates to the game title screen. Returns a promise with a message payload. |
 | `getGame()`                      | Retrieves game information. Returns a promise with a `Game` object.|
 | `startDailyGame(properties?)`| Starts a daily game challenge. Returns a promise.                 |
-| `completeDailyGame(properties?)`| Completes a daily game challenge. Returns a promise.         |
 | `getCurrentDay()`                | Gets the current day for daily challenges. Returns a promise.      |
 | `getGameProgress(month, year)`   | Retrieves daily game progress. Returns a promise with an array of `DailyGameProgress`. |
 | `getGameStreak()`                | Retrieves the user's daily game streak. Returns a promise with a `DailyGameStreak`. |
@@ -27,7 +26,6 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `getDays(limit)`                 | Gets a list of days for daily challenges. Returns a promise.       |
 | `getScores(options)`             | Retrieves leaderboard scores. Returns a promise with an array of `LeaderboardData`. |
 | `postScore(levelKey, value, options)` | Posts a score to a leaderboard. Returns a promise.         |
-| `postDailyScore(value)`          | Posts a daily score for private leaderboards. Returns a promise.                            |
 | `hasDailyScore(levelKey)`        | Checks if a daily score exists. Returns a promise.                 |
 | `getAchievementCategories()`     | Retrieves achievement categories. Returns a promise.               |
 | `postAchievement(achievement_key)` | Posts an achievement. Returns a promise.                      |
