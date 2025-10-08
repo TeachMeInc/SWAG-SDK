@@ -13,6 +13,7 @@ interface LottieProps {
 
 export default function LottieComponent ({ animationData, className, width, height, loop, delay }: LottieProps) {
   const hasStartedMountingRef = useRef(false);
+  const hasStartedLottieRef = useRef(false);
   const lottieAnimationRef = useRef<DotLottie | null>(null);
   const timeoutRef = useRef<number | null>(null);
   const canvasIdRef = useRef((Date.now() + Math.random()).toString());
@@ -31,27 +32,40 @@ export default function LottieComponent ({ animationData, className, width, heig
 
   useEffect(() => {
     if (!lottiePlayerReady) return;
-    if (lottieAnimationRef.current) return;
+    if (hasStartedLottieRef.current) return;
 
-    lottieAnimationRef.current = new DotLottie({
-      autoplay: delay ? false : true,
-      loop,
-      canvas: canvasRef.current!,
-      data: JSON.stringify(animationData),
-      renderConfig: {
-        autoResize: false
-      }
-    });
+    const initLottie = () => {
+      hasStartedLottieRef.current = true;
+      lottieAnimationRef.current = new DotLottie({
+        autoplay: true,
+        loop,
+        canvas: canvasRef.current!,
+        data: JSON.stringify(animationData),
+        renderConfig: {
+          autoResize: false
+        }
+      });
+    };
 
     if (delay) {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
-        lottieAnimationRef.current?.play();
+        initLottie();
       }, delay) as unknown as number;
+    } else {
+      initLottie();
     }
-  }, [ lottiePlayerReady, animationData, delay, loop ]);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      lottieAnimationRef.current?.destroy();
+      lottieAnimationRef.current = null;
+    };
+  }, [ animationData, delay, loop, lottiePlayerReady ]);
 
   return (
     <div className={className}>
