@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
+import pkg from '../package.json' assert { type: 'json' };
 
 const src = 'types/swag-api.d.ts';
 const dst = 'types/swag-api.d.ts';
@@ -12,7 +13,8 @@ text = text
   .replace(/\bexport\s+(declare\s+)?/g, '$1');
 
 text = `/* eslint-disable */
-// This file is generated from Shockwave SDK module typings. Visit https://developers.shockwave.com for more information.
+// Type definitions for SWAG HTML5 SDK v${pkg.version}
+// Visit https://developers.shockwave.com for more information
 
 ${text}
 `;

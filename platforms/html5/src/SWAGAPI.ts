@@ -285,13 +285,13 @@ export default class SWAGAPI {
 
   // #region Daily Game Methods
 
-  async startDailyGame (properties: Record<string, any> = {}) {
+  async startDailyGame (eventProperties: Record<string, any> = {}) {
     if (!this.ready) throw sessionReadyError();
 
-    properties[ '$current_url' ] = utils.getPlatformUrl();
+    eventProperties[ '$current_url' ] = utils.getPlatformUrl();
 
     const day = utils.getDateString();
-    const result = await dataApi.postDailyGameProgress(day, false, properties);
+    const result = await dataApi.postDailyGameProgress(day, false, eventProperties);
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
     return result;
   }

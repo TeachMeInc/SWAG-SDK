@@ -1,5 +1,6 @@
 /* eslint-disable */
-// This file is generated from Shockwave SDK module typings. Visit https://developers.shockwave.com for more information.
+// Type definitions for SWAG HTML5 SDK v5.4.2
+// Visit https://developers.shockwave.com for more information
 
 interface Entity {
     _id: string;
@@ -63,7 +64,7 @@ interface PostScoreOptions {
     leaderboard?: string;
 }
 
-type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete';
+type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode';
 interface MessagePayload {
     eventName: MessageEventName;
     message: string;
@@ -125,8 +126,7 @@ declare class SWAGAPI {
     navigateToArchive(): Promise<MessagePayload>;
     navigateToTitle(keyword: string): Promise<MessagePayload>;
     getGame(): Promise<Game>;
-    startDailyGame(properties?: Record<string, any>): Promise<unknown>;
-    completeDailyGame(properties?: Record<string, any>): Promise<unknown>;
+    startDailyGame(eventProperties?: Record<string, any>): Promise<unknown>;
     getCurrentDay(): `${number}-${number}-${number}`;
     getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
     getGameStreak(): Promise<DailyGameStreak>;
@@ -135,7 +135,6 @@ declare class SWAGAPI {
     getDays(limit: number): Promise<any[]>;
     getScores(options: PostScoreOptions): Promise<LeaderboardData[]>;
     postScore(levelKey: string, value: string, options: PostScoreOptions): Promise<unknown>;
-    postDailyScore(value: string): Promise<unknown>;
     hasDailyScore(levelKey: any): Promise<boolean>;
     getAchievementCategories(): Promise<any[]>;
     postAchievement(achievement_key: string): Promise<unknown>;
@@ -162,6 +161,8 @@ declare class SWAGAPI {
         }[];
         contentHtml: string;
         shareString: string;
+        eventProperties?: Record<string, any>;
+        score?: string | number;
         onFavorite?: () => void;
         onReplay?: () => void;
         onClose?: () => void;
