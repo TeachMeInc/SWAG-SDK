@@ -26,7 +26,7 @@ function UpsellComponent (props: UpsellProps) {
 
   const targetUrl = 'https://shockwave.com' + ((isMember && !isSubscriber)
     ? '/unlimited' 
-    : '/account/login');
+    : '/account/register');
 
   const sendEvent = () => {
     if (isMember && !isSubscriber) {
