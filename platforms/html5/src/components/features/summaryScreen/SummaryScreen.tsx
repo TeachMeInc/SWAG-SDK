@@ -24,9 +24,9 @@ interface UpsellProps {
 function UpsellComponent (props: UpsellProps) {
   const { isMember, isSubscriber } = props;
 
-  const targetUrl = 'https://shockwave.com' + (isMember && !isSubscriber)
+  const targetUrl = 'https://shockwave.com' + ((isMember && !isSubscriber)
     ? '/unlimited' 
-    : '/account/login';
+    : '/account/login');
 
   const sendEvent = () => {
     if (isMember && !isSubscriber) {

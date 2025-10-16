@@ -99,7 +99,7 @@ const methods = {
   getPlatformUrl (): string {
     const platform = this.getPlatform();
     if (platform === 'app') {
-      return `shockwave-app://game/${session.game?.drupal_nid}`;
+      return `shockwave-app://game/${session.game?.shockwave_keyword}`;
     }
     if (platform === 'embed') {
       return window.top?.location.href || window.location.href;

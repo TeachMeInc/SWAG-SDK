@@ -1,8 +1,6 @@
 export interface Game {
   name: string;
-  hex_color: string;
-  icon_url: string;
+  archive_background_color: string;
+  archive_icon: string;
   shockwave_keyword: string;
-  drupal_nid: number;
-  developer_id: string; // TODO
 }

@@ -5,6 +5,7 @@ import config from '@/config';
 import { Entity } from '@/types/Entity';
 import { Game } from '@/types/Game';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
+import swStampWhite from '@/assets/sw-stamp-white.svg';
 
 
 
@@ -174,6 +175,8 @@ class DataAPI {
     const game = await getJSON<Game>('/v1/game', { game: session.apiKey });
     session.game = {
       ...game,
+      archive_background_color: game.archive_background_color || '#3377cc',
+      archive_icon: game.archive_icon || swStampWhite,
       shockwave_keyword: Array.isArray(game.shockwave_keyword)
         ? game.shockwave_keyword[ 0 ]
         : game.shockwave_keyword
@@ -280,7 +283,6 @@ class DataAPI {
       ...properties,
       sdk_version: config.version,
       platform: utils.getPlatform(),
-      developer_id: session.game?.developer_id || '',
       $current_url: utils.getPlatformUrl(),
     };
 
@@ -377,13 +379,12 @@ class DataAPI {
       properties.title = session.gameTitle;
     }
     const body = {
-      game: session.game?.shockwave_keyword,
+      game: session.apiKey,
       properties: {
         ...properties,
         tag_name: tagName,
         sdk_version: config.version,
         platform: utils.getPlatform(),
-        developer_id: session.game?.developer_id || '',
         $current_url: utils.getPlatformUrl(),
       },
     };
@@ -399,24 +400,21 @@ class DataAPI {
       properties.title = session.gameTitle;
     }
     const body = {
-      game: session.game?.shockwave_keyword,
+      game: session.apiKey,
       properties: {
         ...properties,
         tag_name: tagName,
         sdk_version: config.version,
         platform: utils.getPlatform(),
-        developer_id: session.game?.developer_id || '',
         $current_url: utils.getPlatformUrl(),
       },
     };
     
-    const beaconFormData = new FormData();
-    beaconFormData.append('game', body.game || '');
-    beaconFormData.append('properties', JSON.stringify(body.properties));
+    const bodyData = new Blob([ JSON.stringify(body) ], { type: 'application/json' });
 
     navigator.sendBeacon(
       `${config.apiRoot}/v1/user/tag`,
-      beaconFormData
+      bodyData
     );
   }
 
