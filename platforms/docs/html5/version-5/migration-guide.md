@@ -45,17 +45,20 @@ const api = SWAGAPI.getInstance({
 **v4:**
 - Limited UI customization.
 - `showDialog(type, options)` for scores, achievements, etc.
+- Use `wrapperId` to specify where UI renders.
 
 **v5:**
-- Toolbar is now a first-class feature.
-- Configure toolbar via `toolbar` option or programmatically with `setToolbarItems`, `updateToolbarItem`, `removeToolbarItem`.
-- Toolbar item states: toggled, disabled, etc.
-- Custom icons and labels supported.
-- See [Toolbar Icons](https://developers.shockwave.com/html5/version-5/toolbar-icons.html) for available icons.
+- Replaced `wrapperId` with `containerElementId` to specify where UI renders (applies to toolbar, splash, and summary screens).
+- Toolbar is now a first-class feature:
+  - Configure toolbar via `toolbar` option or programmatically with `setToolbarItems`, `updateToolbarItem`, `removeToolbarItem`.
+  - Toolbar item states: toggled, disabled, etc.
+  - Custom icons and labels supported.
+  - See [Toolbar Icons](https://developers.shockwave.com/html5/version-5/toolbar-icons.html) for available icons.
 
 ## 4. Splash & Summary Screens
 
 **v5 New Features:**
+- Calling `completeDailyGame` is no longer required and has been combined into `showSummaryScreen`.
 - Splash screen: Entry point for play, archives, leaderboards, and friends.
 - Summary screen: Post-game stats, sharing, replay, favorites, and upsell for non-subscribers.
 - Both can be enabled and customized via options.
@@ -92,12 +95,16 @@ const api = SWAGAPI.getInstance({
 
 - [ ] Update API initialization to use new options and naming.
 - [ ] Replace any usage of `api_key` with `apiKey`.
-- [ ] Remove any usage of `wrapper` and wrapper elements.
+- [ ] Remove usage of `wrapper` and wrapper element.
+- [ ] Replace any usage of `wrapperId` with `containerElementId`.
+- [ ] Remove calls to `completeDailyGame` if used.
 - [ ] Enable and configure toolbar, splash, and summary screens as needed.
 - [ ] Update leaderboard integration to use new room code features if desired.
 - [ ] Use new analytics features for custom event tracking.
 - [ ] Update TypeScript types and interfaces to match v5.
 - [ ] Review all method signatures for changes or new options.
+
+See the [Usage and Examples](/html5/version-5/usage-and-examples.html) section for more information on how to implement these changes.
 
 ## 10. Summary of New Features in v5
 
