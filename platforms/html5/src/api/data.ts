@@ -270,14 +270,20 @@ class DataAPI {
   // #region Daily Game Methods
   
   async postDailyGameProgress (day: string, complete: boolean, properties: Record<string, any> = {}) {
+    if (session.analyticsId) {
+      properties.id = session.analyticsId;
+    }
+    if (!properties.title) {
+      properties.title = session.gameTitle;
+    }
     properties = {
       ...properties,
       sdk_version: config.version,
       platform: utils.getPlatform(),
+      developer_id: session.game?.developer_id || '',
+      $current_url: utils.getPlatformUrl(),
     };
-    if (session.analyticsId) {
-      properties.id = session.analyticsId;
-    }
+
     const body = { game: session.apiKey, day, complete, properties };
     return await postJSON('/v1/dailygameprogress', body);
   }
@@ -367,6 +373,9 @@ class DataAPI {
     if (session.analyticsId) {
       properties.id = session.analyticsId;
     }
+    if (!properties.title) {
+      properties.title = session.gameTitle;
+    }
     const body = {
       game: session.game?.shockwave_keyword,
       properties: {
@@ -374,9 +383,41 @@ class DataAPI {
         tag_name: tagName,
         sdk_version: config.version,
         platform: utils.getPlatform(),
+        developer_id: session.game?.developer_id || '',
+        $current_url: utils.getPlatformUrl(),
       },
     };
+
     return await postJSON('/v1/user/tag', body);
+  }
+
+  async sendTagBeacon (tagName: string, properties: Record<string, any> = {}) {
+    if (session.analyticsId) {
+      properties.id = session.analyticsId;
+    }
+    if (!properties.title) {
+      properties.title = session.gameTitle;
+    }
+    const body = {
+      game: session.game?.shockwave_keyword,
+      properties: {
+        ...properties,
+        tag_name: tagName,
+        sdk_version: config.version,
+        platform: utils.getPlatform(),
+        developer_id: session.game?.developer_id || '',
+        $current_url: utils.getPlatformUrl(),
+      },
+    };
+    
+    const beaconFormData = new FormData();
+    beaconFormData.append('game', body.game || '');
+    beaconFormData.append('properties', JSON.stringify(body.properties));
+
+    navigator.sendBeacon(
+      `${config.apiRoot}/v1/user/tag`,
+      beaconFormData
+    );
   }
 
   // #endregion

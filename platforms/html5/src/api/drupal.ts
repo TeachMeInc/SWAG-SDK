@@ -143,6 +143,7 @@ export interface DrupalGame {
   field_modern_game_url: string;
   field_use_landing_page: string;
   field_highlight_color: string;
+  field_developer_id: string; // TODO
 }
 
 
@@ -217,7 +218,8 @@ class DrupalAPI {
       ...(session.game!),
       hex_color: game.field_highlight_color!,
       icon_url: config.drupalRoot + game.field_mobile_icon!,
-      drupal_nid: Number(game.nid)
+      drupal_nid: Number(game.nid),
+      developer_id: game.field_developer_id || '', // TODO
     };
     session.drupalGame = game;
     

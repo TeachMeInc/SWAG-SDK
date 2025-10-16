@@ -288,12 +288,10 @@ export default class SWAGAPI {
   async startDailyGame (eventProperties: Record<string, any> = {}) {
     if (!this.ready) throw sessionReadyError();
 
-    eventProperties[ '$current_url' ] = utils.getPlatformUrl();
-
     const day = utils.getDateString();
-    const result = await dataApi.postDailyGameProgress(day, false, eventProperties);
+
+    await dataApi.postDailyGameProgress(day, false, eventProperties);
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
-    return result;
   }
 
   getCurrentDay () {

@@ -7,6 +7,7 @@ import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
 import config from '@/config';
+import session from '@/session';
 
 export type ShowSummaryScreenOptions = {
   stats: { key: string, value: string, lottie: object }[], 
@@ -32,7 +33,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
 
     const day = utils.getDateString();
     const eventProperties = options.eventProperties || {};
-    eventProperties[ '$current_url' ] = utils.getPlatformUrl();
+
     try {
       await dataApi.postDailyGameProgress(day, true, eventProperties);
     } catch (err) {

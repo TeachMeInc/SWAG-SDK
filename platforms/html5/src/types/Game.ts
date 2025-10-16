@@ -4,4 +4,5 @@ export interface Game {
   icon_url: string;
   shockwave_keyword: string;
   drupal_nid: number;
+  developer_id: string; // TODO
 }
