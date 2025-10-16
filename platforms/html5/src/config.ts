@@ -10,27 +10,15 @@ function getApiRoot (): string {
   return import.meta.env.VITE_API_URL ?? '';
 }
 
-function getDrupalRoot (): string {
-  if (
-    window.location.href.includes('env=development') ||
-    window.location.href.includes('env=staging')
-  ) {
-    return import.meta.env.VITE_DRUPAL_STAGING_URL ?? '';
-  }
-  return import.meta.env.VITE_DRUPAL_URL ?? '';
-}
-
 export interface Config {
   version: string;
   apiRoot: string;
-  drupalRoot: string;
   loaderDelay: number;
 }
 
 const config: Config = {
   version,
   apiRoot: getApiRoot(),
-  drupalRoot: getDrupalRoot(),
   loaderDelay: Number(import.meta.env.VITE_LOADER_DELAY),
 };
 

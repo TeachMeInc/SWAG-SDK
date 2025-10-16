@@ -7,7 +7,6 @@ import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
 import config from '@/config';
-import session from '@/session';
 
 export type ShowSummaryScreenOptions = {
   stats: { key: string, value: string, lottie: object }[], 
