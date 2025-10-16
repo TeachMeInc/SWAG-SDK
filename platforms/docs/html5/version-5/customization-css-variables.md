@@ -1,4 +1,3 @@
-
 # Customization
 
 You can customize the look and feel of the SWAG HTML5 SDK by setting CSS variables. This allows you to match the SDK's appearance to your game's branding and style.
@@ -20,7 +19,7 @@ To override the default styles, add a `<style>` tag in the `<head>` of your `ind
       --swag-toolbar-border-width: 1;
     }
   </style>
-  <script type="text/javascript" src="https://swagapi.shockwave.com/v5/staging/dist/swag-api.js"></script>
+  <script type="text/javascript" src="https://swagapi.shockwave.com/v5/dist/swag-api.js"></script>
   <!-- ...other head content... -->
 </head>
 ```

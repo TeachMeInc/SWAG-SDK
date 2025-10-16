@@ -90,7 +90,7 @@ api.setToolbarItems([
 ]);
 
 api.updateToolbarItem(
-	{ id: 'item_timer', icon: 'stopwatch', label: currentTime }
+	{ id: 'item_timer', label: currentTime }
 );
 
 api.removeToolbarItem('item_timer');
@@ -110,7 +110,6 @@ const api = SWAGAPI.getInstance({
 			]
 		}
 	},
-	...
 });
 ```
 
@@ -161,7 +160,6 @@ const api = SWAGAPI.getInstance({
 	splashScreen: {
 		showOnLoad: false,
 	},
-	...
 });
 
 await api.startSession();
@@ -227,7 +225,6 @@ Submit scores with:
 api.showSummaryScreen({ 
 	...
 	score: 1000,
-	...
 });
 ```
 
@@ -247,7 +244,6 @@ The SDK supports basic analytics integration, tracking when a game session start
 
 ```js
 api.startDailyGame({ 
-	time_played: 120, 
 	todays_letters: 'abcdef' 
 });
 
@@ -257,7 +253,6 @@ api.showSummaryScreen({
 		time_played: 120, 
 		todays_letters: 'abcdef' 
 	}
-	...
 });
 ```
 

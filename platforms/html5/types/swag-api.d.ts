@@ -23,6 +23,7 @@ interface Game {
     icon_url: string;
     shockwave_keyword: string;
     drupal_nid: number;
+    developer_id: string;
 }
 
 interface LeaderboardData {
@@ -126,7 +127,7 @@ declare class SWAGAPI {
     navigateToArchive(): Promise<MessagePayload>;
     navigateToTitle(keyword: string): Promise<MessagePayload>;
     getGame(): Promise<Game>;
-    startDailyGame(eventProperties?: Record<string, any>): Promise<unknown>;
+    startDailyGame(eventProperties?: Record<string, any>): Promise<void>;
     getCurrentDay(): `${number}-${number}-${number}`;
     getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
     getGameStreak(): Promise<DailyGameStreak>;
