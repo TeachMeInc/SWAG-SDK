@@ -1,5 +1,5 @@
 /* eslint-disable */
-// Type definitions for SWAG HTML5 SDK v5.4.5
+// Type definitions for SWAG HTML5 SDK v5.4.6
 // Visit https://developers.shockwave.com for more information
 
 interface Entity {
