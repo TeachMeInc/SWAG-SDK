@@ -13,6 +13,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import summaryScreenUi from '@/api/summaryScreenUi';
 import config from '@/config';
 import dataApi from '@/api/data';
+import upsellBanner from '@/assets/upsell-banner.jpg';
 
 // #region Shockwave Upsell
 
@@ -46,6 +47,7 @@ function UpsellComponent (props: UpsellProps) {
           target='_blank'
           onClick={sendEvent}
           className='swag-summaryScreen__upsell-banner'
+          style={{ backgroundImage: `url(${upsellBanner})` }}
         >
           {
             (isMember && !isSubscriber) ? (
