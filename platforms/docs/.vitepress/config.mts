@@ -41,6 +41,7 @@ export default defineConfig({
           { text: 'Customization', link: '/html5/version-5/customization-css-variables' },
           { text: 'Score Configuration', link: '/html5/version-5/score-config-and-formatting' },
           { text: 'TypeScript Support', link: '/html5/version-5/typescript-support' },
+          { text: 'Migration Guide', link: '/html5/version-5/migration-guide' },
           {
             text: 'Script Reference',
             items: [

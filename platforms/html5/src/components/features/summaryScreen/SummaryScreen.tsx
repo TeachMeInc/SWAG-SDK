@@ -12,6 +12,7 @@ import session from '@/session';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import summaryScreenUi from '@/api/summaryScreenUi';
 import config from '@/config';
+import dataApi from '@/api/data';
 
 // #region Shockwave Upsell
 
@@ -23,31 +24,47 @@ interface UpsellProps {
 function UpsellComponent (props: UpsellProps) {
   const { isMember, isSubscriber } = props;
 
-  return (!isMember || !isSubscriber) ? (
-    <div className='swag-summaryScreen__upsell'>
-      <a 
-        href={`https://shockwave.com${!isSubscriber ? '/unlimited' : '/account/login'}`}
-        target='_blank'
-        className='swag-summaryScreen__upsell-banner'
-      >
-        {
-          (!isSubscriber && isMember) ? (
-            <p>
-              <strong>Shockwave is more fun with a Subscription!</strong><br/>
-              No Ads, Archive Access and more
-            </p>
-          ) : !isMember && (
-            <p>
-              <strong>Shockwave is more fun with an account!</strong><br/>
-              Track stats, save favorites and more
-            </p>
-          )
-        } 
-        
-        <img src={arrowIcon} alt='arrow' />
-      </a>
-    </div>
-  ) : <></>;
+  const targetUrl = 'https://shockwave.com' + ((isMember && !isSubscriber)
+    ? '/unlimited' 
+    : '/account/register');
+
+  const sendEvent = () => {
+    if (isMember && !isSubscriber) {
+      dataApi.sendTagBeacon('swu_upsell', { target_url: targetUrl });
+    } else {
+      dataApi.sendTagBeacon('account_upsell', { target_url: targetUrl });
+    }
+  };
+
+  return (
+    (isMember && isSubscriber) ? (
+      <></>
+    ) : (
+      <div className='swag-summaryScreen__upsell'>
+        <a 
+          href={targetUrl}
+          target='_blank'
+          onClick={sendEvent}
+          className='swag-summaryScreen__upsell-banner'
+        >
+          {
+            (isMember && !isSubscriber) ? (
+              <p>
+                <strong>Shockwave is more fun with a Subscription!</strong><br/>
+                No Ads, Archive Access and more
+              </p>
+            ) : (
+              <p>
+                <strong>Shockwave is more fun with an account!</strong><br/>
+                Track stats, save favorites and more
+              </p>
+            )
+          }
+          <img src={arrowIcon} alt='arrow' />
+        </a>
+      </div>
+    )
+  );
 }
 
 // #endregion
@@ -121,7 +138,10 @@ interface ReplayProps {
 }
 
 function ReplayComponent (props: ReplayProps) {
-  const { onReplay } = props;
+  const onReplay = () => {
+    if (props.onReplay) props.onReplay();
+    dataApi.postTag('navigate_replay');
+  };
 
   return (
     <button 
@@ -298,7 +318,10 @@ export default function SummaryScreen (props: SummaryProps) {
                   {
                     props.promoLinks.map(({ icon_url, background_color, title, type }) => {
                       return type === 'archive' && (
-                        <button key={title} style={{ backgroundColor: background_color }} onClick={() => navigateToArchive()}>
+                        <button key={title} style={{ backgroundColor: background_color }} onClick={async () => {
+                          await dataApi.postTag('navigate_archive');
+                          navigateToArchive();
+                        }}>
                           <img src={icon_url} alt={title} />
                           <span>{title}</span>
                           <img src={arrowIcon} alt='arrow' />
@@ -319,7 +342,15 @@ export default function SummaryScreen (props: SummaryProps) {
                     {
                       props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
                         return type === 'link' && (
-                          <li key={url} style={{ backgroundColor: background_color }} onClick={() => navigateToTitle(url)}>
+                          <li 
+                            key={url} 
+                            style={{ backgroundColor: background_color }} onClick={async () => {
+                              await dataApi.postTag('navigate_new_game', {
+                                target_url: url,
+                              });
+                              navigateToTitle(url);
+                            }}
+                          >
                             <img src={icon_url} alt={title} />
                           </li>
                         );

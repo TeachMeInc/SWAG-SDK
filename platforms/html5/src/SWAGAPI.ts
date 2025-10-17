@@ -1,7 +1,6 @@
 import session from '@/session';
 import utils from '@/utils';
 import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
-import swStampWhite from '@/assets/sw-stamp-white.svg';
 
 // API imports
 import dataApi, { PostScoreOptions } from '@/api/data';
@@ -11,8 +10,6 @@ import summaryScreenUi, { ShowSummaryScreenOptions } from '@/api/summaryScreenUi
 import toolbarUi from '@/api/toolbarUi';
 import splashScreenUi from '@/api/splashScreenUi';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
-import drupalApi from '@/api/drupal';
-// import abandonDailyGameApi from '@/api/abandonDailyGame';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 import config from '@/config';
 
@@ -151,24 +148,14 @@ export default class SWAGAPI {
     if (theme === 'dark') document.body.classList.add('swag-theme--dark');
 
     // Game info
-    const game = await dataApi.getGame(); 
-    try {
-      await drupalApi.getGame(session.game!.shockwave_keyword);
-    } catch {
-      utils.error('Error fetching Drupal game record for keyword:', session.game!.shockwave_keyword);
-      session.game = { 
-        ...(session.game!),
-        hex_color: '#3377cc',
-        icon_url: swStampWhite,
-      };
-    }
+    const game = await dataApi.getGame();
 
     if (!this.options.gameTitle && game) {
       session.gameTitle = game.name;
     }
 
     // Game CSS Variables
-    document.documentElement.style.setProperty('--swag-l-game-accent-color', session.game!.hex_color);
+    document.documentElement.style.setProperty('--swag-l-game-accent-color', session.game!.archive_background_color);
 
     /*
      * User session
@@ -224,8 +211,8 @@ export default class SWAGAPI {
     if (theme === 'dark') {
       utils.setOsThemeColor('#1f1f1f');
     } else {
-      if (session.game?.hex_color) {
-        utils.setOsThemeColor(session.game?.hex_color);
+      if (session.game?.archive_background_color) {
+        utils.setOsThemeColor(session.game?.archive_background_color);
       }
     }
 
@@ -288,12 +275,10 @@ export default class SWAGAPI {
   async startDailyGame (eventProperties: Record<string, any> = {}) {
     if (!this.ready) throw sessionReadyError();
 
-    eventProperties[ '$current_url' ] = utils.getPlatformUrl();
-
     const day = utils.getDateString();
-    const result = await dataApi.postDailyGameProgress(day, false, eventProperties);
+
+    await dataApi.postDailyGameProgress(day, false, eventProperties);
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
-    return result;
   }
 
   getCurrentDay () {

@@ -1,5 +1,5 @@
 /* eslint-disable */
-// Type definitions for SWAG HTML5 SDK v5.4.3
+// Type definitions for SWAG HTML5 SDK v5.4.6
 // Visit https://developers.shockwave.com for more information
 
 interface Entity {
@@ -19,10 +19,9 @@ interface Entity {
 
 interface Game {
     name: string;
-    hex_color: string;
-    icon_url: string;
+    archive_background_color: string;
+    archive_icon: string;
     shockwave_keyword: string;
-    drupal_nid: number;
 }
 
 interface LeaderboardData {
@@ -126,7 +125,7 @@ declare class SWAGAPI {
     navigateToArchive(): Promise<MessagePayload>;
     navigateToTitle(keyword: string): Promise<MessagePayload>;
     getGame(): Promise<Game>;
-    startDailyGame(eventProperties?: Record<string, any>): Promise<unknown>;
+    startDailyGame(eventProperties?: Record<string, any>): Promise<void>;
     getCurrentDay(): `${number}-${number}-${number}`;
     getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
     getGameStreak(): Promise<DailyGameStreak>;

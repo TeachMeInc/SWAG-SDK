@@ -29,10 +29,10 @@ export default function SplashScreen (props: Props) {
       document.body.classList.remove('swag-splashScreen--open'); // show toolbar
     };
     image.onerror = () => {
-      utils.error('Failed to load game icon:', session.game!.icon_url);
+      utils.error('Failed to load game icon:', session.game!.archive_icon);
       image.src = swStampWhite; // fallback
     };
-    image.src = session.game!.icon_url;
+    image.src = session.game!.archive_icon;
 
     return () => {
       image.onload = null;

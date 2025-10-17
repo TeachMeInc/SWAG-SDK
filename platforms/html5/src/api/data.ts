@@ -5,6 +5,7 @@ import config from '@/config';
 import { Entity } from '@/types/Entity';
 import { Game } from '@/types/Game';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
+import swStampWhite from '@/assets/sw-stamp-white.svg';
 
 
 
@@ -174,6 +175,8 @@ class DataAPI {
     const game = await getJSON<Game>('/v1/game', { game: session.apiKey });
     session.game = {
       ...game,
+      archive_background_color: game.archive_background_color || '#3377cc',
+      archive_icon: game.archive_icon || swStampWhite,
       shockwave_keyword: Array.isArray(game.shockwave_keyword)
         ? game.shockwave_keyword[ 0 ]
         : game.shockwave_keyword
@@ -270,14 +273,19 @@ class DataAPI {
   // #region Daily Game Methods
   
   async postDailyGameProgress (day: string, complete: boolean, properties: Record<string, any> = {}) {
+    if (session.analyticsId) {
+      properties.id = session.analyticsId;
+    }
+    if (!properties.title) {
+      properties.title = session.gameTitle;
+    }
     properties = {
       ...properties,
       sdk_version: config.version,
       platform: utils.getPlatform(),
+      $current_url: utils.getPlatformUrl(),
     };
-    if (session.analyticsId) {
-      properties.id = session.analyticsId;
-    }
+
     const body = { game: session.apiKey, day, complete, properties };
     return await postJSON('/v1/dailygameprogress', body);
   }
@@ -367,16 +375,47 @@ class DataAPI {
     if (session.analyticsId) {
       properties.id = session.analyticsId;
     }
+    if (!properties.title) {
+      properties.title = session.gameTitle;
+    }
     const body = {
-      game: session.game?.shockwave_keyword,
+      game: session.apiKey,
       properties: {
         ...properties,
         tag_name: tagName,
         sdk_version: config.version,
         platform: utils.getPlatform(),
+        $current_url: utils.getPlatformUrl(),
       },
     };
+
     return await postJSON('/v1/user/tag', body);
+  }
+
+  async sendTagBeacon (tagName: string, properties: Record<string, any> = {}) {
+    if (session.analyticsId) {
+      properties.id = session.analyticsId;
+    }
+    if (!properties.title) {
+      properties.title = session.gameTitle;
+    }
+    const body = {
+      game: session.apiKey,
+      properties: {
+        ...properties,
+        tag_name: tagName,
+        sdk_version: config.version,
+        platform: utils.getPlatform(),
+        $current_url: utils.getPlatformUrl(),
+      },
+    };
+    
+    const bodyData = new Blob([ JSON.stringify(body) ], { type: 'application/json' });
+
+    navigator.sendBeacon(
+      `${config.apiRoot}/v1/user/tag`,
+      bodyData
+    );
   }
 
   // #endregion

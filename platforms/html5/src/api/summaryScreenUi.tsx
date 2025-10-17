@@ -32,7 +32,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
 
     const day = utils.getDateString();
     const eventProperties = options.eventProperties || {};
-    eventProperties[ '$current_url' ] = utils.getPlatformUrl();
+
     try {
       await dataApi.postDailyGameProgress(day, true, eventProperties);
     } catch (err) {
