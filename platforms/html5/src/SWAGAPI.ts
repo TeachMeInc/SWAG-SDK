@@ -266,6 +266,32 @@ export default class SWAGAPI {
     return dataApi.getGame();
   }
 
+  getShareUrl (params: URLSearchParams = new URLSearchParams()) {
+    const isDev = 
+      window.location.href.includes('env=staging') || 
+      window.location.href.includes('env=development');
+
+    // set room code
+    const roomCode = utils.parseUrlOptions('leaderboard') as string;
+    if (roomCode) {
+      params.set('leaderboard', roomCode);
+    }
+    
+    const paramsString = (params.toString().length > 0 ? `&${params.toString()}` : '');
+
+    // use current URL for standalone games
+    if (utils.getPlatform() === 'standalone') {
+      return window.location.href + paramsString;
+    }
+
+    // use shockwave.com URL for embed and app games
+    if (isDev) {
+      return `https://new.shockwave.com/play/${session.game?.shockwave_keyword}${paramsString}`;
+    } else {
+      return `https://shockwave.com/play/${session.game?.shockwave_keyword}${paramsString}`;
+    }
+  }
+
   // #endregion
 
 
