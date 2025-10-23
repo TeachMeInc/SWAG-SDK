@@ -276,20 +276,36 @@ export default class SWAGAPI {
     if (roomCode) {
       params.set('leaderboard', roomCode);
     }
+
+    // set date
+    const date = utils.parseUrlOptions('date') as string;
+    if (date) {
+      params.set('date', date);
+    }
     
-    const paramsString = (params.toString().length > 0 ? `&${params.toString()}` : '');
+    const paramsString = (params.toString().length > 0 ? `?${params.toString()}` : '');
 
     // use current URL for standalone games
     if (utils.getPlatform() === 'standalone') {
-      return window.location.href + paramsString;
+      return window.location.origin + window.location.pathname + paramsString;
     }
 
-    // use shockwave.com URL for embed and app games
-    if (isDev) {
-      return `https://new.shockwave.com/play/${session.game?.shockwave_keyword}${paramsString}`;
-    } else {
-      return `https://shockwave.com/play/${session.game?.shockwave_keyword}${paramsString}`;
+    // use shockwave.com URL for app games
+    if (utils.getPlatform() === 'app') {
+      if (isDev) {
+        return `https://new.shockwave.com/play/${session.game?.shockwave_keyword}${paramsString}`;
+      } else {
+        return `https://shockwave.com/play/${session.game?.shockwave_keyword}${paramsString}`;
+      }
     }
+
+    // use top window URL for embedded games
+    const thisWindow = window.top || window;
+    return (
+      thisWindow.location.origin + 
+      thisWindow.location.pathname + 
+      paramsString
+    );
   }
 
   // #endregion

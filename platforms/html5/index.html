@@ -115,6 +115,7 @@
         <button id='btnStartDailyGame'>Start Game</button>
         <button id='btnGetDailyGameStreak'>Get Game Streak</button>
         <button id='btnGetDailyGameProgress'>Get Game Progress</button>
+        <button id='btnGetShareUrl'>Get Share URL</button>
       </p>
     </section>
   </div>
@@ -315,6 +316,9 @@
 
       document.getElementById('btnGetDailyGameStreak').onclick = 
         async () => console.log(await api.getDailyGameStreak());
+
+      document.getElementById('btnGetShareUrl').onclick = 
+        async () => console.log(await api.getShareUrl());
 
       /* --- */
 
