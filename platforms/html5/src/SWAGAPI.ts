@@ -333,6 +333,12 @@ export default class SWAGAPI {
     return dataApi.postScore(levelKey, value, options);
   }
 
+  postDailyScore (day: string, level_key: string, value: string) {
+    if (!this.ready) throw sessionReadyError();
+    
+    return dataApi.postDailyScore(day, level_key, value);
+  }
+
   hasDailyScore (levelKey: any) {
     if (!this.ready) throw sessionReadyError();
     
