@@ -9,17 +9,21 @@ import session from '@/session';
 import { useEffect, useState } from 'preact/hooks';
 import swStampWhite from '@/assets/sw-stamp-white.svg';
 import utils from '@/utils';
+import loaderUi from '@/api/loaderUi';
 
 interface Props {
   isBeta?: boolean;
   onClickPlay?: () => void;
   hasLeaderboard?: boolean;
+  waitForAssets?: Promise<void>;
 }
 
 export default function SplashScreen (props: Props) {
   // State
+  const [ ready, setReady ] = useState(props.waitForAssets ? false : true);
   const [ img, setImg ] = useState<string | null>(null);
 
+  // Wait for game icon to load
   useEffect(() => {
     if (img) return;
 
@@ -38,6 +42,16 @@ export default function SplashScreen (props: Props) {
       image.onload = null;
     };
   }, [ img ]);
+
+  // Wait for external assets to be ready, if provided
+  useEffect(() => {
+    if (!props.waitForAssets) return;
+
+    props.waitForAssets.then(() => {
+      loaderUi.hide();
+      setReady(true);
+    });
+  }, [ props.waitForAssets ]);
 
   // Animation state
   const [ exiting, setExiting ] = useState(false);
@@ -79,7 +93,7 @@ export default function SplashScreen (props: Props) {
       className={`swag-splashScreen ${exiting ? 'swag-slide-out-down' : ''}`}
     >
       {
-        img ? (
+        (ready && img) ? (
           <>
             <div className='swag-splashScreen__gameTitle'>
               <figure>

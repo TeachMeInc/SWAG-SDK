@@ -1,6 +1,7 @@
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 import SplashScreen from '@/components/features/splashScreen/SplashScreen';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
+import loaderUi from '@/api/loaderUi';
 
 class SplashScreenUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-splashScreen-root';
@@ -8,9 +9,14 @@ class SplashScreenUI extends UserInterfaceAPI {
 
   async show (options: {
     isBeta?: boolean,
-    onClickPlay?: () => void,
     hasLeaderboard?: boolean,
+    onClickPlay?: () => void,
+    waitForAssets?: Promise<void>,
   }) {
+    if (options.waitForAssets) {
+      loaderUi.show();
+    }
+    
     const onClickPlay = () => {
       globalEventHandler.dispatchEvent(new CustomEvent(GlobalEventType.SPLASH_SCREEN_CLICK_PLAY));
       options.onClickPlay?.();
@@ -21,6 +27,7 @@ class SplashScreenUI extends UserInterfaceAPI {
         isBeta={options.isBeta} 
         onClickPlay={onClickPlay} 
         hasLeaderboard={options.hasLeaderboard} 
+        waitForAssets={options.waitForAssets}
       />
     );
   }

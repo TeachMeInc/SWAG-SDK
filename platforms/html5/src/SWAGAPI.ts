@@ -31,6 +31,7 @@ export interface SWAGAPIOptions {
     containerElementId?: string;
     isBeta?: boolean;
     onClickPlay?: () => void,
+    waitForAssets?: Promise<void>,
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -228,6 +229,7 @@ export default class SWAGAPI {
           isBeta: opts.isBeta || false,
           hasLeaderboard: !!this.options.leaderboardScreen,
           onClickPlay: opts.onClickPlay,
+          waitForAssets: opts.waitForAssets,
         });
       }
     }
@@ -458,6 +460,7 @@ export default class SWAGAPI {
   showSplashScreen (options: {
     isBeta?: boolean,
     onClickPlay?: () => void,
+    waitForAssets?: Promise<void>,
   } = {}) {
     if (!this.ready) throw sessionReadyError();
     
@@ -474,6 +477,7 @@ export default class SWAGAPI {
       isBeta: opts.isBeta || false,
       onClickPlay: opts.onClickPlay,
       hasLeaderboard: !!this.options.leaderboardScreen,
+      waitForAssets: opts.waitForAssets,
     });
   }
 
