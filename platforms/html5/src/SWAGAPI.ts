@@ -30,6 +30,7 @@ export interface SWAGAPIOptions {
     showOnLoad?: boolean,
     containerElementId?: string;
     isBeta?: boolean;
+    onClickPlay?: () => void,
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -226,6 +227,7 @@ export default class SWAGAPI {
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
           hasLeaderboard: !!this.options.leaderboardScreen,
+          onClickPlay: opts.onClickPlay,
         });
       }
     }
