@@ -29,9 +29,9 @@
   z-index: 2;
 }
 
-.swag-loader__inner > * {
-  width: 68px;
-  height: 89px;
+.swag-loader__inner * {
+  width: 68px !important;
+  height: 89px !important;
 }
 
 
