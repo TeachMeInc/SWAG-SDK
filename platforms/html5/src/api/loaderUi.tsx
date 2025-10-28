@@ -1,5 +1,6 @@
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import Loader from '@/components/features/loader/Loader';
+import utils from '@/utils';
 
 class LoaderUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-loader-root';
@@ -7,6 +8,15 @@ class LoaderUI extends UserInterfaceAPI {
 
   async show (debounce?: number) {
     this.mount(<Loader />, debounce);
+  }
+
+  async hide () {
+    const loaderEl = document.querySelector('.swag-loader');
+    if (!loaderEl) return;
+    loaderEl.classList.remove('--swag-loader-show');
+    loaderEl.classList.add('--swag-loader-hide');
+    await utils.wait(300); // wait for loader animation to finish
+    this.unmount();
   }
 
   protected onMount () {

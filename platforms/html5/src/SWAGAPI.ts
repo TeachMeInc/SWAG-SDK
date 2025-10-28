@@ -13,6 +13,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 import config from '@/config';
 
+
 export interface SWAGAPIOptions {
   apiKey: string;
   debug?: boolean;
@@ -25,7 +26,6 @@ export interface SWAGAPIOptions {
   },
   leaderboardScreen?: true | {
   },
-  // onAbandonDailyGame?: () => Record<string, any>,
   splashScreen?: true | {
     showOnLoad?: boolean,
     containerElementId?: string;
@@ -75,12 +75,6 @@ export default class SWAGAPI {
       }
       utils.debug('Network latency:', latency, 'ms');
     })();
-
-    // // Abandon daily game setup
-
-    // if (this.options.onAbandonDailyGame) {
-    //   abandonDailyGameApi.queueEvent(this.options.onAbandonDailyGame);
-    // }
 
     /*
      * Leaderboard setup
