@@ -13,6 +13,7 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 import config from '@/config';
 
+
 export interface SWAGAPIOptions {
   apiKey: string;
   debug?: boolean;
@@ -25,11 +26,12 @@ export interface SWAGAPIOptions {
   },
   leaderboardScreen?: true | {
   },
-  // onAbandonDailyGame?: () => Record<string, any>,
   splashScreen?: true | {
     showOnLoad?: boolean,
     containerElementId?: string;
     isBeta?: boolean;
+    onClickPlay?: () => void,
+    waitForAssets?: Promise<void>,
   },
   summaryScreen?: {
     containerElementId?: string;
@@ -73,12 +75,6 @@ export default class SWAGAPI {
       }
       utils.debug('Network latency:', latency, 'ms');
     })();
-
-    // // Abandon daily game setup
-
-    // if (this.options.onAbandonDailyGame) {
-    //   abandonDailyGameApi.queueEvent(this.options.onAbandonDailyGame);
-    // }
 
     /*
      * Leaderboard setup
@@ -226,6 +222,8 @@ export default class SWAGAPI {
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
           hasLeaderboard: !!this.options.leaderboardScreen,
+          onClickPlay: opts.onClickPlay,
+          waitForAssets: opts.waitForAssets,
         });
       }
     }
@@ -331,6 +329,12 @@ export default class SWAGAPI {
     if (!this.ready) throw sessionReadyError();
     
     return dataApi.postScore(levelKey, value, options);
+  }
+
+  postDailyScore (day: string, level_key: string, value: string) {
+    if (!this.ready) throw sessionReadyError();
+    
+    return dataApi.postDailyScore(day, level_key, value);
   }
 
   hasDailyScore (levelKey: any) {
@@ -450,6 +454,7 @@ export default class SWAGAPI {
   showSplashScreen (options: {
     isBeta?: boolean,
     onClickPlay?: () => void,
+    waitForAssets?: Promise<void>,
   } = {}) {
     if (!this.ready) throw sessionReadyError();
     
@@ -466,6 +471,7 @@ export default class SWAGAPI {
       isBeta: opts.isBeta || false,
       onClickPlay: opts.onClickPlay,
       hasLeaderboard: !!this.options.leaderboardScreen,
+      waitForAssets: opts.waitForAssets,
     });
   }
 

@@ -17,6 +17,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+  &.--swag-loader-hide {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  &.--swag-loader-show {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .swag-loader__inner {
@@ -27,11 +38,12 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
+  overflow: hidden;
 }
 
-.swag-loader__inner > * {
-  width: 68px;
-  height: 89px;
+.swag-loader__inner * {
+  width: 58px !important;
+  height: 76px !important;
 }
 
 
