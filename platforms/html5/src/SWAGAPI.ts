@@ -279,6 +279,12 @@ export default class SWAGAPI {
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
   }
 
+  async completeDailyGame (day: string) {
+    const result = await dataApi.postDailyGameProgress(day, true);
+    messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
+    return result;
+  }
+
   getCurrentDay () {
     return utils.getDateString();
   }

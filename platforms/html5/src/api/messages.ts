@@ -30,7 +30,8 @@ export type MessageEventName =
   'swag.navigateToTitle' | 
   'swag.dailyGameProgress.start' |
   'swag.dailyGameProgress.complete' |
-  'swag.setLeaderboardCode';
+  'swag.setLeaderboardCode' |
+  'swag.requestHostUrl';
 
 export interface MessagePayload {
   eventName: MessageEventName;
