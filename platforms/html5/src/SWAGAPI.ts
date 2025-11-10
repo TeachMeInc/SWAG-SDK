@@ -414,6 +414,10 @@ export default class SWAGAPI {
     return localStorage.getItem(`swag:userData:${key}`);
   }
 
+  async postTag (tagName: string, properties: Record<string, any> = {}) {
+    await dataApi.postTag(tagName, properties);
+  }
+
   // #endregion
 
 
