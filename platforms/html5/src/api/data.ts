@@ -279,11 +279,12 @@ class DataAPI {
     if (!properties.title) {
       properties.title = session.gameTitle;
     }
+    const hostUrl = await utils.getPlatformUrl();
     properties = {
       ...properties,
       sdk_version: config.version,
       platform: utils.getPlatform(),
-      $current_url: utils.getPlatformUrl(),
+      $current_url: hostUrl,
     };
 
     const body = { game: session.apiKey, day, complete, properties };
@@ -378,6 +379,7 @@ class DataAPI {
     if (!properties.title) {
       properties.title = session.gameTitle;
     }
+    const hostUrl = await utils.getPlatformUrl();
     const body = {
       game: session.apiKey,
       properties: {
@@ -385,7 +387,7 @@ class DataAPI {
         tag_name: tagName,
         sdk_version: config.version,
         platform: utils.getPlatform(),
-        $current_url: utils.getPlatformUrl(),
+        $current_url: hostUrl,
       },
     };
 
@@ -399,6 +401,7 @@ class DataAPI {
     if (!properties.title) {
       properties.title = session.gameTitle;
     }
+    const hostUrl = await utils.getPlatformUrl();
     const body = {
       game: session.apiKey,
       properties: {
@@ -406,7 +409,7 @@ class DataAPI {
         tag_name: tagName,
         sdk_version: config.version,
         platform: utils.getPlatform(),
-        $current_url: utils.getPlatformUrl(),
+        $current_url: hostUrl,
       },
     };
     

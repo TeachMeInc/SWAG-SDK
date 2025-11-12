@@ -1,6 +1,8 @@
 import { DateString } from '@/types/DateString';
 import session from './session';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
+import messagesApi from '@/api/messages';
+import utils from './utils';
 
 const methods = {
 
@@ -96,15 +98,32 @@ const methods = {
     return 'light';
   },
 
-  getPlatformUrl (): string {
+  async getPlatformUrl (): Promise<string> {
+    if (session.hostUrl) {
+      return session.hostUrl;
+    }
+
+    let hostUrl = '';
     const platform = this.getPlatform();
+
     if (platform === 'app') {
-      return `shockwave-app://game/${session.game?.shockwave_keyword}`;
+      hostUrl = `shockwave-app://game/${session.game?.shockwave_keyword}`;
     }
     if (platform === 'embed') {
-      return window.top?.location.href || window.location.href;
+      try {
+        const result = await messagesApi.trySendMessage('swag.requestHostUrl');
+        hostUrl = result.message;
+      } catch (err) {
+        utils.error('Failed to get host URL from toolbar:', err);
+      }
+    } 
+    else {
+      hostUrl = window.location.href;
     }
-    return window.location.href;
+
+    session.hostUrl = hostUrl;
+    
+    return hostUrl;
   },
 
   isMobileDevice () {

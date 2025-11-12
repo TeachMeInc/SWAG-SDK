@@ -10,6 +10,7 @@ export interface Session {
   game: Game | null;
   toolbarHeight: number;
   analyticsId: string | null;
+  hostUrl: string;
 }
 
 const session: Session = {
@@ -21,6 +22,7 @@ const session: Session = {
   game: null,
   toolbarHeight: 48,
   analyticsId: null,
+  hostUrl: '',
 };
 
 export default session;

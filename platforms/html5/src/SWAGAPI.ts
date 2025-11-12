@@ -279,6 +279,12 @@ export default class SWAGAPI {
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
   }
 
+  async completeDailyGame (day: string) {
+    const result = await dataApi.postDailyGameProgress(day, true);
+    messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
+    return result;
+  }
+
   getCurrentDay () {
     return utils.getDateString();
   }
@@ -408,6 +414,10 @@ export default class SWAGAPI {
     return localStorage.getItem(`swag:userData:${key}`);
   }
 
+  async postTag (tagName: string, properties: Record<string, any> = {}) {
+    await dataApi.postTag(tagName, properties);
+  }
+
   // #endregion
 
 
@@ -493,19 +503,11 @@ export default class SWAGAPI {
       hasLeaderboard: !!this.options.leaderboardScreen,
     };
     
-    if (this.options.leaderboardScreen) {
-      if (score) {
-        summaryScreenOpts.score = {
-          levelKey: this.options.leaderboards?.dailyScoreLevelKey || 'daily',
-          value: score
-        };
-      } else {
-        throw new Error('`score` value must be provided when leaderboardScreen is enabled.');
-      }
-    } else {
-      if (score) {
-        utils.warn('`score` value is ignored when leaderboardScreen is not enabled.');
-      }
+    if (score) {
+      summaryScreenOpts.score = {
+        levelKey: this.options.leaderboards?.dailyScoreLevelKey || 'daily',
+        value: score
+      };
     }
     
     return summaryScreenUi.show(summaryScreenOpts);
