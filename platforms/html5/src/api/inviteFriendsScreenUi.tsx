@@ -19,6 +19,7 @@ class InviteFriendsScreenUI extends UserInterfaceAPI {
     let roomCode = options.roomCode;
     if (!roomCode) {
       loaderUi.show(config.loaderDelay);
+      
       roomCode = (await dataApi.postLeaderboardCodeAllocate()).code;
       
       const newUrl = new URL(window.location.href);
