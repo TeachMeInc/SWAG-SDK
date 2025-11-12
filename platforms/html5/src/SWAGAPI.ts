@@ -503,19 +503,11 @@ export default class SWAGAPI {
       hasLeaderboard: !!this.options.leaderboardScreen,
     };
     
-    if (this.options.leaderboardScreen) {
-      if (score) {
-        summaryScreenOpts.score = {
-          levelKey: this.options.leaderboards?.dailyScoreLevelKey || 'daily',
-          value: score
-        };
-      } else {
-        throw new Error('`score` value must be provided when leaderboardScreen is enabled.');
-      }
-    } else {
-      if (score) {
-        utils.warn('`score` value is ignored when leaderboardScreen is not enabled.');
-      }
+    if (score) {
+      summaryScreenOpts.score = {
+        levelKey: this.options.leaderboards?.dailyScoreLevelKey || 'daily',
+        value: score
+      };
     }
     
     return summaryScreenUi.show(summaryScreenOpts);
