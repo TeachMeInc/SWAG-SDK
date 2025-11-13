@@ -27,6 +27,12 @@ export function Toolbar (props: ToolbarProps) {
   const elRef = useRef<HTMLDivElement>(null);
   const date = utils.getDateFromDateString(props.date);
 
+  // 01-10
+  const veryShortDate = date.toLocaleDateString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+  }).replace(/\//g, '-'); 
+
   // 2025-01-10
   const shortDate = date.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -133,7 +139,10 @@ export function Toolbar (props: ToolbarProps) {
       <div className='swag-toolbar__container'>
         <div className='swag-toolbar__container__inner'>
           <aside className='swag-toolbar__flex --pull-left'>
-            <span className='--hide-desktop'>
+            <span className='--hide-desktop --hide-normal-phone'>
+              {veryShortDate}
+            </span>
+            <span className='--hide-desktop --hide-small-phone'>
               {shortDate}
             </span>
             <span className='--hide-mobile'>

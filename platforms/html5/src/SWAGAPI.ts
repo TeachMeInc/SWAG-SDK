@@ -230,7 +230,7 @@ export default class SWAGAPI {
 
     // Toolbar
     if (this.options.toolbar) {
-      this.showToolbar();
+      await this.showToolbar();
     }
 
     /*
@@ -432,7 +432,7 @@ export default class SWAGAPI {
     // tell website to hide its toolbar if it has one
     messagesApi.trySendMessage('swag.toolbar.hide', '', true);
 
-    toolbarUi.show({ 
+    await toolbarUi.show({ 
       ...toolbarOptions,
     });
   }
