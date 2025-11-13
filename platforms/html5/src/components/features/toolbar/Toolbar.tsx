@@ -138,7 +138,7 @@ export function Toolbar (props: ToolbarProps) {
     <header className='swag-toolbar' ref={elRef}>
       <div className='swag-toolbar__container'>
         <div className='swag-toolbar__container__inner'>
-          <aside className='swag-toolbar__flex --pull-left'>
+          <aside className='swag-toolbar__flex swag-toolbar__date --pull-left'>
             <span className='--hide-desktop --hide-normal-phone'>
               {veryShortDate}
             </span>
@@ -171,7 +171,7 @@ export function Toolbar (props: ToolbarProps) {
                   )
                   : null
               }
-              {session.gameTitle}
+              <span>{session.gameTitle}</span>
             </h1>
           </div>
           <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>
