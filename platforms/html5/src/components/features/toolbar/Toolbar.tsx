@@ -27,6 +27,12 @@ export function Toolbar (props: ToolbarProps) {
   const elRef = useRef<HTMLDivElement>(null);
   const date = utils.getDateFromDateString(props.date);
 
+  // 01-10
+  const veryShortDate = date.toLocaleDateString('en-US', {
+    month: '2-digit',
+    day: '2-digit',
+  }).replace(/\//g, '-'); 
+
   // 2025-01-10
   const shortDate = date.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -107,6 +113,9 @@ export function Toolbar (props: ToolbarProps) {
     };
     document.addEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
 
+    // Tell the SDK the Toolbar is ready and mounted
+    document.dispatchEvent(new CustomEvent(ToolbarEventName.MOUNTED));
+
     return () => {
       document.removeEventListener(ToolbarEventName.SET_ITEMS, setItemsHandler as EventListener);
       document.removeEventListener(ToolbarEventName.UPDATE_ITEM, updateItemHandler as EventListener);
@@ -132,8 +141,11 @@ export function Toolbar (props: ToolbarProps) {
     <header className='swag-toolbar' ref={elRef}>
       <div className='swag-toolbar__container'>
         <div className='swag-toolbar__container__inner'>
-          <aside className='swag-toolbar__flex --pull-left'>
-            <span className='--hide-desktop'>
+          <aside className='swag-toolbar__flex swag-toolbar__date --pull-left'>
+            <span className='--hide-desktop --hide-normal-phone'>
+              {veryShortDate}
+            </span>
+            <span className='--hide-desktop --hide-small-phone'>
               {shortDate}
             </span>
             <span className='--hide-mobile'>
@@ -162,7 +174,7 @@ export function Toolbar (props: ToolbarProps) {
                   )
                   : null
               }
-              {session.gameTitle}
+              <span>{session.gameTitle}</span>
             </h1>
           </div>
           <aside className='swag-toolbar__flex swag-toolbar__icons --pull-right'>

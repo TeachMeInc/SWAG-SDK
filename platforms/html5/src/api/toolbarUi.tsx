@@ -9,7 +9,7 @@ class ToolbarUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-toolbar-root';
   protected rootElClassName: string = 'swag-toolbar-root';
 
-  async show (options: {
+  show (options: {
     titleIcon?: string;
     titleIconDark?: string;
     initialToolbarState?: ToolbarState;
@@ -24,6 +24,13 @@ class ToolbarUI extends UserInterfaceAPI {
         messages.trySendMessage('swag.toggleFullScreen', '', true);
       };
     }
+
+    // Wait until mounted to resolve
+    const promise = new Promise<void>((resolve) => {
+      document.addEventListener(ToolbarEventName.MOUNTED, () => {
+        resolve();
+      }, { once: true });
+    });
     
     this.mount(<Toolbar
       date={utils.getDateString()}
@@ -33,6 +40,8 @@ class ToolbarUI extends UserInterfaceAPI {
       isInjected={this.isInjected}
       onClickFullScreen={onClickFullScreen}
     />);
+
+    return promise;
   }
 
   setItems (items: ToolbarItem[]) {

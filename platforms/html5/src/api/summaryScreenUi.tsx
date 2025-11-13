@@ -106,19 +106,29 @@ class SummaryScreenUI extends UserInterfaceAPI {
       promises.push(postDailyScoreFn());
     }
 
+    let batchedResult;
+    try {
+      batchedResult = await Promise.all(promises) as [
+        boolean, 
+        boolean, 
+        boolean, 
+        DailyGameStreak, 
+        GamePromoLink[]
+      ];
+    } catch (e) {
+      utils.error('Error during batch calls for summary screen:', e);
+      return;
+    } finally {
+      loaderUi.hide();
+    }
+
     const [ 
       isMember, 
       isSubscriber, 
       hasPlayedToday,
       gameStreak,
       promoLinks
-    ] = await Promise.all(promises) as [
-      boolean, 
-      boolean, 
-      boolean, 
-      DailyGameStreak, 
-      GamePromoLink[]
-    ];
+    ] = batchedResult;
 
     options.stats.unshift(
       {
@@ -150,8 +160,6 @@ class SummaryScreenUI extends UserInterfaceAPI {
       }}
       hasLeaderboard={options.hasLeaderboard}
     />);
-
-    loaderUi.hide();
   }
 
   protected onMount () {

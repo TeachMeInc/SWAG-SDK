@@ -45,13 +45,14 @@ export default function SplashScreen (props: Props) {
 
   // Wait for external assets to be ready, if provided
   useEffect(() => {
+    if (ready) return;
     if (!props.waitForAssets) return;
 
     props.waitForAssets.then(() => {
       loaderUi.hide();
       setReady(true);
     });
-  }, [ props.waitForAssets ]);
+  }, [ ready, props.waitForAssets ]);
 
   // Animation state
   const [ exiting, setExiting ] = useState(false);
