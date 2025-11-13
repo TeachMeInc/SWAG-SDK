@@ -113,6 +113,9 @@ export function Toolbar (props: ToolbarProps) {
     };
     document.addEventListener(ToolbarEventName.REMOVE_ITEM, removeItemHandler as EventListener);
 
+    // Tell the SDK the Toolbar is ready and mounted
+    document.dispatchEvent(new CustomEvent(ToolbarEventName.MOUNTED));
+
     return () => {
       document.removeEventListener(ToolbarEventName.SET_ITEMS, setItemsHandler as EventListener);
       document.removeEventListener(ToolbarEventName.UPDATE_ITEM, updateItemHandler as EventListener);
