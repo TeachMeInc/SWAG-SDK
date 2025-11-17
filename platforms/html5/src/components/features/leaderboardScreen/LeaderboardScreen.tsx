@@ -104,34 +104,40 @@ export default function LeaderboardScreen (props: Props) {
 
     try {
       loaderUi.show(config.loaderDelay);
+
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
         leaderboard: roomCode,
         day: state.currentDay.key,
         type: 'daily',
       });
-      loaderUi.hide();
+
       dispatch({ type: 'setCurrentRoom', payload: roomCode });
       dispatch({ type: 'setLeaderboardData', payload: leaderboardData });
     } catch (err: any) {
       utils.error('Error changing leaderboard room:', err.message || err);
+    } finally {
+      loaderUi.hide();
     }
   };
 
   const onChangeDay = async (day: string) => {
     try {
       loaderUi.show(config.loaderDelay);
+
       const leaderboardData = await dataApi.getScores({
         level_key: props.levelKey,
         leaderboard: state.currentRoom!.key,
         day: day as DateString,
         type: 'daily',
       });
-      loaderUi.hide();
+      
       dispatch({ type: 'setCurrentDay', payload: day as DateString });
       dispatch({ type: 'setLeaderboardData', payload: leaderboardData });
     } catch (err: any) {
       utils.error('Error changing leaderboard day:', err.message || err);
+    } finally {
+      loaderUi.hide();
     }
   };
 

@@ -5,18 +5,25 @@ import utils from '@/utils';
 class LoaderUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-loader-root';
   protected rootElClassName: string = 'swag-loader-root';
+  private isVisible: boolean = false;
 
   async show (debounce?: number) {
+    if (this.isVisible) return;
+
+    this.isVisible = true;
     this.mount(<Loader />, debounce);
   }
 
   async hide () {
     const loaderEl = document.querySelector('.swag-loader');
-    if (!loaderEl) return;
-    loaderEl.classList.remove('--swag-loader-show');
-    loaderEl.classList.add('--swag-loader-hide');
-    await utils.wait(300); // wait for loader animation to finish
+    if (loaderEl) {
+      loaderEl.classList.remove('--swag-loader-show');
+      loaderEl.classList.add('--swag-loader-hide');
+      await utils.wait(300); // wait for loader animation to finish
+    }
+
     this.unmount();
+    this.isVisible = false;
   }
 
   protected onMount () {
