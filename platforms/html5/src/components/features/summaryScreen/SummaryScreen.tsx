@@ -184,6 +184,7 @@ function FavoriteComponent (props: FavoriteProps) {
 
 interface SummaryProps {
   contentHtml?: string;
+  footerHtml?: string;
   stats: { key: string, value: string, lottie: object }[];
   shareString: string;
   isMember: boolean;
@@ -191,6 +192,7 @@ interface SummaryProps {
   promoLinks: { icon_url: string, background_color: string, title: string, url: string, type: string }[];
   hasPlayedToday?: boolean;
   isInjected?: boolean;
+  hideStats?: boolean;
   onFavorite?: () => void;
   onReplay?: () => void;
   hasLeaderboard?: boolean;
@@ -274,18 +276,22 @@ export default function SummaryScreen (props: SummaryProps) {
         <div ref={contentRef} className='swag-summaryScreen__content'>
           <header dangerouslySetInnerHTML={{ __html: props.contentHtml! }} />
 
-          <div className='swag-summaryScreen__stats'>
-            {
-              props.stats.map(({ key, value, lottie }) => 
-                <LottieComponent 
-                  key={key}
-                  className='swag-summaryScreen__stat' 
-                  animationData={utils.parseLottie(lottie, value)} 
-                  delay={config.loaderDelay ? 200 : 0} // screen transition is 400ms
-                />
-              )
-            }
-          </div>
+          {
+            !props.hideStats && (
+              <div className='swag-summaryScreen__stats'>
+                {
+                  props.stats.map(({ key, value, lottie }) => 
+                    <LottieComponent 
+                      key={key}
+                      className='swag-summaryScreen__stat' 
+                      animationData={utils.parseLottie(lottie, value)} 
+                      delay={config.loaderDelay ? 200 : 0} // screen transition is 400ms
+                    />
+                  )
+                }
+              </div>
+            )
+          }
 
           <div className={`swag-summaryScreen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
             <ShareStatsComponent shareString={props.shareString} />
@@ -307,6 +313,12 @@ export default function SummaryScreen (props: SummaryProps) {
               )
             }
           </div>
+
+          {
+            props.footerHtml && (
+              <div className='swag-summaryScreen__footer' dangerouslySetInnerHTML={{ __html: props.footerHtml! }} />
+            )
+          }
 
           <UpsellComponent 
             isMember={props.isMember} 

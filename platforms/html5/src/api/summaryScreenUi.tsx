@@ -11,7 +11,9 @@ import config from '@/config';
 export type ShowSummaryScreenOptions = {
   stats: { key: string, value: string, lottie: object }[], 
   contentHtml: string, 
+  footerHtml?: string,
   shareString: string, 
+  hideStats?: boolean,
   onFavorite?: () => void,
   onReplay?: () => void,
   onClose?: () => void,
@@ -147,10 +149,12 @@ class SummaryScreenUI extends UserInterfaceAPI {
     this.mount(<SummaryScreen 
       stats={options.stats} 
       contentHtml={options.contentHtml}
+      footerHtml={options.footerHtml}
       promoLinks={(isMember && isSubscriber) ? promoLinks : promoLinks.slice(0, 4)}
       shareString={options.shareString}
       isMember={isMember}
       isSubscriber={isSubscriber}
+      hideStats={options.hideStats}
       hasPlayedToday={hasPlayedToday}
       isInjected={this.isInjected}
       onFavorite={options.onFavorite}
