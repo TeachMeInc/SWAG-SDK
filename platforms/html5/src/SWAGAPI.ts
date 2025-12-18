@@ -488,9 +488,11 @@ export default class SWAGAPI {
   showSummaryScreen (options: {
     stats: { key: string, value: string, lottie: object }[], 
     contentHtml: string, 
+    footerHtml?: string;
     shareString: string, 
     eventProperties?: Record<string, any>,
     score?: string | number,
+    hideStats?: boolean,
     onFavorite?: () => void,
     onReplay?: () => void,
     onClose?: () => void,
