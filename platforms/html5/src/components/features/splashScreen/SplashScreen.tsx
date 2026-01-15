@@ -1,9 +1,9 @@
-import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
-import leaderboardScreenUi from '@/api/leaderboardScreenUi';
-import messages from '@/api/messages';
+// import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
+// import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+// import messages from '@/api/messages';
 import splashScreenUi from '@/api/splashScreenUi';
-import Button from '@/components/ui/gameThemed/Button';
-import OutlineButton from '@/components/ui/gameThemed/OutlineButton';
+// import Button from '@/components/ui/gameThemed/Button';
+// import OutlineButton from '@/components/ui/gameThemed/OutlineButton';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
