@@ -1,12 +1,12 @@
-import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
-import leaderboardScreenUi from '@/api/leaderboardScreenUi';
-import messages from '@/api/messages';
+// import inviteFriendsScreenUi from '@/api/inviteFriendsScreenUi';
+// import leaderboardScreenUi from '@/api/leaderboardScreenUi';
+// import messages from '@/api/messages';
 import splashScreenUi from '@/api/splashScreenUi';
-import Button from '@/components/ui/gameThemed/Button';
-import OutlineButton from '@/components/ui/gameThemed/OutlineButton';
+// import Button from '@/components/ui/gameThemed/Button';
+// import OutlineButton from '@/components/ui/gameThemed/OutlineButton';
 import Panel from '@/components/ui/gameThemed/Panel';
 import session from '@/session';
-import { useEffect, useState } from 'preact/hooks';
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import swStampWhite from '@/assets/sw-stamp-white.svg';
 import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
@@ -57,37 +57,55 @@ export default function SplashScreen (props: Props) {
   // Animation state
   const [ exiting, setExiting ] = useState(false);
 
-  const onClickPlay = () => {
+  const onClickPlay = useCallback(() => {
     setExiting(true);
     props.onClickPlay?.();
     setTimeout(() => {
       splashScreenUi.hide();
     }, 400); // match animation duration
-  };
+  }, [ props ]);
 
-  const onClickArchive = () => {
-    messages.trySendMessage('swag.navigateToArchive');
-  };
+  const isFinishedRef = useRef(false);
 
-  const onClickInviteFriends = () => {
-    inviteFriendsScreenUi.show({
-      source: 'splashScreen',
-      onClickBack: () => {},
-      onClickPlay: () => {
-        splashScreenUi.hide();
-        props.onClickPlay?.();
-      }
-    });
-  };
+  useEffect(() => {
+    if (isFinishedRef.current) return;
 
-  const onClickLeaderboard = () => {
-    leaderboardScreenUi.show({
-      onClickBack: () => {},
-      onClickPlay: () => {
-        props.onClickPlay?.();
-      }
-    });
-  };
+    if (img && ready) {
+      isFinishedRef.current = true;
+
+      // Auto-play after short delay
+      const timeout = setTimeout(() => {
+        onClickPlay();
+      }, 1000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [ img, ready, onClickPlay ]);
+
+  // const onClickArchive = () => {
+  //   messages.trySendMessage('swag.navigateToArchive');
+  // };
+
+  // const onClickInviteFriends = () => {
+  //   inviteFriendsScreenUi.show({
+  //     source: 'splashScreen',
+  //     onClickBack: () => {},
+  //     onClickPlay: () => {
+  //       splashScreenUi.hide();
+  //       props.onClickPlay?.();
+  //     }
+  //   });
+  // };
+
+  // const onClickLeaderboard = () => {
+  //   leaderboardScreenUi.show({
+  //     onClickBack: () => {},
+  //     onClickPlay: () => {
+  //       props.onClickPlay?.();
+  //     }
+  //   });
+  // };
 
   return (
     <Panel 
@@ -107,7 +125,7 @@ export default function SplashScreen (props: Props) {
                 ) : null
               }
             </div>
-            <div className='swag-splashScreen__buttons'>
+            {/* <div className='swag-splashScreen__buttons'>
               <Button onClick={onClickPlay}>Play</Button>
               <Button onClick={onClickArchive}>Archive</Button>
               {
@@ -116,7 +134,7 @@ export default function SplashScreen (props: Props) {
                   <OutlineButton onClick={onClickLeaderboard}>View Scores</OutlineButton>
                 </>) : null
               }
-            </div>
+            </div> */}
           </>
         ) : null
       }
