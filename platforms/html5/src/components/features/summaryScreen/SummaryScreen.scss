@@ -169,7 +169,6 @@ $smallScreenWidth: 468px;
 
 .swag-summaryScreen__related-games {
   width: 100%;
-  max-width: 320px;
 
   p {
     margin-top: 0.25rem;
@@ -181,9 +180,9 @@ $smallScreenWidth: 468px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem 2rem;
+    margin: 0;
 
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     list-style: none;
@@ -370,6 +369,11 @@ $smallScreenWidth: 468px;
       &:hover {
         opacity: 0.7;
       }
+    }
+
+    &.--outlinePrimary {
+      box-shadow: 0 0 0 1px var(--swag-btn-primary-color) inset;
+      color: var(--swag-btn-primary-color);
     }
   }
 }

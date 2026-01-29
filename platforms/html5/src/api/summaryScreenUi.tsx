@@ -150,7 +150,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
       stats={options.stats} 
       contentHtml={options.contentHtml}
       footerHtml={options.footerHtml}
-      promoLinks={(isMember && isSubscriber) ? promoLinks : promoLinks.slice(0, 4)}
+      promoLinks={promoLinks}
       shareString={options.shareString}
       isMember={isMember}
       isSubscriber={isSubscriber}

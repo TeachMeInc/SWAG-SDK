@@ -7,6 +7,7 @@ import replayIcon from '@/assets/replay-icon.svg';
 import caretIcon from '@/assets/caret-icon.svg';
 import favoriteIcon from '@/assets/favorite-icon.svg';
 import trophyIcon from '@/assets/trophy-icon.svg';
+import homeIcon from '@/assets/home-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
@@ -180,6 +181,26 @@ function FavoriteComponent (props: FavoriteProps) {
 
 // #endregion
 
+// #region Favorite Component
+
+function HomeComponent () {
+  const onHome = () => {
+    // TODO: send message
+  };
+
+  return (
+    <button 
+      className='swag-summaryScreen__btn --outline --outlinePrimary --noMarginTop'
+      onClick={onHome}
+    >
+      <img src={homeIcon} alt='icon' aria-hidden />
+      Return Home
+    </button>
+  );
+}
+
+// #endregion
+
 // #region Summary Component
 
 interface SummaryProps {
@@ -305,13 +326,7 @@ export default function SummaryScreen (props: SummaryProps) {
                 />
               )
             }
-            {
-              props.onFavorite && (
-                <FavoriteComponent 
-                  onFavorite={props.onFavorite} 
-                />
-              )
-            }
+            <HomeComponent />
           </div>
 
           {
@@ -319,11 +334,6 @@ export default function SummaryScreen (props: SummaryProps) {
               <div className='swag-summaryScreen__footer' dangerouslySetInnerHTML={{ __html: props.footerHtml! }} />
             )
           }
-
-          <UpsellComponent 
-            isMember={props.isMember} 
-            isSubscriber={props.isSubscriber}
-          />
 
           {
             props.promoLinks.length
@@ -351,10 +361,9 @@ export default function SummaryScreen (props: SummaryProps) {
             props.promoLinks.length 
               ? (
                 <div className='swag-summaryScreen__related-games'>
-                  <p>More Games:</p>
                   <ul>
                     {
-                      props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                      props.promoLinks.slice(1, 5).map(({ icon_url, background_color, title, url, type }) => {
                         return type === 'link' && (
                           <li 
                             key={url} 
