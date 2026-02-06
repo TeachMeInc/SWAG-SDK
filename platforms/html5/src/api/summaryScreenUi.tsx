@@ -111,24 +111,6 @@ class SummaryScreenUI extends UserInterfaceAPI {
       promises.push(Promise.resolve(undefined));
     }
 
-    // Fetch player position if position stat is enabled
-    if (options.stats?.find(stat => stat.key.toLowerCase() === 'position')) {
-      const fetchPlayerPositionFn = async () => {
-        try {
-          return await dataApi.getScoresContext({
-            day,
-            level_key: options.score.levelKey,
-            period: 'daily',
-          });
-        } catch (e) {
-          utils.warn('Error fetching player position:', e);
-        }
-      };
-      promises.push(fetchPlayerPositionFn());
-    } else {
-      promises.push(Promise.resolve(undefined));
-    }
-
     let batchedResult;
     try {
       batchedResult = await Promise.all(promises) as [
@@ -138,7 +120,6 @@ class SummaryScreenUI extends UserInterfaceAPI {
         DailyGameStreak,          // game streak
         GamePromoLink[],          // promo links
         boolean | undefined,      // score post result
-        UserBestData | undefined, // player position
       ];
     } catch (e) {
       utils.error('Error during batch calls for summary screen:', e);
@@ -154,7 +135,6 @@ class SummaryScreenUI extends UserInterfaceAPI {
       gameStreak,
       promoLinks,
       _scorePostResult,
-      playerPosition,
     ] = batchedResult;
 
     let stats = options.stats.map(stat => ({ 
@@ -176,6 +156,23 @@ class SummaryScreenUI extends UserInterfaceAPI {
     const timeStat = stats.find(stat => stat.key.toLowerCase() === 'time');
     if (timeStat) {
       timeStat.lottie = lottieTime;
+    }
+
+    // Fetch player position if position stat is enabled
+    let playerPosition: UserBestData | undefined;
+    if (options.stats?.find(stat => stat.key.toLowerCase() === 'position')) {
+      const fetchPlayerPositionFn = async () => {
+        try {
+          return await dataApi.getScoresContext({
+            day,
+            level_key: options.score.levelKey,
+            period: 'daily',
+          });
+        } catch (e) {
+          utils.warn('Error fetching player position:', e);
+        }
+      };
+      playerPosition = await fetchPlayerPositionFn();
     }
 
     // Update position stat if it exists
