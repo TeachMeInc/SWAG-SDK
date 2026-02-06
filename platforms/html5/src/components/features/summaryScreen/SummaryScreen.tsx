@@ -181,17 +181,17 @@ function FavoriteComponent (props: FavoriteProps) {
 
 // #endregion
 
-// #region Favorite Component
+// #region Home Component
 
 function HomeComponent () {
-  const onHome = () => {
-    // TODO: send message
+  const navigateToHome = () => {
+    messages.trySendMessage('swag.navigateToHome');
   };
 
   return (
     <button 
       className='swag-summaryScreen__btn --outline --outlinePrimary --noMarginTop'
-      onClick={onHome}
+      onClick={navigateToHome}
     >
       <img src={homeIcon} alt='icon' aria-hidden />
       Return Home
@@ -228,8 +228,9 @@ export default function SummaryScreen (props: SummaryProps) {
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
-  
-  const navigateToArchive = () => {
+
+  const navigateToArchive = async () => {
+    await dataApi.postTag('navigate_archive');
     messages.trySendMessage('swag.navigateToArchive');
   };
 
@@ -342,10 +343,7 @@ export default function SummaryScreen (props: SummaryProps) {
                   {
                     props.promoLinks.map(({ icon_url, background_color, title, type }) => {
                       return type === 'archive' && (
-                        <button key={title} style={{ backgroundColor: background_color }} onClick={async () => {
-                          await dataApi.postTag('navigate_archive');
-                          navigateToArchive();
-                        }}>
+                        <button key={title} style={{ backgroundColor: background_color }} onClick={navigateToArchive}>
                           <img src={icon_url} alt={title} />
                           <span>{title}</span>
                           <img src={arrowIcon} alt='arrow' />

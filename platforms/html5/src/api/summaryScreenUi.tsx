@@ -1,15 +1,16 @@
-import dataApi, { DailyGameStreak, GamePromoLink } from '@/api/data';
+import dataApi, { DailyGameStreak, GamePromoLink, UserBestData } from '@/api/data';
 import SummaryScreen from '@/components/features/summaryScreen/SummaryScreen';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import lottieStreak from '@/assets/lottie/streak.json';
 import lottieTime from '@/assets/lottie/time.json';
+import lottiePosition from '@/assets/lottie/position.json';
 import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
 import config from '@/config';
 
 export type ShowSummaryScreenOptions = {
-  stats: { key: string, value: string, lottie: object }[], 
+  stats: { key: string, value?: string, lottie?: object }[], 
   contentHtml: string, 
   footerHtml?: string,
   shareString: string, 
@@ -19,9 +20,9 @@ export type ShowSummaryScreenOptions = {
   onClose?: () => void,
   hasLeaderboard?: boolean,
   eventProperties?: Record<string, any>,
-  score?: {
+  score: {
     levelKey: string,
-    value: string | number
+    value?: string | number
   }
 }
 
@@ -97,25 +98,47 @@ class SummaryScreenUI extends UserInterfaceAPI {
     })());
 
     // Post score
-    if (options.score) {
+    if (options.score.value !== undefined) {
       const postDailyScoreFn = async () => {
         try {
-          return await dataApi.postDailyScore(day, options.score!.levelKey, options.score!.value);
+          return await dataApi.postDailyScore(day, options.score.levelKey, options.score.value!);
         } catch (e) {
           utils.warn('Error posting daily score:', e);
         }
       };
       promises.push(postDailyScoreFn());
+    } else {
+      promises.push(Promise.resolve(undefined));
+    }
+
+    // Fetch player position if position stat is enabled
+    if (options.stats?.find(stat => stat.key.toLowerCase() === 'position')) {
+      const fetchPlayerPositionFn = async () => {
+        try {
+          return await dataApi.getScoresContext({
+            day,
+            level_key: options.score.levelKey,
+            period: 'daily',
+          });
+        } catch (e) {
+          utils.warn('Error fetching player position:', e);
+        }
+      };
+      promises.push(fetchPlayerPositionFn());
+    } else {
+      promises.push(Promise.resolve(undefined));
     }
 
     let batchedResult;
     try {
       batchedResult = await Promise.all(promises) as [
-        boolean, 
-        boolean, 
-        boolean, 
-        DailyGameStreak, 
-        GamePromoLink[]
+        boolean,                  // member status
+        boolean,                  // subscriber status
+        boolean,                  // has played today
+        DailyGameStreak,          // game streak
+        GamePromoLink[],          // promo links
+        boolean | undefined,      // score post result
+        UserBestData | undefined, // player position
       ];
     } catch (e) {
       utils.error('Error during batch calls for summary screen:', e);
@@ -129,10 +152,19 @@ class SummaryScreenUI extends UserInterfaceAPI {
       isSubscriber, 
       hasPlayedToday,
       gameStreak,
-      promoLinks
+      promoLinks,
+      _scorePostResult,
+      playerPosition,
     ] = batchedResult;
 
-    options.stats.unshift(
+    let stats = options.stats.map(stat => ({ 
+      key: stat.key, 
+      value: stat.value || '', 
+      lottie: stat.lottie || {}
+    }));
+
+    // Add streak stat at the top
+    stats.unshift(
       {
         key: 'Streak',
         value: String(gameStreak.streak).padStart(3, '0'),
@@ -141,13 +173,25 @@ class SummaryScreenUI extends UserInterfaceAPI {
     );
     
     // Add time stat if it exists
-    const timeStat = options.stats.find(stat => stat.key.toLowerCase() === 'time');
+    const timeStat = stats.find(stat => stat.key.toLowerCase() === 'time');
     if (timeStat) {
       timeStat.lottie = lottieTime;
     }
 
+    // Update position stat if it exists
+    if (stats.find(stat => stat.key.toLowerCase() === 'position')) {
+      const positionStat = stats.find(stat => stat.key.toLowerCase() === 'position')!;
+      if (playerPosition !== undefined) {
+        positionStat.value = String(playerPosition.scorePosition?.value);
+        positionStat.lottie = lottiePosition;
+      } else {
+        // Remove position stat if we couldn't fetch it
+        stats = stats.filter(stat => stat.key.toLowerCase() !== 'position');
+      }
+    }
+
     this.mount(<SummaryScreen 
-      stats={options.stats} 
+      stats={stats} 
       contentHtml={options.contentHtml}
       footerHtml={options.footerHtml}
       promoLinks={promoLinks}
