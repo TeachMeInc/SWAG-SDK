@@ -275,9 +275,10 @@
         () => api.showSummaryScreen({
           stats: [
             { key: 'Time', value: '1:00' },
+            { key: 'Position' }
           ], 
           contentHtml: '<div style="background:#ccc;width:100%;height:100px;">Preview</div>',
-          footerHtml: '<div>Thank you for playing!</div>',
+          footerHtml: '',
           shareString: 'You have completed the game, share this text with your friends!',
           eventProperties: { example_stat: Math.floor(Math.random() * 1000) },
           score: Math.floor(Math.random() * 1000),

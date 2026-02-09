@@ -8,6 +8,7 @@ import caretIcon from '@/assets/caret-icon.svg';
 import favoriteIcon from '@/assets/favorite-icon.svg';
 import trophyIcon from '@/assets/trophy-icon.svg';
 import scrollIndicatorLottie from '@/assets/lottie/scroll-indicator.json';
+import homeIcon from '@/assets/home-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
@@ -181,6 +182,26 @@ function FavoriteComponent (props: FavoriteProps) {
 
 // #endregion
 
+// #region Home Component
+
+function HomeComponent () {
+  const navigateToHome = () => {
+    messages.trySendMessage('swag.navigateToHome');
+  };
+
+  return (
+    <button 
+      className='swag-summaryScreen__btn --outline --outlinePrimary --noMarginTop'
+      onClick={navigateToHome}
+    >
+      <img src={homeIcon} alt='icon' aria-hidden />
+      Return Home
+    </button>
+  );
+}
+
+// #endregion
+
 // #region Summary Component
 
 interface SummaryProps {
@@ -208,8 +229,9 @@ export default function SummaryScreen (props: SummaryProps) {
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
-  
-  const navigateToArchive = () => {
+
+  const navigateToArchive = async () => {
+    await dataApi.postTag('navigate_archive');
     messages.trySendMessage('swag.navigateToArchive');
   };
 
@@ -306,13 +328,7 @@ export default function SummaryScreen (props: SummaryProps) {
                 />
               )
             }
-            {
-              props.onFavorite && (
-                <FavoriteComponent 
-                  onFavorite={props.onFavorite} 
-                />
-              )
-            }
+            <HomeComponent />
           </div>
 
           {
@@ -321,11 +337,6 @@ export default function SummaryScreen (props: SummaryProps) {
             )
           }
 
-          <UpsellComponent 
-            isMember={props.isMember} 
-            isSubscriber={props.isSubscriber}
-          />
-
           {
             props.promoLinks.length
               ? (
@@ -333,10 +344,7 @@ export default function SummaryScreen (props: SummaryProps) {
                   {
                     props.promoLinks.map(({ icon_url, background_color, title, type }) => {
                       return type === 'archive' && (
-                        <button key={title} style={{ backgroundColor: background_color }} onClick={async () => {
-                          await dataApi.postTag('navigate_archive');
-                          navigateToArchive();
-                        }}>
+                        <button key={title} style={{ backgroundColor: background_color }} onClick={navigateToArchive}>
                           <img src={icon_url} alt={title} />
                           <span>{title}</span>
                           <img src={arrowIcon} alt='arrow' />
@@ -352,10 +360,9 @@ export default function SummaryScreen (props: SummaryProps) {
             props.promoLinks.length 
               ? (
                 <div className='swag-summaryScreen__related-games'>
-                  <p>More Games:</p>
                   <ul>
                     {
-                      props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                      props.promoLinks.slice(1, 5).map(({ icon_url, background_color, title, url, type }) => {
                         return type === 'link' && (
                           <li 
                             key={url} 
