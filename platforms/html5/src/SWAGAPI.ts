@@ -254,6 +254,10 @@ export default class SWAGAPI {
     return messagesApi.trySendMessage('swag.navigateToTitle', keyword);
   }
 
+  navigateToHome () {
+    return messagesApi.trySendMessage('swag.navigateToHome');
+  }
+
   // #endregion
 
 
@@ -503,14 +507,11 @@ export default class SWAGAPI {
     const summaryScreenOpts: ShowSummaryScreenOptions = {
       ...restOfOpts,
       hasLeaderboard: !!this.options.leaderboardScreen,
-    };
-    
-    if (score) {
-      summaryScreenOpts.score = {
+      score: {
         levelKey: this.options.leaderboards?.dailyScoreLevelKey || 'daily',
-        value: score
-      };
-    }
+        value: score ?? undefined,
+      }
+    };
     
     return summaryScreenUi.show(summaryScreenOpts);
   }
