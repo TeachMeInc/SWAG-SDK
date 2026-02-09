@@ -167,7 +167,9 @@ const methods = {
   parseLottie (lottie: object, value: string | number): object {
     let stringifyLottie = '';
     try {
-      stringifyLottie = JSON.stringify(lottie).replace(/0123456789:%\.\//g, value.toString());
+      stringifyLottie = JSON.stringify(lottie)
+        .replace(/0123456789:%\.\/stndrh/g, value.toString())
+        .replace(/0123456789:%\.\//g, value.toString()); // backwards compatible for older lotties
     } catch (e) {
       this.debug('Error stringifying Lottie animation', e);
       return {};
@@ -257,6 +259,22 @@ const methods = {
 
   async wait (ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  },
+
+  formatOrdinal (n: number) {
+    const j = n % 10;
+    const k = n % 100;
+
+    if (j === 1 && k !== 11) {
+      return n + 'st';
+    }
+    if (j === 2 && k !== 12) {
+      return n + 'nd';
+    }
+    if (j === 3 && k !== 13) {
+      return n + 'rd';
+    }
+    return n + 'th';
   },
 
   // #endregion 

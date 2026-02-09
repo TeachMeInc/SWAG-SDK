@@ -179,7 +179,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
     if (stats.find(stat => stat.key.toLowerCase() === 'position')) {
       const positionStat = stats.find(stat => stat.key.toLowerCase() === 'position')!;
       if (playerPosition !== undefined) {
-        positionStat.value = String(playerPosition.scorePosition?.value);
+        positionStat.value = utils.formatOrdinal(Number(playerPosition.scorePosition?.value));
         positionStat.lottie = lottiePosition;
       } else {
         // Remove position stat if we couldn't fetch it
