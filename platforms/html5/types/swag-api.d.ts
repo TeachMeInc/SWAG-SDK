@@ -63,7 +63,7 @@ interface PostScoreOptions {
     leaderboard?: string;
 }
 
-type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode';
+type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.navigateToHome' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode' | 'swag.requestHostUrl';
 interface MessagePayload {
     eventName: MessageEventName;
     message: string;
@@ -104,6 +104,8 @@ interface SWAGAPIOptions {
         showOnLoad?: boolean;
         containerElementId?: string;
         isBeta?: boolean;
+        onClickPlay?: () => void;
+        waitForAssets?: Promise<void>;
     };
     summaryScreen?: {
         containerElementId?: string;
@@ -124,8 +126,10 @@ declare class SWAGAPI {
     toggleFullScreen(): Promise<MessagePayload>;
     navigateToArchive(): Promise<MessagePayload>;
     navigateToTitle(keyword: string): Promise<MessagePayload>;
+    navigateToHome(): Promise<MessagePayload>;
     getGame(): Promise<Game>;
     startDailyGame(eventProperties?: Record<string, any>): Promise<void>;
+    completeDailyGame(day: string): Promise<unknown>;
     getCurrentDay(): `${number}-${number}-${number}`;
     getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
     getGameStreak(): Promise<DailyGameStreak>;
@@ -134,6 +138,7 @@ declare class SWAGAPI {
     getDays(limit: number): Promise<any[]>;
     getScores(options: PostScoreOptions): Promise<LeaderboardData[]>;
     postScore(levelKey: string, value: string, options: PostScoreOptions): Promise<unknown>;
+    postDailyScore(day: string, level_key: string, value: string): Promise<unknown>;
     hasDailyScore(levelKey: any): Promise<boolean>;
     getAchievementCategories(): Promise<any[]>;
     postAchievement(achievement_key: string): Promise<unknown>;
@@ -144,6 +149,7 @@ declare class SWAGAPI {
     getUserData(): Promise<any>;
     setLocalUserData(key: string, value: string | null): void;
     getLocalUserData(key: string): string | null;
+    postTag(tagName: string, properties?: Record<string, any>): Promise<void>;
     private showToolbar;
     setToolbarItems(items: ToolbarItem[]): void;
     updateToolbarItem(item: ToolbarItem): void;
@@ -151,6 +157,7 @@ declare class SWAGAPI {
     showSplashScreen(options?: {
         isBeta?: boolean;
         onClickPlay?: () => void;
+        waitForAssets?: Promise<void>;
     }): Promise<void>;
     showSummaryScreen(options: {
         stats: {
