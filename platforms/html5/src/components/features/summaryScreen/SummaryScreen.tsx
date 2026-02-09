@@ -7,6 +7,7 @@ import replayIcon from '@/assets/replay-icon.svg';
 import caretIcon from '@/assets/caret-icon.svg';
 import favoriteIcon from '@/assets/favorite-icon.svg';
 import trophyIcon from '@/assets/trophy-icon.svg';
+import scrollIndicatorLottie from '@/assets/lottie/scroll-indicator.json';
 import homeIcon from '@/assets/home-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
@@ -386,7 +387,10 @@ export default function SummaryScreen (props: SummaryProps) {
         {
           (isOverflow && showScrollIndicator) && (
             <button type='button' className='swag-summaryScreen__scroll-indicator' onClick={handleScrollToBottom}>
-              <img src={caretIcon} alt='scroll down' />
+              <LottieComponent 
+                animationData={scrollIndicatorLottie} 
+                delay={config.loaderDelay ? 200 : 0} // screen transition is 400ms
+              />
             </button>
           )
         }
