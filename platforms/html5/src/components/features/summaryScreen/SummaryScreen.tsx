@@ -235,7 +235,7 @@ export default function SummaryScreen (props: SummaryProps) {
             )
           }
 
-          <div className={`swag-summaryScreen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
+          <div className='swag-summaryScreen__button-container'>
             <ShareStatsComponent shareString={props.shareString} />
             {
               props.hasLeaderboard ? <PlayWithFriendsComponent /> : null

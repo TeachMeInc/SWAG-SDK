@@ -109,13 +109,9 @@ $smallScreenWidth: 468px;
 .swag-summaryScreen__button-container {
   // grid with 2 columns
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   width: 100%;
-
-  &.--has-favorite {
-    grid-template-columns: repeat(2, 1fr);
-  }
 
   .--fullWidth {
     grid-column: 1 / -1;
