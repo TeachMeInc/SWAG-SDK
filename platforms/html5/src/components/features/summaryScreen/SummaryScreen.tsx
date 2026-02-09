@@ -4,8 +4,6 @@ import utils from '@/utils';
 import arrowIcon from '@/assets/arrow-icon.svg';
 import shareIcon from '@/assets/share-icon.svg';
 import replayIcon from '@/assets/replay-icon.svg';
-import caretIcon from '@/assets/caret-icon.svg';
-import favoriteIcon from '@/assets/favorite-icon.svg';
 import trophyIcon from '@/assets/trophy-icon.svg';
 import scrollIndicatorLottie from '@/assets/lottie/scroll-indicator.json';
 import homeIcon from '@/assets/home-icon.svg';
@@ -15,63 +13,6 @@ import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import summaryScreenUi from '@/api/summaryScreenUi';
 import config from '@/config';
 import dataApi from '@/api/data';
-import upsellBanner from '@/assets/upsell-banner.jpg';
-
-// #region Shockwave Upsell
-
-interface UpsellProps {
-  isMember?: boolean;
-  isSubscriber?: boolean;
-}
-
-function UpsellComponent (props: UpsellProps) {
-  const { isMember, isSubscriber } = props;
-
-  const targetUrl = 'https://shockwave.com' + ((isMember && !isSubscriber)
-    ? '/unlimited' 
-    : '/account/register');
-
-  const sendEvent = () => {
-    if (isMember && !isSubscriber) {
-      dataApi.sendTagBeacon('swu_upsell', { target_url: targetUrl });
-    } else {
-      dataApi.sendTagBeacon('account_upsell', { target_url: targetUrl });
-    }
-  };
-
-  return (
-    (isMember && isSubscriber) ? (
-      <></>
-    ) : (
-      <div className='swag-summaryScreen__upsell'>
-        <a 
-          href={targetUrl}
-          target='_blank'
-          onClick={sendEvent}
-          className='swag-summaryScreen__upsell-banner'
-          style={{ backgroundImage: `url(${upsellBanner})` }}
-        >
-          {
-            (isMember && !isSubscriber) ? (
-              <p>
-                <strong>Shockwave is more fun with a Subscription!</strong><br/>
-                No Ads, Archive Access and more
-              </p>
-            ) : (
-              <p>
-                <strong>Shockwave is more fun with an account!</strong><br/>
-                Track stats, save favorites and more
-              </p>
-            )
-          }
-          <img src={arrowIcon} alt='arrow' />
-        </a>
-      </div>
-    )
-  );
-}
-
-// #endregion
 
 // #region Share Stats Component
 
@@ -154,28 +95,6 @@ function ReplayComponent (props: ReplayProps) {
     >
       <img src={replayIcon} alt='icon' aria-hidden />
       Replay
-    </button>
-  );
-}
-
-// #endregion
-
-// #region Favorite Component
-
-interface FavoriteProps {
-  onFavorite?: () => void;
-}
-
-function FavoriteComponent (props: FavoriteProps) {
-  const { onFavorite } = props;
-
-  return (
-    <button 
-      className='swag-summaryScreen__btn --outline --noMarginTop'
-      onClick={onFavorite}
-    >
-      <img src={favoriteIcon} alt='icon' aria-hidden />
-      Add to Favorites
     </button>
   );
 }
