@@ -166,7 +166,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
           return await dataApi.getScoresContext({
             day,
             level_key: options.score.levelKey,
-            period: 'daily',
+            period: 'alltime',
           });
         } catch (e) {
           utils.warn('Error fetching player position:', e);
