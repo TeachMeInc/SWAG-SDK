@@ -209,8 +209,8 @@ The summary screen supports built-in stats with included Lottie animations. To u
 
 | Key       | Description |
 |-----------|-------------|
-| `Time`    | Displays the time taken with a stopwatch animation. _Value should be time in seconds._ |
-| `Position`| Displays the player's leaderboard position with a podium animation. _No value required._ |
+| `Time`    | Displays the user's time taken. _Value should be time in seconds._ |
+| `Position`| Displays the user's (members only) leaderboard position. _No value required._ |
 | `Streak`   | Displays the user's current streak. _This is always included and does not need to be specified._ |
 
 

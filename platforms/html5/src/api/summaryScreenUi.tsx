@@ -175,15 +175,17 @@ class SummaryScreenUI extends UserInterfaceAPI {
       playerPosition = await fetchPlayerPositionFn();
     }
 
-    // Update position stat if it exists
-    if (stats.find(stat => stat.key.toLowerCase() === 'position')) {
-      const positionStat = stats.find(stat => stat.key.toLowerCase() === 'position')!;
-      if (playerPosition !== undefined) {
-        positionStat.value = utils.formatOrdinal(Number(playerPosition.scorePosition?.value));
-        positionStat.lottie = lottiePosition;
-      } else {
-        // Remove position stat if we couldn't fetch it
-        stats = stats.filter(stat => stat.key.toLowerCase() !== 'position');
+    // Update position stat if it exists (display for members only)
+    if (isMember) {
+      if (stats.find(stat => stat.key.toLowerCase() === 'position')) {
+        const positionStat = stats.find(stat => stat.key.toLowerCase() === 'position')!;
+        if (playerPosition !== undefined) {
+          positionStat.value = utils.formatOrdinal(Number(playerPosition.scorePosition?.value));
+          positionStat.lottie = lottiePosition;
+        } else {
+          // Remove position stat if we couldn't fetch it
+          stats = stats.filter(stat => stat.key.toLowerCase() !== 'position');
+        }
       }
     }
 
