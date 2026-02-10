@@ -62,6 +62,11 @@ Below are the main CSS variables you can override to customize the SWAG HTML5 SD
 - `--swag-l-game-accent-color` / `--swag-d-game-accent-color`: Game accent color for each theme
 - `--swag-game-accent-color`: Accent color that adapts to theme
 
+#### Summary Screen
+
+- `--swag-l-panel-bg-color` / `--swag-d-panel-bg-color`: Background color for summary screen panels
+- `--swag-l-panel-font-color` / `--swag-d-panel-font-color`: Font color for summary screen panels
+
 #### Miscellaneous
 
 - `--swag-l-background-color` / `--swag-d-background-color`: Main background color
