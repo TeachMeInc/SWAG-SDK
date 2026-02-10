@@ -83,30 +83,6 @@ export default function SplashScreen (props: Props) {
     }
   }, [ img, ready, onClickPlay ]);
 
-  // const onClickArchive = () => {
-  //   messages.trySendMessage('swag.navigateToArchive');
-  // };
-
-  // const onClickInviteFriends = () => {
-  //   inviteFriendsScreenUi.show({
-  //     source: 'splashScreen',
-  //     onClickBack: () => {},
-  //     onClickPlay: () => {
-  //       splashScreenUi.hide();
-  //       props.onClickPlay?.();
-  //     }
-  //   });
-  // };
-
-  // const onClickLeaderboard = () => {
-  //   leaderboardScreenUi.show({
-  //     onClickBack: () => {},
-  //     onClickPlay: () => {
-  //       props.onClickPlay?.();
-  //     }
-  //   });
-  // };
-
   return (
     <Panel 
       className={`swag-splashScreen ${exiting ? 'swag-slide-out-down' : ''}`}
@@ -125,16 +101,6 @@ export default function SplashScreen (props: Props) {
                 ) : null
               }
             </div>
-            {/* <div className='swag-splashScreen__buttons'>
-              <Button onClick={onClickPlay}>Play</Button>
-              <Button onClick={onClickArchive}>Archive</Button>
-              {
-                props.hasLeaderboard ? (<>
-                  <OutlineButton onClick={onClickInviteFriends}>Play with Friends</OutlineButton>
-                  <OutlineButton onClick={onClickLeaderboard}>View Scores</OutlineButton>
-                </>) : null
-              }
-            </div> */}
           </>
         ) : null
       }

@@ -15,6 +15,7 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `startSession()`                 | Starts a new session. Returns a promise.                           |
 | `toggleFullScreen()`             | Toggles fullscreen mode in the host application. Returns a promise with a message payload. |
 | `navigateToArchive()`            | Navigates to the archive screen. Returns a promise with a message payload. |
+| `navigateToHome()`            | Navigates to the home screen. Returns a promise with a message payload. |
 | `navigateToTitle(keyword)`       | Navigates to the game title screen. Returns a promise with a message payload. |
 | `getGame()`                      | Retrieves game information. Returns a promise with a `Game` object.|
 | `startDailyGame(properties?)`| Starts a daily game challenge. Returns a promise.                 |

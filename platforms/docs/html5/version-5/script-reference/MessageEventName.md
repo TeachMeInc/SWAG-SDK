@@ -11,6 +11,7 @@ The `MessageEventName` type defines the possible event names for messages sent b
 | `swag.toolbar.hide`           | Hide the toolbar.                                |
 | `swag.toggleFullScreen`       | Toggle fullscreen mode.                          |
 | `swag.navigateToArchive`      | Navigate to the archive screen.                  |
+| `swag.navigateToHome`      | Navigate to the home screen.                  |
 | `swag.navigateToTitle`        | Navigate to the game title screen.               |
 | `swag.dailyGameProgress.start`| Start daily game progress.                       |
 | `swag.dailyGameProgress.complete` | Complete daily game progress.               |

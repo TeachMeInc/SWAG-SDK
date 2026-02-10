@@ -204,6 +204,16 @@ summaryScreen: {
 },
 ```
 
+### Built-In Stats
+The summary screen supports built-in stats with included Lottie animations. To use a built-in stat, include a `key` that matches one of the following values:
+
+| Key       | Description |
+|-----------|-------------|
+| `Time`    | Displays the user's time taken. _Value should be time in seconds._ |
+| `Position`| Displays the user's (members only) leaderboard position. _No value required._ |
+| `Streak`   | Displays the user's current streak. _This is always included and does not need to be specified._ |
+
+
 ## Leaderboards
 
 SWAG v5 supports frictionless, room code-based leaderboards for social play. When enabled, buttons to view leaderboards and invite friends are added to the splash and summary screens.

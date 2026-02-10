@@ -4,72 +4,15 @@ import utils from '@/utils';
 import arrowIcon from '@/assets/arrow-icon.svg';
 import shareIcon from '@/assets/share-icon.svg';
 import replayIcon from '@/assets/replay-icon.svg';
-import caretIcon from '@/assets/caret-icon.svg';
-import favoriteIcon from '@/assets/favorite-icon.svg';
 import trophyIcon from '@/assets/trophy-icon.svg';
+import scrollIndicatorLottie from '@/assets/lottie/scroll-indicator.json';
+import homeIcon from '@/assets/home-icon.svg';
 import LottieComponent from '@/components/ui/Lottie';
 import session from '@/session';
 import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import summaryScreenUi from '@/api/summaryScreenUi';
 import config from '@/config';
 import dataApi from '@/api/data';
-import upsellBanner from '@/assets/upsell-banner.jpg';
-
-// #region Shockwave Upsell
-
-interface UpsellProps {
-  isMember?: boolean;
-  isSubscriber?: boolean;
-}
-
-function UpsellComponent (props: UpsellProps) {
-  const { isMember, isSubscriber } = props;
-
-  const targetUrl = 'https://shockwave.com' + ((isMember && !isSubscriber)
-    ? '/unlimited' 
-    : '/account/register');
-
-  const sendEvent = () => {
-    if (isMember && !isSubscriber) {
-      dataApi.sendTagBeacon('swu_upsell', { target_url: targetUrl });
-    } else {
-      dataApi.sendTagBeacon('account_upsell', { target_url: targetUrl });
-    }
-  };
-
-  return (
-    (isMember && isSubscriber) ? (
-      <></>
-    ) : (
-      <div className='swag-summaryScreen__upsell'>
-        <a 
-          href={targetUrl}
-          target='_blank'
-          onClick={sendEvent}
-          className='swag-summaryScreen__upsell-banner'
-          style={{ backgroundImage: `url(${upsellBanner})` }}
-        >
-          {
-            (isMember && !isSubscriber) ? (
-              <p>
-                <strong>Shockwave is more fun with a Subscription!</strong><br/>
-                No Ads, Archive Access and more
-              </p>
-            ) : (
-              <p>
-                <strong>Shockwave is more fun with an account!</strong><br/>
-                Track stats, save favorites and more
-              </p>
-            )
-          }
-          <img src={arrowIcon} alt='arrow' />
-        </a>
-      </div>
-    )
-  );
-}
-
-// #endregion
 
 // #region Share Stats Component
 
@@ -158,22 +101,20 @@ function ReplayComponent (props: ReplayProps) {
 
 // #endregion
 
-// #region Favorite Component
+// #region Home Component
 
-interface FavoriteProps {
-  onFavorite?: () => void;
-}
-
-function FavoriteComponent (props: FavoriteProps) {
-  const { onFavorite } = props;
+function HomeComponent () {
+  const navigateToHome = () => {
+    messages.trySendMessage('swag.navigateToHome');
+  };
 
   return (
     <button 
-      className='swag-summaryScreen__btn --outline --noMarginTop'
-      onClick={onFavorite}
+      className='swag-summaryScreen__btn --outline --outlinePrimary --noMarginTop'
+      onClick={navigateToHome}
     >
-      <img src={favoriteIcon} alt='icon' aria-hidden />
-      Add to Favorites
+      <img src={homeIcon} alt='icon' aria-hidden />
+      Return Home
     </button>
   );
 }
@@ -207,8 +148,9 @@ export default function SummaryScreen (props: SummaryProps) {
   const navigateToTitle = (slug: string) => {
     messages.trySendMessage('swag.navigateToTitle', slug);
   };
-  
-  const navigateToArchive = () => {
+
+  const navigateToArchive = async () => {
+    await dataApi.postTag('navigate_archive');
     messages.trySendMessage('swag.navigateToArchive');
   };
 
@@ -293,7 +235,7 @@ export default function SummaryScreen (props: SummaryProps) {
             )
           }
 
-          <div className={`swag-summaryScreen__button-container ${props.onFavorite ? '--has-favorite' : ''}`}>
+          <div className='swag-summaryScreen__button-container'>
             <ShareStatsComponent shareString={props.shareString} />
             {
               props.hasLeaderboard ? <PlayWithFriendsComponent /> : null
@@ -305,13 +247,7 @@ export default function SummaryScreen (props: SummaryProps) {
                 />
               )
             }
-            {
-              props.onFavorite && (
-                <FavoriteComponent 
-                  onFavorite={props.onFavorite} 
-                />
-              )
-            }
+            <HomeComponent />
           </div>
 
           {
@@ -320,11 +256,6 @@ export default function SummaryScreen (props: SummaryProps) {
             )
           }
 
-          <UpsellComponent 
-            isMember={props.isMember} 
-            isSubscriber={props.isSubscriber}
-          />
-
           {
             props.promoLinks.length
               ? (
@@ -332,10 +263,7 @@ export default function SummaryScreen (props: SummaryProps) {
                   {
                     props.promoLinks.map(({ icon_url, background_color, title, type }) => {
                       return type === 'archive' && (
-                        <button key={title} style={{ backgroundColor: background_color }} onClick={async () => {
-                          await dataApi.postTag('navigate_archive');
-                          navigateToArchive();
-                        }}>
+                        <button key={title} style={{ backgroundColor: background_color }} onClick={navigateToArchive}>
                           <img src={icon_url} alt={title} />
                           <span>{title}</span>
                           <img src={arrowIcon} alt='arrow' />
@@ -351,10 +279,9 @@ export default function SummaryScreen (props: SummaryProps) {
             props.promoLinks.length 
               ? (
                 <div className='swag-summaryScreen__related-games'>
-                  <p>More Games:</p>
                   <ul>
                     {
-                      props.promoLinks.map(({ icon_url, background_color, title, url, type }) => {
+                      props.promoLinks.slice(1, 5).map(({ icon_url, background_color, title, url, type }) => {
                         return type === 'link' && (
                           <li 
                             key={url} 
@@ -379,7 +306,10 @@ export default function SummaryScreen (props: SummaryProps) {
         {
           (isOverflow && showScrollIndicator) && (
             <button type='button' className='swag-summaryScreen__scroll-indicator' onClick={handleScrollToBottom}>
-              <img src={caretIcon} alt='scroll down' />
+              <LottieComponent 
+                animationData={scrollIndicatorLottie} 
+                delay={config.loaderDelay ? 200 : 0} // screen transition is 400ms
+              />
             </button>
           )
         }
