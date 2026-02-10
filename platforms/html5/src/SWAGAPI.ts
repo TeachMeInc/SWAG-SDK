@@ -258,6 +258,10 @@ export default class SWAGAPI {
     return messagesApi.trySendMessage('swag.navigateToHome');
   }
 
+  resizeParentFrame (size: { width: number, height: number }) {
+    return messagesApi.trySendMessage('swag.resizeParentFrame', JSON.stringify(size), true);
+  }
+
   // #endregion
 
 

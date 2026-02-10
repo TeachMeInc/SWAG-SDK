@@ -63,7 +63,7 @@ interface PostScoreOptions {
     leaderboard?: string;
 }
 
-type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.navigateToHome' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode' | 'swag.requestHostUrl';
+type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.navigateToHome' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode' | 'swag.requestHostUrl' | 'swag.resizeParentFrame';
 interface MessagePayload {
     eventName: MessageEventName;
     message: string;
@@ -127,6 +127,10 @@ declare class SWAGAPI {
     navigateToArchive(): Promise<MessagePayload>;
     navigateToTitle(keyword: string): Promise<MessagePayload>;
     navigateToHome(): Promise<MessagePayload>;
+    resizeParentFrame(size: {
+        width: number;
+        height: number;
+    }): Promise<MessagePayload>;
     getGame(): Promise<Game>;
     startDailyGame(eventProperties?: Record<string, any>): Promise<void>;
     completeDailyGame(day: string): Promise<unknown>;

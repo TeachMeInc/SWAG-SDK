@@ -32,7 +32,8 @@ export type MessageEventName =
   'swag.dailyGameProgress.start' |
   'swag.dailyGameProgress.complete' |
   'swag.setLeaderboardCode' |
-  'swag.requestHostUrl';
+  'swag.requestHostUrl' |
+  'swag.resizeParentFrame';
 
 export interface MessagePayload {
   eventName: MessageEventName;
