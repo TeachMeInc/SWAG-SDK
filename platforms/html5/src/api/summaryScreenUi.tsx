@@ -176,8 +176,8 @@ class SummaryScreenUI extends UserInterfaceAPI {
     }
 
     // Update position stat if it exists (display for members only)
-    if (isMember) {
-      if (stats.find(stat => stat.key.toLowerCase() === 'position')) {
+    if (stats.find(stat => stat.key.toLowerCase() === 'position')) {
+      if (isMember) {
         const positionStat = stats.find(stat => stat.key.toLowerCase() === 'position')!;
         if (playerPosition !== undefined) {
           positionStat.value = utils.formatOrdinal(Number(playerPosition.scorePosition?.value));
@@ -186,6 +186,9 @@ class SummaryScreenUI extends UserInterfaceAPI {
           // Remove position stat if we couldn't fetch it
           stats = stats.filter(stat => stat.key.toLowerCase() !== 'position');
         }
+      } else {
+        // Remove position stat for non-members
+        stats = stats.filter(stat => stat.key.toLowerCase() !== 'position');
       }
     }
 
