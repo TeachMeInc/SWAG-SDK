@@ -24,15 +24,17 @@ jobs:
         run: npm run build:staging
         working-directory: ./platforms/html5
 
-      - uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
+      - name: Upload to DigitalOcean Spaces
         env:
-          AWS_S3_BUCKET: "swag-sdk"
-          AWS_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-          AWS_S3_ENDPOINT: "https://sfo3.digitaloceanspaces.com"
-          
+          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
+          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
+        run: |
+          npm install -g aws-cli
+          aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
+          aws configure set default.region us-east-1
+          aws s3 sync ./platforms/html5/dist s3://swag-sdk/v5/staging/dist --endpoint-url "https://sfo3.digitaloceanspaces.com" --acl public-read
+
       - name: Clear Cloudflare Cache
         env:
           CF_TOKEN: ${{ secrets.CF_TOKEN }}
