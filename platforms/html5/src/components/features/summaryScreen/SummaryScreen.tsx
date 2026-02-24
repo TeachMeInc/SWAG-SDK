@@ -105,7 +105,7 @@ function ReplayComponent (props: ReplayProps) {
 
 function HomeComponent () {
   const navigateToHome = () => {
-    messages.trySendMessage('swag.navigateToHome');
+    messages.trySendMessage('swag.navigateToHome', '', true);
   };
 
   return (

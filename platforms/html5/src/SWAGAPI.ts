@@ -247,15 +247,15 @@ export default class SWAGAPI {
   }
 
   navigateToArchive () {
-    return messagesApi.trySendMessage('swag.navigateToArchive');
+    return messagesApi.trySendMessage('swag.navigateToArchive', '', true);
   }
 
   navigateToTitle (keyword: string) {
-    return messagesApi.trySendMessage('swag.navigateToTitle', keyword);
+    return messagesApi.trySendMessage('swag.navigateToTitle', keyword, true);
   }
 
   navigateToHome () {
-    return messagesApi.trySendMessage('swag.navigateToHome');
+    return messagesApi.trySendMessage('swag.navigateToHome', '', true);
   }
 
   resizeParentFrame (size: { width: number, height: number }) {
