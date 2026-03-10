@@ -29,6 +29,17 @@ const methods = {
     return prop ? params[ prop ] : params;
   },
 
+  parseUtmTags () {
+    const params = new URLSearchParams(window.location.search);
+    const utmTags: Record<string, string> = {};
+    params.forEach((value, key) => {
+      if (key.startsWith('utm_')) {
+        utmTags[ key ] = value;
+      }
+    });
+    return utmTags;
+  },
+
   getDateString (): DateString {
     const { date: dateParam } = methods.parseUrlParams();
 
