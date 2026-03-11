@@ -279,12 +279,15 @@ class DataAPI {
     if (!properties.title) {
       properties.title = session.gameTitle;
     }
+
     const hostUrl = await utils.getPlatformUrl();
+    const utmTags = utils.parseUtmTags();
     properties = {
       ...properties,
       sdk_version: config.version,
       platform: utils.getPlatform(),
       $current_url: hostUrl,
+      ...utmTags,
     };
 
     const body = { game: session.apiKey, day, complete, properties };
@@ -379,7 +382,9 @@ class DataAPI {
     if (!properties.title) {
       properties.title = session.gameTitle;
     }
+
     const hostUrl = await utils.getPlatformUrl();
+    const utmTags = utils.parseUtmTags();
     const body = {
       game: session.apiKey,
       properties: {
@@ -388,6 +393,7 @@ class DataAPI {
         sdk_version: config.version,
         platform: utils.getPlatform(),
         $current_url: hostUrl,
+        ...utmTags,
       },
     };
 
