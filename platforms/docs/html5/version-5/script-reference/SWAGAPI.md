@@ -19,6 +19,7 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `navigateToTitle(keyword)`       | Navigates to the game title screen. Returns a promise with a message payload. |
 | `getGame()`                      | Retrieves game information. Returns a promise with a `Game` object.|
 | `startDailyGame(properties?)`| Starts a daily game challenge. Returns a promise.                 |
+| `completeDailyGame(properties?)`| Completes a daily game challenge. Returns a promise.                 |
 | `getCurrentDay()`                | Gets the current day for daily challenges. Returns a promise.      |
 | `getGameProgress(month, year)`   | Retrieves daily game progress. Returns a promise with an array of `DailyGameProgress`. |
 | `getGameStreak()`                | Retrieves the user's daily game streak. Returns a promise with a `DailyGameStreak`. |

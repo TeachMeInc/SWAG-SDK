@@ -20,6 +20,7 @@ export type ShowSummaryScreenOptions = {
   onClose?: () => void,
   hasLeaderboard?: boolean,
   eventProperties?: Record<string, any>,
+  suppressAnalyticsEvent?: boolean,
   score: {
     levelKey: string,
     value?: string | number
@@ -36,10 +37,12 @@ class SummaryScreenUI extends UserInterfaceAPI {
     const day = utils.getDateString();
     const eventProperties = options.eventProperties || {};
 
-    try {
-      await dataApi.postDailyGameProgress(day, true, eventProperties);
-    } catch (err) {
-      utils.error('Error posting daily game progress:', err);
+    if (!options.suppressAnalyticsEvent) {
+      try {
+        await dataApi.postDailyGameProgress(day, true, eventProperties);
+      } catch (err) {
+        utils.error('Error posting daily game progress:', err);
+      }
     }
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
 

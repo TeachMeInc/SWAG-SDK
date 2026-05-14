@@ -269,5 +269,19 @@ api.showSummaryScreen({
 By default, game events are tracked under your game's keyword. To track events under a different game, pass in a `gameId` in the `analytics` options:
 
 ```js
-analytics: { gameId: 'your_game_id' }
+const api = SWAGAPI.getInstance({
+	...
+	analytics: { gameId: 'your_game_id' }
+});
+```
+
+### Disabling Analytics Events
+
+To disable analytics events for the `showSummaryScreen` call, pass `suppressAnalyticsEvent: true` in the options:
+
+```js
+api.showSummaryScreen({ 
+	...
+	suppressAnalyticsEvent: true,
+});
 ```
