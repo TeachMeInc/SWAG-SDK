@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:docs/assets/html5_version-5_usage-and-examples.md.c16a53f2.lean.js
-import{_ as s,o as a,c as n,V as l}from"./chunks/framework.e0f23486.js";const A=JSON.parse('{"title":"Usage & Examples","description":"","frontmatter":{},"headers":[],"relativePath":"html5/version-5/usage-and-examples.md","filePath":"html5/version-5/usage-and-examples.md"}'),o={name:"html5/version-5/usage-and-examples.md"},p=l("",68),e=[p];function t(c,r,D,y,F,i){return a(),n("div",null,e)}const d=s(o,[["render",t]]);export{A as __pageData,d as default};
-========
-import{_ as s,o as a,c as n,V as l}from"./chunks/framework.e0f23486.js";const A=JSON.parse('{"title":"Usage & Examples","description":"","frontmatter":{},"headers":[],"relativePath":"html5/version-5/usage-and-examples.md","filePath":"html5/version-5/usage-and-examples.md"}'),o={name:"html5/version-5/usage-and-examples.md"},p=l("",67),e=[p];function t(c,r,D,y,F,i){return a(),n("div",null,e)}const d=s(o,[["render",t]]);export{A as __pageData,d as default};
->>>>>>>> SWAGAPI-204:docs/assets/html5_version-5_usage-and-examples.md.6b201647.lean.js

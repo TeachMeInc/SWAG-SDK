@@ -1,5 +1,5 @@
 /* eslint-disable */
-// Type definitions for SWAG HTML5 SDK v5.6.0
+// Type definitions for SWAG HTML5 SDK v5.6.1
 // Visit https://developers.shockwave.com for more information
 
 interface Entity {
@@ -133,7 +133,7 @@ declare class SWAGAPI {
     }): Promise<MessagePayload>;
     getGame(): Promise<Game>;
     startDailyGame(eventProperties?: Record<string, any>): Promise<void>;
-    completeDailyGame(eventProperties?: Record<string, any>): Promise<void>;
+    completeDailyGame(dayOrEventProperties?: string | Record<string, any>): Promise<void>;
     getCurrentDay(): `${number}-${number}-${number}`;
     getGameProgress(month: string, year: string): Promise<DailyGameProgress[]>;
     getGameStreak(): Promise<DailyGameStreak>;
