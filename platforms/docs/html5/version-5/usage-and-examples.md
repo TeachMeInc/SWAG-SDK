@@ -70,6 +70,10 @@ toolbar: {
 }
 ```
 
+#### Toolbar Title Icon
+
+The toolbar title icon can be set using the `titleIcon` and `titleIconDark` options. If not provided, the SDK will attempt to use the game's archive icon as configured in the database. If neither is available, no icon will be displayed.
+
 ### Toolbar Item State
 
 Toolbar items can have the following states:
