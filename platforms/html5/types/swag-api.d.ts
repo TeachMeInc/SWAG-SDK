@@ -63,7 +63,7 @@ interface PostScoreOptions {
     leaderboard?: string;
 }
 
-type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.navigateToHome' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode' | 'swag.requestHostUrl' | 'swag.resizeParentFrame';
+type MessageEventName = 'noop' | 'swag.toolbar.show' | 'swag.toolbar.hide' | 'swag.toggleFullScreen' | 'swag.navigateToArchive' | 'swag.navigateToGameLanding' | 'swag.navigateToTitle' | 'swag.navigateToHome' | 'swag.displayUpsell' | 'swag.dailyGameProgress.start' | 'swag.dailyGameProgress.complete' | 'swag.setLeaderboardCode' | 'swag.requestHostUrl' | 'swag.resizeParentFrame';
 interface MessagePayload {
     eventName: MessageEventName;
     message: string;
@@ -180,6 +180,7 @@ declare class SWAGAPI {
         onReplay?: () => void;
         onClose?: () => void;
     }): Promise<void>;
+    showUpsell(): Promise<MessagePayload>;
     showLoader(debounce?: number): Promise<void>;
     hideLoader(): Promise<void>;
     getPlatform(): "embed" | "app" | "standalone";

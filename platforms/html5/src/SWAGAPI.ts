@@ -524,6 +524,12 @@ export default class SWAGAPI {
     return summaryScreenUi.show(summaryScreenOpts);
   }
 
+  async showUpsell () {
+    if (!this.ready) throw sessionReadyError();
+    
+    return messagesApi.trySendMessage('swag.displayUpsell');
+  }
+
   showLoader (debounce?: number) {
     return loaderUi.show(debounce);
   }

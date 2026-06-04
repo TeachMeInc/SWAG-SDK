@@ -43,6 +43,7 @@ The `SWAGAPI` class is the main entry point for interacting with the SWAG HTML5 
 | `removeToolbarItem(id)`          | Removes a toolbar item by ID.                                      |
 | `showSplashScreen(options?)`     | Shows the splash screen. Returns a promise.                        |
 | `showSummaryScreen(options)`     | Shows the summary screen. Returns a promise.                       |
+| `showUpsell()`                   | Shows the upsell panel. Returns a promise which resolves when the panel is closed. |
 | `showLoader(debounce?)`          | Shows a loading indicator after a delay. Returns a promise.                      |
 | `hideLoader()`                   | Hides the loading indicator. Returns a promise.                    |
 | `getPlatform()`                  | Gets the host platform type, either `embed` (for Shockwave.com), `app` (for the mobile app), or `standalone`.                          |

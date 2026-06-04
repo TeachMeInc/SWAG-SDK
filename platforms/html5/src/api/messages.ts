@@ -29,6 +29,7 @@ export type MessageEventName =
   'swag.navigateToGameLanding' |
   'swag.navigateToTitle' | 
   'swag.navigateToHome' | 
+  'swag.displayUpsell' | 
   'swag.dailyGameProgress.start' |
   'swag.dailyGameProgress.complete' |
   'swag.setLeaderboardCode' |

@@ -87,6 +87,7 @@
       <p>
         <button id='btnGameSplashScreen'>Splash Screen</button>
         <button id='btnGameSummaryScreen'>Summary Screen</button>
+        <button id='btnShowUpsell'>Upsell Panel</button>
         <button id='btnShowLoader'>Show Loader</button>
         <button id='btnHideLoader'>Hide Loader</button>
       </p>
@@ -288,6 +289,9 @@
           onReplay: () => { alert('replay clicked'); },
           onClose: () => { alert('share screen closed'); }
       });
+
+      document.getElementById('btnShowUpsell').onclick = 
+        () => api.showUpsell();
 
       document.getElementById('btnToggleFullScreen').onclick = 
         () => api.toggleFullScreen();
