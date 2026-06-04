@@ -287,10 +287,13 @@ export default class SWAGAPI {
     messagesApi.trySendMessage('swag.dailyGameProgress.start', day, true);
   }
 
-  async completeDailyGame (day: string) {
-    const result = await dataApi.postDailyGameProgress(day, true);
+  async completeDailyGame (dayOrEventProperties: string | Record<string, any> = {}) {
+    const day = utils.getDateString();
+    const eventProperties = typeof dayOrEventProperties === 'string'      
+      ? {} : dayOrEventProperties;
+
+    await dataApi.postDailyGameProgress(day, true, eventProperties);
     messagesApi.trySendMessage('swag.dailyGameProgress.complete', day, true);
-    return result;
   }
 
   getCurrentDay () {
@@ -499,6 +502,7 @@ export default class SWAGAPI {
     footerHtml?: string;
     shareString: string, 
     eventProperties?: Record<string, any>,
+    suppressAnalyticsEvent?: boolean,
     score?: string | number,
     hideStats?: boolean,
     onFavorite?: () => void,

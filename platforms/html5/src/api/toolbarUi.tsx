@@ -4,6 +4,7 @@ import { Toolbar } from '@/components/features/toolbar/Toolbar';
 import UserInterfaceAPI from '@/UserInterfaceAPI';
 import utils from '@/utils';
 import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
+import session from '@/session';
 
 class ToolbarUI extends UserInterfaceAPI {
   protected rootElId: string = 'swag-toolbar-root';
@@ -31,11 +32,14 @@ class ToolbarUI extends UserInterfaceAPI {
         resolve();
       }, { once: true });
     });
+
+    const titleIcon = options.titleIcon || session?.game?.archive_icon || '';
+    const titleIconDark = options.titleIconDark || session?.game?.archive_icon || '';
     
     this.mount(<Toolbar
       date={utils.getDateString()}
-      titleIcon={options.titleIcon}
-      titleIconDark={options.titleIconDark}
+      titleIcon={titleIcon}
+      titleIconDark={titleIconDark}
       initialToolbarState={options.initialToolbarState}
       isInjected={this.isInjected}
       onClickFullScreen={onClickFullScreen}
