@@ -1,16 +1,16 @@
+import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
 import session from '@/session';
 import utils from '@/utils';
-import { ToolbarItem, ToolbarState } from '@/components/features/toolbar/toolbarState';
 
 // API imports
 import dataApi, { PostScoreOptions } from '@/api/data';
+import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
+import leaderboardScreenUi from '@/api/leaderboardScreenUi';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
+import splashScreenUi from '@/api/splashScreenUi';
 import summaryScreenUi, { ShowSummaryScreenOptions } from '@/api/summaryScreenUi';
 import toolbarUi from '@/api/toolbarUi';
-import splashScreenUi from '@/api/splashScreenUi';
-import leaderboardScreenUi from '@/api/leaderboardScreenUi';
-import globalEventHandler, { GlobalEventType } from '@/api/globalEventHandler';
 import config from '@/config';
 
 
@@ -219,6 +219,11 @@ export default class SWAGAPI {
         : {};
       if (this.options.splashScreen === true || opts.showOnLoad) {
         document.body.classList.add('swag-splashScreen--open'); // hide toolbar
+
+        if (utils.getPlatform() === 'app') {
+          messagesApi.trySendMessage('swag.gameReady', '');
+        }
+
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
           hasLeaderboard: !!this.options.leaderboardScreen,

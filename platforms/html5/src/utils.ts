@@ -143,6 +143,11 @@ const methods = {
     return hostUrl;
   },
 
+  getGameMode (): string | null {
+    const gameMode = this.parseUrlOptions('game_mode') as string;
+    return gameMode || null;
+  },
+
   isMobileDevice () {
     const platform = this.getPlatform();
     if (platform === 'app') return true;
