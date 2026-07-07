@@ -221,7 +221,9 @@ export default class SWAGAPI {
         document.body.classList.add('swag-splashScreen--open'); // hide toolbar
 
         if (utils.getPlatform() === 'app') {
-          messagesApi.trySendMessage('swag.gameReady', '');
+          // eslint-disable-next-line no-console
+          console.log('[SWAG debug] Sending gameReady message to:', utils.getPlatform());
+          await messagesApi.trySendMessage('swag.gameReady', '');
         }
 
         splashScreenUi.show({
