@@ -212,6 +212,13 @@ export default class SWAGAPI {
       }
     }
 
+    // App warmup
+    if (utils.getPlatform() === 'app') {
+      // eslint-disable-next-line no-console
+      console.log('[SWAG debug] Sending gameReady message to:', utils.getPlatform());
+      await messagesApi.trySendMessage('swag.gameReady', '');
+    }
+
     // Splash screen
     if (this.options.splashScreen) {
       const opts = typeof this.options.splashScreen === 'object' 
@@ -219,12 +226,6 @@ export default class SWAGAPI {
         : {};
       if (this.options.splashScreen === true || opts.showOnLoad) {
         document.body.classList.add('swag-splashScreen--open'); // hide toolbar
-
-        if (utils.getPlatform() === 'app') {
-          // eslint-disable-next-line no-console
-          console.log('[SWAG debug] Sending gameReady message to:', utils.getPlatform());
-          await messagesApi.trySendMessage('swag.gameReady', '');
-        }
 
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
