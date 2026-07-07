@@ -1,7 +1,7 @@
-import { DateString } from '@/types/DateString';
-import session from './session';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 import messagesApi from '@/api/messages';
+import { DateString } from '@/types/DateString';
+import session from './session';
 import utils from './utils';
 
 const methods = {
@@ -135,6 +135,11 @@ const methods = {
     session.hostUrl = hostUrl;
     
     return hostUrl;
+  },
+
+  getGameMode (): string | null {
+    const gameMode = this.parseUrlOptions('game_mode') as string;
+    return gameMode || null;
   },
 
   isMobileDevice () {

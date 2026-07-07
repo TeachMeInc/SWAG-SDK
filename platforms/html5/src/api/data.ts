@@ -1,11 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import session from '@/session';
-import utils from '@/utils';
-import config from '@/config';
-import { Entity } from '@/types/Entity';
-import { Game } from '@/types/Game';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 import swStampWhite from '@/assets/sw-stamp-white.svg';
+import config from '@/config';
+import session from '@/session';
+import { Entity } from '@/types/Entity';
+import { Game } from '@/types/Game';
+import utils from '@/utils';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 
 
@@ -385,16 +385,23 @@ class DataAPI {
 
     const hostUrl = await utils.getPlatformUrl();
     const utmTags = utils.parseUtmTags();
+
+    const bodyProps: Record<string, any> = {
+      ...properties,
+      tag_name: tagName,
+      sdk_version: config.version,
+      platform: utils.getPlatform(),
+      $current_url: hostUrl,
+      ...utmTags,
+    };
+    const gameMode = utils.getGameMode();
+    if (gameMode) {
+      bodyProps.game_mode = gameMode;
+    }
+
     const body = {
       game: session.apiKey,
-      properties: {
-        ...properties,
-        tag_name: tagName,
-        sdk_version: config.version,
-        platform: utils.getPlatform(),
-        $current_url: hostUrl,
-        ...utmTags,
-      },
+      properties: bodyProps,
     };
 
     return await postJSON('/v1/user/tag', body);
@@ -408,15 +415,22 @@ class DataAPI {
       properties.title = session.gameTitle;
     }
     const hostUrl = await utils.getPlatformUrl();
+
+    const bodyProps: Record<string, any> = {
+      ...properties,
+      tag_name: tagName,
+      sdk_version: config.version,
+      platform: utils.getPlatform(),
+      $current_url: hostUrl,
+    };
+    const gameMode = utils.getGameMode();
+    if (gameMode) {
+      bodyProps.game_mode = gameMode;
+    }
+    
     const body = {
       game: session.apiKey,
-      properties: {
-        ...properties,
-        tag_name: tagName,
-        sdk_version: config.version,
-        platform: utils.getPlatform(),
-        $current_url: hostUrl,
-      },
+      properties: bodyProps,
     };
     
     const bodyData = new Blob([ JSON.stringify(body) ], { type: 'application/json' });

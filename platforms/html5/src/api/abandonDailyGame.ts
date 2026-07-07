@@ -12,14 +12,20 @@ class AbandonDailyGameAPI {
     }
     
     this.cancelSend = utils.sendOnWindowClose(() => {
+      const properties: Record<string, any> = {
+        ...getProperties(),
+        tag_name: 'level_abandoned',
+        sdk_version: config.version,
+        platform: utils.getPlatform(),
+      };
+      const gameMode = utils.getGameMode();
+      if (gameMode) {
+        properties.game_mode = gameMode;
+      }
+      
       const payload = {
         game: session.apiKey,
-        properties: {
-          ...getProperties(),
-          tag_name: 'level_abandoned',
-          sdk_version: config.version,
-          platform: utils.getPlatform(),
-        },
+        properties,
       };
 
       return { url: `${config.apiRoot}/v1/user/tag`, payload };
