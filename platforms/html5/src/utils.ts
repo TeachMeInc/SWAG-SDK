@@ -1,7 +1,7 @@
-import { DateString } from '@/types/DateString';
-import session from './session';
 import globalEventHandlerApi, { GlobalEventType } from '@/api/globalEventHandler';
 import messagesApi from '@/api/messages';
+import { DateString } from '@/types/DateString';
+import session from './session';
 import utils from './utils';
 
 const methods = {
@@ -87,8 +87,14 @@ const methods = {
   // #region Platform Methods 
 
   getPlatform (): 'embed' | 'app' | 'standalone' {
-    // @ts-ignore
-    if (typeof window.ReactNativeWebView !== 'undefined') {
+    const platform = this.parseUrlOptions('platform');
+    if (
+      platform === 'app' ||
+      // @ts-ignore
+      typeof window.parent?.ReactNativeWebView !== 'undefined' || 
+      // @ts-ignore
+      typeof window.ReactNativeWebView !== 'undefined') 
+    {
       return 'app';
     }
     if (window.self === window.top) {
