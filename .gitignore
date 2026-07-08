@@ -4,5 +4,6 @@ docs/.vitepress/cache
 .DS_Store
 Thumbs.db
 
-# vscode
+# IDE
 .vscode
+.idea
