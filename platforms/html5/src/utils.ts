@@ -88,13 +88,7 @@ const methods = {
 
   getPlatform (): 'embed' | 'app' | 'standalone' {
     const platform = this.parseUrlOptions('platform');
-    if (
-      platform === 'app' ||
-      // @ts-ignore
-      typeof window.parent?.ReactNativeWebView !== 'undefined' || 
-      // @ts-ignore
-      typeof window.ReactNativeWebView !== 'undefined') 
-    {
+    if (platform === 'app') {
       return 'app';
     }
     if (window.self === window.top) {
