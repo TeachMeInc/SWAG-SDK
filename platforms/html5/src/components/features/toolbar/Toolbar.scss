@@ -292,3 +292,9 @@
 .swag-toolbar__icon {
   color: var(--swag-toolbar-font-color);
 }
+
+.swag-toolbar__title-icon {
+  @media (max-width: 549px) {
+    display: none !important;
+  }
+}
