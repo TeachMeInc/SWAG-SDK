@@ -285,7 +285,7 @@ class DataAPI {
     properties = {
       ...properties,
       sdk_version: config.version,
-      platform: utils.getPlatform(),
+      platform: utils.getPlatform() === 'app' ? 'mobile_app' : 'web',
       $current_url: hostUrl,
       ...utmTags,
     };
@@ -390,7 +390,7 @@ class DataAPI {
       ...properties,
       tag_name: tagName,
       sdk_version: config.version,
-      platform: utils.getPlatform(),
+      platform: utils.getPlatform() === 'app' ? 'mobile_app' : 'web',
       $current_url: hostUrl,
       ...utmTags,
     };
@@ -420,7 +420,7 @@ class DataAPI {
       ...properties,
       tag_name: tagName,
       sdk_version: config.version,
-      platform: utils.getPlatform(),
+      platform: utils.getPlatform() === 'app' ? 'mobile_app' : 'web',
       $current_url: hostUrl,
     };
     const gameMode = utils.getGameMode();

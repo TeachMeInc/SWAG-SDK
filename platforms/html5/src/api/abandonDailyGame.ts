@@ -16,7 +16,7 @@ class AbandonDailyGameAPI {
         ...getProperties(),
         tag_name: 'level_abandoned',
         sdk_version: config.version,
-        platform: utils.getPlatform(),
+        platform: utils.getPlatform() === 'app' ? 'mobile_app' : 'web',
       };
       const gameMode = utils.getGameMode();
       if (gameMode) {
