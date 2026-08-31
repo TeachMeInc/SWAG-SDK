@@ -35,5 +35,12 @@
     "vite": "^5.2.0",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-mkcert": "^1.17.5"
+  },
+  "overrides": {
+    "ttf2woff2": {
+      "scripts": {
+        "install": "exit 0"
+      }
+    }
   }
 }
