@@ -184,8 +184,9 @@ const methods = {
     let stringifyLottie = '';
     try {
       stringifyLottie = JSON.stringify(lottie)
-        .replace(/0123456789:%\.\/stndrh/g, value.toString())
-        .replace(/0123456789:%\.\//g, value.toString()); // backwards compatible for older lotties
+        .replace(/0123456789:%\.\/stndrhkm/g, value.toString()) // v3, supports "score" lottie
+        .replace(/0123456789:%\.\/stndrh/g, value.toString()) // v2, backwards compatible for older lotties
+        .replace(/0123456789:%\.\//g, value.toString()); // v1, backwards compatible for older lotties
     } catch (e) {
       this.debug('Error stringifying Lottie animation', e);
       return {};
