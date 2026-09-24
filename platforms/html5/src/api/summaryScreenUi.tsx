@@ -1,13 +1,13 @@
 import dataApi, { DailyGameStreak, GamePromoLink, UserBestData } from '@/api/data';
-import SummaryScreen from '@/components/features/summaryScreen/SummaryScreen';
-import UserInterfaceAPI from '@/UserInterfaceAPI';
-import lottieStreak from '@/assets/lottie/streak.json';
-import lottieTime from '@/assets/lottie/time.json';
-import lottiePosition from '@/assets/lottie/position.json';
-import utils from '@/utils';
 import loaderUi from '@/api/loaderUi';
 import messagesApi from '@/api/messages';
+import lottiePosition from '@/assets/lottie/position.json';
+import lottieStreak from '@/assets/lottie/streak.json';
+import lottieTime from '@/assets/lottie/time.json';
+import SummaryScreen from '@/components/features/summaryScreen/SummaryScreen';
 import config from '@/config';
+import UserInterfaceAPI from '@/UserInterfaceAPI';
+import utils from '@/utils';
 
 export type ShowSummaryScreenOptions = {
   stats: { key: string, value?: string, lottie?: object }[], 
@@ -94,7 +94,7 @@ class SummaryScreenUI extends UserInterfaceAPI {
     // Fetch promo links
     promises.push((async () => {
       try {
-        return await dataApi.getGamePromoLinks(6);
+        return await dataApi.getGamePromoLinks(4);
       } catch (e) {
         utils.warn('Error fetching promo links:', e);
       }
