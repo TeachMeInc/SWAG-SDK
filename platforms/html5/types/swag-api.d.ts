@@ -176,6 +176,8 @@ declare class SWAGAPI {
         suppressAnalyticsEvent?: boolean;
         score?: string | number;
         hideStats?: boolean;
+        hidePromoLinks?: boolean;
+        hideArchiveButton?: boolean;
         onFavorite?: () => void;
         onReplay?: () => void;
         onClose?: () => void;
