@@ -134,6 +134,8 @@ interface SummaryProps {
   hasPlayedToday?: boolean;
   isInjected?: boolean;
   hideStats?: boolean;
+  hidePromoLinks?: boolean;
+  hideArchiveButton?: boolean;
   onFavorite?: () => void;
   onReplay?: () => void;
   hasLeaderboard?: boolean;
@@ -257,7 +259,7 @@ export default function SummaryScreen (props: SummaryProps) {
           }
 
           {
-            props.promoLinks.length
+            !props.hideArchiveButton && props.promoLinks.length
               ? (
                 <div className='swag-summaryScreen__promo-links-container'>
                   {
@@ -276,7 +278,7 @@ export default function SummaryScreen (props: SummaryProps) {
           }
 
           {
-            props.promoLinks.length 
+            !props.hidePromoLinks && props.promoLinks.length
               ? (
                 <div className='swag-summaryScreen__related-games'>
                   <ul>

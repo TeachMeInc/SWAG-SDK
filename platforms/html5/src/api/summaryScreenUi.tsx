@@ -15,6 +15,8 @@ export type ShowSummaryScreenOptions = {
   footerHtml?: string,
   shareString: string, 
   hideStats?: boolean,
+  hidePromoLinks?: boolean,
+  hideArchiveButton?: boolean,
   onFavorite?: () => void,
   onReplay?: () => void,
   onClose?: () => void,
@@ -204,6 +206,8 @@ class SummaryScreenUI extends UserInterfaceAPI {
       isMember={isMember}
       isSubscriber={isSubscriber}
       hideStats={options.hideStats}
+      hidePromoLinks={options.hidePromoLinks}
+      hideArchiveButton={options.hideArchiveButton}
       hasPlayedToday={hasPlayedToday}
       isInjected={this.isInjected}
       onFavorite={options.onFavorite}
