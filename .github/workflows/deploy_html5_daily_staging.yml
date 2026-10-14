@@ -24,16 +24,16 @@ jobs:
         run: npm run build:staging
         working-directory: ./platforms/html5
 
-      - name: Upload to DigitalOcean Spaces
-        env:
-          SPACES_ACCESS_KEY_ID: ${{ secrets.SPACES_ACCESS_KEY_ID }}
-          SPACES_SECRET_ACCESS_KEY: ${{ secrets.SPACES_SECRET_ACCESS_KEY }}
-        run: |
-          npm install -g aws-cli
-          aws configure set aws_access_key_id $SPACES_ACCESS_KEY_ID
-          aws configure set aws_secret_access_key $SPACES_SECRET_ACCESS_KEY
-          aws configure set default.region us-east-1
-          aws s3 sync ./platforms/html5/dist s3://swag-sdk/v5/staging/dist --endpoint-url "https://sfo3.digitaloceanspaces.com" --acl public-read
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Upload to GCP Cloud Storage
+        run: gcloud storage rsync --recursive ./platforms/html5/dist gs://swag-sdk/v5/staging/dist
 
       - name: Clear Cloudflare Cache
         env:
