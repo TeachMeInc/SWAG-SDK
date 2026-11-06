@@ -217,7 +217,10 @@ export default class SWAGAPI {
       // eslint-disable-next-line no-console
       console.log('[SWAG debug] Sending gameReady message to:', utils.getPlatform());
       try {
-        await messagesApi.trySendMessage('swag.gameReady', '');
+        const response = await messagesApi.trySendMessage('swag.gameReady', '');
+
+        // eslint-disable-next-line no-console
+        console.log('[SWAG debug] Got response from app:', response);
       } catch(e) {
         // TODO this should then fail to initialize
 
@@ -226,19 +229,19 @@ export default class SWAGAPI {
       }
     }
 
+    // eslint-disable-next-line no-console
+    console.log('[SWAG debug] Handling splash screen...');
+
     // Splash screen
     if (this.options.splashScreen) {
-      // eslint-disable-next-line no-console
-      console.log('[SWAG debug] Handling splash screen...');
-
       const opts = typeof this.options.splashScreen === 'object' 
         ? this.options.splashScreen 
         : {};
       if (this.options.splashScreen === true || opts.showOnLoad) {
-        document.body.classList.add('swag-splashScreen--open'); // hide toolbar
-
         // eslint-disable-next-line no-console
-        console.log('[SWAG debug] Showing splash screen');
+        console.log('[SWAG debug] Showing splash screen...');
+
+        document.body.classList.add('swag-splashScreen--open'); // hide toolbar
 
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
@@ -246,14 +249,25 @@ export default class SWAGAPI {
           onClickPlay: opts.onClickPlay,
           waitForAssets: opts.waitForAssets,
         });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log('[SWAG debug] Skipping splash screen');
       }
     }
 
+    // eslint-disable-next-line no-console
+    console.log('[SWAG debug] Showing toolbar');
+
     // Toolbar
     if (this.options.toolbar) {
-      // eslint-disable-next-line no-console
-      console.log('[SWAG debug] Showing toolbar');
-      await this.showToolbar();
+      try {
+        await this.showToolbar();
+      } catch(e) {
+        // TODO should this cause a failure?
+
+        // eslint-disable-next-line no-console
+        console.error('Unable to initialize toolbar:', e);
+      }
     }
 
     /*
