@@ -216,7 +216,12 @@ export default class SWAGAPI {
     if (utils.getPlatform() === 'app') {
       // eslint-disable-next-line no-console
       console.log('[SWAG debug] Sending gameReady message to:', utils.getPlatform());
-      await messagesApi.trySendMessage('swag.gameReady', '');
+      try {
+        await messagesApi.trySendMessage('swag.gameReady', '');
+      } catch(e) {
+        // TODO this should then fail to initialize
+        utils.error('Unable to initialize app session', e);
+      }
     }
 
     // Splash screen
