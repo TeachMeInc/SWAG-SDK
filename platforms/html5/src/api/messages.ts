@@ -78,7 +78,7 @@ class MessagesAPI {
       const timeoutRef = setTimeout(() => {
         completeRequest();
         reject(new Error(`Failed to send message for event ${eventName}. Reason: Timeout`));
-      }, 100);
+      }, 1000);
 
       const eventListener = (event: { data: string }) => {
         const parsed = tryParse<MessagePayload>(event.data);
