@@ -220,17 +220,25 @@ export default class SWAGAPI {
         await messagesApi.trySendMessage('swag.gameReady', '');
       } catch(e) {
         // TODO this should then fail to initialize
-        utils.error('Unable to initialize app session', e);
+
+        // eslint-disable-next-line no-console
+        console.error('Unable to initialize app session', e);
       }
     }
 
     // Splash screen
     if (this.options.splashScreen) {
+      // eslint-disable-next-line no-console
+      console.log('[SWAG debug] Handling splash screen...');
+
       const opts = typeof this.options.splashScreen === 'object' 
         ? this.options.splashScreen 
         : {};
       if (this.options.splashScreen === true || opts.showOnLoad) {
         document.body.classList.add('swag-splashScreen--open'); // hide toolbar
+
+        // eslint-disable-next-line no-console
+        console.log('[SWAG debug] Showing splash screen');
 
         splashScreenUi.show({
           isBeta: opts.isBeta || false,
@@ -243,6 +251,8 @@ export default class SWAGAPI {
 
     // Toolbar
     if (this.options.toolbar) {
+      // eslint-disable-next-line no-console
+      console.log('[SWAG debug] Showing toolbar');
       await this.showToolbar();
     }
 
@@ -252,6 +262,10 @@ export default class SWAGAPI {
 
     this.ready = true;
     utils.log('Session ready for user', entity?._id, 'on date', utils.getDateString(), 'on', utils.getPlatform(), 'platform');
+
+    // eslint-disable-next-line no-console
+    console.log(`[SWAG debug] Initialization successful, sending ${GlobalEventType.SESSION_READY} event`);
+
     globalEventHandler.dispatchEvent(new CustomEvent(GlobalEventType.SESSION_READY, { detail: { session_ready: true } }));
   }
 
